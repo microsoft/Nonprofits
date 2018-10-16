@@ -1,0 +1,71 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    "vmName": {
+      "value": "g1paads2a"
+    },
+    "osStorageAccountName": {
+      "value": "g1itservicesossa"
+    },
+    "dataStorageAccountName": {
+      "value": "g1itservicesdatasa"
+    },
+    "diagStorageAccountName": {
+      "value": "g1itservicesdiagsa"
+    },
+    "storageAccountResourceGroupName": {
+      "value": "rg_storage_services_g1"
+    },
+    "adminUsername": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/43220cc5-8010-4fef-b038-e005ded0bb8e/resourceGroups/vdca_keyvault/providers/Microsoft.KeyVault/vaults/vdca_keyvault",
+          "secretName": "InternalWindowsName"
+        }
+      }
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/43220cc5-8010-4fef-b038-e005ded0bb8e/resourceGroups/vdca_keyvault/providers/Microsoft.KeyVault/vaults/vdca_keyvault",
+          "secretName": "InternalWindowsPWD"
+        }
+      }
+    },
+    "ActiveDirectoryVnetSubscriptionID": {
+      "value": "730f26b5-ebf5-4518-999f-0b4eb0cdc8f9"
+    },
+    "adOUPath": {
+      "value": "OU=Workloads,DC=AzureFoundation,DC=Contoso,DC=com"
+    },
+    "windowsOSDiskVhdUri": {
+      "value": "https://customubrgdisks112.blob.core.windows.net/vhds/customub20161011133129.vhd"
+    },
+    "linuxOSDiskVhdUri": {
+      "value": "https://customubrgdisks112.blob.core.windows.net/vhds/customub20161011133129.vhd"
+    },
+    "dnsLabelPrefix": {
+      "value": "g1paads2a"
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "vmSize": {
+      "value": "Standard_A2"
+    },
+    "newOrExistingVnet": {
+      "value": "existing"
+    },
+    "newOrExistingVnetName": {
+      "value": "vnet_services_g1"
+    },
+    "newOrExistingSubnetName": {
+      "value": "600_Services_Srvcs_BCIT_G1"
+    },
+    "existingVnetResourceGroupName": {
+      "value": "rg_vnet_services_g1"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaults_MACSLGKeyVault_name": {
+            "defaultValue": "MACSLGKeyVault",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/730f26b5-ebf5-4518-999f-0b4eb0cdc8f9/resourceGroups/MACSLGKeyVault/providers/Microsoft.KeyVault/vaults/MACSLGKeyVault'.",
+            "type": "Microsoft.KeyVault/vaults",
+            "name": "[parameters('vaults_MACSLGKeyVault_name')]",
+            "apiVersion": "2015-06-01",
+            "location": "westcentralus",
+            "tags": {},
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Premium"
+                },
+                "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                "accessPolicies": [
+                    {
+                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                        "objectId": "950581d5-a209-4b7f-bef3-bde3c6b563fd",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "All"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": true
+            },
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}

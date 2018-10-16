@@ -1,0 +1,55 @@
+/*Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.*/ 
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
+    parameters files */
+    "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
+
+    /*the VNET tab of the metadata spreadsheet and filter the data with VNET103
+    copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "vnet303vnetName": { "value": "vnet1a_storage_tx" },
+    "vnet303vnetAddressPrefix": { "value": "10.128.176.0/21" },
+    "vnet303locationName": { "value": "usgovtexas" },
+    "vnet303dnsServers": { "value": [ "10.128.56.11", "10.128.120.11", "10.128.184.11", "10.128.248.11" ] },
+    "vnet303SubscriptionID": { "value": "0223b7af-344f-42cd-bed2-5ebbc7d06d5d" },
+    "vnet303ResourceGroupName": { "value": "rg_network_vnet1a_storage_tx" },
+
+
+    /*the subnet tab of the metadata spreadsheet and filter the data with VNET103
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "snet366Name": { "value": "s500_Storage_Storage_TX" },
+    "snet366IP": { "value": "10.128.176.0/24" },
+    "snet366NSGName": { "value": "500NSG" },
+    "snet367Name": { "value": "s505_LB_Storage_Storage_TX" },
+    "snet367IP": { "value": "10.128.177.0/24" },
+    "snet367NSGName": { "value": "505NSG" },
+    "snet368Name": { "value": "s560_User_Tier0_Storage_TX" },
+    "snet368IP": { "value": "10.128.178.0/25" },
+    "snet368NSGName": { "value": "560NSG" },
+    "snet369Name": { "value": "s561_User_Tier1_Storage_TX" },
+    "snet369IP": { "value": "10.128.178.128/25" },
+    "snet369NSGName": { "value": "561NSG" },
+
+    /*the Peering tab of the metadata spreadsheet and filter the data with VNET103
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "pr303PeeringName": { "value": "vnet1a_storage_tx_vnet1a_services_tx" },
+    "pr303destSubscriptionID": { "value": "30457dd5-e56b-416b-9228-d48b37fe7caa" },
+    "pr303destResourceGroup": { "value": "rg_network_vnet1a_services_tx" },
+    "pr303DestinationVNET": { "value": "vnet1a_services_tx" },
+    "pr303allowVNETAccess": { "value": true },
+    "pr303allowFwdAccess": { "value": true },
+    "pr303allowGWAccess": { "value": false },
+    "pr303useRemoteGateway": { "value": true }
+
+  }
+}

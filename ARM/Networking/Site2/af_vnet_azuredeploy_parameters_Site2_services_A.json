@@ -1,0 +1,189 @@
+/*Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.*/ 
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
+    parameters files */
+    "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
+
+    /*the VNET tab of the metadata spreadsheet and filter the data with VNET204
+    copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "vnet204vnetName": { "value": "vnet1a_services_w2" },
+    "vnet204vnetAddressPrefix": { "value": "10.128.120.0/21" },
+    "vnet204locationName": { "value": "westus2" },
+    "vnet204dnsServers": { "value": [ "10.128.56.11", "10.128.120.11", "10.128.184.11", "10.128.248.11" ] },
+    "vnet204SubscriptionID": { "value": "730f26b5-ebf5-4518-999f-0b4eb0cdc8f9" },
+    "vnet204ResourceGroupName": { "value": "rg_network_vnet1a_services_w2" },
+
+    /*the subnet tab of the metadata spreadsheet and filter the data with VNET204
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "snet274Name": { "value": "s600_Services_Services_W2" },
+    "snet274IP": { "value": "10.128.120.0/24" },
+    "snet274NSGName": { "value": "600NSG" },
+    "snet275Name": { "value": "s625_LB_Services_Services_W2" },
+    "snet275IP": { "value": "10.128.122.0/25" },
+    "snet275NSGName": { "value": "625NSG" },
+    "snet280Name": { "value": "s680_RTR_InsideTest_Services_W2" },
+    "snet280IP": { "value": "10.128.123.0/28" },
+    "snet280NSGName": { "value": "680NSG" },
+    "snet282Name": { "value": "s681_RTR_OutsideTest_Services_W2" },
+    "snet282IP": { "value": "10.128.123.16/28" },
+    "snet282NSGName": { "value": "681NSG" },
+    "snet283Name": { "value": "s682_FW_IntTest_Services_W2" },
+    "snet283IP": { "value": "10.128.123.32/28" },
+    "snet283NSGName": { "value": "682NSG" },
+    "snet284Name": { "value": "s683_FW_ExtTest_Services_W2" },
+    "snet284IP": { "value": "10.128.123.64/28" },
+    "snet284NSGName": { "value": "683NSG" },
+    "snet276Name": { "value": "s650_DMZ_Services_W2" },
+    "snet276IP": { "value": "10.128.124.0/24" },
+    "snet276NSGName": { "value": "650NSG" },
+    "snet279Name": { "value": "s655_LB_DMZ_Services_W2" },
+    "snet279IP": { "value": "10.128.125.0/24" },
+    "snet279NSGName": { "value": "655NSG" },
+    "snet277Name": { "value": "s660_User_Tier0_Services_W2" },
+    "snet277IP": { "value": "10.128.126.0/26" },
+    "snet277NSGName": { "value": "660NSG" },
+    "snet278Name": { "value": "s661_User_Tier1_Services_W2" },
+    "snet278IP": { "value": "10.128.126.64/26" },
+    "snet278NSGName": { "value": "661NSG" },
+    "snet285Name": { "value": "s662_User_Tier2_Services_W2" },
+    "snet285IP": { "value": "10.128.126.128/26" },
+    "snet285NSGName": { "value": "662NSG" },
+    "snet215Name": { "value": "GatewaySubnet" },
+    "snet215IP": { "value": "10.128.127.224/27" },
+
+    /*the Peering tab of the metadata spreadsheet and filter the data with VNET204
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "pr204PeeringName": { "value": "vnet1a_services_w2_vnet1a_prod_w2" },
+    "pr204destSubscriptionID": { "value": "ec1cea2e-92aa-45a7-89b0-d9fc40df2beb" },
+    "pr204destResourceGroup": { "value": "rg_network_vnet1a_prod_w2" },
+    "pr204DestinationVNET": { "value": "vnet1a_prod_w2" },
+    "pr204allowVNETAccess": { "value": true },
+    "pr204allowFwdAccess": { "value": true },
+    "pr204allowGWAccess": { "value": true },
+    "pr204useRemoteGateway": { "value": false },
+    "pr205PeeringName": { "value": "vnet1a_services_w2_vnet1a_hbi_w2" },
+    "pr205destSubscriptionID": { "value": "ce38c0ef-22f5-458d-b1f7-e3890e2471f2" },
+    "pr205destResourceGroup": { "value": "rg_network_vnet1a_hbi_w2" },
+    "pr205DestinationVNET": { "value": "vnet1a_hbi_w2" },
+    "pr205allowVNETAccess": { "value": true },
+    "pr205allowFwdAccess": { "value": true },
+    "pr205allowGWAccess": { "value": true },
+    "pr205useRemoteGateway": { "value": false },
+    "pr206PeeringName": { "value": "vnet1a_services_w2_vnet1a_preprod_w2" },
+    "pr206destSubscriptionID": { "value": "a7d928df-fc97-4f02-adae-3d7cdeb7c8cb" },
+    "pr206destResourceGroup": { "value": "rg_network_vnet1a_preprod_w2" },
+    "pr206DestinationVNET": { "value": "vnet1a_preprod_w2" },
+    "pr206allowVNETAccess": { "value": true },
+    "pr206allowFwdAccess": { "value": true },
+    "pr206allowGWAccess": { "value": true },
+    "pr206useRemoteGateway": { "value": false },
+    "pr207PeeringName": { "value": "vnet1a_services_w2_vnet1a_storage_w2" },
+    "pr207destSubscriptionID": { "value": "6e5d19d2-a324-470a-b24f-57ac0d3221a1" },
+    "pr207destResourceGroup": { "value": "rg_network_vnet1a_storage_w2" },
+    "pr207DestinationVNET": { "value": "vnet1a_storage_w2" },
+    "pr207allowVNETAccess": { "value": true },
+    "pr207allowFwdAccess": { "value": true },
+    "pr207allowGWAccess": { "value": true },
+    "pr207useRemoteGateway": { "value": false },
+
+
+
+    /*the localnetworkgateway tab of the metadata spreadsheet and filter the data with VNET204
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "lngw01bname": { "value": "lngw_boulder_dc1" },
+    "lngw01bgatewayIPAddress": { "value": "1.1.1.1" },
+    "lngw01blocalNetworkAddressSpace": { "value": [ "10.0.0.10/32" ] },
+    "lngw01bConfigureBGP": { "value": true },
+    "lngw01bASNNumber": { "value": 65501 },
+    "lngw01bBGPPeerIPAddress": { "value": "10.0.0.10" },
+    "lngw01bpeerWeight": { "value": 0 },
+    "lngw02bname": { "value": "lngw_austin_dc2" },
+    "lngw02bgatewayIPAddress": { "value": "1.1.1.9" },
+    "lngw02blocalNetworkAddressSpace": { "value": [ "10.0.0.10/32" ] },
+    "lngw02bConfigureBGP": { "value": true },
+    "lngw02bASNNumber": { "value": 65502 },
+    "lngw02bBGPPeerIPAddress": { "value": "10.0.0.10" },
+    "lngw02bpeerWeight": { "value": 0 },
+    "lngw404aname": { "value": "lngw_site4a_az" },
+    "lngw404agatewayIPAddress": { "value": "52.244.166.162" },
+    "lngw404alocalNetworkAddressSpace": { "value": [ "10.128.254.224/27" ] },
+    "lngw404aConfigureBGP": { "value": true },
+    "lngw404aASNNumber": { "value": 65524 },
+    "lngw404aBGPPeerIPAddress": { "value": "10.128.254.228" },
+    "lngw404apeerWeight": { "value": 0 },
+    "lngw404bname": { "value": "lngw_site4b_az" },
+    "lngw404bgatewayIPAddress": { "value": "52.244.166.199" },
+    "lngw404blocalNetworkAddressSpace": { "value": [ "10.128.254.224/27" ] },
+    "lngw404bConfigureBGP": { "value": true },
+    "lngw404bASNNumber": { "value": 65524 },
+    "lngw404bBGPPeerIPAddress": { "value": "10.128.254.229" },
+    "lngw404bpeerWeight": { "value": 0 },
+
+
+    /*the gateway tab of the metadata spreadsheet and filter the data with VNET204
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "gw204vGatewayName": { "value": "gw_vnet1a_services_w2" },
+    "gw204vvnetName": { "value": "vnet1a_services_w2" },
+    "gw204vGatewayType": { "value": "Vpn" },
+    "gw204vVPNType": { "value": "RouteBased" },
+    "gw204vEnableActiveActive": { "value": true },
+    "gw204vgwSKUNameTier": { "value": "VpnGw1" },
+    "gw204vPublicIPName1": { "value": "gw_vnet1a_services_w2_gwpip1" },
+    "gw204vPublicIPName2": { "value": "gw_vnet1a_services_w2_gwpip2" },
+    "gw204venableBGP": { "value": true },
+    "gw204vbgpASN": { "value": 65522 },
+    "gw204vbgpRoutingWeight": { "value": 100 },
+
+
+    /*the connection tab of the metadata spreadsheet and filter the data with VNET204
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "cnct200ConnectionName": { "value": "cnct_IPSec_gw_vnet1a_services_w2_To_lngw_austin_dc2" },
+    "cnct200gwName": { "value": "gw_vnet1a_services_w2" },
+    "cnct200connectionType": { "value": "IPSec" },
+    "cnct200sharedKey": { "value": "mysharedkey" },
+    "cnct200routingWeight": { "value": 0 },
+    "cnct200enableBGP": { "value": true },
+    "cnct201ConnectionName": { "value": "cnct_Vnet2Vnet_gw_vnet1a_services_w2_To_gw_vnet1a_services_w1" },
+    "cnct201gwName": { "value": "gw_vnet1a_services_w2" },
+    "cnct201connectionType": { "value": "Vnet2Vnet" },
+    "cnct201remoteSubscriptionID": { "value": "730f26b5-ebf5-4518-999f-0b4eb0cdc8f9" },
+    "cnct201remoteResourceGroupName": { "value": "rg_network_vnet1a_services_w1" },
+    "cnct201remoteGWName": { "value": "gw_vnet1a_services_w1" },
+    "cnct201sharedKey": { "value": "mysharedkey" },
+    "cnct201routingWeight": { "value": 0 },
+    "cnct201enableBGP": { "value": true },
+    "cnct201remoteLocation": { "value": "westcentralus" },
+
+    "cnct202ConnectionName": { "value": "cnct_IPSec_gw_vnet1a_services_w2_To_lngw_site4a_az" },
+    "cnct202gwName": { "value": "gw_vnet1a_services_w2" },
+    "cnct202connectionType": { "value": "IPSec" },
+    "cnct202sharedKey": { "value": "mysharedkey" },
+    "cnct202routingWeight": { "value": 0 },
+    "cnct202enableBGP": { "value": true },
+    "cnct203ConnectionName": { "value": "cnct_IPSec_gw_vnet1a_services_w2_To_lngw_site4b_az" },
+    "cnct203gwName": { "value": "gw_vnet1a_services_w2" },
+    "cnct203connectionType": { "value": "IPSec" },
+    "cnct203sharedKey": { "value": "mysharedkey" },
+    "cnct203routingWeight": { "value": 0 },
+    "cnct203enableBGP": { "value": true }
+
+
+  }
+}

@@ -1,0 +1,55 @@
+#Followed the tutorial here:  https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-prepare-app
+#Installed the Docker Community Edition for Windows:  https://store.docker.com/editions/community/docker-ce-desktop-windows
+#Install the Azure CLI:  https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest
+$subID= "a7d928df-fc97-4f02-adae-3d7cdeb7c8cb"
+$locationName="eastus"
+$rgName="rgwillstTestACSTutorialeus1eastus"
+$acrName="willstACRName1"
+$appID="ffa4e851-5578-4857-a311-3a6bdcc08645"
+$spPassword = ""
+$aksClusterName="willstAKSCluster"
+$repo1="azure-vote-front"
+$nodeCount=1
+$yamlPath="C:\Users\willst\Source\Repos\AzureFoundation\ARM\Compute\AzureContainerServices\azure-vote-all-in-one-redis.yaml"
+#setup
+az aks install-cli
+#Set the current subscription
+az account set --subscription $subID
+#create the resource group
+az group create --name $rgName --location $locationName
+#Create the Container Registry
+az acr create --resource-group $rgName --name acrName --sku Basic
+#Login to the Container Registry
+az acr login --name $acrName
+#Get the login acrLoginServer
+az acr list --resource-group $rgName --query "[].{acrLoginServer:loginServer}" --output table
+docker tag $repo1 $acrName".azurecr.io/"$repo1":v1"
+docker images
+docker push $acrName".azurecr.io/"$repo1":v1"
+az acr repository list --name $acrName --output table
+az acr repository show-tags --name $acrName --repository $repo1 --output table
+
+#Create Service principle
+az ad sp create-for-rbac --skip-assignment
+$acrID=az acr show --resource-group $rgName --name $acrName --query "id" --output tsv
+az role assignment create --assignee $appID --scope $acrID --role Reader
+#Create the Kubernetes Cluster
+az aks create \
+    --resource-group $rgName \
+    --name $aksClusterName \
+    --node-count 1 \
+    --service-principal $appID \
+    --client-secret $spPassword \
+    --generate-ssh-keys 
+
+az aks get-credentials --resource-group $rgName --name $aksClusterName
+
+kubectl get nodes
+
+#Run the Application
+#Update the manifest file
+az acr list --resource-group $rgName --query "[].{acrLoginServer:loginServer}" --output table
+#edit vi azure-vote-all-in-one-redis.yaml replace container image with the value of the command above.
+kubectl apply -f $yamlPath
+
+kubectl get service azure-vote-front --watch

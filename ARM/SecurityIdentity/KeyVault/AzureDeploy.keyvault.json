@@ -1,0 +1,88 @@
+{
+  /*https://docs.microsoft.com/en-us/azure/templates/microsoft.keyvault/vaults*/
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    /*Using the metadata spreadsheet, select the KeyVault tab
+    select the relative KeyVault for this deployment*/
+
+    "keyVaultName": {
+      "type": "string",
+      "defaultValue": "slgmag-Keyvault",
+      "metadata": { "description": "Name of the KeyVault" }
+    },
+    "tenantID": {
+      "type": "string",
+      "defaultValue": "81418768-a823-44f0-a95b-b613b6c1993e",
+      "metadata": { "description": "Tenant Id for the subscription and use assigned access to the vault. Available from the Get-AzureRMSubscription PowerShell cmdlet" }
+    },
+    "vaultSKU": {
+      "type": "string",
+      "allowedValues" : [ "Standard", "Premium" ],
+      "metadata": { "description": "Name of the KeyValut SKU.  " }
+    },
+
+    "enabledForDeployment": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": { "description": "Specifies if the vault is enabled for VM or Service Fabric deployment" }
+    },
+    "enabledForTemplateDeployment": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": { "description": "Specifies if the vault is enabled for VM or Service Fabric deployment" }
+    },
+    "enabledForVolumeEncryption": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": { "description": "Specifies if the vault is enabled for volume encryption" }
+    },
+    "secrets": {
+      "type": "array",
+      "defaultValue": "{}",
+      "metadata": { "description": "all secrets {secretName:secretValue} surrounded by quotes" }
+    },
+    "accessPolicies": {
+      "type": "array",
+      "defaultValue": "{}",
+      "metadata": { "description": "all Access Policies {secretName:secretValue} surrounded by quotes" }
+    }
+  },
+
+
+
+  "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "2015-06-01",
+      "location": "[resourceGroup().location]",
+      "tags": { "displayName": "KeyVault" },
+      "properties": {
+        "enabledForDeployment": "[parameters('enabledForDeployment')]",
+        "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
+        "enabledForVolumeEncryption": "[parameters('enabledForVolumeEncryption')]",
+        "tenantId": "[parameters('tenantID')]",
+        "accessPolicies": "[parameters('accessPolicies')]",
+        "sku": {
+          "name": "[parameters('vaultSku')]",
+          "family": "A"
+        }
+      }
+    },
+
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/', parameters('secrets')[copyIndex()].secretName)]",
+      "apiVersion": "2015-06-01",
+      "tags": { "displayName": "secrets" },
+      "properties": { "value": "[parameters('secrets')[copyIndex()].secretValue]" },
+      "dependsOn": [ "[concat('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]" ],
+      "copy": {
+        "name": "secretsCopy",
+        "count": "[length(parameters('secrets'))]"
+      }
+    }
+  ]
+}
+

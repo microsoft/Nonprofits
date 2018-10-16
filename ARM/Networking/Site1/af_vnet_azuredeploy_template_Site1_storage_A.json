@@ -1,0 +1,302 @@
+/*Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.*/ 
+{
+
+  /*This is A:  A means that we will not deploy ExpressRoute, and we will not configure 
+  Multiple VPNs in Active/Active Mode */
+
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseUrl": {
+      "defaultValue": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/",
+      "type": "string",
+      "metadata": {
+        "artifactsBaseUrl": "",
+        "description": "URL to acquire other templates"
+      }
+    },
+    "templateLink": {
+      "type": "string",
+      "defaultValue": "site1/af_vnet_azuredeploy1_servicesB.json",
+      "metadata": { "description": "The parameter file for the second site's GW." }
+    },
+    /*in the metadata spreadsheet, on the VNET tab, filter on VNET103
+    select the columns with Temlate and grouped by color. */
+    "vnet103vnetName": {
+      "type": "string",
+      "defaultValue": "vnet1a_storage_w1",
+      "metadata": { "description": "Arbitrary name for the new VNET." }
+    },
+    "vnet103vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.128.48.0/21",
+      "metadata": { "description": "IP address range for the new VNET." }
+    },
+    "vnet103SubscriptionID": {
+      "type": "string",
+      "defaultValue": "6e5d19d2-a324-470a-b24f-57ac0d3221a1",
+      "metadata": { "description": "IP Subscription ID of the VNET." }
+    },
+    "vnet103ResourceGroupName": {
+      "type": "string",
+      "defaultValue": "rg_network_vnet1a_storage_w1",
+      "metadata": { "description": "ResouceGroup of the VNET." }
+    },
+    "vnet103locationName": {
+      "type": "string",
+      "defaultValue": "westcentralus",
+      "metadata": { "description": "IP Location of the VNET." }
+    },
+    "vnet103dnsServers": {
+      "type": "array",
+      "defaultValue": [ "10.128.59.36" ],
+      "metadata": { "description": "DNS Servers of the VNET." }
+    },
+    "vnet103dnsPrefix": {
+      "type": "string",
+      "defaultValue": "slg.us",
+      "metadata": { "description": "DNS Prefix of the VNET." }
+    },
+
+    /*
+    Using the metadata spreadsheet, the subnnet tab, filter results on VNET103, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
+    "snet166Name": {
+      "type": "string",
+      "defaultValue": "s500_Storage_Storage_W1",
+      "metadata": { "description": "Name of the subnet." }
+    },
+    "snet166IP": {
+      "type": "string",
+      "defaultValue": "10.128.48.0/24",
+      "metadata": { "description": "CRI notation of the Subnet." }
+    },
+    "snet166NSGName": {
+      "type": "string",
+      "defaultValue": "500NSG",
+      "metadata": { "description": "Network Security Group to associate to the subnet." }
+    },
+    "snet167Name": {
+      "type": "string",
+      "defaultValue": "s505_LB_Storage_Storage_W1",
+      "metadata": { "description": "Name of the subnet." }
+    },
+    "snet167IP": {
+      "type": "string",
+      "defaultValue": "10.128.49.0/24",
+      "metadata": { "description": "CRI notation of the Subnet." }
+    },
+    "snet167NSGName": {
+      "type": "string",
+      "defaultValue": "505NSG",
+      "metadata": { "description": "Network Security Group to associate to the subnet." }
+    },
+    "snet168Name": {
+      "type": "string",
+      "defaultValue": "s560_User_Tier0_Storage_W1",
+      "metadata": { "description": "Name of the subnet." }
+    },
+    "snet168IP": {
+      "type": "string",
+      "defaultValue": "10.128.50.0/25",
+      "metadata": { "description": "CRI notation of the Subnet." }
+    },
+    "snet168NSGName": {
+      "type": "string",
+      "defaultValue": "560NSG",
+      "metadata": { "description": "Network Security Group to associate to the subnet." }
+    },
+    "snet169Name": {
+      "type": "string",
+      "defaultValue": "s561_User_Tier1_Storage_W1",
+      "metadata": { "description": "Name of the subnet." }
+    },
+    "snet169IP": {
+      "type": "string",
+      "defaultValue": "10.128.50.128/25",
+      "metadata": { "description": "CRI notation of the Subnet." }
+    },
+    "snet169NSGName": {
+      "type": "string",
+      "defaultValue": "561NSG",
+      "metadata": { "description": "Network Security Group to associate to the subnet." }
+    },
+
+
+    /*
+    Using the metadata spreadsheet, the Peering tab, filter results on VNET103, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
+    "pr103PeeringName": {
+      "type": "string",
+      "defaultValue": "vnet1a_storage_w1_vnet1a_services_w1",
+      "metadata": { "description": "Arbitrary name for the new peering between an Azure VNet and another Azure VNET in the same region." }
+    },
+    "pr103Source": {
+      "type": "string",
+      "defaultValue": "vnet1a_storage_w1",
+      "metadata": { "description": "Arbitrary name for the new peering between an Azure VNet and another Azure VNET in the same region." }
+    },
+    "pr103destSubscriptionID": {
+      "type": "string",
+      "defaultValue": "730f26b5-ebf5-4518-999f-0b4eb0cdc8f9",
+      "metadata": { "description": "The subscription ID of the destination VNET Peer, needed to build the ResourceID." }
+    },
+    "pr103destResourceGroup": {
+      "type": "string",
+      "defaultValue": "rg_network_vnet1a_services_w1",
+      "metadata": { "description": "Resource Group name of the destination VNET Peer, needed to build the resource ID." }
+    },
+    "pr103DestinationVNET": {
+      "type": "string",
+      "defaultValue": "vnet1a_services_w1",
+      "metadata": { "description": "Specific name for the source peering Azure Vnet." }
+    },
+    "pr103allowVNETAccess": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": { "description": "Can traffic to access this VNET?" }
+    },
+    "pr103allowFwdAccess": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": { "description": "Can traffic be forwarded to this VNET from another VNET outside the Peering relationship?" }
+    },
+    "pr103allowGWAccess": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": { "description": "Can traffic from peering network leverage the gateway?" }
+    },
+    "pr103useRemoteGateway": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": { "description": "Can traffic use the remote gateway?" }
+    }
+
+
+  },
+  "variables": {
+    "apiVersion": "2017-06-01",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET103vnetName'))]"
+  }, /*keep this line */
+
+  "resources": [ /*go to the Metadata spreadsheet, NSGRules tab, filter on VNET 104
+    Select the Resources that are grouped by color*/
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet166NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": { "securityRules": [] }
+    },
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet167NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": { "securityRules": [] }
+    },
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet168NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": { "securityRules": [] }
+    },
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet169NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": { "securityRules": [] }
+    },
+
+    /*In the metadata spreadsheet, on the VNET Tab, filter on VNET103
+          select the columns with Resource and grouped by Color. */
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('vnet103vnetName')]",
+      "location": "[parameters('vnet103locationName')]",
+      "tags": { "displayName": "AzureFoundation VNet Definition" },
+      "properties": {
+        "addressSpace": { "addressPrefixes": [ "[parameters('vnet103vnetAddressPrefix')]" ] },
+        "dhcpOptions": { "dnsServers": "[parameters('vnet103dnsServers')]" },
+        "subnets": [
+
+
+          /*In the metadata spreadsheet, on the Subnet Tab, filter on VNET103
+          select the columns with Resource and grouped by Color. */
+
+          {
+            "name": "[parameters('snet166Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet166IP')]",
+              "networkSecurityGroup": { "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet166NSGName'))]" }
+            }
+          },
+          {
+            "name": "[parameters('snet167Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet167IP')]",
+              "networkSecurityGroup": { "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet167NSGName'))]" }
+            }
+          },
+          {
+            "name": "[parameters('snet168Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet168IP')]",
+              "networkSecurityGroup": { "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet168NSGName'))]" }
+            }
+          },
+          {
+            "name": "[parameters('snet169Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet169IP')]",
+              "networkSecurityGroup": { "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet169NSGName'))]" }
+            }
+          }
+
+        ] /*Keep this Line*/
+      }, /*Keep this Line*/
+      "resources": /*Keep this Line*/
+      [ /*Keep this Line*/
+        /*Go to the Peering tab of the Metadata spreadsheet and filter on VNET 104
+          select the Resources for Peering and past them below. */
+        {
+          "apiVersion": "[variables('apiversion')]",
+          "type": "virtualNetworkPeerings",
+          "name": "[parameters('pr103PeeringName')]",
+          "location": "[resourceGroup().location]",
+          "comments": "Make sure you put these resources within the Resources of a VNET, like a subnet",
+          "properties": {
+            "allowVirtualNetworkAccess": "[parameters('pr103allowVNETAccess')]",
+            "allowForwardedTraffic": "[parameters('pr103allowFwdAccess')]",
+            "allowGatewayTransit": "[parameters('pr103allowGWAccess')]",
+            "useRemoteGateways": "[parameters('pr103useRemoteGateway')]",
+            "remoteVirtualNetwork": { "id": "[concat('/subscriptions/', parameters('pr103destSubscriptionID'), '/resourceGroups/', parameters('pr103destResourceGroup'),'/providers/Microsoft.Network/virtualNetworks/',parameters('pr103DestinationVNET'))]" }
+          },
+          "dependsOn": [ "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet103vnetName'))]" ]
+        }
+
+      ],
+
+      "dependsOn": /*Keep This Line*/
+      [ /*Keep This Line*/
+        /*Using the metadata template on the Subnet Tab, filter to VNET103 and select
+          the columns with DependsOn and grouped by color*/
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet166NSGName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet167NSGName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet168NSGName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet169NSGName'))]"
+      ]
+
+    } /*Keep This Line*/
+  ],
+
+  "outputs": {
+
+  }
+}

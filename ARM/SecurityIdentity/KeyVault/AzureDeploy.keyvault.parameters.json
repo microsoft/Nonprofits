@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    /*Go to the metadata's Secret Tab and select the columns with Parameters*/
+
+    "keyVaultName": { "value": "SLGMAG-Keyvault" },
+
+    "tenantID": { "value": "d9195e32-2066-44b9-8a39-1782bc281702" },
+    "vaultSKU": { "value": "Standard" },
+    "enabledForDeployment": { "value": true },
+    "enabledForTemplateDeployment": { "value": true },
+    "enabledForVolumeEncryption": { "value": true },
+
+
+    "accessPolicies": {
+      "value": [
+        {
+          "tenantId": "d9195e32-2066-44b9-8a39-1782bc281702",
+          "objectId": "4701f4b1-60e2-4f8b-b2f2-b0438eb19b28",
+          "permissions": {
+            "keys": [ "all" ],
+            "secrets": [ "all" ]
+          }
+        },
+        {
+          "tenantId": "d9195e32-2066-44b9-8a39-1782bc281702",
+          "objectId": "0036d88b-cd24-4f7a-bf98-cb2d0d33e769",
+          "permissions": {
+            "keys": [ "all" ],
+            "secrets": [ "all" ]
+          }
+        }
+      ]
+    },
+
+    "secrets": {
+      "value": [
+        /*
+        Goto the Metadata template and goto the Secrets tab and enter the passwords and 
+        usernames you want to use to seed the KeyVault Secrets.  Make sure you delete the
+        secrets from the spreadsheet after you copy the parameters to this section. 
+        */
+      ]
+
+    }
+
+
+  }
+
+}
