@@ -1,0 +1,72 @@
+/*Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.*/ 
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
+    parameters files */
+    "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
+
+    /*the VNET tab of the metadata spreadsheet and filter the data with VNET101
+    copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "vnet201vnetName": { "value": "vnet1a_hbi_w2" },
+    "vnet201vnetAddressPrefix": { "value": "10.128.80.0/20" },
+    "vnet201locationName": { "value": "westus2" },
+    "vnet201dnsServers": { "value": [ "10.128.56.11", "10.128.120.11", "10.128.184.11", "10.128.248.11" ] },
+    "vnet201SubscriptionID": { "value": "ce38c0ef-22f5-458d-b1f7-e3890e2471f2" },
+    "vnet201ResourceGroupName": { "value": "rg_network_vnet1a_hbi_w2" },
+
+    /*the subnet tab of the metadata spreadsheet and filter the data with VNET101
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "snet227Name": { "value": "s210_Web_HBI_W2" },
+    "snet227IP": { "value": "10.128.80.0/24" },
+    "snet227NSGName": { "value": "210NSG" },
+    "snet228Name": { "value": "s215_LB_Web_HBI_W2" },
+    "snet228IP": { "value": "10.128.81.0/24" },
+    "snet228NSGName": { "value": "215NSG" },
+    "snet229Name": { "value": "s220_App_HBI_W2" },
+    "snet229IP": { "value": "10.128.82.0/24" },
+    "snet229NSGName": { "value": "220NSG" },
+    "snet230Name": { "value": "s225_LB_App_HBI_W2" },
+    "snet230IP": { "value": "10.128.83.0/24" },
+    "snet230NSGName": { "value": "225NSG" },
+    "snet231Name": { "value": "s230_DB_HBI_W2" },
+    "snet231IP": { "value": "10.128.84.0/24" },
+    "snet231NSGName": { "value": "230NSG" },
+    "snet232Name": { "value": "s235_LB_DB_HBI_W2" },
+    "snet232IP": { "value": "10.128.85.0/24" },
+    "snet232NSGName": { "value": "235NSG" },
+    "snet233Name": { "value": "s250_DMZ_HBI_W2" },
+    "snet233IP": { "value": "10.128.86.0/24" },
+    "snet233NSGName": { "value": "250NSG" },
+    "snet234Name": { "value": "s255_LB_DMZ_HBI_W2" },
+    "snet234IP": { "value": "10.128.87.0/24" },
+    "snet234NSGName": { "value": "255NSG" },
+    "snet235Name": { "value": "s260_User_Tier0_HBI_W2" },
+    "snet235IP": { "value": "10.128.90.0/25" },
+    "snet235NSGName": { "value": "260NSG" },
+    "snet237Name": { "value": "s261_User_Tier1_HBI_W2" },
+    "snet237IP": { "value": "10.128.90.128/25" },
+    "snet237NSGName": { "value": "261NSG" },
+
+    /*the Peering tab of the metadata spreadsheet and filter the data with VNET101
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "pr201PeeringName": { "value": "vnet1a_hbi_w2_vnet1a_services_w2" },
+    "pr201destSubscriptionID": { "value": "730f26b5-ebf5-4518-999f-0b4eb0cdc8f9" },
+    "pr201destResourceGroup": { "value": "rg_network_vnet1a_services_w2" },
+    "pr201DestinationVNET": { "value": "vnet1a_services_w2" },
+    "pr201allowVNETAccess": { "value": true },
+    "pr201allowFwdAccess": { "value": true },
+    "pr201allowGWAccess": { "value": false },
+    "pr201useRemoteGateway": { "value": true }
+
+  }
+}

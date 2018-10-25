@@ -1,0 +1,108 @@
+/*Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.*/ 
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
+    parameters files */
+    "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
+
+    /*the VNET tab of the metadata spreadsheet and filter the data with VNET102
+    copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "vnet402vnetName": { "value": "vnet1a_preprod_az" },
+    "vnet402vnetAddressPrefix": { "value": "10.128.224.0/20" },
+    "vnet402locationName": { "value": "usgovarizona" },
+    "vnet402dnsServers": { "value": [ "10.128.56.11", "10.128.120.11", "10.128.184.11", "10.128.248.11" ] },
+    "vnet402SubscriptionID": { "value": "a4b962d2-6b17-4c38-af02-010a6e774379" },
+    "vnet402ResourceGroupName": { "value": "rg_network_vnet1a_preprod_az" },
+
+    /*the subnet tab of the metadata spreadsheet and filter the data with VNET102
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "snet441Name": { "value": "s310_Web_PreProd_AZ" },
+    "snet441IP": { "value": "10.128.224.0/25" },
+    "snet441NSGName": { "value": "310NSG" },
+    "snet442Name": { "value": "s315_LB_Web_PreProd_AZ" },
+    "snet442IP": { "value": "10.128.224.128/25" },
+    "snet442NSGName": { "value": "315NSG" },
+    "snet443Name": { "value": "s320_App_PreProd_AZ" },
+    "snet443IP": { "value": "10.128.225.0/25" },
+    "snet443NSGName": { "value": "320NSG" },
+    "snet444Name": { "value": "s325_LB_App_PreProd_AZ" },
+    "snet444IP": { "value": "10.128.225.128/25" },
+    "snet444NSGName": { "value": "325NSG" },
+    "snet445Name": { "value": "s330_DB_PreProd_AZ" },
+    "snet445IP": { "value": "10.128.226.0/25" },
+    "snet445NSGName": { "value": "330NSG" },
+    "snet446Name": { "value": "s335_LB_DB_PreProd_AZ" },
+    "snet446IP": { "value": "10.128.226.128/25" },
+    "snet446NSGName": { "value": "335NSG" },
+    "snet447Name": { "value": "s350_DMZ_PreProd_AZ" },
+    "snet447IP": { "value": "10.128.227.0/25" },
+    "snet447NSGName": { "value": "350NSG" },
+    "snet448Name": { "value": "s355_LB_DMZ_PreProd_AZ" },
+    "snet448IP": { "value": "10.128.227.128/25" },
+    "snet448NSGName": { "value": "355NSG" },
+    "snet449Name": { "value": "s360_User_Tier0_PreProd_AZ" },
+    "snet449IP": { "value": "10.128.228.0/25" },
+    "snet449NSGName": { "value": "360NSG" },
+    "snet450Name": { "value": "s361_User_Tier1_PreProd_AZ" },
+    "snet450IP": { "value": "10.128.228.128/25" },
+    "snet450NSGName": { "value": "361NSG" },
+    "snet451Name": { "value": "s362_User_Tier2_PreProd_AZ" },
+    "snet451IP": { "value": "10.128.229.0/25" },
+    "snet451NSGName": { "value": "362NSG" },
+    "snet455Name": { "value": "s410_Web_PreProd_AZ" },
+    "snet455IP": { "value": "10.128.232.0/25" },
+    "snet455NSGName": { "value": "410NSG" },
+    "snet456Name": { "value": "s415_LB_Web_PreProd_AZ" },
+    "snet456IP": { "value": "10.128.232.128/25" },
+    "snet456NSGName": { "value": "415NSG" },
+    "snet457Name": { "value": "s420_App_PreProd_AZ" },
+    "snet457IP": { "value": "10.128.233.0/25" },
+    "snet457NSGName": { "value": "420NSG" },
+    "snet458Name": { "value": "s425_LB_App_PreProd_AZ" },
+    "snet458IP": { "value": "10.128.233.128/25" },
+    "snet458NSGName": { "value": "425NSG" },
+    "snet459Name": { "value": "s430_DB_PreProd_AZ" },
+    "snet459IP": { "value": "10.128.234.0/25" },
+    "snet459NSGName": { "value": "430NSG" },
+    "snet460Name": { "value": "s435_LB_DB_PreProd_AZ" },
+    "snet460IP": { "value": "10.128.234.128/25" },
+    "snet460NSGName": { "value": "435NSG" },
+    "snet461Name": { "value": "s450_DMZ_PreProd_AZ" },
+    "snet461IP": { "value": "10.128.235.0/25" },
+    "snet461NSGName": { "value": "450NSG" },
+    "snet462Name": { "value": "s455_LB_DMZ_PreProd_AZ" },
+    "snet462IP": { "value": "10.128.235.128/25" },
+    "snet462NSGName": { "value": "455NSG" },
+    "snet452Name": { "value": "s460_User_Tier0_PreProd_AZ" },
+    "snet452IP": { "value": "10.128.236.0/25" },
+    "snet452NSGName": { "value": "460NSG" },
+    "snet453Name": { "value": "s461_User_Tier1_PreProd_AZ" },
+    "snet453IP": { "value": "10.128.236.128/25" },
+    "snet453NSGName": { "value": "461NSG" },
+    "snet454Name": { "value": "s462_User_Tier2_PreProd_AZ" },
+    "snet454IP": { "value": "10.128.237.0/25" },
+    "snet454NSGName": { "value": "462NSG" },
+
+    /*the Peering tab of the metadata spreadsheet and filter the data with VNET102
+        copy the data from the columns that have the word prerameters in them.  the columns 
+    are colored to show the grouping.
+    */
+    "pr402PeeringName": { "value": "vnet1a_preprod_az_vnet1a_services_az" },
+    "pr402destSubscriptionID": { "value": "30457dd5-e56b-416b-9228-d48b37fe7caa" },
+    "pr402destResourceGroup": { "value": "rg_network_vnet1a_services_az" },
+    "pr402DestinationVNET": { "value": "vnet1a_services_az" },
+    "pr402allowVNETAccess": { "value": true },
+    "pr402allowFwdAccess": { "value": true },
+    "pr402allowGWAccess": { "value": false },
+    "pr402useRemoteGateway": { "value": true }
+
+  }
+}

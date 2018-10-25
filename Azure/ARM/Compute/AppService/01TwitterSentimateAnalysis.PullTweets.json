@@ -1,0 +1,340 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sql_1_Connection_Name": {
+      "type": "string",
+      "defaultValue": "sql-1"
+    },
+    "sql_1_Connection_DisplayName": {
+      "type": "string",
+      "defaultValue": "Tweeter"
+    },
+    "sql_1_server": {
+      "type": "string",
+      "metadata": {
+        "description": "SQL server name"
+      },
+      "defaultValue": "logicappstwitter.database.windows.net"
+    },
+    "sql_1_database": {
+      "type": "string",
+      "metadata": {
+        "description": "SQL database name"
+      },
+      "defaultValue": "TwitterData"
+    },
+    "sql_1_username": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Username credential"
+      }
+    },
+    "sql_1_password": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password credential"
+      }
+    },
+    "twitter_1_Connection_Name": {
+      "type": "string",
+      "defaultValue": "twitter-1"
+    },
+    "twitter_1_Connection_DisplayName": {
+      "type": "string",
+      "defaultValue": "tweetsuckermsft"
+    },
+    "LogicAppLocation": {
+      "type": "string",
+      "minLength": 1,
+      "allowedValues": [
+        "[resourceGroup().location]",
+        "eastasia",
+        "southeastasia",
+        "centralus",
+        "eastus",
+        "eastus2",
+        "westus",
+        "northcentralus",
+        "southcentralus",
+        "northeurope",
+        "westeurope",
+        "japanwest",
+        "japaneast",
+        "brazilsouth",
+        "australiaeast",
+        "australiasoutheast",
+        "southindia",
+        "centralindia",
+        "westindia",
+        "canadacentral",
+        "canadaeast",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
+        "westus2"
+      ],
+      "defaultValue": "eastus2"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "actions": {
+            "Compose": {
+              "type": "Compose",
+              "inputs": {
+                "documents": "@body('Create_Array_for_Sentiment_Analysis')"
+              },
+              "runAfter": {
+                "Create_Array_for_Sentiment_Analysis": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Compose_Array_For_Language_Detection": {
+              "type": "Compose",
+              "inputs": {
+                "documents": "@body('Create_Array_for_Language_Detection')"
+              },
+              "runAfter": {
+                "Create_Array_for_Language_Detection": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Create_Array_for_Language_Detection": {
+              "type": "Select",
+              "inputs": {
+                "from": "@triggerBody()?['value']",
+                "select": {
+                  "id": "@item()?['TweetId']",
+                  "text": "@item()?['TweetText']"
+                }
+              },
+              "runAfter": {}
+            },
+            "Create_Array_for_Sentiment_Analysis": {
+              "type": "Select",
+              "inputs": {
+                "from": "@triggerBody()?['value']",
+                "select": {
+                  "id": "@item()?['TweetId']",
+                  "language": "en",
+                  "text": "@item()?['TweetText']"
+                }
+              },
+              "runAfter": {
+                "Get_Language": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "For_each": {
+              "type": "Foreach",
+              "foreach": "@body('HTTP')?['documents']",
+              "actions": {
+                "Execute_stored_procedure": {
+                  "type": "ApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connection": {
+                        "name": "@parameters('$connections')['sql']['connectionId']"
+                      }
+                    },
+                    "method": "post",
+                    "body": {
+                      "Sentiment": "@items('For_Each')?['score']",
+                      "TweetId": "@items('For_Each')?['id']"
+                    },
+                    "path": "/datasets/default/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[AddSentiment]'))}"
+                  },
+                  "runAfter": {}
+                }
+              },
+              "runAfter": {
+                "For_each_2": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "For_each_2": {
+              "type": "Foreach",
+              "foreach": "@triggerBody()?['value']",
+              "actions": {
+                "Insert_row": {
+                  "type": "ApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connection": {
+                        "name": "@parameters('$connections')['sql']['connectionId']"
+                      }
+                    },
+                    "method": "post",
+                    "body": {
+                      "TweetText": "@items('For_each_2')?['TweetText']",
+                      "TweetedBy": "@items('For_each_2')?['TweetedBy']",
+                      "Description": "@items('For_each_2')?['UserDetails']?['Description']",
+                      "RetweetCount": "@items('For_each_2')?['RetweetCount']",
+                      "Location": "@items('For_each_2')?['UserDetails']?['Location']",
+                      "TweetId": "@items('For_each_2')?['TweetId']",
+                      "TweetDate": "@items('For_each_2')?['CreatedAtIso']",
+                      "FollowersCount": "@items('For_each_2')?['UserDetails']?['FollowersCount']",
+                      "Language": "@items('For_each_2')?['OriginalTweet']?['TweetLanguageCode']"
+                    },
+                    "path": "/datasets/default/tables/@{encodeURIComponent(encodeURIComponent('[dbo].[Tweets]'))}/items"
+                  },
+                  "runAfter": {}
+                }
+              },
+              "runAfter": {
+                "HTTP": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Get_Language": {
+              "type": "Http",
+              "inputs": {
+                "method": "POST",
+                "uri": "https://eastus2.api.cognitive.microsoft.com/text/analytics/v2.0/languages",
+                "headers": {
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "3125b41c0ff8472ca526a30804ea53f1"
+                },
+                "body": "@outputs('Compose_Array_For_Language_Detection')"
+              },
+              "runAfter": {
+                "Compose_Array_For_Language_Detection": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "HTTP": {
+              "type": "Http",
+              "inputs": {
+                "method": "POST",
+                "uri": "https://eastus2.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
+                "headers": {
+                  "Content-Type": "application/json",
+                  "Ocp-Apim-Subscription-Key": "3125b41c0ff8472ca526a30804ea53f1"
+                },
+                "body": "@body('HttpTriggerCSharp1')['data']['tweets']"
+              },
+              "runAfter": {
+                "HttpTriggerCSharp1": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "HttpTriggerCSharp1": {
+              "type": "Function",
+              "inputs": {
+                "body": {
+                  "langs": "@body('Get_Language')",
+                  "tweets": "@outputs('Compose')"
+                },
+                "function": {
+                  "id": "/subscriptions/1908551b-bc11-4acc-a53a-9dd4d642f954/resourceGroups/TweetFunctions/providers/Microsoft.Web/sites/TweetFunctions/functions/HttpTriggerCSharp1"
+                }
+              },
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "When_a_new_tweet_is_posted": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['twitter_1']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/onnewtweet",
+                "queries": {
+                  "searchQuery": "#irmapr OR #hurricaneirma OR #huracanirma OR #mariapr OR #hurricanemaria OR #huracanmaria OR #unidosporpuertorico OR #unidosxpuertorico OR #unitedforpuertorico OR #unidosporpr OR #unidosxpr OR #puertoricoselevanta OR #prselevanta"
+                }
+              },
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              }
+            }
+          },
+          "contentVersion": "1.0.0.0",
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "sql": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', 'eastus2', '/managedApis/', 'sql')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('sql_1_Connection_Name'))]",
+                "connectionName": "[parameters('sql_1_Connection_Name')]"
+              },
+              "twitter_1": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', 'eastus2', '/managedApis/', 'twitter')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('twitter_1_Connection_Name'))]",
+                "connectionName": "[parameters('twitter_1_Connection_Name')]"
+              }
+            }
+          }
+        }
+      },
+      "name": "PullTweets",
+      "type": "Microsoft.Logic/workflows",
+      "location": "[parameters('LogicAppLocation')]",
+      "apiVersion": "2016-06-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('sql_1_Connection_Name'))]",
+        "[resourceId('Microsoft.Web/connections', parameters('twitter_1_Connection_Name'))]"
+      ]
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('sql_1_Connection_Name')]",
+      "location": "eastus2",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', 'eastus2', '/managedApis/', 'sql')]"
+        },
+        "displayName": "[parameters('sql_1_Connection_DisplayName')]",
+        "parameterValues": {
+          "server": "[parameters('sql_1_server')]",
+          "database": "[parameters('sql_1_database')]",
+          "username": "[parameters('sql_1_username')]",
+          "password": "[parameters('sql_1_password')]"
+        }
+      }
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('twitter_1_Connection_Name')]",
+      "location": "eastus2",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', 'eastus2', '/managedApis/', 'twitter')]"
+        },
+        "displayName": "[parameters('twitter_1_Connection_DisplayName')]"
+      }
+    }
+  ],
+  "outputs": {}
+}

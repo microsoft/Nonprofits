@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sqlAvailabilitySetName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "resources": [
+		{
+			"type": "Microsoft.Compute/availabilitySets",
+			"name": "[parameters('sqlAvailabilitySetName')]",
+			"apiVersion": "2015-06-15",
+			"location": "[parameters('location')]",
+			"properties": {
+				"platformFaultDomainCount": 3,
+				"platformUpdateDomainCount": 3
+			}
+		}
+  ],
+  "outputs": {
+    "sqlAvailabilitySetName": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/availabilitySets',parameters('sqlAvailabilitySetName'))]"
+    }
+  }
+}

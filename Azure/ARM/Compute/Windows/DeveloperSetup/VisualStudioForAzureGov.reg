@@ -1,0 +1,9 @@
+ Windows Registry Editor Version 5.00
+
+ [HKEY_CURRENT_USER\Software\Microsoft\VSCommon\ConnectedUser]
+ "AadInstance"="https://login-us.microsoftonline.com/"
+ "adaluri"="https://management.core.usgovcloudapi.net"
+ "AzureRMEndpoint"="https://management.usgovcloudapi.net"
+ "AzureRMAudienceEndpoint"="https://management.core.usgovcloudapi.net"
+ "EnableAzureRMIdentity"="true"
+ "GraphUrl"="graph.windows.net"

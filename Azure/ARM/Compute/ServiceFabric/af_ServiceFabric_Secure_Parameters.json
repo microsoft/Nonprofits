@@ -1,0 +1,172 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterLocation": {
+      "value": "usgovtexas"
+    },
+    "clusterName": {
+      "value": "slgpreprod"
+    },
+    "nt0applicationStartPort": {
+      "value": 20000
+    },
+    "nt0applicationEndPort": {
+      "value": 30000
+    },
+    "nt0ephemeralStartPort": {
+      "value": 49152
+    },
+    "nt0ephemeralEndPort": {
+      "value": 65534
+    },
+    "nt0fabricTcpGatewayPort": {
+      "value": 19000
+    },
+    "nt0fabricHttpGatewayPort": {
+      "value": 19080
+    },
+    /*This is the area where the ServiceFabric is integrated with 
+    the AzureFoundation's network*/
+    "subnet0Name": {
+      "value": "325_NSG_LB_App"
+    },
+    "subnet0Prefix": {
+      "value": "10.128.33.128/25"
+    },
+    "computeLocation": {
+      "value": "usgovtexas"
+    },
+    "virtualNetworkName": {
+      "value": "vnet_preprod_tx"
+    },
+    "vnetSubID": {
+      "value": "c4e02070-c866-454d-bd6a-f74e1f506845"
+    },
+    "vnetRGName": {
+      "value": "rg_vnet_preprod_tx"
+    },
+    "DNSSuffix": {"value": "slg044.us"},
+    /*Naming Convention is to have the ServiceFabric name
+    for example aeisprepprod, be used for the names*/
+    "vmStorageAccountName": {
+      "value": "sfvmaeispreprod8614"
+    },
+    "publicIPAddressName": {
+      "value": "aeispreprod-PubIP"
+    },
+    "publicIPAddressType": {
+      "value": "Dynamic"
+    },
+    "vmStorageAccountContainerName": {
+      "value": "vhds"
+    },
+
+    "adminUserName": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/5ffe27e2-0c07-49b4-95e6-6d364517b5d2/resourceGroups/rg_BCITkeyvault/providers/Microsoft.KeyVault/vaults/BCIT-Keyvault"
+        },
+        "secretName": "ServiceFabricClusterAdminName"
+      }
+    },
+
+    /*
+  Never a good idea to store the password in the Parameter
+    file. https://docs.microsoft.com/en-us/rest/api/keyvault/getsecrets */
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "TBD"
+        },
+        "secretName": "ServiceFabricClusterPSWD"
+      }
+    },
+
+    /*not needed
+    "addressPrefix": {
+      "value": "10.109.33.128/25"
+    },*/
+    "dnsName": {
+      "value": "aeispreprod"
+    },
+    "nicName": {
+      "value": "NIC-aeispreprod"
+    },
+    "lbName": {
+      "value": "LB-aeispreprod"
+    },
+    "lbIPName": {
+      "value": "LBIP-aeispreprod"
+    },
+    "overProvision": {
+      "value": "false"
+    },
+    "vmImagePublisher": {
+      "value": "MicrosoftWindowsServer"
+    },
+    "vmImageOffer": {
+      "value": "WindowsServer"
+    },
+    "vmImageSku": {
+      "value": "2016-Datacenter"
+    },
+    "vmImageVersion": {
+      "value": "latest"
+    },
+    "loadBalancedAppPort1": {
+      "value": 80
+    },
+    "loadBalancedAppPort2": {
+      "value": 443
+    },
+    "loadBalancedAppPort3": {
+      "value": 8080
+    },
+    "clusterProtectionLevel": {
+      "value": "EncryptAndSign"
+    },
+
+    "certificateStoreValue": {
+      "value": "My"
+    },
+    "certificateThumbprint": {
+      "value": "TBD"
+    },
+    /*This Certificate KeyVault maybe different if your goal is also to
+        integrate with the enterprise KeyVault.  there is a requirement that for
+    service fabric that the keyvault is in the same subscription
+    https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-creation-via-arm#use-an-existing-key-vault */
+    "sourceVaultValue": {
+      "value": "TBD"
+    },
+    "certificateUrlValue": {
+      "value": "TBD"
+    },
+    /*end integration with KeyVault*/
+    "storageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "supportLogStorageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "supportLogStorageAccountName": {
+      "value": "sflogsaeispreprod7820"
+    },
+    "applicationDiagnosticsStorageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "applicationDiagnosticsStorageAccountName": {
+      "value": "sfdgaeispreprod7556"
+    },
+    "nt0InstanceCount": {
+      "value": 5
+    },
+    "vmNodeType0Name": {
+      "value": "NodeType1"
+    },
+    "vmNodeType0Size": {
+      "value": "Standard_D1_v2"
+    }
+  }
+  }
