@@ -4,7 +4,6 @@ Licensed under the MIT License.*/
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-
     /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
     parameters files */
     "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
