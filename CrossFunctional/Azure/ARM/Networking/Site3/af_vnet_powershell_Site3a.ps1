@@ -61,8 +61,8 @@ $ErrorActionPreference = "Stop"
 
 # sign in
 Write-Host "Logging in...";
-$Environment = "AzureUSGovernment"
-#$Environment = 'AzureCloud'
+#$Environment = "AzureUSGovernment"
+$Environment = 'AzureCloud'
 Login-AzureRmAccount -EnvironmentName $Environment;
 
 
@@ -70,41 +70,37 @@ Login-AzureRmAccount -EnvironmentName $Environment;
 #Cut and Paste the values in the variables for the five standard subscriptions.
 $UserName='willst@mag.msftgov.us'
 #Use the Subscription Tab of the spreadsheet to copy the values here for the subscription variables.
-$subID_Prod="4a0d1d83-f557-4065-8423-be499038298a"
-$subID_HBI="97eba262-9086-4a3e-9770-dcfef6c3df30"
-$subID_PreProd="a4b962d2-6b17-4c38-af02-010a6e774379"
-$subID_Storage="0223b7af-344f-42cd-bed2-5ebbc7d06d5d"
-$subID_Services="30457dd5-e56b-416b-9228-d48b37fe7caa"
-
+$subID_Prod="9e1fbfe8-b7ae-4994-8b85-2d5cca580f0c"
+$subID_HBI="0a603b5f-f98d-4065-9387-592202ed8089"
+$subID_PreProd="4209a74c-6816-4d1f-aa53-c0a3007a66f8"
+$subID_Storage="66550e87-b8bc-4ab2-bbaa-fb96bc4e0b1c"
+$subID_Services="b352fe70-6fe2-4dcd-a153-ee002ed3da62"
 
 #Update these fields for the datacenter pair to target the deployment at
 #https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
 #Goto the Location Tab and select the PowerShell for the Region that will be Site 1 and Site 2
 
-$locationSite_3="usgovtexas"
-$locationSite_4="usgovarizona"
-
+$locationSite_3="northeurope"
+$locationSite_4="westeurope"
 
 #using the spreadsheet goto the VNET tab and copy the computed ResourceGroup Names.
-
-$ResourceGroupName_vnet300="rg_network_vnet1a_prod_tx"
-$ResourceGroupName_vnet301="rg_network_vnet1a_hbi_tx"
-$ResourceGroupName_vnet302="rg_network_vnet1a_preprod_tx"
-$ResourceGroupName_vnet303="rg_network_vnet1a_storage_tx"
-$ResourceGroupName_vnet304="rg_network_vnet1a_services_tx"
-$ResourceGroupName_vnet400="rg_network_vnet1a_prod_az"
-$ResourceGroupName_vnet401="rg_network_vnet1a_hbi_az"
-$ResourceGroupName_vnet402="rg_network_vnet1a_preprod_az"
-$ResourceGroupName_vnet403="rg_network_vnet1a_storage_az"
-$ResourceGroupName_vnet404="rg_network_vnet1a_services_az"
-
+$ResourceGroupName_vnet300="rgVNETprodeu1"
+$ResourceGroupName_vnet301="rgVNEThbieu1"
+$ResourceGroupName_vnet302="rgVNETpreprodeu1"
+$ResourceGroupName_vnet303="rgVNETstorageeu1"
+$ResourceGroupName_vnet304="rgVNETserviceseu1"
+$ResourceGroupName_vnet400="rgVNETprodeu2"
+$ResourceGroupName_vnet401="rgVNEThbieu2"
+$ResourceGroupName_vnet402="rgVNETpreprodeu2"
+$ResourceGroupName_vnet403="rgVNETstorageeu2"
+$ResourceGroupName_vnet404="rgVNETserviceseu2"
 
 #Setup the Deployment Name
 $date=Get-Date
 $deploymentName = "AzureFoundation" + $date.month + $date.day + $date.Year
 
 #Setup where the template files can be found
-$RootPath = "C:\Users\willst\Source\Repos\Nonprofits\ARM\Networking\"
+$RootPath = "C:\Users\willst\Source\Repos\Nonprofits\CrossFunctional\Azure\ARM\Networking"
 
 $ParametersPathVNET300=$RootPath+"\Site3\af_vnet_azuredeploy_parameters_Site3_prod_A.json"
 $TemplatePathVNET300=$RootPath+"\Site3\af_vnet_azuredeploy_template_Site3_prod_A.json"

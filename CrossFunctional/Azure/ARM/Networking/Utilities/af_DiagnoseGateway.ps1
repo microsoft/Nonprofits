@@ -8,7 +8,7 @@ $subscription = Get-AzureRmSubscription |  Out-GridView -PassThru
 Set-AzureRmContext -SubscriptionId $subscription.Id
 Write-Host "Successfully logged in to Azure." -ForegroundColor Green 
 
-$site=4
+$site=1
 
 
 

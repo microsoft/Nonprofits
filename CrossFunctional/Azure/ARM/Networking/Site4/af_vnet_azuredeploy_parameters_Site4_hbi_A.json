@@ -1,74 +1,154 @@
 /*Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT License.*/ 
+Licensed under the MIT License.*/
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-
     /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
     parameters files */
-    "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
-
+    "baseURL": {
+      "value": "https://github.com/Microsoft/Nonprofits/tree/master/CrossFunctional/Azure/ARM"
+    },
     /*the VNET tab of the metadata spreadsheet and filter the data with VNET101
     copy the data from the columns that have the word prerameters in them.  the columns 
     are colored to show the grouping.
     */
-    "vnet401vnetName": { "value": "vnet1a_hbi_az" },
-    "vnet401vnetAddressPrefix": { "value": "10.128.208.0/20" },
-    "vnet401locationName": { "value": "usgovarizona" },
-    "vnet401dnsServers": { "value": [ "10.128.56.11", "10.128.120.11", "10.128.184.11", "10.128.248.11" ] },
-    "vnet401SubscriptionID": { "value": "97eba262-9086-4a3e-9770-dcfef6c3df30" },
-    "vnet401ResourceGroupName": { "value": "rg_network_vnet1a_hbi_az" },
-
+    "vnet401vnetName": {
+      "value": "hbieu2"
+    },
+    "vnet401vnetAddressPrefix": {
+      "value": "10.130.208.0/20"
+    },
+    "vnet401locationName": {
+      "value": "westeurope"
+    },
+    "vnet401SubscriptionID": {
+      "value": "0a603b5f-f98d-4065-9387-592202ed8089"
+    },
+    "vnet401ResourceGroupName": {
+      "value": "rgVNEThbieu2"
+    },
     /*the subnet tab of the metadata spreadsheet and filter the data with VNET101
         copy the data from the columns that have the word prerameters in them.  the columns 
     are colored to show the grouping.
     */
-    "snet427Name": { "value": "s210_Web_HBI_AZ" },
-    "snet427IP": { "value": "10.128.208.0/24" },
-    "snet427NSGName": { "value": "210NSG" },
-    "snet428Name": { "value": "s215_LB_Web_HBI_AZ" },
-    "snet428IP": { "value": "10.128.209.0/24" },
-    "snet428NSGName": { "value": "215NSG" },
-    "snet429Name": { "value": "s220_App_HBI_AZ" },
-    "snet429IP": { "value": "10.128.210.0/24" },
-    "snet429NSGName": { "value": "220NSG" },
-    "snet430Name": { "value": "s225_LB_App_HBI_AZ" },
-    "snet430IP": { "value": "10.128.211.0/24" },
-    "snet430NSGName": { "value": "225NSG" },
-    "snet431Name": { "value": "s230_DB_HBI_AZ" },
-    "snet431IP": { "value": "10.128.212.0/24" },
-    "snet431NSGName": { "value": "230NSG" },
-    "snet432Name": { "value": "s235_LB_DB_HBI_AZ" },
-    "snet432IP": { "value": "10.128.213.0/24" },
-    "snet432NSGName": { "value": "235NSG" },
-    "snet433Name": { "value": "s250_DMZ_HBI_AZ" },
-    "snet433IP": { "value": "10.128.214.0/24" },
-    "snet433NSGName": { "value": "250NSG" },
-    "snet434Name": { "value": "s255_LB_DMZ_HBI_AZ" },
-    "snet434IP": { "value": "10.128.215.0/24" },
-    "snet434NSGName": { "value": "255NSG" },
-    "snet435Name": { "value": "s260_User_Tier0_HBI_AZ" },
-    "snet435IP": { "value": "10.128.218.0/25" },
-    "snet435NSGName": { "value": "260NSG" },
-    "snet437Name": { "value": "s261_User_Tier1_HBI_AZ" },
-    "snet437IP": { "value": "10.128.218.128/25" },
-    "snet437NSGName": { "value": "261NSG" },
-    "snet440Name": { "value": "GatewaySubnet" },
-    "snet440IP": { "value": "10.128.223.224/27" },
-
+    "snet427Name": {
+      "value": "Web210"
+    },
+    "snet427IP": {
+      "value": "10.130.208.0/24"
+    },
+    "snet427NSGName": {
+      "value": "nsgWeb210"
+    },
+    "snet428Name": {
+      "value": "WebLB215"
+    },
+    "snet428IP": {
+      "value": "10.130.209.0/24"
+    },
+    "snet428NSGName": {
+      "value": "nsgWebLB215"
+    },
+    "snet429Name": {
+      "value": "App220"
+    },
+    "snet429IP": {
+      "value": "10.130.210.0/24"
+    },
+    "snet429NSGName": {
+      "value": "nsgApp220"
+    },
+    "snet430Name": {
+      "value": "AppLB225"
+    },
+    "snet430IP": {
+      "value": "10.130.211.0/24"
+    },
+    "snet430NSGName": {
+      "value": "nsgAppLB225"
+    },
+    "snet431Name": {
+      "value": "DB230"
+    },
+    "snet431IP": {
+      "value": "10.130.212.0/24"
+    },
+    "snet431NSGName": {
+      "value": "nsgDB230"
+    },
+    "snet432Name": {
+      "value": "DBLB235"
+    },
+    "snet432IP": {
+      "value": "10.130.213.0/24"
+    },
+    "snet432NSGName": {
+      "value": "nsgDBLB235"
+    },
+    "snet433Name": {
+      "value": "DMZ250"
+    },
+    "snet433IP": {
+      "value": "10.130.214.0/24"
+    },
+    "snet433NSGName": {
+      "value": "nsgDMZ250"
+    },
+    "snet434Name": {
+      "value": "DMZLB255"
+    },
+    "snet434IP": {
+      "value": "10.130.215.0/24"
+    },
+    "snet434NSGName": {
+      "value": "nsgDMZLB255"
+    },
+    "snet435Name": {
+      "value": "UserTier0260"
+    },
+    "snet435IP": {
+      "value": "10.130.218.0/25"
+    },
+    "snet435NSGName": {
+      "value": "nsgUserTier0260"
+    },
+    "snet437Name": {
+      "value": "UserTier1261"
+    },
+    "snet437IP": {
+      "value": "10.130.218.128/25"
+    },
+    "snet437NSGName": {
+      "value": "nsgUserTier1261"
+    },
     /*the Peering tab of the metadata spreadsheet and filter the data with VNET101
         copy the data from the columns that have the word prerameters in them.  the columns 
     are colored to show the grouping.
     */
-    "pr401PeeringName": { "value": "vnet1a_hbi_az_vnet1a_services_az" },
-    "pr401destSubscriptionID": { "value": "30457dd5-e56b-416b-9228-d48b37fe7caa" },
-    "pr401destResourceGroup": { "value": "rg_network_vnet1a_services_az" },
-    "pr401DestinationVNET": { "value": "vnet1a_services_az" },
-    "pr401allowVNETAccess": { "value": true },
-    "pr401allowFwdAccess": { "value": true },
-    "pr401allowGWAccess": { "value": false },
-    "pr401useRemoteGateway": { "value": true }
-
+    "pr401PeeringName": {
+      "value": "hbieu2toServiceseu2"
+    },
+    "pr401destSubscriptionID": {
+      "value": "b352fe70-6fe2-4dcd-a153-ee002ed3da62"
+    },
+    "pr401destResourceGroup": {
+      "value": "rgVNETserviceseu2"
+    },
+    "pr401DestinationVNET": {
+      "value": "serviceseu2"
+    },
+    "pr401allowVNETAccess": {
+      "value": true
+    },
+    "pr401allowFwdAccess": {
+      "value": true
+    },
+    "pr401allowGWAccess": {
+      "value": false
+    },
+    "pr401useRemoteGateway": {
+      "value": true
+    }
   }
 }

@@ -1,75 +1,171 @@
 /*Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT License.*/ 
+Licensed under the MIT License.*/
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-
     /*Go to the metadata spreadsheet for the Subscription and copy the data for the Subscriptions
     parameters files */
-    "baseURL": { "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1" },
-
+    "baseURL": {
+      "value": "https://github.com/willstg/AzureFoundation/tree/master/arm/vnet/site1"
+    },
     /*the VNET tab of the metadata spreadsheet and filter the data with VNET100
     copy the data from the columns that have the word prerameters in them.  the columns 
     are colored to show the grouping.
     */
-    "vnet300vnetName": { "value": "vnet1a_prod_tx" },
-    "vnet300vnetAddressPrefix": { "value": "10.128.128.0/20" },
-    "vnet300locationName": { "value": "usgovtexas" },
-    "vnet300dnsServers": { "value": [ "10.128.56.11", "10.128.120.11", "10.128.184.11", "10.128.248.11" ] },
-    "vnet300SubscriptionID": { "value": "4a0d1d83-f557-4065-8423-be499038298a" },
-    "vnet300ResourceGroupName": { "value": "rg_network_vnet1a_prod_tx" },
-
+    "vnet300vnetName": {
+      "value": "prodeu1"
+    },
+    "vnet300vnetAddressPrefix": {
+      "value": "10.130.128.0/20"
+    },
+    "vnet300locationName": {
+      "value": "northeurope"
+    },
+    "vnet300dnsServers": {
+      "value": [
+        "10.130.56.11",
+        "10.130.120.11",
+        "10.130.184.11",
+        "10.130.248.11"
+      ]
+    },
+    "vnet300SubscriptionID": {
+      "value": "9e1fbfe8-b7ae-4994-8b85-2d5cca580f0c"
+    },
+    "vnet300ResourceGroupName": {
+      "value": "rgVNETprodeu1"
+    },
     /*the subnet tab of the metadata spreadsheet and filter the data with VNET100
         copy the data from the columns that have the word prerameters in them.  the columns 
     are colored to show the grouping.
     */
-    "snet316Name": { "value": "s110_Web_Prod_TX" },
-    "snet316IP": { "value": "10.128.130.0/24" },
-    "snet316NSGName": { "value": "110NSG" },
-    "snet317Name": { "value": "s115_LB_Web_Prod_TX" },
-    "snet317IP": { "value": "10.128.131.0/24" },
-    "snet317NSGName": { "value": "115NSG" },
-    "snet318Name": { "value": "s120_App_Prod_TX" },
-    "snet318IP": { "value": "10.128.132.0/24" },
-    "snet318NSGName": { "value": "120NSG" },
-    "snet319Name": { "value": "s125_LB_App_Prod_TX" },
-    "snet319IP": { "value": "10.128.133.0/24" },
-    "snet319NSGName": { "value": "125NSG" },
-    "snet320Name": { "value": "s130_DB_Prod_TX" },
-    "snet320IP": { "value": "10.128.134.0/24" },
-    "snet320NSGName": { "value": "130NSG" },
-    "snet321Name": { "value": "s135_LB_DB_Prod_TX" },
-    "snet321IP": { "value": "10.128.135.0/24" },
-    "snet321NSGName": { "value": "135NSG" },
-    "snet322Name": { "value": "s150_DMZ_Prod_TX" },
-    "snet322IP": { "value": "10.128.136.0/24" },
-    "snet322NSGName": { "value": "150NSG" },
-    "snet323Name": { "value": "s155_LB_DMZ_Prod_TX" },
-    "snet323IP": { "value": "10.128.137.0/24" },
-    "snet323NSGName": { "value": "155NSG" },
-    "snet324Name": { "value": "s160_User_Tier0_Prod_TX" },
-    "snet324IP": { "value": "10.128.138.0/25" },
-    "snet324NSGName": { "value": "160NSG" },
-    "snet325Name": { "value": "s161_User_Tier1_Prod_TX" },
-    "snet325IP": { "value": "10.128.138.128/25" },
-    "snet325NSGName": { "value": "161NSG" },
-    "snet326Name": { "value": "s162_User_Tier2_Prod_TX" },
-    "snet326IP": { "value": "10.128.139.0/25" },
-    "snet326NSGName": { "value": "162NSG" },
-
+    "snet316Name": {
+      "value": "Web110"
+    },
+    "snet316IP": {
+      "value": "10.130.130.0/24"
+    },
+    "snet316NSGName": {
+      "value": "nsgWeb110"
+    },
+    "snet317Name": {
+      "value": "WebLB115"
+    },
+    "snet317IP": {
+      "value": "10.130.131.0/24"
+    },
+    "snet317NSGName": {
+      "value": "nsgWebLB115"
+    },
+    "snet318Name": {
+      "value": "App120"
+    },
+    "snet318IP": {
+      "value": "10.130.132.0/24"
+    },
+    "snet318NSGName": {
+      "value": "nsgApp120"
+    },
+    "snet319Name": {
+      "value": "AppLB125"
+    },
+    "snet319IP": {
+      "value": "10.130.133.0/24"
+    },
+    "snet319NSGName": {
+      "value": "nsgAppLB125"
+    },
+    "snet320Name": {
+      "value": "DB130"
+    },
+    "snet320IP": {
+      "value": "10.130.134.0/24"
+    },
+    "snet320NSGName": {
+      "value": "nsgDB130"
+    },
+    "snet321Name": {
+      "value": "DBLB135"
+    },
+    "snet321IP": {
+      "value": "10.130.135.0/24"
+    },
+    "snet321NSGName": {
+      "value": "nsgDBLB135"
+    },
+    "snet322Name": {
+      "value": "DMZ150"
+    },
+    "snet322IP": {
+      "value": "10.130.136.0/24"
+    },
+    "snet322NSGName": {
+      "value": "nsgDMZ150"
+    },
+    "snet323Name": {
+      "value": "DMZLB155"
+    },
+    "snet323IP": {
+      "value": "10.130.137.0/24"
+    },
+    "snet323NSGName": {
+      "value": "nsgDMZLB155"
+    },
+    "snet324Name": {
+      "value": "UserTier0160"
+    },
+    "snet324IP": {
+      "value": "10.130.138.0/25"
+    },
+    "snet324NSGName": {
+      "value": "nsgUserTier0160"
+    },
+    "snet325Name": {
+      "value": "UserTier1161"
+    },
+    "snet325IP": {
+      "value": "10.130.138.128/25"
+    },
+    "snet325NSGName": {
+      "value": "nsgUserTier1161"
+    },
+    "snet326Name": {
+      "value": "UserTier2162"
+    },
+    "snet326IP": {
+      "value": "10.130.139.0/25"
+    },
+    "snet326NSGName": {
+      "value": "nsgUserTier2162"
+    },
     /*the Peering tab of the metadata spreadsheet and filter the data with VNET100
         copy the data from the columns that have the word prerameters in them.  the columns 
     are colored to show the grouping.
     */
-    "pr300PeeringName": { "value": "vnet1a_prod_tx_vnet1a_services_tx" },
-    "pr300destSubscriptionID": { "value": "30457dd5-e56b-416b-9228-d48b37fe7caa" },
-    "pr300destResourceGroup": { "value": "rg_network_vnet1a_services_tx" },
-    "pr300DestinationVNET": { "value": "vnet1a_services_tx" },
-    "pr300allowVNETAccess": { "value": true },
-    "pr300allowFwdAccess": { "value": true },
-    "pr300allowGWAccess": { "value": false },
-    "pr300useRemoteGateway": { "value": true }
-
+    "pr300PeeringName": {
+      "value": "prodeu1toServiceseu1"
+    },
+    "pr300destSubscriptionID": {
+      "value": "b352fe70-6fe2-4dcd-a153-ee002ed3da62"
+    },
+    "pr300destResourceGroup": {
+      "value": "rgVNETserviceseu1"
+    },
+    "pr300DestinationVNET": {
+      "value": "serviceseu1"
+    },
+    "pr300allowVNETAccess": {
+      "value": true
+    },
+    "pr300allowFwdAccess": {
+      "value": true
+    },
+    "pr300allowGWAccess": {
+      "value": false
+    },
+    "pr300useRemoteGateway": {
+      "value": true
+    }
   }
 }

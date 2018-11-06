@@ -1,0 +1,23 @@
+/*  Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.
+
+/*In this template we will deploy the AzureVirtualWAN Sites of the Azure Foundation.
+*/
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        /*Using the metadata spreadsheet, navigate to the vWAN worksheet and filter on the primary
+region where the vWAN will go.  For instance if you have EU1 and EU2, select the Site of EU2 or vWan304*/
+        "vWAN304Name": {
+            "value": "nvwserviceseu1"
+        },
+        "vWAN304Site": {
+            "value": "northeurope"
+        },
+        "vWAN304vWANResourceID": {
+            "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVNETserviceseu1/providers/Microsoft.Network/virtualWans/nvwserviceseu1"
+        },
+
+    }
+}
