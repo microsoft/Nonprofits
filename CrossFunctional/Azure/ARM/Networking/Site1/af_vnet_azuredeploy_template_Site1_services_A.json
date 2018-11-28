@@ -80,231 +80,315 @@ Licensed under the MIT License.*/
     */
     "snet174Name": {
       "type": "string",
-      "defaultValue": "s600_Services_Services_W1",
+      "defaultValue": "Services600",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet174IP": {
       "type": "string",
-      "defaultValue": "10.128.56.0/24",
+      "defaultValue": "10.132.56.0/24",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet174NSGName": {
       "type": "string",
-      "defaultValue": "600NSG",
+      "defaultValue": "nsgServices600",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
     },
     "snet175Name": {
       "type": "string",
-      "defaultValue": "s625_LB_Services_Services_W1",
+      "defaultValue": "ServicesLB625",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet175IP": {
       "type": "string",
-      "defaultValue": "10.128.58.0/25",
+      "defaultValue": "10.132.58.0/25",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet175NSGName": {
       "type": "string",
-      "defaultValue": "625NSG",
-      "metadata": {
-        "description": "Network Security Group to associate to the subnet."
-      }
-    },
-    "snet180Name": {
-      "type": "string",
-      "defaultValue": "s680_RTR_InsideTest_Services_W1",
-      "metadata": {
-        "description": "Name of the subnet."
-      }
-    },
-    "snet180IP": {
-      "type": "string",
-      "defaultValue": "10.128.59.0/28",
-      "metadata": {
-        "description": "CRI notation of the Subnet."
-      }
-    },
-    "snet180NSGName": {
-      "type": "string",
-      "defaultValue": "680NSG",
-      "metadata": {
-        "description": "Network Security Group to associate to the subnet."
-      }
-    },
-    "snet183Name": {
-      "type": "string",
-      "defaultValue": "s682_FW_IntTest_Services_W1",
-      "metadata": {
-        "description": "Name of the subnet."
-      }
-    },
-    "snet183IP": {
-      "type": "string",
-      "defaultValue": "10.128.59.16/28",
-      "metadata": {
-        "description": "CRI notation of the Subnet."
-      }
-    },
-    "snet183NSGName": {
-      "type": "string",
-      "defaultValue": "682NSG",
-      "metadata": {
-        "description": "Network Security Group to associate to the subnet."
-      }
-    },
-    "snet182Name": {
-      "type": "string",
-      "defaultValue": "s681_RTR_OutsideTest_Services_W1",
-      "metadata": {
-        "description": "Name of the subnet."
-      }
-    },
-    "snet182IP": {
-      "type": "string",
-      "defaultValue": "10.128.59.32/28",
-      "metadata": {
-        "description": "CRI notation of the Subnet."
-      }
-    },
-    "snet182NSGName": {
-      "type": "string",
-      "defaultValue": "681NSG",
-      "metadata": {
-        "description": "Network Security Group to associate to the subnet."
-      }
-    },
-    "snet184Name": {
-      "type": "string",
-      "defaultValue": "s683_FW_ExtTest_Services_W1",
-      "metadata": {
-        "description": "Name of the subnet."
-      }
-    },
-    "snet184IP": {
-      "type": "string",
-      "defaultValue": "10.128.59.48/28",
-      "metadata": {
-        "description": "CRI notation of the Subnet."
-      }
-    },
-    "snet184NSGName": {
-      "type": "string",
-      "defaultValue": "683NSG",
+      "defaultValue": "nsgServicesLB625",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
     },
     "snet176Name": {
       "type": "string",
-      "defaultValue": "s650_DMZ_Services_W1",
+      "defaultValue": "DMZ650",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet176IP": {
       "type": "string",
-      "defaultValue": "10.128.60.0/25",
+      "defaultValue": "10.132.60.0/25",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet176NSGName": {
       "type": "string",
-      "defaultValue": "650NSG",
+      "defaultValue": "nsgDMZ650",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
     },
     "snet179Name": {
       "type": "string",
-      "defaultValue": "s655_LB_DMZ_Services_W1",
+      "defaultValue": "DMZLB655",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet179IP": {
       "type": "string",
-      "defaultValue": "10.128.61.0/25",
+      "defaultValue": "10.132.61.0/25",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet179NSGName": {
       "type": "string",
-      "defaultValue": "655NSG",
+      "defaultValue": "nsgDMZLB655",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
     },
     "snet177Name": {
       "type": "string",
-      "defaultValue": "s660_User_Tier0_Services_W1",
+      "defaultValue": "UserTier0660",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet177IP": {
       "type": "string",
-      "defaultValue": "10.128.62.0/26",
+      "defaultValue": "10.132.62.0/26",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet177NSGName": {
       "type": "string",
-      "defaultValue": "660NSG",
+      "defaultValue": "nsgUserTier0660",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
     },
     "snet178Name": {
       "type": "string",
-      "defaultValue": "s661_User_Tier1_Services_W1",
+      "defaultValue": "UserTier1661",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet178IP": {
       "type": "string",
-      "defaultValue": "10.128.62.64/26",
+      "defaultValue": "10.132.62.64/26",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet178NSGName": {
       "type": "string",
-      "defaultValue": "661NSG",
+      "defaultValue": "nsgUserTier1661",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
     },
     "snet185Name": {
       "type": "string",
-      "defaultValue": "s662_User_Tier2_Services_W1",
+      "defaultValue": "UserTier2662",
       "metadata": {
         "description": "Name of the subnet."
       }
     },
     "snet185IP": {
       "type": "string",
-      "defaultValue": "10.128.62.128/26",
+      "defaultValue": "10.132.62.128/26",
       "metadata": {
         "description": "CRI notation of the Subnet."
       }
     },
     "snet185NSGName": {
       "type": "string",
-      "defaultValue": "662NSG",
+      "defaultValue": "nsgUserTier2662",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet180Name": {
+      "type": "string",
+      "defaultValue": "RTRInsideTest680",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet180IP": {
+      "type": "string",
+      "defaultValue": "10.132.59.0/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet180NSGName": {
+      "type": "string",
+      "defaultValue": "nsgRTRInsideTest680",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet182Name": {
+      "type": "string",
+      "defaultValue": "RTROutsideTest681",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet182IP": {
+      "type": "string",
+      "defaultValue": "10.132.59.32/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet182NSGName": {
+      "type": "string",
+      "defaultValue": "nsgRTROutsideTest681",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet183Name": {
+      "type": "string",
+      "defaultValue": "FWIntTest682",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet183IP": {
+      "type": "string",
+      "defaultValue": "10.132.59.16/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet183NSGName": {
+      "type": "string",
+      "defaultValue": "nsgFWIntTest682",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet184Name": {
+      "type": "string",
+      "defaultValue": "FW_ExtTest683",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet184IP": {
+      "type": "string",
+      "defaultValue": "10.132.59.48/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet184NSGName": {
+      "type": "string",
+      "defaultValue": "nsgFW_ExtTest683",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet186Name": {
+      "type": "string",
+      "defaultValue": "Mgmt700",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet186IP": {
+      "type": "string",
+      "defaultValue": "10.132.63.0/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet186NSGName": {
+      "type": "string",
+      "defaultValue": "nsgMgmt700",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet187Name": {
+      "type": "string",
+      "defaultValue": "In701",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet187IP": {
+      "type": "string",
+      "defaultValue": "10.132.63.16/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet187NSGName": {
+      "type": "string",
+      "defaultValue": "nsgIn701",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet188Name": {
+      "type": "string",
+      "defaultValue": "Out702",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet188IP": {
+      "type": "string",
+      "defaultValue": "10.132.63.32/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet188NSGName": {
+      "type": "string",
+      "defaultValue": "nsgOut702",
+      "metadata": {
+        "description": "Network Security Group to associate to the subnet."
+      }
+    },
+    "snet189Name": {
+      "type": "string",
+      "defaultValue": "DMZ703",
+      "metadata": {
+        "description": "Name of the subnet."
+      }
+    },
+    "snet189IP": {
+      "type": "string",
+      "defaultValue": "10.132.63.48/28",
+      "metadata": {
+        "description": "CRI notation of the Subnet."
+      }
+    },
+    "snet189NSGName": {
+      "type": "string",
+      "defaultValue": "nsgDMZ703",
       "metadata": {
         "description": "Network Security Group to associate to the subnet."
       }
@@ -318,16 +402,9 @@ Licensed under the MIT License.*/
     },
     "snet115IP": {
       "type": "string",
-      "defaultValue": "10.128.63.224/27",
+      "defaultValue": "10.132.63.224/27",
       "metadata": {
         "description": "CRI notation of the Subnet."
-      }
-    },
-    "snet115NSGName": {
-      "type": "string",
-      "defaultValue": "799NSG",
-      "metadata": {
-        "description": "Network Security Group to associate to the subnet."
       }
     },
     /*
@@ -592,21 +669,21 @@ Licensed under the MIT License.*/
     */
     "lngw01aname": {
       "type": "string",
-      "defaultValue": "lngwusgovtxdc1",
+      "defaultValue": "lngw_boulder_dc1",
       "metadata": {
         "description": "Name for the destination connection between an Azure VNet and another network"
       }
     },
     "lngw01agatewayIPAddress": {
       "type": "string",
-      "defaultValue": "52.238.116.87",
+      "defaultValue": "1.1.1.1",
       "metadata": {
         "description": "IP address of local network gateway."
       }
     },
     "lngw01alocalNetworkAddressSpace": {
       "type": "array",
-      "defaultValue": "10.128.191.224/27",
+      "defaultValue": "10.0.0.0/9",
       "metadata": {
         "description": "Local network site address space."
       }
@@ -620,14 +697,14 @@ Licensed under the MIT License.*/
     },
     "lngw01aASNNumber": {
       "type": "int",
-      "defaultValue": 65523,
+      "defaultValue": 65501,
       "metadata": {
         "description": "The BGP speaker's ASN."
       }
     },
     "lngw01aBGPPeerIPAddress": {
       "type": "string",
-      "defaultValue": "10.128.191.228",
+      "defaultValue": "10.0.0.254",
       "metadata": {
         "description": "The BGP peering address and BGP identifier of this BGP speaker."
       }
@@ -639,49 +716,147 @@ Licensed under the MIT License.*/
         "description": "The weight added to routes learned from this BGP speaker."
       }
     },
-    "lngw01bname": {
+    "lngw02aname": {
       "type": "string",
-      "defaultValue": "lngwusgovtxdc1",
+      "defaultValue": "lngw_austin_dc2",
       "metadata": {
         "description": "Name for the destination connection between an Azure VNet and another network"
       }
     },
-    "lngw01bgatewayIPAddress": {
+    "lngw02agatewayIPAddress": {
       "type": "string",
-      "defaultValue": "52.238.115.118",
+      "defaultValue": "1.1.1.9",
       "metadata": {
         "description": "IP address of local network gateway."
       }
     },
-    "lngw01blocalNetworkAddressSpace": {
+    "lngw02alocalNetworkAddressSpace": {
       "type": "array",
-      "defaultValue": "10.132.192.224/27",
+      "defaultValue": "10.0.0.0/9",
       "metadata": {
         "description": "Local network site address space."
       }
     },
-    "lngw01bConfigureBGP": {
+    "lngw02aConfigureBGP": {
       "type": "bool",
       "defaultValue": true,
       "metadata": {
         "description": "True or False, will you configure BGP with the LocalNetworkGateway"
       }
     },
-    "lngw01bASNNumber": {
+    "lngw02aASNNumber": {
+      "type": "int",
+      "defaultValue": 65502,
+      "metadata": {
+        "description": "The BGP speaker's ASN."
+      }
+    },
+    "lngw02aBGPPeerIPAddress": {
+      "type": "string",
+      "defaultValue": "10.0.0.255",
+      "metadata": {
+        "description": "The BGP peering address and BGP identifier of this BGP speaker."
+      }
+    },
+    "lngw02apeerWeight": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "The weight added to routes learned from this BGP speaker."
+      }
+    },
+    "lngw304aname": {
+      "type": "string",
+      "defaultValue": "lngw_site3a_tx",
+      "metadata": {
+        "description": "Name for the destination connection between an Azure VNet and another network"
+      }
+    },
+    "lngw304agatewayIPAddress": {
+      "type": "string",
+      "defaultValue": "52.238.119.32",
+      "metadata": {
+        "description": "IP address of local network gateway."
+      }
+    },
+    "lngw304alocalNetworkAddressSpace": {
+      "type": "array",
+      "defaultValue": "10.128.191.224/27",
+      "metadata": {
+        "description": "Local network site address space."
+      }
+    },
+    "lngw304aConfigureBGP": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "True or False, will you configure BGP with the LocalNetworkGateway"
+      }
+    },
+    "lngw304aASNNumber": {
       "type": "int",
       "defaultValue": 65523,
       "metadata": {
         "description": "The BGP speaker's ASN."
       }
     },
-    "lngw01bBGPPeerIPAddress": {
+    "lngw304aBGPPeerIPAddress": {
       "type": "string",
-      "defaultValue": "10.128.191.229",
+      "defaultValue": "10.128.191.250",
       "metadata": {
         "description": "The BGP peering address and BGP identifier of this BGP speaker."
       }
     },
-    "lngw01bpeerWeight": {
+    "lngw304apeerWeight": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "The weight added to routes learned from this BGP speaker."
+      }
+    },
+    "lngw304bname": {
+      "type": "string",
+      "defaultValue": "lngw_site3b_tx",
+      "metadata": {
+        "description": "Name for the destination connection between an Azure VNet and another network"
+      }
+    },
+    "lngw304bgatewayIPAddress": {
+      "type": "string",
+      "defaultValue": "52.238.119.32",
+      "metadata": {
+        "description": "IP address of local network gateway."
+      }
+    },
+    "lngw304blocalNetworkAddressSpace": {
+      "type": "array",
+      "defaultValue": "10.128.191.254/27",
+      "metadata": {
+        "description": "Local network site address space."
+      }
+    },
+    "lngw304bConfigureBGP": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "True or False, will you configure BGP with the LocalNetworkGateway"
+      }
+    },
+    "lngw304bASNNumber": {
+      "type": "int",
+      "defaultValue": 65523,
+      "metadata": {
+        "description": "The BGP speaker's ASN."
+      }
+    },
+    "lngw304bBGPPeerIPAddress": {
+      "type": "string",
+      "defaultValue": "10.128.191.251",
+      "metadata": {
+        "description": "The BGP peering address and BGP identifier of this BGP speaker."
+      }
+    },
+    "lngw304bpeerWeight": {
       "type": "int",
       "defaultValue": 0,
       "metadata": {
@@ -775,14 +950,14 @@ Licensed under the MIT License.*/
     */
     "cnct100ConnectionName": {
       "type": "string",
-      "defaultValue": "IPSecgwserviceswcTolngwusgovtxdc1",
+      "defaultValue": "cnct_IPSec_gw_vnet_services_w1_To_lngw_boulder_dc1",
       "metadata": {
         "description": "Arbitrary name for the new connection between an Azure VNet and another network"
       }
     },
     "cnct100gwName": {
       "type": "string",
-      "defaultValue": "gwserviceswc",
+      "defaultValue": "gw_vnet_services_w1",
       "metadata": {
         "description": "The reference to the virtual network gateway resource"
       }
@@ -796,7 +971,7 @@ Licensed under the MIT License.*/
     },
     "cnct100remoteGWName": {
       "type": "string",
-      "defaultValue": "lngwusgovtxdc1",
+      "defaultValue": "lngw_boulder_dc1",
       "metadata": {
         "description": "The reference to the local network gateway or remote gateway resource"
       }
@@ -822,49 +997,98 @@ Licensed under the MIT License.*/
         "description": "EnableBGP flag"
       }
     },
-    "cnct101ConnectionName": {
+    "cnct102ConnectionName": {
       "type": "string",
-      "defaultValue": "IPSecgwserviceswcTolngwusgovtxdc1",
+      "defaultValue": "cnct_IPSec_gw_vnet_services_w1_To_lngw_site3a_tx",
       "metadata": {
         "description": "Arbitrary name for the new connection between an Azure VNet and another network"
       }
     },
-    "cnct101gwName": {
+    "cnct102gwName": {
       "type": "string",
-      "defaultValue": "gwserviceswc",
+      "defaultValue": "gw_vnet_services_w1",
       "metadata": {
         "description": "The reference to the virtual network gateway resource"
       }
     },
-    "cnct101connectionType": {
+    "cnct102connectionType": {
       "type": "string",
       "defaultValue": "IPSec",
       "metadata": {
         "description": "What type of a connection is this?  (ExpressRoute, IPSec, Vnet2Vnet)"
       }
     },
-    "cnct101remoteGWName": {
+    "cnct102remoteGWName": {
       "type": "string",
-      "defaultValue": "lngwusgovtxdc1",
+      "defaultValue": "lngw_site3a_tx",
       "metadata": {
         "description": "The reference to the local network gateway or remote gateway resource"
       }
     },
-    "cnct101sharedKey": {
+    "cnct102sharedKey": {
       "type": "string",
       "defaultValue": "mysharedkey",
       "metadata": {
         "description": "The IPSec shared key"
       }
     },
-    "cnct101routingWeight": {
+    "cnct102routingWeight": {
       "type": "int",
       "defaultValue": 0,
       "metadata": {
         "description": "The routing weight"
       }
     },
-    "cnct101enableBGP": {
+    "cnct102enableBGP": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "EnableBGP flag"
+      }
+    },
+    "cnct103ConnectionName": {
+      "type": "string",
+      "defaultValue": "cnct_IPSec_gw_vnet_services_w1_To_lngw_site3b_tx",
+      "metadata": {
+        "description": "Arbitrary name for the new connection between an Azure VNet and another network"
+      }
+    },
+    "cnct103gwName": {
+      "type": "string",
+      "defaultValue": "gw_vnet_services_w1",
+      "metadata": {
+        "description": "The reference to the virtual network gateway resource"
+      }
+    },
+    "cnct103connectionType": {
+      "type": "string",
+      "defaultValue": "IPSec",
+      "metadata": {
+        "description": "What type of a connection is this?  (ExpressRoute, IPSec, Vnet2Vnet)"
+      }
+    },
+    "cnct103remoteGWName": {
+      "type": "string",
+      "defaultValue": "lngw_site3b_tx",
+      "metadata": {
+        "description": "The reference to the local network gateway or remote gateway resource"
+      }
+    },
+    "cnct103sharedKey": {
+      "type": "string",
+      "defaultValue": "mysharedkey",
+      "metadata": {
+        "description": "The IPSec shared key"
+      }
+    },
+    "cnct103routingWeight": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "The routing weight"
+      }
+    },
+    "cnct103enableBGP": {
       "type": "bool",
       "defaultValue": true,
       "metadata": {
@@ -981,7 +1205,34 @@ Licensed under the MIT License.*/
     {
       "apiVersion": "[variables('apiversion')]",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[parameters('snet115NSGName')]",
+      "name": "[parameters('snet186NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet187NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet188NSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "apiVersion": "[variables('apiversion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('snet189NSGName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": []
@@ -1007,8 +1258,6 @@ Licensed under the MIT License.*/
           "dnsServers": "[parameters('vnet104dnsServers')]"
         },
         "subnets": [
-          /*In the metadata spreadsheet, on the Subnet Tab, filter on VNET104
-          select the columns with Resource and grouped by Color. */
           {
             "name": "[parameters('snet174Name')]",
             "properties": {
@@ -1024,42 +1273,6 @@ Licensed under the MIT License.*/
               "addressPrefix": "[parameters('snet175IP')]",
               "networkSecurityGroup": {
                 "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet175NSGName'))]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('snet180Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('snet180IP')]",
-              "networkSecurityGroup": {
-                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet180NSGName'))]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('snet183Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('snet183IP')]",
-              "networkSecurityGroup": {
-                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet183NSGName'))]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('snet182Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('snet182IP')]",
-              "networkSecurityGroup": {
-                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet182NSGName'))]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('snet184Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('snet184IP')]",
-              "networkSecurityGroup": {
-                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet184NSGName'))]"
               }
             }
           },
@@ -1109,260 +1322,111 @@ Licensed under the MIT License.*/
             }
           },
           {
+            "name": "[parameters('snet180Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet180IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet180NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet182Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet182IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet182NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet183Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet183IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet183NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet184Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet184IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet184NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet186Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet186IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet186NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet187Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet187IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet187NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet188Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet188IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet188NSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('snet189Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('snet189IP')]",
+              "networkSecurityGroup": {
+                "id": "[resourceID('Microsoft.Network/networkSecurityGroups', parameters('snet189NSGName'))]"
+              }
+            }
+          },
+          {
             "name": "[parameters('snet115Name')]",
             "properties": {
               "addressPrefix": "[parameters('snet115IP')]"
             }
           }
-        ] /*Keep this Line*/
-      },
-      "resources": [ /*Keep This Line*/
-        /*In the Metadata, select VNET104 on the Peering Tab and select the Resources */
-        {
-          "apiVersion": "[variables('apiversion')]",
-          "type": "virtualNetworkPeerings",
-          "name": "[parameters('pr104PeeringName')]",
-          "location": "[resourceGroup().location]",
-          "comments": "Make sure you put these resources within the Resources of a VNET, like a subnet",
-          "properties": {
-            "allowVirtualNetworkAccess": "[parameters('pr104allowVNETAccess')]",
-            "allowForwardedTraffic": "[parameters('pr104allowFwdAccess')]",
-            "allowGatewayTransit": "[parameters('pr104allowGWAccess')]",
-            "useRemoteGateways": "[parameters('pr104useRemoteGateway')]",
-            "remoteVirtualNetwork": {
-              "id": "[concat('/subscriptions/', parameters('pr104destSubscriptionID'), '/resourceGroups/', parameters('pr104destResourceGroup'),'/providers/Microsoft.Network/virtualNetworks/',parameters('pr104DestinationVNET'))]"
-            }
-          },
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet104vnetName'))]"
-          ]
-        },
-        {
-          "apiVersion": "[variables('apiversion')]",
-          "type": "virtualNetworkPeerings",
-          "name": "[parameters('pr105PeeringName')]",
-          "location": "[resourceGroup().location]",
-          "comments": "Make sure you put these resources within the Resources of a VNET, like a subnet",
-          "properties": {
-            "allowVirtualNetworkAccess": "[parameters('pr105allowVNETAccess')]",
-            "allowForwardedTraffic": "[parameters('pr105allowFwdAccess')]",
-            "allowGatewayTransit": "[parameters('pr105allowGWAccess')]",
-            "useRemoteGateways": "[parameters('pr105useRemoteGateway')]",
-            "remoteVirtualNetwork": {
-              "id": "[concat('/subscriptions/', parameters('pr105destSubscriptionID'), '/resourceGroups/', parameters('pr105destResourceGroup'),'/providers/Microsoft.Network/virtualNetworks/',parameters('pr105DestinationVNET'))]"
-            }
-          },
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet104vnetName'))]"
-          ]
-        },
-        {
-          "apiVersion": "[variables('apiversion')]",
-          "type": "virtualNetworkPeerings",
-          "name": "[parameters('pr106PeeringName')]",
-          "location": "[resourceGroup().location]",
-          "comments": "Make sure you put these resources within the Resources of a VNET, like a subnet",
-          "properties": {
-            "allowVirtualNetworkAccess": "[parameters('pr106allowVNETAccess')]",
-            "allowForwardedTraffic": "[parameters('pr106allowFwdAccess')]",
-            "allowGatewayTransit": "[parameters('pr106allowGWAccess')]",
-            "useRemoteGateways": "[parameters('pr106useRemoteGateway')]",
-            "remoteVirtualNetwork": {
-              "id": "[concat('/subscriptions/', parameters('pr106destSubscriptionID'), '/resourceGroups/', parameters('pr106destResourceGroup'),'/providers/Microsoft.Network/virtualNetworks/',parameters('pr106DestinationVNET'))]"
-            }
-          },
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet104vnetName'))]"
-          ]
-        },
-        {
-          "apiVersion": "[variables('apiversion')]",
-          "type": "virtualNetworkPeerings",
-          "name": "[parameters('pr107PeeringName')]",
-          "location": "[resourceGroup().location]",
-          "comments": "Make sure you put these resources within the Resources of a VNET, like a subnet",
-          "properties": {
-            "allowVirtualNetworkAccess": "[parameters('pr107allowVNETAccess')]",
-            "allowForwardedTraffic": "[parameters('pr107allowFwdAccess')]",
-            "allowGatewayTransit": "[parameters('pr107allowGWAccess')]",
-            "useRemoteGateways": "[parameters('pr107useRemoteGateway')]",
-            "remoteVirtualNetwork": {
-              "id": "[concat('/subscriptions/', parameters('pr107destSubscriptionID'), '/resourceGroups/', parameters('pr107destResourceGroup'),'/providers/Microsoft.Network/virtualNetworks/',parameters('pr107DestinationVNET'))]"
-            }
-          },
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet104vnetName'))]"
-          ]
-        }
-      ], /*Keep This Line*/
-      "dependsOn": /*Keep This Line*/ [ /*Keep This Line*/
-        /*Using the metadata template on the Subnet Tab, filter to VNET104 and select
+        ], /*Keep This Line*/
+        "dependsOn": /*Keep This Line*/ [ /*Keep This Line*/
+          /*Using the metadata template on the Subnet Tab, filter to VNET104 and select
           the columns with DependsOn and grouped by color*/
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet174NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet175NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet180NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet183NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet182NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet184NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet176NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet179NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet177NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet178NSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet185NSGName'))]"
-      ]
-    },
-    /*using the metadata spreadsheet goto the localnetworkgateway tab filter on VNET104
-    and copy the gateway information here*/
-    {
-      "apiVersion": "[variables('apiversion')]",
-      "type": "Microsoft.Network/localNetworkGateways",
-      "name": "[parameters('lngw01aname')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "localNetworkAddressSpace": {
-          "addressPrefixes": "[parameters('lngw01alocalNetworkAddressSpace')]"
-        },
-        "bgpSettings": {
-          "asn": "[parameters('lngw01aASNNumber')]",
-          "bgpPeeringAddress": "[parameters('lngw01aBGPPeerIPAddress')]",
-          "peerWeight": "[parameters('lngw01apeerWeight')]"
-        },
-        "gatewayIpAddress": "[parameters('lngw01agatewayIPAddress')]"
-      }
-    },
-    {
-      "apiVersion": "[variables('apiversion')]",
-      "type": "Microsoft.Network/localNetworkGateways",
-      "name": "[parameters('lngw01bname')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "localNetworkAddressSpace": {
-          "addressPrefixes": "[parameters('lngw01blocalNetworkAddressSpace')]"
-        },
-        "bgpSettings": {
-          "asn": "[parameters('lngw01bASNNumber')]",
-          "bgpPeeringAddress": "[parameters('lngw01bBGPPeerIPAddress')]",
-          "peerWeight": "[parameters('lngw01bpeerWeight')]"
-        },
-        "gatewayIpAddress": "[parameters('lngw01bgatewayIPAddress')]"
-      }
-    },
-    /*using the metadata spreadsheet goto the gateway tab filter on VNET104
-    and copy the gateway information here*/
-    {
-      "apiVersion": "2017-06-01",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('gw104vPublicIPName1')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic"
-      }
-    },
-    {
-      "apiVersion": "[variables('apiversion')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('gw104vPublicIPName2')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic"
-      }
-    },
-    {
-      "apiVersion": "2017-06-01",
-      "type": "Microsoft.Network/virtualNetworkGateways",
-      "name": "[parameters('gw104vGatewayName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('gw104vPublicIPName1'))]",
-        "[concat('Microsoft.Network/publicIPAddresses/', parameters('gw104vPublicIPName2'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('gw104vvnetName'))]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "[parameters('gw104vPublicIPName1')]",
-            "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "subnet": {
-                "id": "[variables('subnet799Ref')]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gw104vPublicIPName1'))]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('gw104vPublicIPName2')]",
-            "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "subnet": {
-                "id": "[variables('subnet799Ref')]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gw104vPublicIPName2'))]"
-              }
-            }
-          }
-        ],
-        "gatewayType": "[parameters('gw104vGatewayType')]",
-        "vpnType": "[parameters('gw104vVPNType')]",
-        "activeActive": "[parameters('gw104vEnableActiveActive')]",
-        "enableBGP": "[parameters('gw104venableBGP')]",
-        "bgpSettings": {
-          "asn": "[parameters('gw104vbgpASN')]"
-        },
-        "sku": {
-          "name": "[parameters('gw104vgwSKUNameTier')]",
-          "tier": "[parameters('gw104vgwSKUNameTier')]"
-        }
-      }
-    },
-    /*using the metadata spreadsheet goto the Connection tab filter on VNET104
-    and copy the gateway information here*/
-    {
-      "apiVersion": "[variables('apiversion')]",
-      "name": "[parameters('cnct100ConnectionName')]",
-      "type": "Microsoft.Network/connections",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('cnct100gwName'))]",
-        "[concat('Microsoft.Network/localNetworkGateways/', parameters('cnct100remoteGWName'))]"
-      ],
-      "properties": {
-        "virtualNetworkGateway1": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('cnct100gwName'))]"
-        },
-        "localNetworkGateway2": {
-          "id": "[resourceId('Microsoft.Network/localNetworkGateways', parameters('cnct100remoteGWName'))]"
-        },
-        "sharedKey": "[parameters('cnct100sharedKey')]",
-        "connectionType": "[parameters('cnct100connectionType')]",
-        "routingWeight": "[parameters('cnct100routingWeight')]",
-        "enableBGP": "[parameters('cnct100enableBGP')]"
-      }
-    },
-    {
-      "apiVersion": "[variables('apiversion')]",
-      "name": "[parameters('cnct101ConnectionName')]",
-      "type": "Microsoft.Network/connections",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('cnct101gwName'))]",
-        "[concat('Microsoft.Network/localNetworkGateways/', parameters('cnct101remoteGWName'))]"
-      ],
-      "properties": {
-        "virtualNetworkGateway1": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('cnct101gwName'))]"
-        },
-        "localNetworkGateway2": {
-          "id": "[resourceId('Microsoft.Network/localNetworkGateways', parameters('cnct101remoteGWName'))]"
-        },
-        "sharedKey": "[parameters('cnct101sharedKey')]",
-        "connectionType": "[parameters('cnct101connectionType')]",
-        "routingWeight": "[parameters('cnct101routingWeight')]",
-        "enableBGP": "[parameters('cnct101enableBGP')]"
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet174NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet175NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet176NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet179NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet177NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet178NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet185NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet180NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet182NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet183NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet184NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet186NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet187NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet188NSGName'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('snet189NSGName'))]",
+        ]
       }
     }
   ],
+  /*using the metadata spreadsheet goto the localnetworkgateway tab filter on VNET104
+    and copy the gateway information here*/
+  /*using the metadata spreadsheet goto the gateway tab filter on VNET104
+    and copy the gateway information here*/
+  /*using the metadata spreadsheet goto the Connection tab filter on VNET104
+    and copy the gateway information here*/
   "outputs": {}
 }
