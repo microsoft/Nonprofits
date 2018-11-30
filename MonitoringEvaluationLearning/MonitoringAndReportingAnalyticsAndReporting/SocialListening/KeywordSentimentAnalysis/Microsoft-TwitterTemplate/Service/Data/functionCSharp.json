@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "name": "req",
+      "webHookType": "genericJson",
+      "direction": "in",
+      "scriptFile": "run.csx"
+    }
+  ],
+  "disabled": false
+}

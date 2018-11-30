@@ -1,0 +1,173 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageaccountname": {
+      "defaultValue": "ststorage",
+      "type": "string"
+    },
+
+    "sitename": {
+      "defaultValue": "stsite",
+      "type": "string"
+    },
+
+    "AppHostingPlan": {
+      "defaultValue": "STHostingPlan",
+      "type": "string"
+    },
+
+    "resourcegroup": {
+      "defaultValue": "stresourcegroup",
+      "type": "string"
+    },
+
+    "subscription": {
+      "defaultValue": "idrequired",
+      "type": "string"
+    },
+    "search": {
+      "defaultValue": "Microsoft",
+      "type": "string"
+    },
+    "LogicAppName": {
+      "defaultValue": "LogicApp",
+      "type": "string"
+    }
+  },
+  "variables": { },
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "name": "[parameters('LogicAppName')]",
+      "apiVersion": "2016-06-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "state": "Enabled",
+
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-04-01-preview/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "defaultValue": { },
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "manual": {
+              "inputs": {
+                "schema": { }
+              },
+              "kind": "Http",
+              "type": "Request"
+            }
+          },
+          "actions": {
+            "TweetProcessingFunction": {
+              "inputs": {
+                "body": "@body('Search_tweets')",
+                "function": {
+                  "id": "[concat('/subscriptions/', parameters('subscription'), '/resourceGroups/',parameters('resourcegroup'),'/providers/Microsoft.Web/sites/', parameters('sitename'), '/Functions/TweetProcessingFunction')]"
+                }
+              },
+              "runAfter": {
+                "Search_tweets": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Function"
+            },
+            "Until": {
+              "actions": {
+                "TriggerHistory": {
+                  "inputs": {
+                    "body": {},
+                    "function": {
+                      "id": "[concat('/subscriptions/', parameters('subscription'), '/resourceGroups/',parameters('resourcegroup'),'/providers/Microsoft.Web/sites/', parameters('sitename'), '/Functions/TriggerHistory')]"
+                    }
+                  },
+                  "runAfter": {},
+                  "type": "Function"
+                }
+              },
+              "expression": "@equals(body('TriggerHistory'), 'true')",
+              "limit": {
+                "count": 60,
+                "timeout": "PT1H"
+              },
+              "runAfter": {
+                "Get_row": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Until"
+            },
+            "Search_tweets": {
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['twitter']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/searchtweets",
+                "queries": {
+                  "maxResults": 100,
+                  "searchQuery": "@{body('Get_row')['QueryString']}",
+                  "sinceId": "@{body('Get_row')?['TweetId']}"
+                }
+              },
+              "runAfter": {
+                "Until": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ApiConnection"
+            },
+            "Get_row": {
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['sql']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/datasets/default/tables/@{encodeURIComponent(encodeURIComponent('[pbist_twitter].[twitter_query]'))}/items/@{encodeURIComponent(encodeURIComponent('1'))}"
+              },
+              "runAfter": {
+              },
+              "type": "ApiConnection"
+            }
+          },
+            "outputs": {}
+          },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "twitter": {
+                "connectionId": "[concat('/subscriptions/', parameters('subscription'), '/resourceGroups/' ,parameters('resourceGroup'),'/providers/Microsoft.Web/connections/twitter')]",
+                "connectionName": "twitter",
+                "id": "[concat('/subscriptions/' , parameters('subscription'), '/providers/Microsoft.Web/locations/',resourceGroup().location , '/managedApis/twitter')]"
+              },
+              "cognitiveservicestextanalytics": {
+                "connectionId": "[concat('/subscriptions/', parameters('subscription'), '/resourceGroups/' ,parameters('resourceGroup'),'/providers/Microsoft.Web/connections/cognitiveservicestextanalytics')]",
+                "connectionName": "cognitiveservicestextanalytics",
+                "id": "[concat('/subscriptions/' , parameters('subscription'), '/providers/Microsoft.Web/locations/',resourceGroup().location , '/managedApis/cognitiveservicestextanalytics')]"
+              },
+              "sql": {
+                "connectionId": "[concat('/subscriptions/', parameters('subscription'), '/resourceGroups/' ,parameters('resourceGroup'),'/providers/Microsoft.Web/connections/sql')]",
+                "connectionName": "sql",
+                "id": "[concat('/subscriptions/' , parameters('subscription'), '/providers/Microsoft.Web/locations/',resourceGroup().location , '/managedApis/sql')]"
+              }
+            }
+          }
+        }
+      },
+      "resources": [ ],
+      "dependsOn": [
+      ]
+    }
+  ],
+  "outputs": { }
+}

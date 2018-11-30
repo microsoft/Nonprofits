@@ -1,0 +1,14 @@
+﻿<template>
+    <require from="../../../../../SiteCommon/Web/templates/bpst-link.html"></require>
+
+    <h1 class="st-title">${MS.Translate.COGNITIVE_SERVICES_TITLE}</h1>
+    <p class="st-subtitle">${MS.Translate.COGNITIVE_SERVICES_SUBTITLE_TWITTER}</p>
+
+    <p>
+        <label class="st-text">
+            <input type="checkbox" tabindex="-1" change.delegate="verifyTerms()" checked.bind="isTermsChecked" disabled.bind="MS.HttpService.isServiceBusy">
+            <span class="st-text">${MS.Translate.COGNITIVE_SERVICES_CONFIRMATION}</span>
+        </label>
+    </p>
+    <p class="st-privacy smallFontSize">${MS.Translate.COGNITIVE_SERVICES_PRIVACY_TWITTER}</p>
+</template>

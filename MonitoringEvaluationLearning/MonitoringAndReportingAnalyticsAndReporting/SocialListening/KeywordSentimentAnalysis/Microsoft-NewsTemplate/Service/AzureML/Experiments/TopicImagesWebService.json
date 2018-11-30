@@ -1,0 +1,238 @@
+{
+  "properties": {
+    "package": {
+      "nodes": {
+        "node1": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Please Specify Data Destination": {
+              "value": "SqlAzure",
+              "certificateThumbprint": ""
+            },
+            "Database Server Name": {
+              "value": "pbisttest.database.windows.net",
+              "certificateThumbprint": ""
+            },
+            "Database Name": {
+              "value": "TestNews",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Name": {
+              "value": "pbiadmin",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Password": {
+              "value": "PlacementPassword",
+              "certificateThumbprint": ""
+            },
+            "Trust Server Certificate": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Comma separated list of columns to be saved": {
+              "value": "topicId,imageUrl1,imageUrl2,imageUrl3,imageUrl4",
+              "certificateThumbprint": ""
+            },
+            "Data Table Name": {
+              "value": "bpst_news.stg_documenttopicimages",
+              "certificateThumbprint": ""
+            },
+            "Comma separated list of datatable columns": {
+              "value": "topicId,imageUrl1,imageUrl2,imageUrl3,imageUrl4",
+              "certificateThumbprint": ""
+            },
+            "SQL Azure Number Of Rows To Write": {
+              "value": "50",
+              "certificateThumbprint": ""
+            },
+            "Treat Errors as Warnings": {
+              "value": "False",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node2": {
+          "assetId": "asset2",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Please Specify Data Source": {
+              "value": "SqlAzure",
+              "certificateThumbprint": ""
+            },
+            "Database Server Name": {
+              "value": "pbisttest.database.windows.net",
+              "certificateThumbprint": ""
+            },
+            "Database Name": {
+              "value": "TestNews",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Name": {
+              "value": "pbiadmin",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Password": {
+              "value": "PlacementPassword",
+              "certificateThumbprint": ""
+            },
+            "Trust Server Certificate": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Database Query": {
+              "value": "SELECT topicId, [1] AS imageUrl1, [2] AS imageUrl2, [3] AS imageUrl3, [4] AS imageUrl4\nFROM \n(\n\tSELECT topicId, imageUrl, [Rank] FROM \n\t(\n\t\tselect id as documentId, topicId, documentDistance, CONVERT(VARCHAR(MAX), imageUrl) AS imageUrl,  ROW_NUMBER() OVER (PARTITION BY topicId ORDER BY documentDistance ASC) [Rank] from bpst_news.documents \n\t\tINNER JOIN bpst_news.stg_documenttopics ON bpst_news.documents.id=bpst_news.stg_documenttopics.documentId\n\t\tWHERE imageUrl IS NOT NULL\n\t) t1 \n\tWHERE [Rank] <= 4\n) t2\nPIVOT\n(\n\tMAX(imageUrl) FOR [Rank] IN ([1], [2], [3], [4])\n) AS PivotTable",
+              "certificateThumbprint": ""
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "sourceNodeId": "node2",
+          "sourcePortId": "Results dataset",
+          "targetNodeId": "node1",
+          "targetPortId": "Dataset"
+        }
+      ],
+      "graphParameters": {
+        "Database server name": {
+          "description": "Database server name",
+          "type": "String",
+          "links": [
+            {
+              "nodeId": "node1",
+              "parameterKey": "Database Server Name"
+            },
+            {
+              "nodeId": "node2",
+              "parameterKey": "Database Server Name"
+            }
+          ]
+        },
+        "Database name": {
+          "description": "Database name",
+          "type": "String",
+          "links": [
+            {
+              "nodeId": "node1",
+              "parameterKey": "Database Name"
+            },
+            {
+              "nodeId": "node2",
+              "parameterKey": "Database Name"
+            }
+          ]
+        },
+        "User name": {
+          "description": "User name",
+          "type": "String",
+          "links": [
+            {
+              "nodeId": "node1",
+              "parameterKey": "Server User Account Name"
+            },
+            {
+              "nodeId": "node2",
+              "parameterKey": "Server User Account Name"
+            }
+          ]
+        }
+      }
+    },
+    "title": "TopicImages",
+    "description": "Solution Template",
+    "createdOn": "2017-06-05T15:04:16.9956218Z",
+    "modifiedOn": "2017-06-05T15:04:26.4556327Z",
+    "provisioningState": "Succeeded",
+    "keys": null,
+    "readOnly": false,
+    "swaggerLocation": "https://ussouthcentral.services.azureml.net/subscriptions/20ea4e8dd3d94f1d947c441675acd4f7/services/ebeaf57a95b64f70b63d83295e94de7c/swagger.json",
+    "exposeSampleData": false,
+    "realtimeConfiguration": {
+      "maxConcurrentCalls": 20
+    },
+    "diagnostics": {
+      "level": "None",
+      "expiry": null
+    },
+    "storageAccount": {
+      "name": "storage0edt4s5g86",
+      "key": null
+    },
+    "machineLearningWorkspace": null,
+    "commitmentPlan": null,
+    "input": {
+      "title": "",
+      "description": "",
+      "type": "object",
+      "properties": {}
+    },
+    "output": {
+      "title": "",
+      "description": "",
+      "type": "object",
+      "properties": {}
+    },
+    "exampleRequest": {
+      "inputs": null,
+      "globalParameters": {
+        "Database server name": "pbist.database.windows.net",
+        "Database name": "NewsTemplateTest",
+        "User name": "pbiadmin"
+      }
+    },
+    "assets": {
+      "asset1": {
+        "name": "Export Data",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.7a391181b6a74ad4b82de419c0d6522c.v1-default-1742",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      },
+      "asset2": {
+        "name": "Import Data",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.4e1b0fe6aded4b3fa36f39b8862b9004.v1-default-1742",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      }
+    },
+    "parameters": {
+      "database server name": {
+        "value": "pbisttest.database.windows.net",
+        "certificateThumbprint": ""
+      },
+      "database name": {
+        "value": "TestNews",
+        "certificateThumbprint": ""
+      },
+      "user name": {
+        "value": "pbiadmin",
+        "certificateThumbprint": ""
+      }
+    },
+    "payloadsInBlobStorage": false,
+    "payloadsLocation": null,
+    "packageType": "Graph"
+  },
+  "id": "/subscriptions/20ea4e8d-d3d9-4f1d-947c-441675acd4f7/resourceGroups/amlTest/providers/Microsoft.MachineLearning/webServices/TopicsImagesWebService0edt4s5g86",
+  "name": "TopicsImagesWebService0edt4s5g86",
+  "location": "South Central US",
+  "type": "Microsoft.MachineLearning/webServices",
+  "tags": {}
+}

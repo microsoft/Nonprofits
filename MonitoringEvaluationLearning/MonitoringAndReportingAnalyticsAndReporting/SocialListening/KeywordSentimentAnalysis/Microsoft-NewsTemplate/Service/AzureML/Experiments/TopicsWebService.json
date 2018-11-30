@@ -1,0 +1,657 @@
+{
+  "properties": {
+    "package": {
+      "nodes": {
+        "node1": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    # Execution logic goes here\n    result = pd.melt(dataframe1, id_vars = ['Feature'], var_name = 'Topic', value_name = 'Score')\n    \n    # Add a rank by sorting the scores.\n    result['Rank'] = result.sort_values(['Score'], ascending=[False]) \\\n             .groupby(['Topic']) \\\n             .cumcount() + 1\n\n    # Grab the top five features for each topic\n    return result.loc[result['Rank'] <= 5]\n",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node2": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    return dataframe1.loc[dataframe1['Rank'] <= 5] \\\n        .sort_values(['Rank'], ascending=[True]) \\\n        .groupby('Topic')['Feature'] \\\n        .apply(lambda x: ', '.join(x)) \\\n        .reset_index()",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node3": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    # Execution logic goes here\n    frame = dataframe1.drop(['cleanedText', 'Preprocessed cleanedText'], axis = 1)\n    \n    return pd.melt(frame, id_vars = ['DocumentId'], var_name = 'Topic', value_name = 'Score')\n",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node4": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    result = dataframe1\n\n    # Add a rank by sorting the scores.\n    result['Rank'] = result.sort_values(['Score'], ascending=[False]) \\\n             .groupby(['DocumentId']) \\\n             .cumcount() + 1\n\n    # Grab the top five features for each topic\n    return result.loc[result['Rank'] == 1]",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node5": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    o = dataframe1.groupby(['Topic'])['DocumentId'].count().reset_index()\n    o.columns = ['Topic', 'DocumentCount']\n    return o",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node6": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\nimport re\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    dataframe1['Topic'] = dataframe1['Topic'].str.replace(r'\\D+', '').astype('int')\n    \n    return dataframe1",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node7": {
+          "assetId": "asset1",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "R Script": {
+              "value": "# The script MUST contain a function named azureml_main\n# which is the entry point for this module.\n\n# imports up here can be used to \nimport pandas as pd\nimport re\n\n# The entry point function can contain up to two input arguments:\n#   Param<dataframe1>: a pandas.DataFrame\n#   Param<dataframe2>: a pandas.DataFrame\ndef azureml_main(dataframe1 = None, dataframe2 = None):\n\n    dataframe1['Topic'] = dataframe1['Topic'].str.replace(r'\\D+', '').astype('int')\n    \n    return dataframe1",
+              "certificateThumbprint": ""
+            },
+            "Python Version": {
+              "value": "Anaconda 4.0/Python 2.7.11",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node8": {
+          "assetId": "asset2",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Comma-separated case-sensitive names of join key columns for L": {
+              "value": "%7B%22isFilter%22%3Atrue%2C%22rules%22%3A%5B%7B%22ruleType%22%3A%22ColumnNames%22%2C%22columns%22%3A%5B%22Topic%22%5D%2C%22exclude%22%3Afalse%7D%5D%2C%22ui%22%3A%7B%22withRules%22%3Atrue%7D%7D",
+              "certificateThumbprint": ""
+            },
+            "Comma-separated case-sensitive names of join key columns for R": {
+              "value": "%7B%22isFilter%22%3Atrue%2C%22rules%22%3A%5B%7B%22ruleType%22%3A%22ColumnNames%22%2C%22columns%22%3A%5B%22Topic%22%5D%2C%22exclude%22%3Afalse%7D%5D%7D",
+              "certificateThumbprint": ""
+            },
+            "Match case": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Join type": {
+              "value": "Inner Join",
+              "certificateThumbprint": ""
+            },
+            "Keep right key columns in joined table": {
+              "value": "False",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node9": {
+          "assetId": "asset2",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Comma-separated case-sensitive names of join key columns for L": {
+              "value": "%7B%22isFilter%22%3Atrue%2C%22rules%22%3A%5B%7B%22ruleType%22%3A%22ColumnNames%22%2C%22columns%22%3A%5B%22Topic%22%5D%2C%22exclude%22%3Afalse%7D%5D%2C%22ui%22%3A%7B%22withRules%22%3Atrue%7D%7D",
+              "certificateThumbprint": ""
+            },
+            "Comma-separated case-sensitive names of join key columns for R": {
+              "value": "%7B%22isFilter%22%3Atrue%2C%22rules%22%3A%5B%7B%22ruleType%22%3A%22ColumnNames%22%2C%22columns%22%3A%5B%22Topic%22%5D%2C%22exclude%22%3Afalse%7D%5D%2C%22ui%22%3A%7B%22withRules%22%3Atrue%7D%7D",
+              "certificateThumbprint": ""
+            },
+            "Match case": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Join type": {
+              "value": "Inner Join",
+              "certificateThumbprint": ""
+            },
+            "Keep right key columns in joined table": {
+              "value": "False",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node10": {
+          "assetId": "asset3",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Language": {
+              "value": "English",
+              "certificateThumbprint": ""
+            },
+            "Remove by part of speech": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Text column to clean": {
+              "value": "%7B%22isFilter%22%3Atrue%2C%22rules%22%3A%5B%7B%22ruleType%22%3A%22ColumnNames%22%2C%22columns%22%3A%5B%22cleanedText%22%5D%2C%22exclude%22%3Afalse%7D%5D%7D",
+              "certificateThumbprint": ""
+            },
+            "Remove stop words": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Lemmatization": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Detect sentences": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Normalize case to lowercase": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Remove numbers": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Remove special characters": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Remove duplicate characters": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Remove email addresses": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Remove URLs": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Expand verb contractions": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Normalize backslashes to slashes": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Split tokens on special characters": {
+              "value": "True",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node11": {
+          "assetId": "asset4",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Please Specify Data Source": {
+              "value": "SqlAzure",
+              "certificateThumbprint": ""
+            },
+            "Database Server Name": {
+              "value": "pbisttest.database.windows.net",
+              "certificateThumbprint": ""
+            },
+            "Database Name": {
+              "value": "TestNews",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Name": {
+              "value": "pbiadmin",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Password": {
+              "value": "PlacementPassword",
+              "certificateThumbprint": ""
+            },
+            "Trust Server Certificate": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Database Query": {
+              "value": "select id as DocumentId, cleanedText FROM bpst_news.documents",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node12": {
+          "assetId": "asset5",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Target columns": {
+              "value": "%7B%22isFilter%22%3Atrue%2C%22rules%22%3A%5B%7B%22ruleType%22%3A%22ColumnNames%22%2C%22columns%22%3A%5B%22Preprocessed%20cleanedText%22%5D%2C%22exclude%22%3Afalse%7D%5D%7D",
+              "certificateThumbprint": ""
+            },
+            "Number of topics to model": {
+              "value": "391",
+              "certificateThumbprint": ""
+            },
+            "N-grams": {
+              "value": "1",
+              "certificateThumbprint": ""
+            },
+            "Normalize": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Show all options": {
+              "value": "True",
+              "certificateThumbprint": ""
+            },
+            "Rho parameter": {
+              "value": "0.0006",
+              "certificateThumbprint": ""
+            },
+            "Alpha parameter": {
+              "value": ".0006",
+              "certificateThumbprint": ""
+            },
+            "Estimated number of documents": {
+              "value": "1348",
+              "certificateThumbprint": ""
+            },
+            "Size of the batch": {
+              "value": "256",
+              "certificateThumbprint": ""
+            },
+            "Initial value of iteration count": {
+              "value": "0",
+              "certificateThumbprint": ""
+            },
+            "Power applied to the iteration during updates": {
+              "value": "0.5",
+              "certificateThumbprint": ""
+            },
+            "passes": {
+              "value": "10",
+              "certificateThumbprint": ""
+            },
+            "Build dictionary of ngrams prior to LDA": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Hash bits": {
+              "value": "18",
+              "certificateThumbprint": ""
+            }
+          }
+        },
+        "node13": {
+          "assetId": "asset6",
+          "inputId": null,
+          "outputId": null,
+          "parameters": {
+            "Please Specify Data Destination": {
+              "value": "SqlAzure",
+              "certificateThumbprint": ""
+            },
+            "Database Server Name": {
+              "value": "pbisttest.database.windows.net",
+              "certificateThumbprint": ""
+            },
+            "Database Name": {
+              "value": "TestNews",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Name": {
+              "value": "pbiadmin",
+              "certificateThumbprint": ""
+            },
+            "Server User Account Password": {
+              "value": "PlacementPassword",
+              "certificateThumbprint": ""
+            },
+            "Trust Server Certificate": {
+              "value": "False",
+              "certificateThumbprint": ""
+            },
+            "Comma separated list of columns to be saved": {
+              "value": "DocumentId,Topic,Score,DocumentCount,Feature",
+              "certificateThumbprint": ""
+            },
+            "Data Table Name": {
+              "value": "bpst_news.stg_documenttopics",
+              "certificateThumbprint": ""
+            },
+            "Comma separated list of datatable columns": {
+              "value": "documentId,topicId,documentDistance,topicScore,topicKeyPhrase",
+              "certificateThumbprint": ""
+            },
+            "SQL Azure Number Of Rows To Write": {
+              "value": "50",
+              "certificateThumbprint": ""
+            },
+            "Treat Errors as Warnings": {
+              "value": "False",
+              "certificateThumbprint": ""
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "sourceNodeId": "node1",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node2",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node2",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node7",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node3",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node4",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node4",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node6",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node5",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node8",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node6",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node5",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node6",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node9",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node7",
+          "sourcePortId": "Result Dataset",
+          "targetNodeId": "node8",
+          "targetPortId": "Dataset2"
+        },
+        {
+          "sourceNodeId": "node8",
+          "sourcePortId": "Results dataset",
+          "targetNodeId": "node9",
+          "targetPortId": "Dataset2"
+        },
+        {
+          "sourceNodeId": "node9",
+          "sourcePortId": "Results dataset",
+          "targetNodeId": "node13",
+          "targetPortId": "Dataset"
+        },
+        {
+          "sourceNodeId": "node10",
+          "sourcePortId": "Results dataset",
+          "targetNodeId": "node12",
+          "targetPortId": "Dataset"
+        },
+        {
+          "sourceNodeId": "node11",
+          "sourcePortId": "Results dataset",
+          "targetNodeId": "node10",
+          "targetPortId": "Dataset"
+        },
+        {
+          "sourceNodeId": "node12",
+          "sourcePortId": "Transformed dataset",
+          "targetNodeId": "node3",
+          "targetPortId": "Dataset1"
+        },
+        {
+          "sourceNodeId": "node12",
+          "sourcePortId": "Feature topic matrix",
+          "targetNodeId": "node1",
+          "targetPortId": "Dataset1"
+        }
+      ],
+      "graphParameters": {
+        "Database server name": {
+          "description": "Database server name",
+          "type": "String",
+          "links": [
+            {
+              "nodeId": "node11",
+              "parameterKey": "Database Server Name"
+            },
+            {
+              "nodeId": "node13",
+              "parameterKey": "Database Server Name"
+            }
+          ]
+        },
+        "Database name": {
+          "description": "Database name",
+          "type": "String",
+          "links": [
+            {
+              "nodeId": "node11",
+              "parameterKey": "Database Name"
+            },
+            {
+              "nodeId": "node13",
+              "parameterKey": "Database Name"
+            }
+          ]
+        },
+        "User name": {
+          "description": "User name",
+          "type": "String",
+          "links": [
+            {
+              "nodeId": "node11",
+              "parameterKey": "Server User Account Name"
+            },
+            {
+              "nodeId": "node13",
+              "parameterKey": "Server User Account Name"
+            }
+          ]
+        }
+      }
+    },
+    "title": "TopicsDeployed",
+    "description": null,
+    "createdOn": "2017-06-05T15:03:37.7508698Z",
+    "modifiedOn": "2017-06-05T15:03:52.4695221Z",
+    "provisioningState": "Succeeded",
+    "keys": null,
+    "readOnly": false,
+    "swaggerLocation": "https://ussouthcentral.services.azureml.net/subscriptions/20ea4e8dd3d94f1d947c441675acd4f7/services/b16b4fe5f15045f5ab0e79adb77443fd/swagger.json",
+    "exposeSampleData": false,
+    "realtimeConfiguration": {
+      "maxConcurrentCalls": 20
+    },
+    "diagnostics": {
+      "level": "None",
+      "expiry": null
+    },
+    "storageAccount": {
+      "name": "storage0edt4s5g86",
+      "key": null
+    },
+    "machineLearningWorkspace": null,
+    "commitmentPlan": null,
+    "input": {
+      "title": "",
+      "description": "",
+      "type": "object",
+      "properties": {}
+    },
+    "output": {
+      "title": "",
+      "description": "",
+      "type": "object",
+      "properties": {}
+    },
+    "exampleRequest": {
+      "inputs": null,
+      "globalParameters": {
+        "Database server name": "pbist.database.windows.net",
+        "Database name": "NewsTemplateTest",
+        "User name": "pbiadmin"
+      }
+    },
+    "assets": {
+      "asset1": {
+        "name": "Execute Python Script",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.cdb56f957f4c404dbde75bb972e6f232.v1-default-1735",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      },
+      "asset2": {
+        "name": "Join Data",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.124865f7e9014656adacf4cb08248099.v1-default-1712",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      },
+      "asset3": {
+        "name": "Preprocess Text",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.bf9e794a9e2b4662902a0e73b255c135.v1-default-1740",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      },
+      "asset4": {
+        "name": "Import Data",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.4e1b0fe6aded4b3fa36f39b8862b9004.v1-default-1742",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      },
+      "asset5": {
+        "name": "Latent Dirichlet Allocation",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.e35a5905bd5741f4957682bfcb92f837.v1-default-1742",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      },
+      "asset6": {
+        "name": "Export Data",
+        "id": null,
+        "type": "Module",
+        "locationInfo": {
+          "uri": "aml://module/506153734175476c4f62416c57734963.7a391181b6a74ad4b82de419c0d6522c.v1-default-1742",
+          "credentials": ""
+        },
+        "inputPorts": null,
+        "outputPorts": null,
+        "metadata": null,
+        "parameters": null
+      }
+    },
+    "parameters": {
+      "database server name": {
+        "value": "pbisttest.database.windows.net",
+        "certificateThumbprint": ""
+      },
+      "database name": {
+        "value": "TestNews",
+        "certificateThumbprint": ""
+      },
+      "user name": {
+        "value": "pbiadmin",
+        "certificateThumbprint": ""
+      }
+    },
+    "payloadsInBlobStorage": false,
+    "payloadsLocation": null,
+    "packageType": "Graph"
+  },
+  "id": "/subscriptions/20ea4e8d-d3d9-4f1d-947c-441675acd4f7/resourceGroups/amlTest/providers/Microsoft.MachineLearning/webServices/TopicsWebService0edt4s5g86",
+  "name": "TopicsWebService0edt4s5g86",
+  "location": "South Central US",
+  "type": "Microsoft.MachineLearning/webServices",
+  "tags": {}
+}

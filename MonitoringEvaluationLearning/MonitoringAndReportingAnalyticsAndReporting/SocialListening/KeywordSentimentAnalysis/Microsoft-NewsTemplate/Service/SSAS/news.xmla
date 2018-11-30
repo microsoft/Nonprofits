@@ -1,0 +1,885 @@
+{
+    "create": {
+        "database": {
+            "name": "BingNewsTemplate",
+            "compatibilityLevel": 1200,
+            "model": {
+                "culture": "en-US",
+                "dataSources": [
+                    {
+                        "name": "ST_DS",
+                        "connectionString": "Provider=SQLNCLI11;Data Source=tcp:a.database.windows.net;Persist Security Info=False;User ID=pbiadmin;Initial Catalog=NewsDB",
+                        "impersonationMode": "impersonateServiceAccount",
+                        "annotations": [
+                            {
+                                "name": "ConnectionEditUISource",
+                                "value": "SqlAzure"
+                            },
+                            {
+                                "name": "MustProcess",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "tables": [
+                    {
+                        "name": "Configuration",
+                        "columns": [
+                            {
+                                "name": "id",
+                                "dataType": "int64",
+                                "sourceColumn": "id",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "configuration group",
+                                "dataType": "string",
+                                "sourceColumn": "configuration group",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "configuration subgroup",
+                                "dataType": "string",
+                                "sourceColumn": "configuration subgroup",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "name",
+                                "dataType": "string",
+                                "sourceColumn": "name",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "value",
+                                "dataType": "string",
+                                "sourceColumn": "value",
+                                "sourceProviderType": "nvarchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_configuration",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_configuration].* FROM [bpst_news].[vw_configuration] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_configuration].* FROM [bpst_news].[vw_configuration] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_configuration"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Key Phrases",
+                        "columns": [
+                            {
+                                "name": "Document Id",
+                                "dataType": "string",
+                                "sourceColumn": "Document Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Phrase",
+                                "dataType": "string",
+                                "sourceColumn": "Phrase",
+                                "sourceProviderType": "nvarchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_DocumentKeyPhrases",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_DocumentKeyPhrases].* FROM [bpst_news].[vw_DocumentKeyPhrases] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_DocumentKeyPhrases].* FROM [bpst_news].[vw_DocumentKeyPhrases] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_DocumentKeyPhrases"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Article Search Terms",
+                        "columns": [
+                            {
+                                "name": "Document Id",
+                                "dataType": "string",
+                                "sourceColumn": "Document Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Search Terms",
+                                "dataType": "string",
+                                "sourceColumn": "Search Terms",
+                                "sourceProviderType": "nvarchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_DocumentSearchTerms",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_DocumentSearchTerms].* FROM [bpst_news].[vw_DocumentSearchTerms] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_DocumentSearchTerms].* FROM [bpst_news].[vw_DocumentSearchTerms] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_DocumentSearchTerms"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Sentiment Scores",
+                        "columns": [
+                            {
+                                "name": "Id",
+                                "dataType": "string",
+                                "sourceColumn": "Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Score",
+                                "dataType": "double",
+                                "sourceColumn": "Score",
+                                "sourceProviderType": "float"
+                            },
+                            {
+                                "type": "calculated",
+                                "name": "Binned Sentiment",
+                                "dataType": "double",
+                                "isDataTypeInferred": true,
+                                "expression": " int([Score]*20)/20.0"
+                            },
+                            {
+                                "type": "calculated",
+                                "name": "Sentiment",
+                                "dataType": "string",
+                                "isDataTypeInferred": true,
+                                "expression": " If('Sentiment Scores'[Score] > 0.8, \"Very Positive\", If('Sentiment Scores'[Score] > 0.6 && 'Sentiment Scores'[Score] < 0.8 , \"Slightly Positive\", If('Sentiment Scores'[Score] > 0.4 && 'Sentiment Scores'[Score] < 0.6,  \"Neutral\", If('Sentiment Scores'[Score] > 0.2 &&'Sentiment Scores'[Score] < 0.4, \"Slightly Negative\", If('Sentiment Scores'[Score] < 0.2, \"Very Negative\")))))"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_DocumentSentimentScores",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_DocumentSentimentScores].* FROM [bpst_news].[vw_DocumentSentimentScores] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_DocumentSentimentScores].* FROM [bpst_news].[vw_DocumentSentimentScores] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_DocumentSentimentScores"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Topic Images",
+                        "columns": [
+                            {
+                                "name": "Topic Id",
+                                "dataType": "string",
+                                "sourceColumn": "Topic Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Image URL 1",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 1",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 2",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 2",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 3",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 3",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 4",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 4",
+                                "sourceProviderType": "nvarchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_DocumentTopicImages",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_DocumentTopicImages].* FROM [bpst_news].[vw_DocumentTopicImages] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_DocumentTopicImages].* FROM [bpst_news].[vw_DocumentTopicImages] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_DocumentTopicImages"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Entity Rankings",
+                        "columns": [
+                            {
+                                "name": "Entity Value Rank",
+                                "dataType": "int64",
+                                "sourceColumn": "Entity Value Rank",
+                                "sourceProviderType": "bigint"
+                            },
+                            {
+                                "name": "Entity Id",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Id",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Entity Type",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Type",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Entity Value",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Value",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Document Count",
+                                "dataType": "int64",
+                                "sourceColumn": "Document Count",
+                                "sourceProviderType": "int"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_EntityRankings",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_EntityRankings].* FROM [bpst_news].[vw_EntityRankings] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_EntityRankings].* FROM [bpst_news].[vw_EntityRankings] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_EntityRankings"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Article",
+                        "columns": [
+                            {
+                                "name": "Id",
+                                "dataType": "string",
+                                "sourceColumn": "Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Abstract",
+                                "dataType": "string",
+                                "sourceColumn": "Abstract",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Title",
+                                "dataType": "string",
+                                "sourceColumn": "Title",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Source URL",
+                                "dataType": "string",
+                                "sourceColumn": "Source URL",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Source Domain",
+                                "dataType": "string",
+                                "sourceColumn": "Source Domain",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Category",
+                                "dataType": "string",
+                                "sourceColumn": "Category",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image Width",
+                                "dataType": "int64",
+                                "sourceColumn": "Image Width",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "Image Height",
+                                "dataType": "int64",
+                                "sourceColumn": "Image Height",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "Sentiment Score",
+                                "dataType": "double",
+                                "sourceColumn": "Sentiment Score",
+                                "sourceProviderType": "float"
+                            },
+                            {
+                                "name": "PublishedTimestamp",
+                                "dataType": "dateTime",
+                                "sourceColumn": "PublishedTimestamp",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Published Month Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Published Month Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Published Week Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Published Week Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Published Day Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Published Day Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Published Hour Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Published Hour Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Minute Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Minute Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Ingested Timestamp",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Ingested Timestamp",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Ingested Month Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Ingested Month Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Ingested Week Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Ingested Week Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Ingested Day Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Ingested Day Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Ingested Hour Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Ingested Hour Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "name": "Ingested Minute Precision",
+                                "dataType": "dateTime",
+                                "sourceColumn": "Ingested Minute Precision",
+                                "formatString": "General Date",
+                                "sourceProviderType": "datetime"
+                            },
+                            {
+                                "type": "calculated",
+                                "name": "CountEntities",
+                                "dataType": "int64",
+                                "isDataTypeInferred": true,
+                                "expression": " COUNTROWS(RELATEDTABLE(Entities))"
+                            },
+                            {
+                                "type": "calculated",
+                                "name": "Summary",
+                                "dataType": "string",
+                                "isDataTypeInferred": true,
+                                "expression": "\" \""
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_FullDocument",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_FullDocument].* FROM [bpst_news].[vw_FullDocument] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "measures": [
+                            {
+                                "name": "News Sparcity",
+                                "expression": " counta(Article[Id]) /DISTINCTCOUNT(Article[Source Domain])"
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_FullDocument].* FROM [bpst_news].[vw_FullDocument] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_FullDocument"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Article Topics",
+                        "columns": [
+                            {
+                                "name": "Document Id",
+                                "dataType": "string",
+                                "sourceColumn": "Document Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Topic Id",
+                                "dataType": "string",
+                                "sourceColumn": "Topic Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Batch Id",
+                                "dataType": "string",
+                                "sourceColumn": "Batch Id",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Document Distance",
+                                "dataType": "double",
+                                "sourceColumn": "Document Distance",
+                                "sourceProviderType": "float"
+                            },
+                            {
+                                "name": "Topic Score",
+                                "dataType": "int64",
+                                "sourceColumn": "Topic Score",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "Topic Key Phrase",
+                                "dataType": "string",
+                                "sourceColumn": "Topic Key Phrase",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 1",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 1",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 2",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 2",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 3",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 3",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Image URL 4",
+                                "dataType": "string",
+                                "sourceColumn": "Image URL 4",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Weight",
+                                "dataType": "double",
+                                "sourceColumn": "Weight",
+                                "sourceProviderType": "float"
+                            },
+                            {
+                                "name": "Document Distance With Topic Image",
+                                "dataType": "double",
+                                "sourceColumn": "Document Distance With Topic Image",
+                                "sourceProviderType": "float"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_FullDocumentTopics",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_FullDocumentTopics].* FROM [bpst_news].[vw_FullDocumentTopics] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_FullDocumentTopics].* FROM [bpst_news].[vw_FullDocumentTopics] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_FullDocumentTopics"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Entities",
+                        "columns": [
+                            {
+                                "name": "Document Id",
+                                "dataType": "string",
+                                "sourceColumn": "Document Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Entity Type",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Type",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Entity Value",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Value",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Offset",
+                                "dataType": "int64",
+                                "sourceColumn": "Offset",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "Offset Document Percentage",
+                                "dataType": "double",
+                                "sourceColumn": "Offset Document Percentage",
+                                "sourceProviderType": "float"
+                            },
+                            {
+                                "name": "Lenth",
+                                "dataType": "int64",
+                                "sourceColumn": "Lenth",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "Entity Id",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Id",
+                                "sourceProviderType": "nvarchar"
+                            },
+                            {
+                                "name": "Entity Class",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Class",
+                                "sourceProviderType": "varchar"
+                            },
+                            {
+                                "name": "Entity Color",
+                                "dataType": "string",
+                                "sourceColumn": "Entity Color",
+                                "sourceProviderType": "varchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_FullEntities",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_FullEntities].* FROM [bpst_news].[vw_FullEntities] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_FullEntities].* FROM [bpst_news].[vw_FullEntities] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_FullEntities"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Topic Key Phrases",
+                        "columns": [
+                            {
+                                "name": "Topic Id",
+                                "dataType": "int64",
+                                "sourceColumn": "Topic Id",
+                                "sourceProviderType": "int"
+                            },
+                            {
+                                "name": "Key Phrase",
+                                "dataType": "string",
+                                "sourceColumn": "Key Phrase",
+                                "sourceProviderType": "nvarchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_TopicKeyPhrases",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_TopicKeyPhrases].* FROM [bpst_news].[vw_TopicKeyPhrases] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_TopicKeyPhrases].* FROM [bpst_news].[vw_TopicKeyPhrases] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_TopicKeyPhrases"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Compressed Entities",
+                        "columns": [
+                            {
+                                "name": "Document Id",
+                                "dataType": "string",
+                                "sourceColumn": "Document Id",
+                                "sourceProviderType": "nchar"
+                            },
+                            {
+                                "name": "Compressed Entities Json",
+                                "dataType": "string",
+                                "sourceColumn": "Compressed Entities Json",
+                                "sourceProviderType": "nvarchar"
+                            }
+                        ],
+                        "partitions": [
+                            {
+                                "name": "vw_DocumentCompressedEntities",
+                                "dataView": "full",
+                                "source": {
+                                    "query": " SELECT [bpst_news].[vw_DocumentCompressedEntities].* FROM [bpst_news].[vw_DocumentCompressedEntities] ",
+                                    "dataSource": "ST_DS"
+                                }
+                            }
+                        ],
+                        "annotations": [
+                            {
+                                "name": "_TM_ExtProp_QueryDefinition",
+                                "value": " SELECT [bpst_news].[vw_DocumentCompressedEntities].* FROM [bpst_news].[vw_DocumentCompressedEntities] "
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbTableName",
+                                "value": "vw_DocumentCompressedEntities"
+                            },
+                            {
+                                "name": "_TM_ExtProp_DbSchemaName",
+                                "value": "bpst_news"
+                            }
+                        ]
+                    }
+                ],
+                "relationships": [
+                    {
+                        "name": "ebc3ba0f-d24b-4031-94af-b8a7d576740a",
+                        "fromCardinality": "one",
+                        "fromTable": "Article",
+                        "fromColumn": "Id",
+                        "toTable": "Sentiment Scores",
+                        "toColumn": "Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "283c641e-ea3a-43f7-8825-bc6ef7477399",
+                        "fromTable": "Article Topics",
+                        "fromColumn": "Document Id",
+                        "toTable": "Article",
+                        "toColumn": "Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "5df252a1-a24e-4450-b9b1-d42b5f97e0f4",
+                        "fromTable": "Article Topics",
+                        "fromColumn": "Topic Id",
+                        "toTable": "Topic Images",
+                        "toColumn": "Topic Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "d4ab459f-87ae-4d9c-8d29-a74f9a5c7c72",
+                        "fromTable": "Article Topics",
+                        "fromColumn": "Topic Id",
+                        "toTable": "Topic Key Phrases",
+                        "toColumn": "Topic Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "e0d2346d-c69e-4f86-8a21-5168160fa735",
+                        "fromTable": "Entities",
+                        "fromColumn": "Entity Id",
+                        "toTable": "Entity Rankings",
+                        "toColumn": "Entity Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "47e63de7-4374-4087-b25f-2077f15d5ed1",
+                        "fromTable": "Entities",
+                        "fromColumn": "Document Id",
+                        "toTable": "Article",
+                        "toColumn": "Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "861dc9be-739c-402c-9acc-06990c61df93",
+                        "fromTable": "Key Phrases",
+                        "fromColumn": "Document Id",
+                        "toTable": "Article",
+                        "toColumn": "Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "35234962-23d3-4f9a-93f7-30c224e30f57",
+                        "fromTable": "Article Search Terms",
+                        "fromColumn": "Document Id",
+                        "toTable": "Article",
+                        "toColumn": "Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    },
+                    {
+                        "name": "e028043e-ce0b-4e8f-a881-9c5d01a99f50",
+                        "fromCardinality": "one",
+                        "fromTable": "Article",
+                        "fromColumn": "Id",
+                        "toTable": "Compressed Entities",
+                        "toColumn": "Document Id",
+                        "crossFilteringBehavior": "bothDirections"
+                    }
+                ],
+                "annotations": [
+                    {
+                        "name": "ClientCompatibilityLevel",
+                        "value": "400"
+                    }
+                ]
+            }
+        }
+    }
+}
