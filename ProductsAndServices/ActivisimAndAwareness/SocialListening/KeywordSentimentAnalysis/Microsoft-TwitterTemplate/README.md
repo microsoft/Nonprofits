@@ -1,4 +1,4 @@
-Brand & Campaign Management Solution Template Documentation
+Keyword Sentiment Analysis Solution Template Documentation
 ===========================================================
 
 # Table of Contents
