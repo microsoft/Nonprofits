@@ -1,4 +1,5 @@
-Keyword Sentiment Analysis Solution Template Documentation
+Keyword Sentiment Analysis for Twitter
+Solution Template Documentation
 ===========================================================
 
 # Table of Contents
