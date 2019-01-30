@@ -11,7 +11,7 @@ This system has two major components:
 
 These systems have three features you can customize:
 * The search terms/keywords to identify in the newsfeed or on twitter
-* The ability to control the costs by enabling you to set limited for the search criteria (e.g., how often you perform an update)
+* The ability to control the costs by enabling you to set limits for the search criteria (e.g., how often you perform an update)
 * The ability to choose which languages to monitor
 
 Features in progress include:
