@@ -50,7 +50,7 @@ Setting up the template requires the following:
 
 ### How to Install
 
-Before diving into the components of the solution, we will go through how to set things up. To get started with the solution, navigate to the [Bing News template page]( https://powerbi.microsoft.com/en-us/solution-templates/bing-news/) and click **Install Now**.
+Before diving into the components of the solution, we will go through how to set things up. To get started with the solution, navigate to the [Bing News template page]( https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate) and click **Deploy to Azure**.
 
 **Getting Started:** Starting page introducing the template and explaining the architecture.
 
@@ -58,9 +58,8 @@ Before diving into the components of the solution, we will go through how to set
 
 **Azure:** Use OAuth to sign into your Azure account. You will notice you have a choice between signing into an organizational account and a Microsoft (work/school account).
 
-If you select a Microsoft account, you will need to provide the application with a domain directory. You can find your domain by logging into your Azure account and choosing from those listed when you click your e-mail in the top right hand corner:
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-![Image](Resources/media/image3.png)
 If you belong to a single domain, simply hover over your e-mail address in the same place:
 
 ![Image](Resources/media/image4.png)
