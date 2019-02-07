@@ -60,13 +60,6 @@ Before diving into the components of the solution, we will go through how to set
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-If you belong to a single domain, simply hover over your e-mail address in the same place:
-
-![Image](Resources/media/image4.png)
-
-In this case, the domain is: richtkhotmail.362.onmicrosoft.com.
-
-![Image](Resources/media/image5.png)
 Logging into Azure gives the application access to your Azure subscription and permits spinning up Azure services on your behalf. It also lists the estimated costs of the template. If you want a more granular breakdown of the costs, please scroll down to the Estimated Costs section.
 As a user navigates away from this page a new resource group gets spun up on their Azure subscription (the name is random but always prefixed by ‘SolutionTemplate-‘). This name can be changed under the advanced settings tab. All newly created resources go into this container.
 **Cognitive Services:** Cognitive services are an Azure service that provide unique machine learning capabilities. This solution template uses the Text Analytics API to enrich data through sentiment analysis and key phrase extractions. It also uses the Bing News Search API to find articles based on the user’s search query.
