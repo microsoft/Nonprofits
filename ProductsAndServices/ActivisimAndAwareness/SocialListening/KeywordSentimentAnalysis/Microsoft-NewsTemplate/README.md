@@ -9,7 +9,7 @@ Keyword Sentiment Analysis using Bing News Documentation
 5. [Architecture Deep Dive](#architecture-deep-dive)
 6. [Model Schema](#model-schema)
 7. [Reports Walkthrough](#report-walkthrough)
-8. [Updating your Search Terms](#updating-your-search-terms)
+8. [Updating your pipeline](#updating-your-search-terms)
 9. [Estimated Costs](#estimated-costs)
 
 
@@ -22,19 +22,15 @@ This document provides a walkthrough of the architecture, a deep dive into every
 
 ### Architecture
 
-![Image](Resources/media/image1.png)
+![Image](Resources/media/ArchitectureOverviewDiagramBingNews.png)
 
 The flow of the Bing News solution template is as follows:
 
--   Logic Apps finds articles via the Bing News API
-
--   Logic App extracts the contents of the news article
-
--   Azure Function enriches the content of the news article and writes it to Azure SQL
-
--   Azure Function also calls textual analytics cognitive service to work out sentiment of news article, using the extracted content
-
--   Power BI imports data into it from Azure SQL and renders pre-defined reports
+1. Logic Apps finds articles via the [Bing News Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-news-search-api/)
+2. Logic App extracts the contents of the news article
+3. Azure Function calls textual analytics cognitive services to wrok out the sentiment of the article 
+4. Azure Function enriches the content of the news article with machine learning
+5. Power BI imports data into it from Azure SQL and renders pre-defined reports
 
 ### System Requirements
 
@@ -49,45 +45,17 @@ Setting up the template requires the following:
 
 ### How to Install
 
-Before diving into the components of the solution, we will go through how to set things up. To get started with the solution, navigate to the [Bing News template page]( https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate) and click **Deploy to Azure**.
+Before diving into the components of the solution, we will go through how to set things up. To get started with the solution, navigate to the [this page]( https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate) and click **Deploy to Azure**.
 
 **Getting Started:** Starting page introducing the template and explaining the architecture.
 
-![Image](Resources/media/image2.png)
-
 **Azure:** Use OAuth to sign into your Azure account. You will notice you have a choice between signing into an organizational account and a Microsoft (work/school account).
 
-<a href="https://azuredeploy.net/?repository=https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate" target="_blank">azuredeploy.net
+<a href="https://azuredeploy.net/?repository=https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Logging into Azure gives the application access to your Azure subscription and permits spinning up Azure services on your behalf. It also lists the estimated costs of the template. If you want a more granular breakdown of the costs, please scroll down to the Estimated Costs section.
-As a user navigates away from this page a new resource group gets spun up on their Azure subscription (the name is random but always prefixed by ‘SolutionTemplate-‘). This name can be changed under the advanced settings tab. All newly created resources go into this container.
-**Cognitive Services:** Cognitive services are an Azure service that provide unique machine learning capabilities. This solution template uses the Text Analytics API to enrich data through sentiment analysis and key phrase extractions. It also uses the Bing News Search API to find articles based on the user’s search query.
-![Image](Resources/media/image6.png)
-Upon clicking next on the “Connect to Cognitive Services” page you may run into the following error:
- 
-Your account admin (xxxx@yyyy.zzz) needs to enable cognitive services for this subscription. Ensure the account admin has at least contributor privileges to the Azure subscription. The following cognitive service should be enabled in order to proceed- TextAnalytics --- Action Failed Microsoft-RegisterCognitiveServices --- Error ID: (yuu0gk0pdevkt3knk)
- 
-This occurs when:
-•	the Azure cognitive services APIs required by the solution template are not enabled
-•	the solution template attempts to enable the required cognitive services on the user’s behalf, and
-the individual provisioning the Bing News solution template does not have permissions to enable the Cognitive Services required by the solution template.
-
-To fix this, your Azure account administrator needs to enable the cognitive services required by the Bing News solution template. The alias of your account administrator is included in the error message. Contact this individual and ask him or her to do the following:
-
-1.	Connect to the Azure portal.
-2.	Click the search icon on the top center, enter “Cognitive”, and click on “Cognitive Services accounts (preview)”
-3.	Click the Add button
-4.	In the “API Type” field, select “Bing Search APIs”
-5.	Select the “API Setting”. You should see the following:
-
-![Image](Resources/media/image7.png)
-
-6.	 Select “Enable” and then “Save"
-7.	 Repeat steps 4-6 but with “API Type” selected as “Text Analytics API (preview)”
- 
-Note that it is possible that an account administrator might not have permissions to enable these Cognitive Services (it is possible that they delegated this to the subscription administrator). If this occurs, then the subscription administrator must assign “Contributor” permissions to the account admin for the subscriptions.
+Log into Azure, will gives the application access to your Azure subscription and permits spinning up Azure services on your behalf. It also lists the estimated costs of the template. If you want a more granular breakdown of the costs, please scroll down to the [Estimated Costs](#estimated-costs) section.
 
 **Target:** Connect to an existing SQL Server or provide details which the application will use to spin up an Azure SQL on your behalf. Only Azure SQL is supported for this template. If a user chooses to spin up a new Azure SQL, this will get deployed in their Azure subscription inside the newly created resource group.
 ![Image](Resources/media/image8.png)
@@ -98,8 +66,7 @@ Some recommended practices are as follows:
 If you would like to look for multiple search words please use the OR operators (e.g. Microsoft OR Azure)
 If you would like to look for a specific phrase please use quotation marks (e.g. “Surface Pro”)
 If you would like to exclude a word from your search pleas use – (e.g. Azure -Color)
-If you would like to learn how you can change your search terms once the solution is deployed, please look at the ‘Customizations’ section.
-![Image](Resources/media/image9.png)
+If you would like to learn how you can change your search terms once the solution is deployed, please look at the [Updating your pipeline](#updating-your-search-terms) section.
 
 **Summary:** Summary page outlining all the choices the user made.
 ![Image](Resources/media/image10.png)
@@ -127,7 +94,7 @@ Architecture Deep Dive
 
 The following section will break down how the template works by going through all the components of the solution.
 
-![Image](Resources/media/image1.png)
+![Image](Resources/media/ArchitectureOverviewDiagramBingNews.png)
 
 Azure Resources:
 ----------------
@@ -146,7 +113,7 @@ Logic Apps are an Azure service for building integrated solutions. You can easil
 
 ![Image](Resources/media/image16.png)
 
-The first step inside the Logic App is called the trigger. This runs every 15 minutes and finds all the articles that match the Search Query (in this case the search query is Azure). All the published articles that mentioned the word Azure in the past 15 minutes are returned (the reoccurrence variable can be customized to make data collection less frequent).
+The first step inside the Logic App is called the trigger. This runs every 15 minutes and finds all the articles that match the Search Query (in this case the search query is Azure). All the published articles that mentioned the word Azure in the past 15 minutes are returned (the interval and frequency variable can be customized to make data collection less frequent), see the [Updating your pipeline](#updating-your-search-terms) section.
 
 ![Image](Resources/media/image17.png)
 
@@ -154,7 +121,7 @@ Here is an example of the response body returned:
 
 ![Image](Resources/media/image18.png)
 
- You can learn more about the Bing News API [here]( https://msdn.microsoft.com/en-us/library/dn760793.aspx). 
+ You can learn more about the Bing News API [here]( https://azure.microsoft.com/en-us/services/cognitive-services/bing-news-search-api/). 
 Following the trigger, there are 3 parallel steps that run. All 3 of the steps consist of Azure Functions. Functions are a way of executing some code in a serverless experience. They are very handy for event based executions just like how we use them in the Logic App. To learn more about how to edit the function code please skip over to the Functions section.
 
 ![Image](Resources/media/image19.png)
@@ -271,7 +238,7 @@ You can now disconnect the function from source control and edit the functions f
 
 ![Image](Resources/media/image44.png)
 
-You can view the GitHub we sync our functions from over [here]( https://github.com/juluczni/AzureFunctionsNewsTemplate).
+You can view the GitHub we sync our functions from over [here]( https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/NewsFunction).
 
 ![Image](Resources/media/image45.png)
 ![Image](Resources/media/image46.png)
@@ -280,19 +247,13 @@ You can view the GitHub we sync our functions from over [here]( https://github.c
 ### Azure ML Web Services
 The function of the Azure Machine Learning web services we spin up have been described in the ‘LogicAppScheduler’ section. 
 
-Unfortunately, there isn’t much configuration that can be done with the Azure ML steps as it is only the web services that are deployed and not the actual experiments. The reason behind this is deploying the raw experiments would severely slow down the provisioning process. If you would like to edit the Azure ML experiments you can do so by:
+Unfortunately, there isn’t much configuration that can be done with the Azure ML steps as it is only the web services that are deployed and not the actual experiments. 
+
+The reason behind this is deploying the raw experiments would severely slow down the provisioning process. If you would like to edit the Azure ML experiments you can do so by:
 
 [Approach needs to be verified and documentation updated]
 
 ![Image](Resources/media/image48.png)
-
-### Azure ML Commitment Plan
-
-or the Azure ML components, we spin up an S1 commitment plan. This allows us to have a total of 25 hours of compute a month, up to 10 web services and 100K transactions a month for $100. 
-
-![Image](Resources/media/image49.png)
-
-![Image](Resources/media/image50.png)
 
 ### Connectors
 You will notice there are a number of steps with a chain icon. These are API connections that are used inside the Logic App to authenticate and connect to various services like SQL, Cognitive Services and Azure ML. These services store your credentials securely and can be updated if your credentials/keys ever change.
@@ -425,7 +386,7 @@ In the sample report below we are tracking the Microsoft keyword and have been c
 
 ![Image](Resources/media/image52.png)
 
-The template uses many custom visuals built by MSR for effective information retrieval. On the left hand side we can see the topic clustering visual (this is the output of the Azure ML Topic web service). This visualizes all the clusters generated by the machine learning model with the size of the visual determined by how many documents are present in a cluster. We also visualize the top 3 keywords that are associated with a cluster across the center.
+The template uses many custom visuals built by Microsoft Research for effective information retrieval. On the left hand side we can see the topic clustering visual (this is the output of the Azure ML Topic web service). This visualizes all the clusters generated by the machine learning model with the size of the visual determined by how many documents are present in a cluster. We also visualize the top 3 keywords that are associated with a cluster across the center.
 
 The middle visual is the entity extraction visual that meaningfully represents the organizations, locations and people found inside the articles. This visual represents the output of the Azure ML entity web service. The colors of the entities are defined by the hex colors specified in the Entity Color field and the icons that appear next to each type of entity is specified by the Entity Class. 
 
@@ -480,16 +441,17 @@ If we want to find news articles to read from a certain publisher this is anothe
 ---------------------
 
 Once you set up the solution template you may want to modify the search terms you are looking at.
-If you want to change your search terms you will need to log into your Azure portal account and open your Logic App (LogicAppMainNews). Inside the Logic App you will need to open the first step (the trigger):
+If you want to change your search terms you will need to log into your Azure portal account and open your Logic App (LogicAppMainNews). Inside the Logic App, select Edit, and the Logic App Designer will load.  Depending on your screen resolution, you'll go to the first step, which may require scrolling.  "On news article" ha a property called "Search Query":
 
 ![Image](Resources/media/image17.png)
 
-Inside this step you can see your specified Search Query. You can edit this and save the Logic App to update the query. This however will not wipe out the data from the database – it will just continue accumulating new data on top of the old data.
+The Search Query can be edited and saved the Logic App to update the query. This however will not wipe out the data from the database – it will just continue accumulating new data on top of the old data.
 
-If you would like to completely wipe out the data before updating the search term you will need to do this manually by running the SQL scripts found inside our GitHub [here](https://github.com/Microsoft/BusinessPlatformApps/tree/dev/Source/Apps/Microsoft/Released/Microsoft-NewsTemplate/Service/Database). 
+If you would like to completely wipe out the data before updating the search term you will need to do this manually by running the SQL scripts found inside our GitHub [here](https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/Database). 
 
 Running these scripts in order will clean up and recreate the database, views and stored procedures needed for the solution.
 
+In addition to changing the search terms, the trigger also can be configured to run at various intervals.  To save costs these interval and frequency can be modified in coordination with the other trigger for the preperation of data augmentation in the 
 
 ### Estimated Costs
 
@@ -524,3 +486,11 @@ The following defaults are set for you in the template (you can modify any of th
 For example, if you know you will be processing very few articles a month, you could change the SQL Server from S1 to Basic. 
 Whilst the default setting should cater to most news template requirements, we encourage you to familiarize yourself with the various pricing options and tweak things to suit your needs.
 
+
+### Azure ML Commitment Plan
+
+For the Azure ML components, we spin up an S1 commitment plan. This allows us to have a total of 25 hours of compute a month, up to 10 web services and 100K transactions a month for $100. 
+
+![Image](Resources/media/image49.png)
+
+![Image](Resources/media/image50.png)
