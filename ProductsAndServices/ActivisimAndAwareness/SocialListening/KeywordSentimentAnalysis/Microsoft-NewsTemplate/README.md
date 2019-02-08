@@ -1,4 +1,4 @@
-Advanced Search with Bing News Solution Template Documentation
+Keyword Sentiment Analysis using Bing News Documentation
 ===========================================================
 
 # Table of Contents
@@ -16,9 +16,9 @@ Advanced Search with Bing News Solution Template Documentation
 
 ### Introduction
 
-The Bing News template spins up a sophisticated search solution, finding you the most relevant articles using machine learning techniques. The template stands up an end-to-end solution that finds articles via the Bing News API, enriches the data using machine learning and stores these enrichments in Azure SQL. Users can then use pre-built Power BI reports that leverage Microsoft research technology to start exploring the data and finding articles most relevant to them.
-The template is aimed at anyone who is interesting in finding articles relevant to their chosen search query. It supports multiple personas ranging from a product manager keeping a pulse on the market to a ministry official interested in tracking the media’s reactions to recent policy announcements.
-The following document provides a walkthrough of the architecture, a deep dive into every component, comments on customizability as well as information on additional topics like estimated costs. For any questions not covered in this document, please contact the team at <PBISolnTemplates@microsoft.com>
+The Bing News template spins up a sophisticated search solution, finding you the most relevant articles using machine learning techniques. The template stands up an end-to-end solution that finds articles via the Bing News API, enriches the data using machine learning and stores these enrichments in Azure SQL. Users can then use pre-built Power BI reports that leverage Microsoft technology to start exploring the data and finding articles most relevant to them.
+The template is aimed at nonprofit oganizations who are interested in finding articles relevant to their chosen search query. It supports multiple nonprofit segments, ranging from, a conservation organziations tracking violations in regulations, to an advocacy organization monitoring hate speech being reported.
+This document provides a walkthrough of the architecture, a deep dive into every component, comments on customizability as well as information on additional topics like estimated costs. For any questions not covered in this document, please contact the team at <tsiazure@microsoft.com>.
 
 ### Architecture
 
@@ -28,11 +28,11 @@ The flow of the Bing News solution template is as follows:
 
 -   Logic Apps finds articles via the Bing News API
 
--   Logic App 
+-   Logic App extracts the contents of the news article
 
--   Azure Function enriches tweet and writes it to Azure SQL
+-   Azure Function enriches the content of the news article and writes it to Azure SQL
 
--   Azure Function also calls textual analytics cognitive service to work out sentiment of tweet
+-   Azure Function also calls textual analytics cognitive service to work out sentiment of news article, using the extracted content
 
 -   Power BI imports data into it from Azure SQL and renders pre-defined reports
 
@@ -44,9 +44,8 @@ Setting up the template requires the following:
 
 -   Power BI Desktop (latest version)
 
--   Power BI Pro (to share the template with others)
+-   Power BI Pro (to publish the template to share with others)
 
--   Twitter Account
 
 ### How to Install
 
@@ -58,7 +57,9 @@ Before diving into the components of the solution, we will go through how to set
 
 **Azure:** Use OAuth to sign into your Azure account. You will notice you have a choice between signing into an organizational account and a Microsoft (work/school account).
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+<a href="https://azuredeploy.net/?repository=https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
 
 Logging into Azure gives the application access to your Azure subscription and permits spinning up Azure services on your behalf. It also lists the estimated costs of the template. If you want a more granular breakdown of the costs, please scroll down to the Estimated Costs section.
 As a user navigates away from this page a new resource group gets spun up on their Azure subscription (the name is random but always prefixed by ‘SolutionTemplate-‘). This name can be changed under the advanced settings tab. All newly created resources go into this container.
