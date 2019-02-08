@@ -1,0 +1,10 @@
+{
+	"$schema": "https://aka.ms/azure-quickstart-templates-metadata-schema#",
+	"type": "QuickStart",
+	"itemDisplayName": "Deploy a Bing News Search API Cognitive Pipeline",
+	"description": "This ARM template demonstrates the deployment of a Bing News Search API Cognitive Pipeline with the resources to evaluate and augment the news article and put the augmented data into an SQL database for a PowerBI report to access",
+	"summary": "This ARM template demonstrates the deployment of a Bing News Search API Cognitive Pipeline with sentiment anlysis and entity extraction from the news article content.  Keyword sentiment analysis of the news.",
+	"githubUsername": "willstMSFT",
+	"dateUpdated": "2019-2-8"
+
+}
