@@ -51,7 +51,7 @@ Before diving into the components of the solution, we will go through how to set
 
 **Azure:** Use OAuth to sign into your Azure account. You will notice you have a choice between signing into an organizational account and a Microsoft (work/school account).
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/microsoft/nonprofits/master/" target="_blank">Link
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/microsoft/nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
