@@ -465,7 +465,7 @@
       "type": "Microsoft.Resources/deployments",
       "name": "Deployment-AzureFoundationVirtualWAN-Incremental-20190503",
 
-      "apiVersion": "2019-05-06",
+      "apiVersion": "2019-03-01",
       "resourceGroup": "[parameters('vWAN104ResourceGroupName')]",
       "properties": {
         "mode": "Incremental",
