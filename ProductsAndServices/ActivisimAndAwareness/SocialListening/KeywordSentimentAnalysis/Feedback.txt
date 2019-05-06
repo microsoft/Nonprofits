@@ -1,0 +1,17 @@
+Deploy to Azure button:  https://github.com/jumpstartninjatech/deplopymentApp
+
+Workflow:
+Action:  Make the Resource Group Name a variable.
+Add a disclaimer for the username and password that the password is encrypted and not persisted.
+
+PowerBI needs to be downloaded, add the connection strings etc following the documentation in the github site.
+
+Go into the BingSearch API Connection and update the API Key
+Go into the Cognative Services and update the API key there too.    
+(It seems that the key set in the JSON file isn't persisted and the APIs need to be manually updated.
+)
+
+
+https://github.com/Azure/azure-quickstart-templates/blob/master/1-CONTRIBUTION-GUIDE/best-practices.md
+
+https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-functions
