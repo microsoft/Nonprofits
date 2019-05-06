@@ -19,8 +19,7 @@ region where the vWAN will go.  For instance if you have EU1 and EU2, select the
     "vWAN104securityProviderName": { "value": "" },
     "vWAN104office365LocalBreakoutCategory": { "value": "All" },
     "vWAN104resourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/virtualWans/vwwanwestcentralus" },
-    "vWAN104location": { "value": "westcentralus" },
-    "vWAN104ResourceGroupName": { "value": "rgVirtualWANwestcentralus" },
+
 
     /*Using the metadata spreadsheet, navigate to the vWAN worksheet and filter on the region where this vWAN will go
     for instance if this is Site 1, vWAN104 would be the filter.
