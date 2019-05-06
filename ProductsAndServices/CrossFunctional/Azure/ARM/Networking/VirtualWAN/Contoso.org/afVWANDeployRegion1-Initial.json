@@ -287,7 +287,7 @@ Licensed under the MIT License.*/
       "type": "Microsoft.Resources/deployments",
       "name": "Deployment-AzureFoundationVirtualWAN-Incremental-20190503",
 
-      "apiVersion": "[variables('apiversion')]",
+      "apiVersion": "2019-05-06",
       "resourceGroup": "[parameters('vWAN104ResourceGroupName')]",
       "properties": {
         "mode": "Incremental",
@@ -300,7 +300,7 @@ Licensed under the MIT License.*/
             /*go to the Metadata spreadsheet, VWAN Tab, select the VWAN that is being deployed
     Select the Resources that are grouped by color*/
             {
-              "apiVersion": "[variables('apiversion')]",
+              "apiVersion": "2019-05-06",
               "type": "Microsoft.Network/VirtualWANs",
               "name": "[parameters('vWAN104Name')]",
               "location": "[parameters('vWAN104location')]",
@@ -314,7 +314,7 @@ Licensed under the MIT License.*/
             /*In the metadata spreadsheet, on the VWAN Tab, filter on VWAN Sites that is to be deployed, for example VWAN104
           select the columns with Resource and grouped by Color. */
             {
-              "apiVersion": "[variables('apiversion')]",
+              "apiVersion": "2019-05-06",
               "type": "Microsoft.Network/vpnSites",
               "name": "[parameters('site104-01aname')]",
               "location": "[parameters('vwan104location')]",
@@ -340,7 +340,7 @@ Licensed under the MIT License.*/
             /*In the metadata spreadsheet, proceed to the VWANHub tab and select the VWAN in question
     */
             {
-              "apiVersion": "[variables('apiversion')]",
+              "apiVersion": "2019-05-06",
               "type": "Microsoft.Network/virtualHubs",
               "name": "[parameters('hub104name')]",
               "location": "[parameters('vwan104location')]",
@@ -372,7 +372,7 @@ Licensed under the MIT License.*/
             /*In the metadata spreadsheet, proceed to the VWAN VPN Gateway tab and select the VWAN in question
     */
             {
-              "apiVersion": "[variables('apiversion')]",
+              "apiVersion": "2019-05-06",
               "type": "Microsoft.Network/vpnGateways",
               "name": "[parameters('vpngwID104name')]",
               "location": "[parameters('vwan104location')]",
