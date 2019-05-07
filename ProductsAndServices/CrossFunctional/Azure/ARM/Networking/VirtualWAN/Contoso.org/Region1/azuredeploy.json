@@ -56,16 +56,7 @@
       "defaultValue": "All",
       "metadata": { "description": "The office 365 routing category.  All, None, Optimized, OptimizedAndAllow." }
     },
-    "vWAN104resourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/virtualWans/vwwanwestcentralus",
-      "metadata": { "description": "The resourceID for the Virtual WAN." }
-    },
-    "vWAN104location": {
-      "type": "string",
-      "defaultValue": "westcentralus",
-      "metadata": { "description": "The location for the Virtual WAN." }
-    },
+
     "site104-01aname": {
       "type": "string",
       "defaultValue": "USGovTXSite3a",
@@ -121,11 +112,7 @@
       "defaultValue": "VpnGW1",
       "metadata": { "description": "Model of the device." }
     },
-    "site104-01aresourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3a",
-      "metadata": { "description": "The resouce ID of the VWAN Site." }
-    },
+  
     "site104-01bname": {
       "type": "string",
       "defaultValue": "USGovTXSite3b",
@@ -181,11 +168,6 @@
       "defaultValue": "VpnGW1",
       "metadata": { "description": "Model of the device." }
     },
-    "site104-01bresourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3b",
-      "metadata": { "description": "The resouce ID of the VWAN Site." }
-    },
     "hub104name": {
       "type": "string",
       "defaultValue": "vwanHubwestcentralus",
@@ -196,26 +178,7 @@
       "defaultValue": "10.130.0.0/24",
       "metadata": { "description": "Address-prefix for this VirtualHub." }
     },
-    "hub104resourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/virtualHubs/vwanHubwestcentralus",
-      "metadata": { "description": "The Resource ID for this VirtualHub." }
-    },
-    "hub204name": {
-      "type": "string",
-      "defaultValue": "vwanHubwestus2",
-      "metadata": { "description": "Arbitrary name for the new Azure Virtual WAN Hub." }
-    },
-    "hub204addressPrefix": {
-      "type": "string",
-      "defaultValue": "10.130.0.0/24",
-      "metadata": { "description": "Address-prefix for this VirtualHub." }
-    },
-    "hub204resourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestus2/providers/Microsoft.Network/virtualHubs/vwanHubwestus2",
-      "metadata": { "description": "The Resource ID for this VirtualHub." }
-    },
+
     "peer104-0name": {
       "type": "string",
       "defaultValue": "VNETPeerToprodwc",
@@ -391,11 +354,7 @@
       "defaultValue": [],
       "metadata": { "description": "The IPSec Policies to be considered by this connection." }
     },
-    "vpnc01avwanSiteResourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3a",
-      "metadata": { "description": "Id of the connected vpn site." }
-    },
+   
     "vpnc01aroutingWeight": {
       "type": "int",
       "defaultValue": 0,
@@ -411,11 +370,7 @@
       "defaultValue": "IKEv2",
       "metadata": { "description": "Connection protocol used for this connection" }
     },
-    "vpnc01aresourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vwwanwestcentralusvpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3a",
-      "metadata": { "description": "The resource ID of the connection" }
-    },
+ 
     "vpnc01bname": {
       "type": "string",
       "defaultValue": "vpnCnctvwwanwestcentralusToUSGovTXSite3b",
@@ -446,11 +401,7 @@
       "defaultValue": [],
       "metadata": { "description": "The IPSec Policies to be considered by this connection." }
     },
-    "vpnc01bvwanSiteResourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3b",
-      "metadata": { "description": "Id of the connected vpn site." }
-    },
+
     "vpnc01broutingWeight": {
       "type": "int",
       "defaultValue": 100,
@@ -465,12 +416,8 @@
       "type": "string",
       "defaultValue": "IKEv2",
       "metadata": { "description": "Connection protocol used for this connection" }
-    },
-    "vpnc01bresourceID": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vwwanwestcentralusvpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3b",
-      "metadata": { "description": "The resource ID of the connection" }
     }
+    
 
   },
 
@@ -481,7 +428,10 @@
     "site104-01aID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/vpnSites/', parameters('site104-01aname'))]" },
     "site104-01bID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/vpnSites/', parameters('site104-01bname'))]" },
     "hub104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('hub104name'))]" },
-    "vpngw104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('vpngw104name'))]" }
+    "vpngw104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('vpngw104name'))]" },
+    "vpnc01aID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualGateway/', parameters('vpnc01avwanName'),'/vpnconnection/', parameters('vpnc01aname'))]" },
+    "vpnc01bID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualGateway/', parameters('vpnc01bvwanName'),'/vpnconnection/', parameters('vpnc01bname'))]" }
+
 
 
 
@@ -619,12 +569,13 @@
                   "asn": "[parameters('vpngw104bgpSettingsASN')]",
                   "bgpPeeringAddress": "[parameters('vpngw104bgpPeeringAddress')]",
                   "peerWeight": "[parameters('vpngw104bgpPeerWeight')]"
-                },
-                "virtualHub": { "id": "[parameters('hub104ResourceID')]" },
+                }
+                "virtualHub": "[variables('hub104ID')]"
                 "connections": [
+
                   {
                     "name": "[parameters('vpnc01aname')]",
-                    "id": "[parameters('vpnc01aresourceID')]",
+                    "id": "[variables('vpnc01aID')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]", "[variables('site104-01aID')]" ],
                     "properties": {
@@ -640,7 +591,7 @@
                   },
                   {
                     "name": "[parameters('vpnc01bname')]",
-                    "id": "[parameters('vpnc01bresourceID')]",
+                    "id": "[variables('vpnc01bID')]",
                     "location": "[parameters('location')]",
                     "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]", "[variables('site104-01bID')]" ],
                     "properties": {

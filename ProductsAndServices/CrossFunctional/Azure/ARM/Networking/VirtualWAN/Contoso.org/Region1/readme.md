@@ -5,6 +5,6 @@
 
 <h1>Deploy via the Deploy App</h>
 
-<a href="https://azuredeploy.net" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
+
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
