@@ -112,7 +112,7 @@
       "defaultValue": "VpnGW1",
       "metadata": { "description": "Model of the device." }
     },
-  
+
     "site104-01bname": {
       "type": "string",
       "defaultValue": "USGovTXSite3b",
@@ -354,7 +354,7 @@
       "defaultValue": [],
       "metadata": { "description": "The IPSec Policies to be considered by this connection." }
     },
-   
+
     "vpnc01aroutingWeight": {
       "type": "int",
       "defaultValue": 0,
@@ -370,7 +370,7 @@
       "defaultValue": "IKEv2",
       "metadata": { "description": "Connection protocol used for this connection" }
     },
- 
+
     "vpnc01bname": {
       "type": "string",
       "defaultValue": "vpnCnctvwwanwestcentralusToUSGovTXSite3b",
@@ -417,7 +417,7 @@
       "defaultValue": "IKEv2",
       "metadata": { "description": "Connection protocol used for this connection" }
     }
-    
+
 
   },
 
@@ -505,7 +505,7 @@
                 }
               }
             },
-           {
+            {
               "apiVersion": "[variables('apiversion')]",
               "type": "Microsoft.Network/virtualHubs",
               "name": "[parameters('hub104name')]",
@@ -569,8 +569,8 @@
                   "asn": "[parameters('vpngw104bgpSettingsASN')]",
                   "bgpPeeringAddress": "[parameters('vpngw104bgpPeeringAddress')]",
                   "peerWeight": "[parameters('vpngw104bgpPeerWeight')]"
-                }
-                "virtualHub": "[variables('hub104ID')]"
+                },
+                "virtualHub": "[variables('hub104ID')]",
                 "connections": [
 
                   {
@@ -610,13 +610,16 @@
 
               }
             }
-          ],
-
-
-          "outputs": {
-            "resourceGroupOutput": {
-              "value": "[resourceGroup()]",
-              "type": "object"
-            }
-          }
+          ]
         }
+      }
+    }
+  ],
+
+  "outputs": {
+    "resourceGroupOutput": {
+      "value": "[resourceGroup()]",
+      "type": "object"
+    }
+  }
+}
