@@ -1,26 +1,34 @@
+/*Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.*/
 {
+
+  /*The variables in the spreadsheet are computed in the top functions.*/
+
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "resourceGroupName": {
-      "type": "string",
-      "defaultValue": [ "resourceGroup.name().id" ],
-      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
-    },
     "resourceGroupID": {
       "type": "string",
-      "defaultValue": [ "resourceGroup().id" ],
-      "metadata": { "description": "The Resource Group ID for the Virtual WAN." }
+      "defaultValue": "[resourceGroup().id]",
+      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
     },
     "location": {
       "type": "string",
-      "defaultValue": [ "resourceGroup.location().id" ],
-      "metadata": { "description": "The Resource Group location for the Virtual WAN." }
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
     },
     "utcDatetime": {
       "type": "string",
       "defaultValue": "[utcNow()]"
     },
+    /*in the metadata spreadsheet, on the vWAN tab, filter on VWNAN104
+    select the columns with Temlate and grouped by color. */
+
     "vWAN104Name": {
       "type": "string",
       "defaultValue": "vwwanwestcentralus",
@@ -57,6 +65,10 @@
       "metadata": { "description": "The office 365 routing category.  All, None, Optimized, OptimizedAndAllow." }
     },
 
+    /*
+    Using the metadata spreadsheet, the vWAN Sites tab, filter results on vWAN104, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
     "site104-01aname": {
       "type": "string",
       "defaultValue": "USGovTXSite3a",
@@ -112,7 +124,11 @@
       "defaultValue": "VpnGW1",
       "metadata": { "description": "Model of the device." }
     },
-
+    "site104-01aresourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVNETserviceswc/providers/Microsoft.Network/VPNSites/USGovTXSite3a",
+      "metadata": { "description": "The resouce ID of the VWAN Site." }
+    },
     "site104-01bname": {
       "type": "string",
       "defaultValue": "USGovTXSite3b",
@@ -168,9 +184,19 @@
       "defaultValue": "VpnGW1",
       "metadata": { "description": "Model of the device." }
     },
+    "site104-01bresourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3b",
+      "metadata": { "description": "The resouce ID of the VWAN Site." }
+    },
+
+    /*
+    Using the metadata spreadsheet, the VWAN Hub tab, filter results on VWAN104, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
     "hub104name": {
       "type": "string",
-      "defaultValue": "vwanHubwestcentralus",
+      "defaultValue": "vwanHubserviceswc",
       "metadata": { "description": "Arbitrary name for the new Azure Virtual WAN Hub." }
     },
     "hub104addressPrefix": {
@@ -178,7 +204,15 @@
       "defaultValue": "10.130.0.0/24",
       "metadata": { "description": "Address-prefix for this VirtualHub." }
     },
-
+    "hub104resourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVNETserviceswc/providers/Microsoft.Network/virtualHubs/vwanHubserviceswc",
+      "metadata": { "description": "The Resource ID for this VirtualHub." }
+    },
+    /*
+    Using the metadata spreadsheet, the VWAN Peering tab, filter results on VWAN104, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
     "peer104-0name": {
       "type": "string",
       "defaultValue": "VNETPeerToprodwc",
@@ -299,6 +333,11 @@
       "defaultValue": "/subscriptions/66550e87-b8bc-4ab2-bbaa-fb96bc4e0b1c/resourceGroups/rgVNETstoragewc/providers/Microsoft.Network/virtualNetworks/storagewc",
       "metadata": { "description": "ResourceID for the VNET Connection." }
     },
+
+    /*
+    Using the metadata spreadsheet, the VWAN Gateway tab, filter results on VWAN104, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
     "vpngw104name": {
       "type": "string",
       "defaultValue": "vpngwwestcentralus",
@@ -306,7 +345,7 @@
     },
     "vpngw104bgpSettingsASN": {
       "type": "int",
-      "defaultValue": 65515,
+      "defaultValue": 65521,
       "metadata": { "description": "The BGP speaker's ASN." }
     },
     "vpngw104bgpPeeringAddress": {
@@ -316,7 +355,7 @@
     },
     "vpngw104bgpPeerWeight": {
       "type": "int",
-      "defaultValue": 1,
+      "defaultValue": 0,
       "metadata": { "description": "The weight added to routes learned from this BGP speaker." }
     },
     "vpngw104vpnGatewayScaleSetUnit": {
@@ -324,6 +363,11 @@
       "defaultValue": 1,
       "metadata": { "description": "The scale unit for this vpn gateway." }
     },
+
+    /*
+    Using the metadata spreadsheet, the VWAN Connection tab, filter results on hub104, 
+    Select the columnns that contain the word template and are color coded accordingly.
+    */
     "vpnc01aname": {
       "type": "string",
       "defaultValue": "vpnCnctvwwanwestcentralusToUSGovTXSite3a",
@@ -354,7 +398,11 @@
       "defaultValue": [],
       "metadata": { "description": "The IPSec Policies to be considered by this connection." }
     },
-
+    "vpnc01avwanSiteResourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3a",
+      "metadata": { "description": "Id of the connected vpn site." }
+    },
     "vpnc01aroutingWeight": {
       "type": "int",
       "defaultValue": 0,
@@ -370,7 +418,16 @@
       "defaultValue": "IKEv2",
       "metadata": { "description": "Connection protocol used for this connection" }
     },
-
+    "vpnc01aresourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vpngwwestcentralus/vpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3a",
+      "metadata": { "description": "The resource ID of the connection" }
+    },
+    "vpnc01avpngwName": {
+      "type": "string",
+      "defaultValue": "vpngwwestcentralus",
+      "metadata": { "description": "The Virtual WAN's Gateway Name of the connection" }
+    },
     "vpnc01bname": {
       "type": "string",
       "defaultValue": "vpnCnctvwwanwestcentralusToUSGovTXSite3b",
@@ -401,7 +458,11 @@
       "defaultValue": [],
       "metadata": { "description": "The IPSec Policies to be considered by this connection." }
     },
-
+    "vpnc01bvwanSiteResourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3b",
+      "metadata": { "description": "Id of the connected vpn site." }
+    },
     "vpnc01broutingWeight": {
       "type": "int",
       "defaultValue": 100,
@@ -416,26 +477,39 @@
       "type": "string",
       "defaultValue": "IKEv2",
       "metadata": { "description": "Connection protocol used for this connection" }
+    },
+    "vpnc01bresourceID": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vpngwwestcentralus/vpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3b",
+      "metadata": { "description": "The resource ID of the connection" }
+    },
+    "vpnc01bvpngwName": {
+      "type": "string",
+      "defaultValue": "vpngwwestcentralus",
+      "metadata": { "description": "The Virtual WAN's Gateway Name of the connection" }
     }
 
+
+    /*keep this date time function for the name of the deployment */
 
   },
 
   "variables": {
     "apiVersion": "2018-02-01",
     "deploymentName": "[concat('Deployment-', parameters('resourceGroupName'), '-incremental-', parameters('utcDatetime'))]",
-    "vWAN104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualWans/', parameters('vWAN104Name'))]" },
-    "site104-01aID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/vpnSites/', parameters('site104-01aname'))]" },
-    "site104-01bID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/vpnSites/', parameters('site104-01bname'))]" },
-    "hub104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('hub104name'))]" },
-    "vpngw104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('vpngw104name'))]" },
-    "vpnc01aID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualGateway/', parameters('vpnc01avwanName'),'/vpnconnection/', parameters('vpnc01aname'))]" },
-    "vpnc01bID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualGateway/', parameters('vpnc01bvwanName'),'/vpnconnection/', parameters('vpnc01bname'))]" }
+    "vWAN104ID": { "id": "[resourceId('Microsoft.Network/virtualWans/', parameters('vWAN104Name'))]" },
+    "site104-01aID": { "id": "[resourceID('Microsoft.Network/vpnSites/', parameters('site104-01aname'))]" },
+    "site104-01bID": { "id": "[resourceID('Microsoft.Network/vpnSites/', parameters('site104-01bname'))]" },
+
+    "hub104ID": { "id": "[resourceID('Microsoft.Network/virtualHubs/', parameters('hub104name'))]" },
+
+    "vpngw104ID": { "id": "[resourceID('Microsoft.Network/virtualGateways/', parameters('vpngw104name'))]" },
+    "vpnc01aID": { "id": "[concat(variables('vpngw104ID').id,'/vpnconnection/', parameters('vpnc01aname'))]" },
+    "vpnc01bID": { "id": "[concat(variables('vpngw104ID').id,'/vpnconnection/', parameters('vpnc01bname'))]" }
 
 
+  }, /*keep this line */
 
-
-  },
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
@@ -450,6 +524,9 @@
           "contentVersion": "1.0.0.0",
           "parameters": {},
           "resources": [
+
+            /*go to the Metadata spreadsheet, VWAN Tab, select the VWAN that is being deployed
+    Select the Resources that are grouped by color*/
             {
               "apiVersion": "[variables('apiversion')]",
               "type": "Microsoft.Network/VirtualWANs",
@@ -462,12 +539,14 @@
                 "securityProviderName": "[parameters('vWAN104securityProviderName')]"
               }
             },
+            /*In the metadata spreadsheet, on the VWAN Tab, filter on VWAN Sites that is to be deployed, for example VWAN104
+          select the columns with Resource and grouped by Color. */
             {
               "apiVersion": "[variables('apiversion')]",
               "type": "Microsoft.Network/vpnSites",
               "name": "[parameters('site104-01aname')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]" ],
               "properties": {
                 "virtualWan": "[variables('vwan104ID')]",
                 "deviceProperties": {
@@ -489,7 +568,7 @@
               "type": "Microsoft.Network/vpnSites",
               "name": "[parameters('site104-01bname')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]" ],
               "properties": {
                 "virtualWan": "[variables('vwan104ID')]",
                 "deviceProperties": {
@@ -505,65 +584,74 @@
                 }
               }
             },
+
+
+            /*In the metadata spreadsheet, proceed to the VWANHub tab and select the VWAN in question
+    */
             {
               "apiVersion": "[variables('apiversion')]",
               "type": "Microsoft.Network/virtualHubs",
               "name": "[parameters('hub104name')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]" ],
               "properties": {
                 "addressPrefix": "[parameters('hub104addressPrefix')]",
                 "virtualWan": "[variables('vwan104ID')]",
                 "virtualNetworkConnections": [
+
+                  /*In the metadata spreadsheet, proceed to the vWANPeering tab and select the VWAN in question
+    */
                   {
                     "name": "[parameters('peer104-0name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-0allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-0allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-0enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-0remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-0enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-0remoteVirtualNetwork')]" }
                     }
                   },
                   {
                     "name": "[parameters('peer104-1name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-1allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-1allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-1enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-1remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-1enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-1remoteVirtualNetwork')]" }
                     }
                   },
                   {
                     "name": "[parameters('peer104-2name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-2allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-2allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-2enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-2remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-2enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-2remoteVirtualNetwork')]" }
                     }
                   },
                   {
                     "name": "[parameters('peer104-3name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-3allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-3allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-3enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-3remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-3enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-3remoteVirtualNetwork')]" }
                     }
                   }
+
+
+                  /*keep these breaks*/
                 ]
               }
             },
+
+            /*In the metadata spreadsheet, proceed to the VWAN VPN Gateway tab and select the VWAN in question
+    */
             {
               "apiVersion": "[variables('apiversion')]",
               "type": "Microsoft.Network/vpnGateways",
               "name": "[parameters('vpngw104name')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]", "[variables('hub104ID').id]" ],
               "properties": {
                 "bgpSettings": {
                   "asn": "[parameters('vpngw104bgpSettingsASN')]",
@@ -573,11 +661,13 @@
                 "virtualHub": "[variables('hub104ID')]",
                 "connections": [
 
+                  /*THis is where you grab the Connection Resources and add */
                   {
                     "name": "[parameters('vpnc01aname')]",
+                    "type": "vpnGateways/vpnConnections",
                     "id": "[variables('vpnc01aID')]",
                     "location": "[parameters('location')]",
-                    "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]", "[variables('site104-01aID')]" ],
+                    "dependsOn": [ "[variables('vwan104ID').id]", "[variables('hub104ID').id]", "[variables('site104-01aID').id]" ],
                     "properties": {
                       "remoteVPNSite": "[variables('site104-01aID')]",
                       "vpnConnectionProtocolType": "[parameters('vpnc01avpnConnectionProtocolType')]",
@@ -593,7 +683,7 @@
                     "name": "[parameters('vpnc01bname')]",
                     "id": "[variables('vpnc01bID')]",
                     "location": "[parameters('location')]",
-                    "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]", "[variables('site104-01bID')]" ],
+                    "dependsOn": [ "[variables('vwan104ID').id]", "[variables('hub104ID').id]", "[variables('site104-01bID').id]" ],
                     "properties": {
                       "remoteVPNSite": "[variables('site104-01bID')]",
                       "vpnConnectionProtocolType": "[parameters('vpnc01bvpnConnectionProtocolType')]",
@@ -607,15 +697,14 @@
                   }
 
                 ]
-
+                /*Keep this Line and below */
               }
             }
-          ]
+          ] /*keep these lines*/
         }
       }
     }
   ],
-
   "outputs": {
     "resourceGroupOutput": {
       "value": "[resourceGroup()]",

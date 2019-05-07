@@ -18,9 +18,6 @@ region where the vWAN will go.  For instance if you have EU1 and EU2, select the
     "vWAN104p2SVpnServerConfigurations": { "value": [] },
     "vWAN104securityProviderName": { "value": "" },
     "vWAN104office365LocalBreakoutCategory": { "value": "All" },
-    "vWAN104resourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/virtualWans/vwwanwestcentralus" },
-
-
     /*Using the metadata spreadsheet, navigate to the vWAN worksheet and filter on the region where this vWAN will go
     for instance if this is Site 1, vWAN104 would be the filter.
     */
@@ -35,7 +32,6 @@ region where the vWAN will go.  For instance if you have EU1 and EU2, select the
     "site104-01alinkSpeedInMbps": { "value": 650 },
     "site104-01adeviceVendor": { "value": "AzureVPN" },
     "site104-01adeviceModel": { "value": "VpnGW1" },
-    "site104-01aresourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3a" },
     "site104-01bname": { "value": "USGovTXSite3b" },
     "site104-01bdescription": { "value": "A physically seperated WAN aka US Gov TX Site 3" },
     "site104-01bipAddress": { "value": "52.238.115.118" },
@@ -47,13 +43,11 @@ region where the vWAN will go.  For instance if you have EU1 and EU2, select the
     "site104-01blinkSpeedInMbps": { "value": 650 },
     "site104-01bdeviceVendor": { "value": "AzureVPN" },
     "site104-01bdeviceModel": { "value": "VpnGW1" },
-    "site104-01bresourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3b" },
 
     /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
     */
     "hub104name": { "value": "vwanHubwestcentralus" },
     "hub104addressPrefix": { "value": "10.130.0.0/24" },
-    "hub104resourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/virtualHubs/vwanHubwestcentralus" },
     /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
     */
 
@@ -81,7 +75,6 @@ region where the vWAN will go.  For instance if you have EU1 and EU2, select the
     "peer104-3allowRemoteVnetToUseHubVnetGateways": { "value": true },
     "peer104-3enableInternetSecurity": { "value": true },
     "peer104-3remoteVirtualNetwork": { "value": "/subscriptions/66550e87-b8bc-4ab2-bbaa-fb96bc4e0b1c/resourceGroups/rgVNETstoragewc/providers/Microsoft.Network/virtualNetworks/storagewc" },
-
     /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
     */
     "vpngw104name": { "value": "vpngwwestcentralus" },
@@ -89,34 +82,25 @@ region where the vWAN will go.  For instance if you have EU1 and EU2, select the
     "vpngw104bgpPeeringAddress": { "value": "" },
     "vpngw104bgpPeerWeight": { "value": 0 },
     "vpngw104vpnGatewayScaleSetUnit": { "value": 1 },
-
     /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
     */
-
     "vpnc01aname": { "value": "vpnCnctvwwanwestcentralusToUSGovTXSite3a" },
     "vpnc01aconnectionBandwidth": { "value": 650 },
     "vpnc01aenableBGP": { "value": true },
     "vpnc01aenableInternetSecurity": { "value": true },
     "vpnc01aenableRateLimiting": { "value": true },
     "vpnc01aipSecPolicies": { "value": [] },
-    "vpnc01avwanSiteResourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3a" },
     "vpnc01aroutingWeight": { "value": 0 },
     "vpnc01asharedKey": { "value": "mysharedkey" },
     "vpnc01avpnConnectionProtocolType": { "value": "IKEv2" },
-    "vpnc01aresourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vwwanwestcentralusvpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3a" },
     "vpnc01bname": { "value": "vpnCnctvwwanwestcentralusToUSGovTXSite3b" },
     "vpnc01bconnectionBandwidth": { "value": 650 },
     "vpnc01benableBGP": { "value": true },
     "vpnc01benableInternetSecurity": { "value": true },
     "vpnc01benableRateLimiting": { "value": true },
     "vpnc01bipSecPolicies": { "value": [] },
-    "vpnc01bvwanSiteResourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnSites/USGovTXSite3b" },
     "vpnc01broutingWeight": { "value": 100 },
     "vpnc01bsharedKey": { "value": "mysharedkey" },
-    "vpnc01bvpnConnectionProtocolType": { "value": "IKEv2" },
-    "vpnc01bresourceID": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vwwanwestcentralusvpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3b" }
-
-
+    "vpnc01bvpnConnectionProtocolType": { "value": "IKEv2" }
   }
-  }
-{
+}

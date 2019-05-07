@@ -9,17 +9,17 @@ Licensed under the MIT License.*/
   "parameters": {
     "resourceGroupID": {
       "type": "string",
-      "defaultValue": [ "resourceGroup.id().id" ],
+      "defaultValue": "[resourceGroup().id]",
       "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
     },
     "location": {
       "type": "string",
-      "defaultValue": [ "resourceGroup.location().id" ],
+      "defaultValue": "[resourceGroup().location]",
       "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
     },
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": [ "resourceGroup.name().id" ],
+      "defaultValue": "[resourceGroup().name]",
       "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
     },
     "utcDatetime": {
@@ -64,8 +64,6 @@ Licensed under the MIT License.*/
       "defaultValue": "All",
       "metadata": { "description": "The office 365 routing category.  All, None, Optimized, OptimizedAndAllow." }
     },
-
-
 
     /*
     Using the metadata spreadsheet, the vWAN Sites tab, filter results on vWAN104, 
@@ -422,8 +420,13 @@ Licensed under the MIT License.*/
     },
     "vpnc01aresourceID": {
       "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vwwanwestcentralusvpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3a",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vpngwwestcentralus/vpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3a",
       "metadata": { "description": "The resource ID of the connection" }
+    },
+    "vpnc01avpngwName": {
+      "type": "string",
+      "defaultValue": "vpngwwestcentralus",
+      "metadata": { "description": "The Virtual WAN's Gateway Name of the connection" }
     },
     "vpnc01bname": {
       "type": "string",
@@ -477,9 +480,16 @@ Licensed under the MIT License.*/
     },
     "vpnc01bresourceID": {
       "type": "string",
-      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vwwanwestcentralusvpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3b",
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgVirtualWANwestcentralus/providers/Microsoft.Network/vpnGateways/vpngwwestcentralus/vpnConnections/vpnCnctvwwanwestcentralusToUSGovTXSite3b",
       "metadata": { "description": "The resource ID of the connection" }
+    },
+    "vpnc01bvpngwName": {
+      "type": "string",
+      "defaultValue": "vpngwwestcentralus",
+      "metadata": { "description": "The Virtual WAN's Gateway Name of the connection" }
     }
+
+
     /*keep this date time function for the name of the deployment */
 
   },
@@ -487,11 +497,17 @@ Licensed under the MIT License.*/
   "variables": {
     "apiVersion": "2018-02-01",
     "deploymentName": "[concat('Deployment-', parameters('resourceGroupName'), '-incremental-', parameters('utcDatetime'))]",
-    "vWAN104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualWans/', parameters('vWAN104Name'))]" },
-    "site104-01aID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/vpnSites/', parameters('site104-01aname'))]" },
-    "site104-01bID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/vpnSites/', parameters('site104-01bname'))]" },
-    "hub104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('hub104name'))]" },
-    "vpngw104ID": { "id": "[concat(parameters('resourceGroupID'), '/providers/Microsoft.Network/virtualHubs/', parameters('vpngw104name'))]" }
+    "vWAN104ID": { "id": "[resourceId('Microsoft.Network/virtualWans/', parameters('vWAN104Name'))]" },
+    "site104-01aID": { "id": "[resourceID('Microsoft.Network/vpnSites/', parameters('site104-01aname'))]" },
+    "site104-01bID": { "id": "[resourceID('Microsoft.Network/vpnSites/', parameters('site104-01bname'))]" },
+
+    "hub104ID": { "id": "[resourceID('Microsoft.Network/virtualHubs/', parameters('hub104name'))]" },
+
+    "vpngw104ID": { "id": "[resourceID('Microsoft.Network/virtualGateways/', parameters('vpngw104name'))]" },
+    "vpnc01aID": { "id": "[concat(variables('vpngw104ID').id,'/vpnconnection/', parameters('vpnc01aname'))]" },
+    "vpnc01bID": { "id": "[concat(variables('vpngw104ID').id,'/vpnconnection/', parameters('vpnc01bname'))]" }
+
+
   }, /*keep this line */
 
   "resources": [
@@ -530,7 +546,7 @@ Licensed under the MIT License.*/
               "type": "Microsoft.Network/vpnSites",
               "name": "[parameters('site104-01aname')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]" ],
               "properties": {
                 "virtualWan": "[variables('vwan104ID')]",
                 "deviceProperties": {
@@ -552,7 +568,7 @@ Licensed under the MIT License.*/
               "type": "Microsoft.Network/vpnSites",
               "name": "[parameters('site104-01bname')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]" ],
               "properties": {
                 "virtualWan": "[variables('vwan104ID')]",
                 "deviceProperties": {
@@ -577,7 +593,7 @@ Licensed under the MIT License.*/
               "type": "Microsoft.Network/virtualHubs",
               "name": "[parameters('hub104name')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]" ],
               "properties": {
                 "addressPrefix": "[parameters('hub104addressPrefix')]",
                 "virtualWan": "[variables('vwan104ID')]",
@@ -587,44 +603,41 @@ Licensed under the MIT License.*/
     */
                   {
                     "name": "[parameters('peer104-0name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-0allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-0allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-0enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-0remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-0enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-0remoteVirtualNetwork')]" }
                     }
                   },
                   {
                     "name": "[parameters('peer104-1name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-1allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-1allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-1enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-1remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-1enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-1remoteVirtualNetwork')]" }
                     }
                   },
                   {
                     "name": "[parameters('peer104-2name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-2allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-2allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-2enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-2remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-2enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-2remoteVirtualNetwork')]" }
                     }
                   },
                   {
                     "name": "[parameters('peer104-3name')]",
-                    "dependsOn": [ "[variables('vwan104ID')]" ],
                     "properties": {
                       "allowHubToRemoteVnetTransit": "[parameters('peer104-3allowHubToRemoteVnetTransit')]",
                       "allowRemoteVnetToUseHubVnetGateways": "[parameters('peer104-3allowRemoteVnetToUseHubVnetGateways')]",
-                      "enableInternetSecurity ": "[parameters('peer104-3enableInternetSecurity')]",
-                      "remoteVirtualNetwork ": { "id": "[parameters('peer104-3remoteVirtualNetwork')]" }
+                      "enableInternetSecurity": "[parameters('peer104-3enableInternetSecurity')]",
+                      "remoteVirtualNetwork": { "id": "[parameters('peer104-3remoteVirtualNetwork')]" }
                     }
                   }
+
 
                   /*keep these breaks*/
                 ]
@@ -638,22 +651,23 @@ Licensed under the MIT License.*/
               "type": "Microsoft.Network/vpnGateways",
               "name": "[parameters('vpngw104name')]",
               "location": "[parameters('location')]",
-              "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]" ],
+              "dependsOn": [ "[variables('vwan104ID').id]", "[variables('hub104ID').id]" ],
               "properties": {
                 "bgpSettings": {
                   "asn": "[parameters('vpngw104bgpSettingsASN')]",
                   "bgpPeeringAddress": "[parameters('vpngw104bgpPeeringAddress')]",
                   "peerWeight": "[parameters('vpngw104bgpPeerWeight')]"
                 },
-                "virtualHub": { "id": "[parameters('hub104ResourceID')]" },
+                "virtualHub": "[variables('hub104ID')]",
                 "connections": [
 
                   /*THis is where you grab the Connection Resources and add */
                   {
                     "name": "[parameters('vpnc01aname')]",
-                    "id": "[parameters('vpnc01aresourceID')]",
+                    "type": "vpnGateways/vpnConnections",
+                    "id": "[variables('vpnc01aID')]",
                     "location": "[parameters('location')]",
-                    "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]", "[variables('site104-01aID')]" ],
+                    "dependsOn": [ "[variables('vwan104ID').id]", "[variables('hub104ID').id]", "[variables('site104-01aID').id]" ],
                     "properties": {
                       "remoteVPNSite": "[variables('site104-01aID')]",
                       "vpnConnectionProtocolType": "[parameters('vpnc01avpnConnectionProtocolType')]",
@@ -667,9 +681,9 @@ Licensed under the MIT License.*/
                   },
                   {
                     "name": "[parameters('vpnc01bname')]",
-                    "id": "[parameters('vpnc01bresourceID')]",
+                    "id": "[variables('vpnc01bID')]",
                     "location": "[parameters('location')]",
-                    "dependsOn": [ "[variables('vwan104ID')]", "[variables('hub104ID')]", "[variables('site104-01bID')]" ],
+                    "dependsOn": [ "[variables('vwan104ID').id]", "[variables('hub104ID').id]", "[variables('site104-01bID').id]" ],
                     "properties": {
                       "remoteVPNSite": "[variables('site104-01bID')]",
                       "vpnConnectionProtocolType": "[parameters('vpnc01bvpnConnectionProtocolType')]",
@@ -686,13 +700,15 @@ Licensed under the MIT License.*/
                 /*Keep this Line and below */
               }
             }
-          ],
-
-
-          "outputs": {
-            "resourceGroupOutput": {
-              "value": "[resourceGroup()]",
-              "type": "object"
-            }
-          }
+          ] /*keep these lines*/
         }
+      }
+    }
+  ],
+  "outputs": {
+    "resourceGroupOutput": {
+      "value": "[resourceGroup()]",
+      "type": "object"
+    }
+  }
+}

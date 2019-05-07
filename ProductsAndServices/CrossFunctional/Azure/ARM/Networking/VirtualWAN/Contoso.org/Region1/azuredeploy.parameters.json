@@ -1,7 +1,16 @@
+/*  Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.
+
+  In this template we will deploy the AzureVirtualWAN of the Azure Foundation.
+  Hosted at https://https://github.com/Microsoft/Nonprofits/blob/master/ProductsAndServices/CrossFunctional/Azure/Metadata/AF_ARM_AzureSystemRequirements_Working.xlsx
+  */
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+
+    /*Using the metadata spreadsheet, navigate to the vWAN worksheet and filter on the primary
+region where the vWAN will go.  For instance if you have EU1 and EU2, select the Site of EU2 or vWan304*/
     "vWAN104Name": { "value": "vwwanwestcentralus" },
     "vWAN104allowBranchToBranchTraffic": { "value": true },
     "vWAN104allowVnetToVnetTraffic": { "value": true },
@@ -9,7 +18,9 @@
     "vWAN104p2SVpnServerConfigurations": { "value": [] },
     "vWAN104securityProviderName": { "value": "" },
     "vWAN104office365LocalBreakoutCategory": { "value": "All" },
-    "vWAN104location": { "value": "westcentralus" },
+    /*Using the metadata spreadsheet, navigate to the vWAN worksheet and filter on the region where this vWAN will go
+    for instance if this is Site 1, vWAN104 would be the filter.
+    */
     "site104-01aname": { "value": "USGovTXSite3a" },
     "site104-01adescription": { "value": "A physically seperated WAN aka US Gov TX Site 3" },
     "site104-01aipAddress": { "value": "52.238.116.87" },
@@ -32,8 +43,14 @@
     "site104-01blinkSpeedInMbps": { "value": 650 },
     "site104-01bdeviceVendor": { "value": "AzureVPN" },
     "site104-01bdeviceModel": { "value": "VpnGW1" },
+
+    /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
+    */
     "hub104name": { "value": "vwanHubwestcentralus" },
     "hub104addressPrefix": { "value": "10.130.0.0/24" },
+    /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
+    */
+
     "peer104-0name": { "value": "VNETPeerToprodwc" },
     "peer104-0description": { "value": "Connection from the Hub to the Storage VNET in the same region" },
     "peer104-0allowHubToRemoteVnetTransit": { "value": true },
@@ -58,11 +75,15 @@
     "peer104-3allowRemoteVnetToUseHubVnetGateways": { "value": true },
     "peer104-3enableInternetSecurity": { "value": true },
     "peer104-3remoteVirtualNetwork": { "value": "/subscriptions/66550e87-b8bc-4ab2-bbaa-fb96bc4e0b1c/resourceGroups/rgVNETstoragewc/providers/Microsoft.Network/virtualNetworks/storagewc" },
+    /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
+    */
     "vpngw104name": { "value": "vpngwwestcentralus" },
-    "vpngw104bgpSettingsASN": { "value": 65515 },
+    "vpngw104bgpSettingsASN": { "value": 65521 },
     "vpngw104bgpPeeringAddress": { "value": "" },
     "vpngw104bgpPeerWeight": { "value": 0 },
     "vpngw104vpnGatewayScaleSetUnit": { "value": 1 },
+    /*The metadata spreadsheet's VWAN Hub tab, filter to the VWAN, for example VWAN104, 
+    */
     "vpnc01aname": { "value": "vpnCnctvwwanwestcentralusToUSGovTXSite3a" },
     "vpnc01aconnectionBandwidth": { "value": 650 },
     "vpnc01aenableBGP": { "value": true },
@@ -80,7 +101,6 @@
     "vpnc01bipSecPolicies": { "value": [] },
     "vpnc01broutingWeight": { "value": 100 },
     "vpnc01bsharedKey": { "value": "mysharedkey" },
-    "vpnc01bvpnConnectionProtocolType": { "value": "IKEv2" },
-
+    "vpnc01bvpnConnectionProtocolType": { "value": "IKEv2" }
   }
 }
