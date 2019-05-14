@@ -1,102 +1,449 @@
 {
 
-	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 
-	"contentVersion": "1.0.0.0",
+  "contentVersion": "1.0.0.0",
 
-	"parameters": {
-		/*AzureFunctions.json*/
-		"storageaccountname": {
-			"defaultValue": "ststorage",
-			"type": "string"
-		},
+  "parameters": {
 
-		"sitename": {
-			"defaultValue": "stsite",
-			"type": "string"
-		},
+    "resourceGroupID": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().id]",
+      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": { "description": "The Resource Group Name for the Virtual WAN." }
+    },
+    "utcDatetime": {
+      "type": "string",
+      "defaultValue": "[utcNow()]"
+    },
 
-		"repoUrl": {
-			"defaultValue": "",
-			"type": "string"
-		},
+    /*AzureFunctions.json*/
+    "fnctnTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/AzureFunctions.json",
+      "metadata": {
+        "description": "The Template link to the BusinessPlatformApplication's AzureARM template for deploying the functions'"
+      }
+    },
 
-		"resourcegroup": {
-			"defaultValue": "stresourcegroup",
-			"type": "string"
-		},
+    /*Machine Learning Link */
+    "mlSchedulerTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/AzureMLSchedulerLogicApp.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's AzureARM template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+    },
 
-		"subscription": {
-			"defaultValue": "idrequired",
-			"type": "string"
-		}
-	},
-	"variables": {},
-	"resources": [
-		/*AzureFunctions.json*/
-		{
-			"type": "Microsoft.Web/sites",
-			"kind": "functionapp",
-			"name": "[parameters('sitename')]",
-			"apiVersion": "2016-03-01",
-			"location": "[resourceGroup().location]",
-			"properties": {
-				"name": "[parameters('sitename')]",
-				"siteConfig": {
-					"appSettings": [
-						{
-							"name": "AzureWebJobsDashboard",
-							"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2015-05-01-preview').key1)]"
-						},
-						{
-							"name": "AzureWebJobsStorage",
-							"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2015-05-01-preview').key1)]"
-						},
-						{
-							"name": "FUNCTIONS_EXTENSION_VERSION",
-							"value": "~0.8"
-						},
-						{
-							"name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-							"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2015-05-01-preview').key1)]"
-						},
-						{
-							"name": "WEBSITE_CONTENTSHARE",
-							"value": "[toLower(parameters('sitename'))]"
-						},
-						{
-							"name": "WEBSITE_NODE_DEFAULT_VERSION",
-							"value": "4.1.2"
-						}
-					]
-				},
-				"containerSize": 512
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname'))]"
-			]
-		},
-		{
-			"type": "Microsoft.Storage/storageAccounts",
-			"name": "[parameters('storageaccountname')]",
-			"apiVersion": "2015-05-01-preview",
-			"location": "[resourceGroup().location]",
-			"properties": {
-				"accountType": "Standard_LRS"
-			}
-		},
-		{
-			"apiVersion": "2015-08-01",
-			"name": "web",
-			"type": "sourcecontrols",
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites/', parameters('storageaccountname'))]"
-			],
-			"properties": {
-				"RepoUrl": "https://github.com/Microsoft/BusinessPlatformApps/tree/NewsTemplate/Source/Apps/Microsoft/Released/Microsoft-NewsTemplate/Service/NewsFunction",
-				"branch": "master",
-				"IsManualIntegration": "true"
-			}
-		}
-	]
+    /*News Template Historical */
+    "newsHstrclTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/NewsTemplateHistorical.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's AzureARM template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+
+    },
+    /*News Template Historical */
+    "newsLgcApTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/NewsTemplateLogicApp.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's News functions, template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+    },
+    /*ML Template LogicApp */
+    "mlTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/azureml.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's News functions, template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+    },
+    /*Cognitive Services Template  */
+    "textTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/cognitiveServices.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's News functions, template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+    },
+    /*Function Template  */
+    "fnctTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/function.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's News functions, template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+    },
+    /*Sentiment Analysis Template  */
+    "sntmntTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/sentimentCognitiveService.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's News functions, template for deploying the Azure Machine Learning Scheduler Logic Application'" }
+    },
+    /*StorageAccount Template  */
+    "saTemplateLink": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/storageAccount.json",
+      "metadata": { "description": "The tempalte link for the BusinessPlatformApplication's News functions, template for deploying the Azure Machine Learning Scheduler Logic Application" }
+    },
+    "repoURL": {
+      "type": "string",
+      "defaultValue": "https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/NewsFunction",
+      "metadata": {
+        "description": "The URL for the GitHub repo that was used for one of the functions."
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[concat(resourceGroup().Name, 'strgact', uniqueString('strgacnt'))]",
+      "metadata": {
+        "description": "The primary storage account for the deployment to leverage."
+      }
+    },
+    "storageAccountTier": {
+      "defaultValue": "Standard_LRS",
+      "type": "string"
+    },
+    "siteName": {
+      "type": "string",
+      "defaultValue": "siteName",
+      "metadata": {
+        "description": "The Azure App Service that will host the functions' APIs"
+      }
+    },
+    "mlswsName": {
+      "defaultValue": "bingnewsentityextractionstudio",
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Machine Learning Studio Web Service name"
+      }
+    },
+    "keyVaultId": {
+      "defaultValue": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgKeyVaultW2TSI/providers/Microsoft.KeyVault/vaults/TSISecrets",
+      "type": "string"
+    },
+    "ownerEmail": {
+      "defaultValue": "",
+      "type": "string"
+    },
+    "bingCognitiveServiceName": {
+      "defaultValue": "BingNewsCognitiveService",
+      "type": "string"
+    },
+
+    "planName": {
+      "defaultValue": "workspaceplanname",
+      "type": "string"
+    },
+    "skuName": {
+      "defaultValue": "S1",
+      "type": "string"
+    },
+    "skuTier": {
+      "defaultValue": "skutier",
+      "type": "string"
+    },
+    "skuCapacity": {
+      "defaultValue": 1,
+      "type": "int"
+    },
+    "workspaceApiVersion": {
+      "defaultValue": "apiversionworkspace",
+      "type": "string"
+    },
+    "commitmentPlanApiVersion": {
+      "defaultValue": "apiversioncommitmentplan",
+      "type": "string"
+    },
+    "storageApiVersion": {
+      "defaultValue": "apiversionstorage",
+      "type": "string"
+    },
+    "textCognitiveServiceName": {
+      "defaultValue": "TextAnalyticsCognitiveService",
+      "type": "string"
+    },
+    "AppHostingPlan": {
+      "defaultValue": "STHostingPlan",
+      "type": "string"
+    },
+    "accountType": {
+      "type": "string",
+      "defaultValue": "LRS",
+      "metadata": { "description": "The Account Type specifies the type of Storage being used." }
+    },
+    "encryptionEnabled": {
+      "defaultValue": true,
+      "type": "bool"
+    },
+    "searchQuery": {
+      "defaultValue": "Death Penalty",
+      "type": "string"
+    },
+    "bingSubscriptionKey": {
+      "type": "securestring",
+      "metadata": { "description": "The Cognitive Services Subscription Key in the KeyVault" }
+    },
+    "textSubscriptionKey": {
+      "type": "securestring",
+      "metadata": { "description": "The Cognitive Services Subscription Key in the KeyVault" }
+    },
+    "apikeyentities": {
+      "type": "securestring",
+      "metadata": { "description": "The Key will enable the Machine Learning Logice App to access the Web service to access the API" }
+    },
+    "apiurlentities": {
+      "type": "string",
+      "defaultValue": "https://",
+      "metadata": { "description": "The URL for the API" }
+    },
+    "apikeytopics": {
+      "type": "securestring",
+      "metadata": { "description": "The Key will enable the Machine Learning Logice App to access the Web service to access the API" }
+    },
+    "apiurltopics": {
+      "type": "string",
+      "defaultValue": "https://",
+      "metadata": { "description": "The URL for the API" }
+    },
+    "apikeyimages": {
+      "type": "securestring",
+      "metadata": { "description": "The Key will enable the Machine Learning Logice App to access the Web service to access the API" }
+    },
+    "apiurlimages": {
+      "type": "string",
+      "defaultValue": "https://",
+      "metadata": { "description": "The URL for the API" }
+    }
+  },
+
+
+
+
+
+  "variables": {
+    "apiVersion": "2018-02-01",
+    "deploymentName": "[concat('Deployment-', parameters('resourceGroupName'), '-incremental-', parameters('utcDatetime'))]",
+    "storageID": { "id": "[resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]" },
+    "functionID": { "id": "[resourceId('Microsoft.Web/sites/', parameters('siteName'))]" },
+    "keyvaultID": { "id": "[parameters('keyvaultID')]" }
+
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "name": "Deployment-AzureFoundationVirtualWAN-Incremental-20190503",
+
+      "apiVersion": "2018-02-01",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "resources": [
+             
+
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('fnctnTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "storageaccountname": { "value": "[parameters('storageAccountName')]" },
+                  "sitename": { "value": "[parameters('siteName')]" },
+                  "repoUrl": { "value": "[parameters('repoURL')]" },
+                  "resourcegroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" }
+                }
+              }
+            }
+            /*
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('mlSchedulerTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "logicappname": { "value": "LogicApp" },
+                  "resourcegroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('newsHstrclTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "logicappname": { "value": "paramters('LogicApp')]" },
+                  "resourcegroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" },
+                  "siteName": { "value": "[parameters('siteName')]" },
+                  "searchQuery": { "value": "[parameters('searchQuery')]" }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('newsLgcApTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "logicappname": { "value": "paramters('LogicApp')]" },
+                  "resourcegroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" },
+                  "siteName": { "value": "[parameters('siteName')]" },
+                  "searchQuery": { "value": "[parameters('searchQuery')]" }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('mlTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "name": { "value": "[parameters('mlswsName')]" },
+                  "location": { "value": "resourceGroup().location" },
+                  "userStorageAccountID": { "value": "[variables('storageID').id]" },
+                  "newsStorageAccountName": { "value": "[parameters('storageAccountName')]" },
+                  "newsStorageAccountTier": { "value": "[parameters('storageAccountTier')]" },
+                  "keyVaultIdentifierID": { "value": "[variables('keyVaultID').id]" },
+                  "ownerEmail": { "value": "[parameters('ownerEmail')]" },
+                  "planName": { "value": "[parameters('planName')]" },
+                  "skuName": { "value": "[parameters('skuName')]" },
+                  "skuTier": { "value": "[parameters('skuTier')]" },
+                  "skuCapacity": { "value": "[parameters('skuCapacity')]" },
+                  "workspaceApiVersion": { "value": "[parameters('workspaceApiVersion')]" },
+                  "commitmentPlanApiVersion": { "value": "[parameters('commitmentPlanApiVersion')]" },
+                  "storageAPIVersion": { "value": "[parameters('storageApiVersion')]" },
+
+                  "logicappname": { "value": "paramters('LogicApp')]" },
+                  "resourcegroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" },
+                  "siteName": { "value": "[parameters('siteName')]" },
+                  "searchQuery": { "value": "[parameters('searchQuery')]" }
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('textTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "CognitiveServiceName": { "value": "[parameters('textCognitiveServiceName')]" },
+                  "resourceGroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" }
+
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('fnctTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "CognitiveServiceName": { "value": "[parameters('bingCognitiveServiceName')]" },
+                  "resourceGroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" },
+                  "storageaccountname": { "value": "[parameters('storageAccountName')]" },
+                  "siteName": { "value": "[parameters('siteName')]" },
+                  "appHostingPlan": { "value": "[parameters('appHostingPlan')]" }
+
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('sntmntTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "name": { "value": "[parameters('storageAccountName')]" },
+                  "resourceGroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" },
+                  "encryptionEnabled": { "value": "[parameters('encryptionEnabled')]" }
+
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2018-05-01",
+              "name": "linkedTemplate",
+              "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                  "uri": "[parameters('saTemplateLink')]",
+                  "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                  "name": { "value": "[parameters('storageAccountName')]" },
+                  "resourceGroup": { "value": "resourceGroup().name" },
+                  "subscription": { "value": "resourceGroup().subscription" },
+                  "encryptionEnabled": { "value": "[parameters('encryptionEnabled')]" },
+                  "accountType": { "value": "[parameters('accountType')]" }
+
+                }
+              }
+            }
+  */
+          ]
+        }
+      }
+    }
+  ],
+
+
+
+  "outputs": {
+    "resourceGroupOutput": {
+      "value": "[resourceGroup()]",
+      "type": "object"
+    }
+  }
 }

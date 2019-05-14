@@ -50,10 +50,16 @@ Before diving into the components of the solution, we will go through how to set
 **Getting Started:** Starting page introducing the template and explaining the architecture.
 
 **Azure:** Use OAuth to sign into your Azure account. You will notice you have a choice between signing into an organizational account and a Microsoft (work/school account).
+<h2>This is the Azure Portal Deploy Button</h2>
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/microsoft/nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
+
+<h2>This is the Azure DeployApp Deploy Button</h2>
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
 
 Log into Azure, will gives the application access to your Azure subscription and permits spinning up Azure services on your behalf. It also lists the estimated costs of the template. If you want a more granular breakdown of the costs, please scroll down to the [Estimated Costs](#estimated-costs) section.
 

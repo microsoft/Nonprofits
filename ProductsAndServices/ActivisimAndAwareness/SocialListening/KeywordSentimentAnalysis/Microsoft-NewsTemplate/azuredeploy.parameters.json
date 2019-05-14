@@ -1,16 +1,86 @@
+/*  Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.
+
+  In this template we will deploy the Keyword Sentiment Analysis system
+
+  */
 {
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
 
-	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    /*AzureFunctions.json*/
+    "fnctnTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/AzureFunctions.json" },
+    /*Machine Learning Link */
+    "mlSchedulerTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/AzureMLSchedulerLogicApp.json" },
+    /*News Template Historical */
+    "newsHstrclTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/NewsTemplateHistorical.json" },
+    /*News Template Historical */
+    "newsLgcApTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/NewsTemplateLogicApp.json" },
+    /*ML Template LogicApp */
+    "mlTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/azureml.json" },
+    /*Cognitive Services Template  */
+    "textTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/cognitiveServices.json" },
+    /*Function Template  */
+    "fnctTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/function.json" },
+    /*Sentiment Analysis Template  */
+    "sntmntTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/sentimentCognitiveService.json" },
+    /*StorageAccount Template  */
+    "saTemplateLink": { "value": "https://raw.githubusercontent.com/microsoft/Nonprofits/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/AzureArm/storageAccount.json" },
+    "repoURL": { "value": "https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate/Service/NewsFunction" },
+    "storageAccountName": { "value": "[concat(resourceGroup().Name, 'strgact', uniqueString('strgacnt'))]" },
+    "storageAccountTier": { "value": "Standard_LRS" },
+    "siteName": { "value": "siteName" },
+    "mlswsName": { "value": "bingnewsentityextractionstudio" },
+    "keyVaultId": { "value": "/subscriptions/b352fe70-6fe2-4dcd-a153-ee002ed3da62/resourceGroups/rgKeyVaultW2TSI/providers/Microsoft.KeyVault/vaults/TSISecrets" },
+    "ownerEmail": { "value": "willst@contoso.org" },
+    "bingCognitiveServiceName": { "value": "BingNewsCognitiveService" },
 
-	"contentVersion": "1.0.0.0",
+    "planName": { "value": "workspaceplanname" },
+    "skuName": { "value": "S1" },
+    "skuTier": { "value": "skutier" },
+    "skuCapacity": { "value": 1 },
+    "workspaceApiVersion": { "value": "apiversionworkspace" },
+    "commitmentPlanApiVersion": { "value": "apiversioncommitmentplan" },
+    "storageApiVersion": { "value": "apiversionstorage" },
+    "textCognitiveServiceName": { "value": "TextAnalyticsCognitiveService" },
+    "AppHostingPlan": { "value": "STHostingPlan" },
+    "accountType": { "value": "LRS" },
+    "encryptionEnabled": { "value": true },
+    "searchQuery": { "value": "Death Penalty" },
+    "bingSubscriptionKey": { "value": "" },
+    "textSubscriptionKey": { "value": "" }
+  },
 
-	"parameters": {
-		/*AzureFunctions.json*/
-		"storageaccountname": { "value": "ststorage" },
-		"sitename": { "Value": "stsite" },
-		"repoUrl": { "value": "https://github.com/Microsoft/Nonprofits/tree/master/ProductsAndServices/ActivisimAndAwareness/SocialListening/KeywordSentimentAnalysis/Microsoft-NewsTemplate" },
-		"resourcegroup": { "value": "stresourcegroup" },
-		"subscription": { "value": "idrequired" },
-	
-	}
-}
+  "apikeyentities": {
+    "reference": {
+      "keyVault": { "id": "[parameter('keyVaultID')]" },
+      "secretName": "apikeyentities"
+    }  },
+  "apiurlentities": {
+    "type": "string",
+    "defaultValue": "https://",
+    "metadata": { "description": "The URL for the API" }
+  },
+  "apikeytopics": {
+    "type": "securestring",
+    "metadata": { "description": "The Key will enable the Machine Learning Logice App to access the Web service to access the API" }
+  },
+  "apiurltopics": {
+    "type": "string",
+    "defaultValue": "https://",
+    "metadata": { "description": "The URL for the API" }
+  },
+  "apikeyimages": {
+    "type": "securestring",
+    "metadata": { "description": "The Key will enable the Machine Learning Logice App to access the Web service to access the API" }
+  },
+  "apiurlimages": {
+    "type": "string",
+    "defaultValue": "https://",
+    "metadata": { "description": "The URL for the API" }
+  }
+
+
+
+} 
