@@ -10,6 +10,8 @@ The Nonprofit Data Warehouse Quickstart is a pre-packaged, ‘one-click deployme
 
 * Review the ‘Nonprofit Data Warehouse Quickstart with CDM - Deployment Guide’ for step-by-step instructions on how to deploy the solution from GitHub, configure the components, and integrate the Nonprofit Accelerator attributes.
 
+* Review the video providing a quick demo of this solution, NonprofitDataWarehouseQuickstart Overview.MOV.
+
 * All code and sample data for these solutions is contained in the corresponding ZIP files.  
 
 
