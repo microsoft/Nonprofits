@@ -1,7 +1,0 @@
-﻿{
-  "tracing": {
-    // This is to ensure we do not run out of hard disk space
-    "consoleLevel": "Off"
-  }
-
-}
