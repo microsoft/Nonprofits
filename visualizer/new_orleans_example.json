@@ -1,0 +1,23 @@
+{
+    "preImageryLayer": {
+        "basemapURL": "http://msrcalebubuntu.eastus.cloudapp.azure.com/data/nola_pre_2021-07-27-50cm_tiles/{z}/{x}/{y}.png",
+        "date": "July 27th, 2021",
+        "attribution": "",
+        "bounds": [[29.63098365979515, -90.08234437454288], [29.76877481664911, -90.15371425546725]]
+    },
+    "postImageryLayer": {
+        "basemapURL": "http://msrcalebubuntu.eastus.cloudapp.azure.com/data/nola_post_2021-08-31-50cm_tiles/{z}/{x}/{y}.png",
+        "date": "August 31st, 2021",
+        "attribution": "",
+        "bounds": [[29.63098365979515, -90.08234437454288], [29.76877481664911, -90.15371425546725]]
+    },
+    "changeImageryLayer": {
+        "basemapURL": "http://msrcalebubuntu.eastus.cloudapp.azure.com/data/nola_damage_building-50cm_tiles/{z}/{x}/{y}.png",
+        "bounds": [[29.63098365979515, -90.08234437454288], [29.76877481664911, -90.15371425546725]]
+    },
+    "center": [29.69990286476118, -90.11802931500507],
+    "initialZoom": 14,
+    "location": "New Orleans, Louisiana",
+    "imageryAttribution": "<a href='https://www.maxar.com/open-data/haiti-earthquake'>Maxar Open Data Program</a>",
+    "license": "<a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Creative Commons Attribution Non Commercial 4.0</a>"
+}
