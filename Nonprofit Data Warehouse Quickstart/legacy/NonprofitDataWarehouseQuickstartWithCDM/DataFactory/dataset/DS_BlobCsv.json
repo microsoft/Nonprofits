@@ -1,0 +1,62 @@
+{
+	"name": "DS_BlobCsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BLOB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Container": {
+				"type": "string"
+			},
+			"Directory": {
+				"type": "string"
+			},
+			"File": {
+				"type": "string"
+			},
+			"ColumnDelimiter": {
+				"type": "string"
+			},
+			"EscapeCharacter": {
+				"type": "string"
+			},
+			"QuoteCharacter": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().File",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().Container",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": {
+				"value": "@dataset().ColumnDelimiter",
+				"type": "Expression"
+			},
+			"escapeChar": {
+				"value": "@dataset().EscapeCharacter",
+				"type": "Expression"
+			},
+			"firstRowAsHeader": true,
+			"quoteChar": {
+				"value": "@dataset().QuoteCharacter",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}

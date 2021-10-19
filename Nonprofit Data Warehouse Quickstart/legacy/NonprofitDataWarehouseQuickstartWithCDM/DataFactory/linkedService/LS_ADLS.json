@@ -1,0 +1,10 @@
+{
+	"name": "LS_ADLS",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://mstsidhbetteradlsweudev.dfs.core.windows.net/"
+		}
+	}
+}

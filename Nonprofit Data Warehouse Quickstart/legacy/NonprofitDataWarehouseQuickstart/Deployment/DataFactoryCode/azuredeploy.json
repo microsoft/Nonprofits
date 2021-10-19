@@ -1,0 +1,2113 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "mstsidhadfweudev"
+        },
+        "LS_ADLS_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://mstsidhadlsweudev.dfs.core.windows.net/"
+        },
+        "LS_BLOB_properties_typeProperties_serviceEndpoint": {
+            "type": "string",
+            "defaultValue": "https://mstsidhsaweudev.blob.core.windows.net/"
+        },
+        "LS_KeyVault_properties_typeProperties_baseUrl": {
+            "type": "string",
+            "defaultValue": "https://mstsidhkvweudev.vault.azure.net/"
+        },
+        "LS_SynapseAnalytics_properties_typeProperties_connectionString_secretName": {
+            "type": "string",
+            "defaultValue": "SynapseAnalytics-ConnectionString"
+        },
+        "Disable Synapse Analytics_properties_PL_ChangeSynapseAnalyticsState_parameters_Action": {
+            "type": "string",
+            "defaultValue": "pause"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_ChangeSynapseAnalyticsState')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "CheckSynapseAnalyticsState",
+                        "type": "WebActivity",
+                        "dependsOn": [
+                            {
+                                "activity": "Set SubscriptionId",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            },
+                            {
+                                "activity": "Set ResourceGroupName",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            },
+                            {
+                                "activity": "Set SynapseAnalyticsName",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            },
+                            {
+                                "activity": "Set SqlServerName",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": {
+                                "value": "https://management.azure.com/subscriptions/@{variables('SubscriptionId')}/resourceGroups/@{variables('ResourceGroupName')}/providers/Microsoft.Sql/servers/@{variables('SqlServerName')}/databases/@{variables('SynapseAnalyticsName')}?api-version=2017-10-01-preview",
+                                "type": "Expression"
+                            },
+                            "method": "GET",
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "body": {
+                                "value": "@string(json('{}'))",
+                                "type": "Expression"
+                            },
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "https://management.core.windows.net/"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Obtain Metadata SubscriptionID",
+                        "type": "WebActivity",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": {
+                                "value": "https://@{variables('KeyVaultName')}.vault.azure.net/secrets/Subscription-Id?api-version=7.0",
+                                "type": "Expression"
+                            },
+                            "method": "GET",
+                            "headers": {},
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "https://vault.azure.net"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Obtain Metadata ResourceGroup",
+                        "type": "WebActivity",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": {
+                                "value": "https://@{variables('KeyVaultName')}.vault.azure.net/secrets/ResourceGroup-Name?api-version=7.0",
+                                "type": "Expression"
+                            },
+                            "method": "GET",
+                            "headers": {},
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "https://vault.azure.net"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Obtain Metadata ServerName",
+                        "type": "WebActivity",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": {
+                                "value": "https://@{variables('KeyVaultName')}.vault.azure.net/secrets/SqlServer-Name?api-version=7.0",
+                                "type": "Expression"
+                            },
+                            "method": "GET",
+                            "headers": {},
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "https://vault.azure.net"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Obtain Metadata DatabaseName",
+                        "type": "WebActivity",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": {
+                                "value": "https://@{variables('KeyVaultName')}.vault.azure.net/secrets/SynapseAnalytics-Name?api-version=7.0",
+                                "type": "Expression"
+                            },
+                            "method": "GET",
+                            "headers": {},
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "https://vault.azure.net"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Set SubscriptionId",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "Obtain Metadata SubscriptionID",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "SubscriptionId",
+                            "value": {
+                                "value": "@activity('Obtain Metadata SubscriptionID').output.value",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Set ResourceGroupName",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "Obtain Metadata ResourceGroup",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "ResourceGroupName",
+                            "value": {
+                                "value": "@activity('Obtain Metadata ResourceGroup').output.value",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Set SqlServerName",
+                        "description": "",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "Obtain Metadata ServerName",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "SqlServerName",
+                            "value": {
+                                "value": "@activity('Obtain Metadata ServerName').output.value",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Set SynapseAnalyticsName",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "Obtain Metadata DatabaseName",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "SynapseAnalyticsName",
+                            "value": {
+                                "value": "@activity('Obtain Metadata DatabaseName').output.value",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "If Action is Pause",
+                        "type": "IfCondition",
+                        "dependsOn": [
+                            {
+                                "activity": "CheckSynapseAnalyticsState",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "expression": {
+                                "value": "@and(equals(activity('CheckSynapseAnalyticsState').output.properties.status, 'Online'), equals(pipeline().parameters.Action,'pause'))",
+                                "type": "Expression"
+                            },
+                            "ifTrueActivities": [
+                                {
+                                    "name": "ChangeSynapseAnalyticsStateToPause",
+                                    "type": "WebActivity",
+                                    "dependsOn": [],
+                                    "policy": {
+                                        "timeout": "7.00:00:00",
+                                        "retry": 0,
+                                        "retryIntervalInSeconds": 30,
+                                        "secureOutput": false,
+                                        "secureInput": false
+                                    },
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "url": {
+                                            "value": "https://management.azure.com/subscriptions/@{variables('SubscriptionId')}/resourceGroups/@{variables('ResourceGroupName')}/providers/Microsoft.Sql/servers/@{variables('SqlServerName')}/databases/@{variables('SynapseAnalyticsName')}/@{pipeline().parameters.Action}?api-version=2017-10-01-preview",
+                                            "type": "Expression"
+                                        },
+                                        "method": "POST",
+                                        "headers": {
+                                            "Content-Type": "application/json"
+                                        },
+                                        "body": {
+                                            "value": "@string(json('{}'))",
+                                            "type": "Expression"
+                                        },
+                                        "authentication": {
+                                            "type": "MSI",
+                                            "resource": "https://management.core.windows.net/"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "If Action is Resume",
+                        "type": "IfCondition",
+                        "dependsOn": [
+                            {
+                                "activity": "If Action is Pause",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "expression": {
+                                "value": "@and(equals(activity('CheckSynapseAnalyticsState').output.properties.status, 'Paused'), equals(pipeline().parameters.Action,'resume'))",
+                                "type": "Expression"
+                            },
+                            "ifTrueActivities": [
+                                {
+                                    "name": "ChangeSynapseAnalyticsStateToResume",
+                                    "type": "WebActivity",
+                                    "dependsOn": [],
+                                    "policy": {
+                                        "timeout": "7.00:00:00",
+                                        "retry": 0,
+                                        "retryIntervalInSeconds": 30,
+                                        "secureOutput": false,
+                                        "secureInput": false
+                                    },
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "url": {
+                                            "value": "https://management.azure.com/subscriptions/@{variables('SubscriptionId')}/resourceGroups/@{variables('ResourceGroupName')}/providers/Microsoft.Sql/servers/@{variables('SqlServerName')}/databases/@{variables('SynapseAnalyticsName')}/@{pipeline().parameters.Action}?api-version=2017-10-01-preview",
+                                            "type": "Expression"
+                                        },
+                                        "method": "POST",
+                                        "headers": {
+                                            "Content-Type": "application/json"
+                                        },
+                                        "body": {
+                                            "value": "@string(json('{}'))",
+                                            "type": "Expression"
+                                        },
+                                        "authentication": {
+                                            "type": "MSI",
+                                            "resource": "https://management.core.windows.net/"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "parameters": {
+                    "Action": {
+                        "type": "string",
+                        "defaultValue": "pause"
+                    }
+                },
+                "variables": {
+                    "SubscriptionId": {
+                        "type": "String"
+                    },
+                    "ResourceGroupName": {
+                        "type": "String"
+                    },
+                    "SqlServerName": {
+                        "type": "String"
+                    },
+                    "SynapseAnalyticsName": {
+                        "type": "String"
+                    },
+                    "KeyVaultName": {
+                        "type": "String",
+                        "defaultValue": "mstsidhkvweudev"
+                    }
+                },
+                "folder": {
+                    "name": "Management"
+                },
+                "annotations": []
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_CopyFromAdlsToPersisted')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Stored Procedure",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "Activate New Child Pipeline",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": {
+                                "value": "@{pipeline().parameters.TargetSchema}.@{pipeline().parameters.TargetStoredProcedure}",
+                                "type": "Expression"
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Activate New Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table with a new LoadId",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ActivateNewPipeline]",
+                                "storedProcedureParameters": {
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().parameters.EntityCode",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "Environment": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().parameters.Environment",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineName": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().Pipeline",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineRunId": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().RunId",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        }
+                    },
+                    {
+                        "name": "Success - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Success",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "Execute Stored Procedure",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Success",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Failure - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Failed",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "Execute Stored Procedure",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Failed",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                ],
+                "parameters": {
+                    "Environment": {
+                        "type": "string"
+                    },
+                    "EntityCode": {
+                        "type": "string"
+                    },
+                    "TargetStoredProcedure": {
+                        "type": "string"
+                    },
+                    "TargetSchema": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "Transformation"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/datasets/DS_SynapseAnalytics')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_CopyFromBlobToAdls')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "CopyDataFromBlobToADLS",
+                        "type": "Copy",
+                        "dependsOn": [
+                            {
+                                "activity": "Activate New Child Pipeline",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "DelimitedTextSource",
+                                "storeSettings": {
+                                    "type": "AzureBlobStorageReadSettings",
+                                    "recursive": false,
+                                    "enablePartitionDiscovery": false
+                                },
+                                "formatSettings": {
+                                    "type": "DelimitedTextReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "ParquetSink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "DS_BlobCsv",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "Container": {
+                                        "value": "@pipeline().parameters.SourceContainer",
+                                        "type": "Expression"
+                                    },
+                                    "Directory": {
+                                        "value": "@pipeline().parameters.SourceFolderPath",
+                                        "type": "Expression"
+                                    },
+                                    "File": {
+                                        "value": "@pipeline().parameters.SourceFileName",
+                                        "type": "Expression"
+                                    },
+                                    "ColumnDelimiter": {
+                                        "value": "@variables('ColumnDelimiter')",
+                                        "type": "Expression"
+                                    },
+                                    "EscapeCharacter": {
+                                        "value": "@variables('EscapeCharacter')",
+                                        "type": "Expression"
+                                    },
+                                    "QuoteCharacter": {
+                                        "value": "@variables('QuoteCharacter')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "DS_AdlsParquet",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "FileSystem": {
+                                        "value": "@pipeline().parameters.TargetContainer",
+                                        "type": "Expression"
+                                    },
+                                    "Directory": {
+                                        "value": "@pipeline().parameters.TargetFolderPath",
+                                        "type": "Expression"
+                                    },
+                                    "File": {
+                                        "value": "@replace(pipeline().parameters.TargetFileName, '*', concat('_',formatDateTime(UtcNow(), 'yyyyMMdd_HHmmss')))",
+                                        "type": "Expression"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Activate New Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table with a new LoadId",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ActivateNewPipeline]",
+                                "storedProcedureParameters": {
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().parameters.EntityCode",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "Environment": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().parameters.Environment",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineName": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().Pipeline",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineRunId": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().RunId",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        }
+                    },
+                    {
+                        "name": "Success - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Success",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "CopyDataFromBlobToADLS",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Success",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Failure - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Failed",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "CopyDataFromBlobToADLS",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Failed",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                ],
+                "parameters": {
+                    "EntityCode": {
+                        "type": "string"
+                    },
+                    "SourceFolderPath": {
+                        "type": "string"
+                    },
+                    "SourceFileName": {
+                        "type": "string"
+                    },
+                    "TargetFolderPath": {
+                        "type": "string"
+                    },
+                    "TargetFileName": {
+                        "type": "string"
+                    },
+                    "Environment": {
+                        "type": "string"
+                    },
+                    "SourceContainer": {
+                        "type": "string"
+                    },
+                    "TargetContainer": {
+                        "type": "string"
+                    }
+                },
+                "variables": {
+                    "ColumnDelimiter": {
+                        "type": "String",
+                        "defaultValue": ","
+                    },
+                    "EscapeCharacter": {
+                        "type": "String",
+                        "defaultValue": "\\"
+                    },
+                    "QuoteCharacter": {
+                        "type": "String",
+                        "defaultValue": "\""
+                    }
+                },
+                "folder": {
+                    "name": "Ingestion"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/DS_BlobCsv')]",
+                "[concat(variables('factoryId'), '/datasets/DS_AdlsParquet')]",
+                "[concat(variables('factoryId'), '/datasets/DS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/linkedServices/LS_SynapseAnalytics')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_MasterOrchestrate')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "description": "Orchestrates the data movement between  Source and Azure Synapse Analytics",
+                "activities": [
+                    {
+                        "name": "Execute Ingestion",
+                        "description": "Executes PL_OrchestrateIngest pipeline",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "Activate New Parent Pipeline",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "PL_OrchestrateIngest",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "Environment": {
+                                    "value": "@variables('Environment')",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "Execute Transformation",
+                        "description": "Executes PL_OrchestrateTransformation pipeline",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "Execute Ingestion",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "PL_OrchestrateTransformation",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "Environment": {
+                                    "value": "@variables('Environment')",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "Activate New Parent Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table with a new LoadId",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ActivateNewPipeline]",
+                                "storedProcedureParameters": {
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": null
+                                    },
+                                    "Environment": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@variables('Environment')",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineName": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().Pipeline",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineRunId": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().RunId",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        }
+                    },
+                    {
+                        "name": "Success - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Success",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "Execute Transformation",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@variables('Environment')",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Success",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Failure - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Failed",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "Execute Transformation",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@variables('Environment')",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Failed",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                ],
+                "variables": {
+                    "Environment": {
+                        "type": "String",
+                        "defaultValue": "DEV"
+                    }
+                },
+                "folder": {
+                    "name": "Master"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/PL_OrchestrateIngest')]",
+                "[concat(variables('factoryId'), '/pipelines/PL_OrchestrateTransformation')]",
+                "[concat(variables('factoryId'), '/datasets/DS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/linkedServices/LS_SynapseAnalytics')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_OrchestrateIngest')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "ForEach Source Entity",
+                        "type": "ForEach",
+                        "dependsOn": [
+                            {
+                                "activity": "Obtain Entities to Ingest",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "items": {
+                                "value": "@activity('Obtain Entities to Ingest').output.value",
+                                "type": "Expression"
+                            },
+                            "isSequential": false,
+                            "activities": [
+                                {
+                                    "name": "PL_CopyFromBlobToAdls",
+                                    "type": "ExecutePipeline",
+                                    "dependsOn": [],
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "pipeline": {
+                                            "referenceName": "PL_CopyFromBlobToAdls",
+                                            "type": "PipelineReference"
+                                        },
+                                        "waitOnCompletion": true,
+                                        "parameters": {
+                                            "EntityCode": {
+                                                "value": "@item().EntityCode",
+                                                "type": "Expression"
+                                            },
+                                            "SourceFolderPath": {
+                                                "value": "@item().SourceFolderPath",
+                                                "type": "Expression"
+                                            },
+                                            "SourceFileName": {
+                                                "value": "@item().SourceFileName",
+                                                "type": "Expression"
+                                            },
+                                            "TargetFolderPath": {
+                                                "value": "@item().TargetFolderPath",
+                                                "type": "Expression"
+                                            },
+                                            "TargetFileName": {
+                                                "value": "@item().TargetFileName",
+                                                "type": "Expression"
+                                            },
+                                            "Environment": {
+                                                "value": "@pipeline().parameters.Environment",
+                                                "type": "Expression"
+                                            },
+                                            "SourceContainer": {
+                                                "value": "@item().SourceContainer",
+                                                "type": "Expression"
+                                            },
+                                            "TargetContainer": {
+                                                "value": "@item().TargetContainer",
+                                                "type": "Expression"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "Activate New Parent Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table with a new LoadId",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ActivateNewPipeline]",
+                                "storedProcedureParameters": {
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": null
+                                    },
+                                    "Environment": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().parameters.Environment",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineName": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().Pipeline",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineRunId": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().RunId",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            },
+                            "firstRowOnly": true
+                        }
+                    },
+                    {
+                        "name": "Obtain Entities to Ingest",
+                        "type": "Lookup",
+                        "dependsOn": [
+                            {
+                                "activity": "Activate New Parent Pipeline",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ObtainEntity]",
+                                "storedProcedureParameters": {
+                                    "CurationStageCode": {
+                                        "type": "String",
+                                        "value": "RAW"
+                                    },
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": null
+                                    },
+                                    "SourceSystemCode": {
+                                        "type": "String",
+                                        "value": null
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            },
+                            "firstRowOnly": false
+                        }
+                    },
+                    {
+                        "name": "Success - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Success",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "ForEach Source Entity",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Success",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Failure - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Failed",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "ForEach Source Entity",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Failed",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                ],
+                "parameters": {
+                    "Environment": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "Ingestion"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/DS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/linkedServices/LS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/pipelines/PL_CopyFromBlobToAdls')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PL_OrchestrateTransformation')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Activate New Parent Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table with a new LoadId",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ActivateNewPipeline]",
+                                "storedProcedureParameters": {
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": null
+                                    },
+                                    "Environment": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().parameters.Environment",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineName": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().Pipeline",
+                                            "type": "Expression"
+                                        }
+                                    },
+                                    "PipelineRunId": {
+                                        "type": "String",
+                                        "value": {
+                                            "value": "@pipeline().RunId",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            },
+                            "firstRowOnly": true
+                        }
+                    },
+                    {
+                        "name": "Success - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Success",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "ForEach Persisted Entity",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Success",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Failure - Finalise Child Pipeline",
+                        "description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Failed",
+                        "type": "SqlServerStoredProcedure",
+                        "dependsOn": [
+                            {
+                                "activity": "ForEach Persisted Entity",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "storedProcedureName": "[[Control].[FinalisePipeline]",
+                            "storedProcedureParameters": {
+                                "Environment": {
+                                    "value": {
+                                        "value": "@pipeline().parameters.Environment",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineRunId": {
+                                    "value": {
+                                        "value": "@pipeline().RunId",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineInfo": {
+                                    "value": {
+                                        "value": "@pipeline().Pipeline",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                },
+                                "PipelineStatusType": {
+                                    "value": {
+                                        "value": "Failed",
+                                        "type": "Expression"
+                                    },
+                                    "type": "String"
+                                }
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "LS_SynapseAnalytics",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "Obtain Entities to Persist",
+                        "type": "Lookup",
+                        "dependsOn": [
+                            {
+                                "activity": "Activate New Parent Pipeline",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "SqlDWSource",
+                                "sqlReaderStoredProcedureName": "[[Control].[ObtainEntity]",
+                                "storedProcedureParameters": {
+                                    "CurationStageCode": {
+                                        "type": "String",
+                                        "value": "Persisted"
+                                    },
+                                    "EntityCode": {
+                                        "type": "String",
+                                        "value": null
+                                    },
+                                    "SourceSystemCode": {
+                                        "type": "String",
+                                        "value": null
+                                    }
+                                },
+                                "queryTimeout": "01:00:00"
+                            },
+                            "dataset": {
+                                "referenceName": "DS_SynapseAnalytics",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            },
+                            "firstRowOnly": false
+                        }
+                    },
+                    {
+                        "name": "ForEach Persisted Entity",
+                        "type": "ForEach",
+                        "dependsOn": [
+                            {
+                                "activity": "Obtain Entities to Persist",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "items": {
+                                "value": "@activity('Obtain Entities to Persist').output.value",
+                                "type": "Expression"
+                            },
+                            "isSequential": false,
+                            "activities": [
+                                {
+                                    "name": "PL_CopyFromAdlsToStage_copy1",
+                                    "type": "ExecutePipeline",
+                                    "dependsOn": [],
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "pipeline": {
+                                            "referenceName": "PL_CopyFromAdlsToPersisted",
+                                            "type": "PipelineReference"
+                                        },
+                                        "waitOnCompletion": true,
+                                        "parameters": {
+                                            "EntityCode": {
+                                                "value": "@item().EntityCode",
+                                                "type": "Expression"
+                                            },
+                                            "Environment": {
+                                                "value": "@pipeline().parameters.Environment",
+                                                "type": "Expression"
+                                            },
+                                            "TargetStoredProcedure": {
+                                                "value": "@item().TargetStoredProcedure",
+                                                "type": "Expression"
+                                            },
+                                            "TargetSchema": {
+                                                "value": "@item().TargetSchema",
+                                                "type": "Expression"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "parameters": {
+                    "Environment": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "Transformation"
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/DS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/linkedServices/LS_SynapseAnalytics')]",
+                "[concat(variables('factoryId'), '/pipelines/PL_CopyFromAdlsToPersisted')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_AdlsCsv')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "LS_ADLS",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "FileSystem": {
+                        "type": "string"
+                    },
+                    "Directory": {
+                        "type": "string"
+                    },
+                    "File": {
+                        "type": "string"
+                    }
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": {
+                            "value": "@dataset().File",
+                            "type": "Expression"
+                        },
+                        "folderPath": {
+                            "value": "@dataset().Directory",
+                            "type": "Expression"
+                        },
+                        "fileSystem": {
+                            "value": "@dataset().FileSystem",
+                            "type": "Expression"
+                        }
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_ADLS')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_AdlsParquet')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "LS_ADLS",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "FileSystem": {
+                        "type": "string"
+                    },
+                    "Directory": {
+                        "type": "string"
+                    },
+                    "File": {
+                        "type": "string"
+                    }
+                },
+                "annotations": [],
+                "type": "Parquet",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": {
+                            "value": "@dataset().File",
+                            "type": "Expression"
+                        },
+                        "folderPath": {
+                            "value": "@dataset().Directory",
+                            "type": "Expression"
+                        },
+                        "fileSystem": {
+                            "value": "@dataset().FileSystem",
+                            "type": "Expression"
+                        }
+                    },
+                    "compressionCodec": "snappy"
+                },
+                "schema": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_ADLS')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_BlobCsv')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "LS_BLOB",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "Container": {
+                        "type": "string"
+                    },
+                    "Directory": {
+                        "type": "string"
+                    },
+                    "File": {
+                        "type": "string"
+                    },
+                    "ColumnDelimiter": {
+                        "type": "string"
+                    },
+                    "EscapeCharacter": {
+                        "type": "string"
+                    },
+                    "QuoteCharacter": {
+                        "type": "string"
+                    }
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": {
+                            "value": "@dataset().File",
+                            "type": "Expression"
+                        },
+                        "folderPath": {
+                            "value": "@dataset().Directory",
+                            "type": "Expression"
+                        },
+                        "container": {
+                            "value": "@dataset().Container",
+                            "type": "Expression"
+                        }
+                    },
+                    "columnDelimiter": {
+                        "value": "@dataset().ColumnDelimiter",
+                        "type": "Expression"
+                    },
+                    "escapeChar": {
+                        "value": "@dataset().EscapeCharacter",
+                        "type": "Expression"
+                    },
+                    "firstRowAsHeader": true,
+                    "quoteChar": {
+                        "value": "@dataset().QuoteCharacter",
+                        "type": "Expression"
+                    }
+                },
+                "schema": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_BLOB')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DS_SynapseAnalytics')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "LS_SynapseAnalytics",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "Audit",
+                    "table": "PipelineLoad"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_SynapseAnalytics')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_ADLS')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[parameters('LS_ADLS_properties_typeProperties_url')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_BLOB')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "serviceEndpoint": "[parameters('LS_BLOB_properties_typeProperties_serviceEndpoint')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_KeyVault')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_SynapseAnalytics')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDW",
+                "typeProperties": {
+                    "connectionString": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "LS_KeyVault",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "[parameters('LS_SynapseAnalytics_properties_typeProperties_connectionString_secretName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/LS_KeyVault')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Disable Synapse Analytics')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Started",
+                "pipelines": [
+                    {
+                        "pipelineReference": {
+                            "referenceName": "PL_ChangeSynapseAnalyticsState",
+                            "type": "PipelineReference"
+                        },
+                        "parameters": {
+                            "Action": "[parameters('Disable Synapse Analytics_properties_PL_ChangeSynapseAnalyticsState_parameters_Action')]"
+                        }
+                    }
+                ],
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "Week",
+                        "interval": 1,
+                        "startTime": "2020-01-03T18:28:00.000Z",
+                        "timeZone": "UTC",
+                        "schedule": {
+                            "minutes": [
+                                30
+                            ],
+                            "hours": [
+                                18
+                            ],
+                            "weekDays": [
+                                "Monday",
+                                "Tuesday",
+                                "Wednesday",
+                                "Thursday",
+                                "Friday"
+                            ]
+                        }
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/PL_ChangeSynapseAnalyticsState')]"
+            ]
+        }
+    ]
+}
