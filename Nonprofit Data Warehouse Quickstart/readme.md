@@ -6,7 +6,7 @@ The Nonprofit Data Warehouse Quickstart is a pre-packaged, ‘one-click deployme
 
 * Review the [‘Technical Overview’](https://github.com/microsoft/Nonprofits/blob/master/Nonprofit%20Data%20Warehouse%20Quickstart/1.%20Nonprofit%20Data%20Warehouse%20Quickstart%20-%20Technical%20Overview.docx) for further information on the solution architecture, benefits of each resource, and alternative architectures organizations could leverage in their own production data warehouse environment.
 
-* Review the [‘Nonprofit Data Warehouse Quickstart - Deployment Guide’](https://github.com/microsoft/Nonprofit_Data_Warehouse_Quickstart/blob/master/Nonprofit%20Data%20Warehouse%20Quickstart%20-%20Deployment%20Guide.docx) for step-by-step instructions on how to deploy the solution from GitHub, configure the components, and execute the solution. 
+* Review the [‘Nonprofit Data Warehouse Quickstart - Deployment Guide’](https://github.com/microsoft/Nonprofits/blob/master/Nonprofit%20Data%20Warehouse%20Quickstart/2.%20Nonprofit%20Data%20Warehouse%20Quickstart%20-%20Deployment%20Guide%201.1.docx) for step-by-step instructions on how to deploy the solution from GitHub, configure the components, and execute the solution. 
 
 * Review the [‘Nonprofit Data Warehouse Quickstart with CDM - Deployment Guide’](https://github.com/microsoft/Nonprofit_Data_Warehouse_Quickstart/blob/master/Nonprofit%20Data%20Warehouse%20Quickstart%20with%20CDM%20-%20Deployment%20Guide.docx) for step-by-step instructions on how to deploy the solution from GitHub, configure the components, and integrate the Nonprofit Accelerator attributes.
 
