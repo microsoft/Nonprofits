@@ -1,0 +1,9 @@
+name: visualizer
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.6
+  - rasterio>=1.0.16
+  - gdal>=3.0
+  - shapely
+  - fiona

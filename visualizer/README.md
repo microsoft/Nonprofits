@@ -1,6 +1,6 @@
 # Building damage visualizer
 
-This is a simple tool for comparing satellite imagery from two points in time along side a modeled building damage overlay.
+This is a simple tool for comparing satellite imagery from two points in time alongside a modeled building damage overlay.
 
 ![](images/example_screenshot.png)
 
@@ -8,7 +8,7 @@ This is a simple tool for comparing satellite imagery from two points in time al
 
 The tool uses config files passed via the "config" URL parameter to run different "instances", e.g.: the URL `https://server.com/change_tool.html?config=new_orleans_example.json` will load the "new_orleans_example.json" file.
 
-## Config file example
+### Config file example
 
 The below shows the format of the config file used to instantiate an instance of the tool.
 
@@ -37,6 +37,71 @@ The below shows the format of the config file used to instantiate an instance of
     "license": "..."  // HTML string for the source imagery license
 }
 ```
+
+## Tutorial
+
+This section goes over detailed instruction on how to set up a demo instance of this tool using high-resolution imagery from the USDA's National Agriculture Imagery Program (NAIP).
+We use this NAIP imagery simply for example purposes, it is not practically useful for distaster response applications as it is only collected once every two years on a state-by-state basis in the US. That said, it is freely available on the [Planetary Computer](https://planetarycomputer.microsoft.com/) and will allow us to easily demo the steps needed to set up the building damage visualizer tool.
+
+The following steps assume that you are running a linux version of the [Data Science Virtual Machine (DSVM)](https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/) instance in Microsoft Azure. The steps to setup an example instance of the visualizer are as follows:
+- Clone the repo
+```bash
+git clone https://github.com/microsoft/Nonprofits.git nonprofits
+cd nonprofits/visualizer/
+```
+- Create a conda environment that contains the necessary packages (particularly GDAL!).
+```bash
+conda config --set channel_priority strict
+conda env create --file environment.yml
+conda activate visualizer
+```
+- Download the example NAIP data. We use NAIP scenes from 2013 and 2019 that overlap the Microsoft Redmond campus. These are formatted as [GeoTIFFs](https://en.wikipedia.org/wiki/GeoTIFF), a common image format for satellite or aerial imagery.
+```bash
+wget https://naipeuwest.blob.core.windows.net/naip/v002/wa/2013/wa_100cm_2013/47122/m_4712223_se_10_1_20130910.tif
+wget https://naipeuwest.blob.core.windows.net/naip/v002/wa/2019/wa_60cm_2019/47122/m_4712223_se_10_060_20191011.tif
+```
+- In the coming steps we will want to render our scenes using the `gdal2tiles.py` command which requires 3-channel (RGB) data formatted as "Bytes", so we need to preprocess the data we have into this format. The example NAIP data comes as 4-channel GeoTIFFs with "Byte" data types already -- to see this for one of the scenes you can run `gdalinfo m_4712223_se_10_1_20130910.tif` -- so we will just need to extract the RGB bands into their own file. Other sources of imagery may have different data types, different channels orderings, etc. and require more preprocessing. We use [gdal_translate](https://gdal.org/programs/gdal_translate.html) to do this preprocessing:
+```bash
+gdal_translate -b 1 -b 2 -b 3 -co BIGTIFF=YES -co NUM_THREADS=ALL_CPUS -co COMPRESS=LZW -co PREDICTOR=2 m_4712223_se_10_1_20130910.tif 2013_rgb.tif
+gdal_translate -b 1 -b 2 -b 3 -co BIGTIFF=YES -co NUM_THREADS=ALL_CPUS -co COMPRESS=LZW -co PREDICTOR=2 m_4712223_se_10_060_20191011.tif 2017_rgb.tif
+rm m_4712223_se_10_1_20130910.tif m_4712223_se_10_060_20191011.tif
+```
+- We can now use `gdal2tiles.py` to render the tiles that will be shown on the web map interface. This step will produce two directories, `data/2013_tiles/` and `data/2017_tiles/` that contain rendered PNG versions of the imagery that will be displayed on the web map.
+```bash
+gdal2tiles.py -z 8-18 2013_rgb.tif data/2013_tiles/
+gdal2tiles.py -z 8-18 2017_rgb.tif data/2017_tiles/
+```
+- Now, to setup the configuration file we need some metadata from the input GeoTIFFs. We include a script that provides this:
+```
+python utils/get_bounds.py --input-fn 2013_rgb.tif
+python utils/get_bounds.py --input-fn 2017_rgb.tif
+```
+- Finally, create a new configuration file (similar to the "new_orleans_example.json" file) called "local_example.json" using the bounds and centroid information shown by `utils/get_bounds.py` and the path to the directories we created:
+```
+{
+    "preImageryLayer": {
+        "basemapURL": "http://<REPLACE WITH YOUR VMS IP>:8080/data/2013_tiles/{z}/{x}/{y}.png",
+        "date": "2013",
+        "attribution": "",
+        "bounds": [[47.62170620047876, -122.12082716224859], [47.69079013651763, -122.19162910382583]]
+    },
+    "postImageryLayer": {
+        "basemapURL": "http://<REPLACE WITH YOUR VMS IP>:8080/data/2017_tiles/{z}/{x}/{y}.png",
+        "date": "2013",
+        "attribution": "",
+        "bounds": [[47.62170620047876, -122.12082716224859], [47.69079013651763, -122.19162910382583]]
+    },
+    "center": [47.656253585524624, -122.15620486525859],
+    "initialZoom": 14,
+    "location": "Redmond, Washington",
+    "imageryAttribution": "<a href='https://planetarycomputer.microsoft.com/dataset/naip'>NAIP Imagery</a>",
+    "license": "Proprietary"
+}
+```
+- Run a local http server `python -m http.server 8080`, set 
+- Make sure port 8080 is open through the Networking tab on your VM
+- Finally, navigate to [http://<REPLACE WITH YOUR VMS IP>:8080/change_tool.html?config=local_example.json] to see the example in action.
+
 
 
 ## List of third party javascript libraries/versions

@@ -291,14 +291,16 @@ $(document).ready(function(){
         bounds: config["postImageryLayer"]["bounds"]
     });
 
-    var change = L.tileLayer(config["changeImageryLayer"]["basemapURL"], {
-        tms: true,
-        attribution: "",
-        minZoom: 8,
-        maxNativeZoom: 18,
-        maxZoom: 21,
-        bounds: config["changeImageryLayer"]["bounds"]
-    });
+    if ("basemapURL" in config["changeImageryLayer"]){
+        var change = L.tileLayer(config["changeImageryLayer"]["basemapURL"], {
+            tms: true,
+            attribution: "",
+            minZoom: 8,
+            maxNativeZoom: 18,
+            maxZoom: 21,
+            bounds: config["changeImageryLayer"]["bounds"]
+        });
+    }
 
     var gMap = L.map('map', {
         center: config["center"],
