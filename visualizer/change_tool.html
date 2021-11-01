@@ -220,6 +220,16 @@ var notifySuccessMessage = function(message, timeout=2000){
     }).show();
 };
 
+var notifyInfoMessage = function(message, timeout=2000){
+    new Noty({
+        type: 'info',
+        text: message,
+        layout: 'topRight',
+        timeout: timeout,
+        theme: 'metroui'
+    }).show();
+};
+
 var notifyFailMessage = function(message, timeout=2000){
     new Noty({
         type: "error",
@@ -272,7 +282,7 @@ $(document).ready(function(){
         maxNativeZoom: 17,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
-
+    
     var pre_imagery = L.tileLayer(config["preImageryLayer"]["basemapURL"], {
         tms: true,
         attribution: config["preImageryLayer"]["attribution"],
@@ -281,7 +291,7 @@ $(document).ready(function(){
         maxNativeZoom: 19,
         bounds: config["preImageryLayer"]["bounds"]
     });
-
+    
     var post_imagery = L.tileLayer(config["postImageryLayer"]["basemapURL"], {
         tms: true,
         attribution: config["postImageryLayer"]["attribution"],
@@ -290,9 +300,11 @@ $(document).ready(function(){
         maxNativeZoom: 19,
         bounds: config["postImageryLayer"]["bounds"]
     });
+    var layers = [osm, pre_imagery, post_imagery];
 
-    if ("basemapURL" in config["changeImageryLayer"]){
-        var change = L.tileLayer(config["changeImageryLayer"]["basemapURL"], {
+    var change = null;
+    if ("changeImageryLayer" in config){
+        change = L.tileLayer(config["changeImageryLayer"]["basemapURL"], {
             tms: true,
             attribution: "",
             minZoom: 8,
@@ -300,7 +312,11 @@ $(document).ready(function(){
             maxZoom: 21,
             bounds: config["changeImageryLayer"]["bounds"]
         });
+        layers.push(change);
+    }else{
+        notifyInfoMessage("Building damage predictions not found, just showing imagery", 5000);
     }
+
 
     var gMap = L.map('map', {
         center: config["center"],
@@ -309,12 +325,13 @@ $(document).ready(function(){
         maxZoom: 21,
         zoomControl: false,
         keyboard: true,
-        layers: [osm, pre_imagery, post_imagery, change]
+        layers: layers
     });
 
     var basemaps = Object();
     basemaps[config["preImageryLayer"]["date"]] = pre_imagery;
     basemaps[config["postImageryLayer"]["date"]] = post_imagery;
+
 
     var overlaymaps = {
         "Predicted damage layer": change
@@ -351,10 +368,14 @@ $(document).ready(function(){
     helpControl.addTo(gMap);
 
     // Layer picker
-    var layers = L.control.layers({}, overlaymaps, {
-        collapsed: false,
-        position: "bottomright"
-    }).addTo(gMap);
+    if (change !== null){
+        var layers = L.control.layers({}, {
+            "Predicted damage layer": change
+        }, {
+            collapsed: false,
+            position: "bottomright"
+        }).addTo(gMap);
+    }
 
     // Initialize side-by-side control
     var divider = L.control.sideBySide(pre_imagery, post_imagery).addTo(gMap);
