@@ -2,7 +2,7 @@
 
 **Jump to: [Setup](#setup) | [Tutorial](#tutorial)**
 
-This is a simple tool for comparing satellite imagery from two points in time alongside a modeled building damage overlay.
+This is a simple web-based visualizer for comparing satellite imagery from two points in time with a modeled building damage overlay.
 
 ![](images/example_screenshot.png)
 
