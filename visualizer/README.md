@@ -102,8 +102,10 @@ python utils/get_bounds.py --input-fn 2019_rgb.tif
 }
 ```
 8. Run a local http server with `python -m http.server 8080`
-  - Make sure port 8080 is not blocked by the Azure level firewall through the "Network" tab of your VM in the Azure Portal. See [this page](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/nsg-quickstart-portal) for more information.
+    - Make sure port 8080 is not blocked by the Azure level firewall through the "Network" tab of your VM in the Azure Portal. See [this page](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/nsg-quickstart-portal) for more information.
 9. Finally, navigate to http://<REPLACE WITH YOUR VM'S HOSTNAME/IP>:8080/change_tool.html?config=local_example.json in your browser to see the example in action!
+
+Once you have confirmed that the local example is working, we suggest you move the contents of the visualizer to a stable web server. As the visualizer is completely static, it could be easily hosted on an [Azure blob container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website) or through a [local web server such as Apache](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-18-04).
 
 
 ## List of third party javascript libraries/versions
