@@ -1,5 +1,7 @@
 # Building damage visualizer
 
+**Jump to: [Setup](#setup) | [Tutorial](#tutorial)**
+
 This is a simple tool for comparing satellite imagery from two points in time alongside a modeled building damage overlay.
 
 ![](images/example_screenshot.png)
