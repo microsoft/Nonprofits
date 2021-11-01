@@ -14,7 +14,7 @@ The tool uses config files passed via the "config" URL parameter to run differen
 
 The below shows the format of the config file used to instantiate an instance of the tool.
 
-```json
+```js
 {
     "preImageryLayer": {
         "basemapURL": "http://server.com/basemap-pre/{z}/{x}/{y}.png", // URL for the "pre" imagery XYZ tiles
