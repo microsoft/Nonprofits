@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG base_image=ubuntu:20.04
+ARG base_image=nvidia/cuda:11.4.2-cudnn8-devel-ubuntu20.04
 FROM ${base_image}
 
 ARG miniconda_version="4.9.2"
