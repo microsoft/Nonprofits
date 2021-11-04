@@ -1,6 +1,5 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-
 """Building damage inference script."""
 
 import argparse
@@ -10,7 +9,7 @@ import numpy as np
 import rasterio
 import rasterio.mask
 import rasterio.warp
-import shapely.geometry
+import torch.nn.functional as F
 import torch
 from models import SiamUnet
 from torch.utils.data import DataLoader
@@ -20,7 +19,7 @@ from utils import TileInferenceDataset, ZipDataset
 
 NUM_WORKERS = 4
 CHIP_SIZE = 512
-PADDING = 96
+PADDING = 128
 assert PADDING % 2 == 0
 HALF_PADDING = PADDING // 2
 CHIP_STRIDE = CHIP_SIZE - PADDING
@@ -91,36 +90,32 @@ def main(args):
         )
         device = torch.device("cpu")
 
-    # Compute intersection of the imagery bounds
-    print("Computing intersection between input bounds")
-    input_crs = None
+    # Validating input data
     with rasterio.open(pre_fn) as f:
         assert f.profile["dtype"] == "uint8"
         assert f.count == 3
+        input_height = f.height
+        input_width = f.width
         input_crs = f.crs
-        pre_bounds = shapely.geometry.box(*f.bounds)
+
     with rasterio.open(pre_fn) as f:
         assert f.profile["dtype"] == "uint8"
         assert f.count == 3
         assert f.crs == input_crs
-        post_bounds = shapely.geometry.box(*f.bounds)
-
-    intersected_bounds = pre_bounds & post_bounds
-    intersected_geom = shapely.geometry.mapping(intersected_bounds)
+        assert f.width == input_width
+        assert f.height == input_height
 
     # Load data from the intersection
-    print("Loading data from intersection")
+    print("Loading data")
     with rasterio.open(pre_fn) as f:
-        pre_data, input_transform = rasterio.mask.mask(f, [intersected_geom], crop=True)
+        pre_data = f.read()
         twod_nodata_mask = (pre_data == 0).sum(axis=0) == 3
         pre_data = pre_data / 255.0
-        input_height = pre_data.shape[1]
-        input_width = pre_data.shape[2]
         input_profile = f.profile.copy()
         pre_data = pre_data.reshape(pre_data.shape[0], -1).T.copy()
 
     with rasterio.open(post_fn) as f:
-        post_data, _ = rasterio.mask.mask(f, [intersected_geom], crop=True)
+        post_data = f.read()
         post_data = post_data / 255.0
         post_data = post_data.reshape(post_data.shape[0], -1).T.copy()
 
@@ -174,7 +169,10 @@ def main(args):
 
     # Run model
     print("Running model inference")
-    output = np.zeros((input_height, input_width), dtype=np.uint8)
+    output = np.zeros((5, input_height, input_width), dtype=np.float64)
+    kernel = np.ones((CHIP_SIZE, CHIP_SIZE), dtype=np.float32)
+    kernel[HALF_PADDING:-HALF_PADDING, HALF_PADDING:-HALF_PADDING] = 5
+    counts = np.zeros((input_height, input_width), dtype=np.float32)
     for i, (x1, x2, coords) in enumerate(dataloader):
         x1 = x1.to(device)
         x2 = x2.to(device)
@@ -185,17 +183,22 @@ def main(args):
             y1 = y1.argmax(dim=1)
 
             damage = y1.unsqueeze(1) * damage
-            damage = damage.argmax(dim=1).cpu().numpy()
+            damage = F.softmax(damage, dim=1).cpu().numpy()
 
         for j in range(damage.shape[0]):
             y, x = coords[j]
-            output[y : y + CHIP_SIZE, x : x + CHIP_SIZE] = damage[j].astype(np.uint8)
+            output[:, y:y+CHIP_SIZE, x:x+CHIP_SIZE] += damage[j] * kernel
+            counts[y : y + CHIP_SIZE, x : x + CHIP_SIZE] += kernel
+
+    output = output / counts
+    output = output.argmax(axis=0).astype(np.uint8)
+    output[twod_nodata_mask] = 0
+    output[output==1] = 0
 
     # Save results
     print("Saving output")
     input_profile["count"] = 1
-    input_profile["nodata"] = 255
-    input_profile["transform"] = input_transform
+    input_profile["nodata"] = 0
     input_profile["height"] = input_height
     input_profile["width"] = input_width
     input_profile["compress"] = "lzw"

@@ -69,17 +69,28 @@ gdal_translate -b 1 -b 2 -b 3 -co BIGTIFF=YES -co NUM_THREADS=ALL_CPUS -co COMPR
 gdal_translate -b 1 -b 2 -b 3 -co BIGTIFF=YES -co NUM_THREADS=ALL_CPUS -co COMPRESS=LZW -co PREDICTOR=2 m_4712223_se_10_060_20191011.tif 2019_rgb.tif
 rm m_4712223_se_10_1_20130910.tif m_4712223_se_10_060_20191011.tif
 ```
-5. We can now use `gdal2tiles.py` to render the tiles that will be shown on the web map interface. This step will produce two directories, `data/2013_tiles/` and `data/2019_tiles/` that contain rendered PNG versions of the imagery that will be displayed on the web map.
+5. Next, we need to make sure that the data is _pixel-aligned_ over the same area on Earth. To do this we crop and resample the post-imagery to the same spatial extent and pixel resolution as the pre-imagery.
+```
+python utils/align_inputs.py --template-fn 2013_rgb.tif --input-fn 2019_rgb.tif --output-fn 2019_aligned_rgb.tif
+mv 2019_aligned_rgb.tif 2019_rgb.tif
+```
+6. Now that we have pixel-aligned pre- and post-imagery layers, we can run the building damage assessment model.
+```
+python utils/inference.py --pre-imagery 2013_rgb.tif --post-imagery 2019_rgb.tif --output-fn damage_predictions.tif
+```
+7. We can now use `gdal2tiles.py` to render the tiles that will be shown on the web map interface. This step will produce three directories, `data/2013_tiles/`, `data/2019_tiles/`, and `data/damage_tiles/`, that contain rendered PNG versions of the imagery that will be displayed on the web map.
 ```bash
+gdal_translate -of vrt -expand rgba damage_predictions.tif damage_predictions.vrt
 gdal2tiles.py -z 8-18 2013_rgb.tif data/2013_tiles/
 gdal2tiles.py -z 8-18 2019_rgb.tif data/2019_tiles/
+gdal2tiles.py -z 8-18 damage_predictions.vrt data/damage_tiles/
+rm damage_predictions.vrt
 ```
-6. Now, to setup the configuration file we need some metadata from the input GeoTIFFs. We include a script that provides this:
+8. Now, to setup the configuration file we need some metadata from the input GeoTIFFs. We include a script that provides this:
 ```
 python utils/get_bounds.py --input-fn 2013_rgb.tif
-python utils/get_bounds.py --input-fn 2019_rgb.tif
 ```
-7. Finally, create a new configuration file (similar to the "new_orleans_example.json" file) called "local_example.json" using the bounds and centroid information shown by `utils/get_bounds.py` and the path to the directories we created. We do not have building damage results for this demo, so will skip creating the "changeImageryLayer" object (unlike in "new_orleans_example.json").
+9. Finally, create a new configuration file (similar to the "new_orleans_example.json" file) called "local_example.json" using the bounds and centroid information shown by `utils/get_bounds.py` and the path to the directories we created.
 ```json
 {
     "preImageryLayer": {
@@ -90,8 +101,12 @@ python utils/get_bounds.py --input-fn 2019_rgb.tif
     },
     "postImageryLayer": {
         "basemapURL": "http://<REPLACE WITH YOUR VM'S HOSTNAME/IP>:8080/data/2019_tiles/{z}/{x}/{y}.png",
-        "date": "2017 imagery",
+        "date": "2019 imagery",
         "attribution": "",
+        "bounds": [[47.62170620047876, -122.12082716224859], [47.69079013651763, -122.19162910382583]]
+    },
+    "changeImageryLayer": {
+        "basemapURL": "http://<REPLACE WITH YOUR VM'S HOSTNAME/IP>:8080/data/damage_tiles/{z}/{x}/{y}.png",
         "bounds": [[47.62170620047876, -122.12082716224859], [47.69079013651763, -122.19162910382583]]
     },
     "center": [47.656253585524624, -122.15620486525859],
@@ -101,9 +116,9 @@ python utils/get_bounds.py --input-fn 2019_rgb.tif
     "license": "Proprietary"
 }
 ```
-8. Run a local http server with `python -m http.server 8080`
+10. Run a local http server with `python -m http.server 8080`
     - Make sure port 8080 is not blocked by the Azure level firewall through the "Network" tab of your VM in the Azure Portal. See [this page](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/nsg-quickstart-portal) for more information.
-9. Finally, navigate to http://<REPLACE WITH YOUR VM'S HOSTNAME/IP>:8080/change_tool.html?config=local_example.json in your browser to see the example in action!
+11. Finally, navigate to http://<REPLACE WITH YOUR VM'S HOSTNAME/IP>:8080/change_tool.html?config=local_example.json in your browser to see the example in action!
 
 Once you have confirmed that the local example is working, we suggest you move the contents of the visualizer to a stable web server. As the visualizer is completely static, it could be easily hosted on an [Azure blob container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website) or through a [local web server such as Apache](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-18-04).
 
