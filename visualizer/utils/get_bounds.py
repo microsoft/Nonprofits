@@ -1,12 +1,12 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-''' Convinience script for getting the bounds and centroid of a GeoTIFF in EPSG:4326.'''
+"""Script for getting the bounds and centroid of a GeoTIFF in EPSG:4326."""
 
-import sys
-import os
 import argparse
-import rasterio
+import os
+
 import fiona.transform
+import rasterio
 import shapely.geometry
 
 if __name__ == "__main__":
@@ -33,10 +33,12 @@ if __name__ == "__main__":
         bot_lng, bot_lat = geom["coordinates"][0][2]
 
         print("Bounds:")
-        print([
-            [top_lat,top_lng],
-            [bot_lat,bot_lng],
-        ])
+        print(
+            [
+                [top_lat, top_lng],
+                [bot_lat, bot_lng],
+            ]
+        )
 
         centroid_geom = shapely.geometry.mapping(shape.centroid)
         centroid_geom = fiona.transform.transform_geom(crs, "epsg:4326", centroid_geom)
