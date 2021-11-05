@@ -9,6 +9,7 @@ ARG PYTHON_VERSION=default
 
 ENV APP_DIR="/app"
 ENV DEFAULT_CONDA_ENV_NAME="visualizer"
+ENV APP_PORT=8080
 
 ENV CONDA_DIR=/opt/conda \
     SHELL=/bin/bash \
@@ -50,11 +51,24 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA
     conda update --all --quiet --yes && \
     conda clean --all -f -y
 
+EXPOSE ${APP_PORT}
 WORKDIR ${APP_DIR}
 ADD . ${APP_DIR}
+
+RUN apt update && apt install software-properties-common -y
+RUN apt update && add-apt-repository ppa:ubuntugis/ppa -y
+RUN apt-get update && apt-get install gdal-bin libgdal-dev -y
+RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
+RUN export C_INCLUDE_PATH=/usr/include/gdal
+RUN apt-get install python3-gdal 
 
 RUN /opt/conda/bin/conda init bash
 RUN conda config --set channel_priority strict
 RUN conda env create --file environment.yml -n ${DEFAULT_CONDA_ENV_NAME}
 RUN . activate ${DEFAULT_CONDA_ENV_NAME}
 RUN python --version
+
+ENV CONDA_DEFAULT_ENV ${DEFAULT_CONDA_ENV_NAME}
+RUN echo "source activate ${DEFAULT_CONDA_ENV_NAME}" > ~/.bashrc
+ENV PATH /opt/conda/envs/${DEFAULT_CONDA_ENV_NAME}/bin:$PATH
+

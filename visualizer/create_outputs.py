@@ -13,19 +13,19 @@ import shapely.geometry
 JSON_TEMPLATE = """
 {
     "preImageryLayer": {
-        "basemapURL": "http://{{hostname}}:{{remote_port}}/data/{{name}}-pre-tiles/{z}/{x}/{y}.png",
+        "basemapURL": "/{{outputDir}}/{{name}}-pre-tiles/{z}/{x}/{y}.png",
         "date": "Pre imagery",
         "attribution": "",
         "bounds": {{bounds}}
     },
     "postImageryLayer": {
-        "basemapURL": "http://{{hostname}}:{{remote_port}}/data/{{name}}-post-tiles/{z}/{x}/{y}.png",
+        "basemapURL": "/{{outputDir}}/{{name}}-post-tiles/{z}/{x}/{y}.png",
         "date": "Post imagery",
         "attribution": "",
         "bounds": {{bounds}}
     },
     "changeImageryLayer": {
-        "basemapURL": "http://{{hostname}}:{{remote_port}}/data/{{name}}-prediction-tiles/{z}/{x}/{y}.png",
+        "basemapURL": "/{{outputDir}}/{{name}}-prediction-tiles/{z}/{x}/{y}.png",
         "bounds": {{bounds}}
     },
     "center": {{centroid}},
@@ -156,7 +156,8 @@ if __name__ == "__main__":
     JSON_TEMPLATE = JSON_TEMPLATE.replace("{{bounds}}", str(bounds))
     JSON_TEMPLATE = JSON_TEMPLATE.replace("{{centroid}}", str(centroid))
     JSON_TEMPLATE = JSON_TEMPLATE.replace("{{name}}", args.name)
-    # TODO: finish template substitutions
-
+    JSON_TEMPLATE = JSON_TEMPLATE.replace("{{outputDir}}", args.output_dir)
+    JSON_TEMPLATE = JSON_TEMPLATE.replace("//", "/")
+    
     with open(json_fn, "w") as f:
         f.write(JSON_TEMPLATE)

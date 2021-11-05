@@ -1,5 +1,5 @@
 services:
-  web:
+  data_generator:
     env_file:
       - ".env"
     build:
@@ -12,9 +12,7 @@ services:
       - DEFAULT_CONDA_ENV_NAME=${conda_env_name}
       - APP_DIR=${app_dir}
       - APP_PORT=${app_port}
-    ports:
-      - ${app_port}:${app_port}
-    command: python -m http.server ${app_port}
+    command: python create_outputs.py --pre-imagery ${app_data_dir}/${pre_imagery_file_name} --post-imagery ${app_data_dir}/${post_imagery_file_name} --name ${imagery_output_file_name} --output-dir ${app_data_dir}
     volumes:
       - type: bind
         source: ${local_data_dir}
