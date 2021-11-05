@@ -12,7 +12,13 @@ services:
       - DEFAULT_CONDA_ENV_NAME=${conda_env_name}
       - APP_DIR=${app_dir}
       - APP_PORT=${app_port}
-    command: python create_outputs.py --pre-imagery ${app_data_dir}/${pre_imagery_file_name} --post-imagery ${app_data_dir}/${post_imagery_file_name} --name ${imagery_output_file_name} --output-dir ${app_data_dir}
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd $${app_data_dir}
+        python -c 'import os;print(os.getcwd())'
+        python $${app_dir}/create_outputs.py --pre-imagery $$(pwd)/$${pre_imagery_file_name} --post-imagery $$(pwd)/$${post_imagery_file_name} --name $${imagery_output_file_name} --output-dir $$(pwd)
     volumes:
       - type: bind
         source: ${local_data_dir}
