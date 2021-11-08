@@ -128,7 +128,9 @@ Once you have confirmed that the local example is working, we suggest you move t
 
 - [Docker CE](https://docs.docker.com/engine/install/ubuntu/#installation-methods)
 
-### Configuration - the docker file use the [.env](.env) file for configuring the location of the code files and the mounting of a local data directory into the container. In addition, the input images for the data container should be specify in this file is using docker compose.
+### Configuration
+
+The docker file use the [.env](.env) file for configuring the location of the code files and the mounting of a local data directory into the container. In addition, the input images for the data container should be specify in this file is using docker compose.
 
 ```
 app_dir=/app
