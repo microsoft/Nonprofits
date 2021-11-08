@@ -14,7 +14,12 @@ services:
       - APP_PORT=${app_port}
     ports:
       - ${app_port}:${app_port}
-    command: python -m http.server ${app_port}
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd $${app_dir}
+        python -m http.server ${app_port}
     volumes:
       - type: bind
         source: ${local_data_dir}

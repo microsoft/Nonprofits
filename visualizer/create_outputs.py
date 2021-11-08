@@ -99,8 +99,8 @@ if __name__ == "__main__":
     assert not os.path.exists(post_imagery_tile_dir), "Would overwrite data"
     assert not os.path.exists(prediction_tile_dir), "Would overwrite data"
     assert not os.path.exists(json_fn), "Would overwrite data"
-
-    # Run inference
+    
+    print('Run inference')
     command = [
         "python", "utils/inference.py",
         "--pre-imagery", args.pre_imagery,
@@ -108,33 +108,42 @@ if __name__ == "__main__":
         "--output-fn", prediction_fn,
         "--gpu", str(args.gpu)
     ]
-    subprocess.call(command)
+    out = subprocess.run(command,check=True)
+    print(out)
 
-    # Convert predictions to a RGBA VRT
+    print('Convert predictions to a RGBA VRT')
+
+    temp_vrt = os.path.join(
+        args.output_dir,
+        "temp.vrt"
+    )
     command = [
         "gdal_translate",
         "-of", "vrt",
         "-expand", "rgba",
         prediction_fn,
-        "temp.vrt"
+        temp_vrt
     ]
-    subprocess.call(command)
-
-    # Run gdal2tiles.py for each layer
+    out = subprocess.run(command,check=True)
+    print(out)
+    
+    print('Run gdal2tiles.py for each layer')
     for input_fn, output_dir in [
         (args.pre_imagery, pre_imagery_tile_dir),
         (args.post_imagery, post_imagery_tile_dir),
-        ("temp.vrt", prediction_tile_dir),
+        (temp_vrt, prediction_tile_dir),
     ]:
         command = [
-            "gdal2tiles.py",
+            "/usr/bin/gdal2tiles.py",
             "-z", "8-18",
             input_fn, output_dir
         ]
-        subprocess.call(command)
-    os.remove("temp.vrt")
+        out = subprocess.run(command,check=True)
+        print(out)
+    os.remove(temp_vrt)
 
     # Embedding the logic from utils/get_bounds.py
+    print('Embedding the logic from utils/get_bounds.py')
     with rasterio.open(args.pre_imagery) as f:
         crs = f.crs.to_string()
 
@@ -152,11 +161,11 @@ if __name__ == "__main__":
         centroid_geom = fiona.transform.transform_geom(crs, "epsg:4326", centroid_geom)
         centroid = [centroid_geom["coordinates"][1], centroid_geom["coordinates"][0]]
 
-    # Format and write output
+    print('Format and write output')
     JSON_TEMPLATE = JSON_TEMPLATE.replace("{{bounds}}", str(bounds))
     JSON_TEMPLATE = JSON_TEMPLATE.replace("{{centroid}}", str(centroid))
     JSON_TEMPLATE = JSON_TEMPLATE.replace("{{name}}", args.name)
-    JSON_TEMPLATE = JSON_TEMPLATE.replace("{{outputDir}}", args.output_dir)
+    JSON_TEMPLATE = JSON_TEMPLATE.replace("{{outputDir}}", os.path.basename(args.output_dir))
     JSON_TEMPLATE = JSON_TEMPLATE.replace("//", "/")
     
     with open(json_fn, "w") as f:

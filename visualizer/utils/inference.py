@@ -71,12 +71,13 @@ def main(args):
     Args:
         args from command line
     """
-
+    print('starting inference with variables:')
+    
     # Setup
     pre_fn = args.pre_imagery
     post_fn = args.post_imagery
     output_fn = args.output_fn
-
+    print(pre_fn,post_fn,output_fn, sep="\n")
     assert os.path.exists(pre_fn)
     assert os.path.exists(post_fn)
     assert not os.path.exists(output_fn)
@@ -203,6 +204,8 @@ def main(args):
     input_profile["width"] = input_width
     input_profile["compress"] = "lzw"
     input_profile["predictor"] = 2
+    print("writing output to file:")
+    print(output_fn)
     with rasterio.open(output_fn, "w", **input_profile) as f:
         f.write(output, 1)
         f.write_colormap(
@@ -215,6 +218,7 @@ def main(args):
                 4: (103, 0, 13, 255),
             },
         )
+    print("finished writing output")
 
 
 if __name__ == "__main__":
