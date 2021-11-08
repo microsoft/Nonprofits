@@ -1,0 +1,26 @@
+services:
+  web:
+    env_file:
+      - ".env"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      shm_size: '2gb'
+    shm_size: '2gb'
+    image: "building-damage-visualizer:latest"
+    environment:
+      - DEFAULT_CONDA_ENV_NAME=${conda_env_name}
+      - APP_DIR=${app_dir}
+      - APP_PORT=${app_port}
+    ports:
+      - ${app_port}:${app_port}
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd $${app_dir}
+        python -m http.server ${app_port}
+    volumes:
+      - type: bind
+        source: ${local_data_dir}
+        target: "${app_data_dir}"

@@ -122,6 +122,49 @@ python utils/get_bounds.py --input-fn 2013_rgb.tif
 
 Once you have confirmed that the local example is working, we suggest you move the contents of the visualizer to a stable web server. As the visualizer is completely static, it could be easily hosted on an [Azure blob container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website) or through a [local web server such as Apache](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-18-04).
 
+## Setup With Docker
+
+### Prerequisite
+
+- [Docker CE](https://docs.docker.com/engine/install/ubuntu/#installation-methods)
+
+### Configuration
+
+The docker file use the [.env](.env) file for configuring the location of the code files and the mounting of a local data directory into the container. In addition, the input images for the data container should be specify in this file is using docker compose.
+
+```
+app_dir=/app
+app_port=8080
+local_data_dir=.
+app_data_dir=/app/data
+conda_env_name=visualizer
+pre_imagery_file_name=2013_rgb.tif
+post_imagery_file_name=2019_aligned_rgb.tif
+imagery_output_file_name=test
+
+```
+
+
+### Run inference model and generate tiles for visualizer. 
+
+This requires two input RGB tiff images which need to be pixel aligned. Do steps 1 thru 5 of the **[Tutorial](#Tutorial)** section of this readme for an example of how to generate the correct image format from the sample data.
+
+```bash
+
+docker compose -f docker-compose-data.yml up
+
+```
+
+### Run Web Site
+
+Run below docker command to build and run the website. By default the website will run in port 8080. Nagivate to http://localhost:8080/change_tool.html after running the command
+
+```bash
+
+docker compose up -d
+
+```
+
 
 ## List of third party javascript libraries/versions
 
