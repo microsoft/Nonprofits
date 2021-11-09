@@ -10,8 +10,7 @@ import fiona.transform
 import rasterio
 import shapely.geometry
 
-JSON_TEMPLATE = """
-{
+JSON_TEMPLATE = """{
     "preImageryLayer": {
         "basemapURL": "/{{outputDir}}/{{name}}-pre-tiles/{z}/{x}/{y}.png",
         "date": "Pre imagery",
@@ -33,7 +32,8 @@ JSON_TEMPLATE = """
     "location": "Replace with imagery location",
     "imageryAttribution": "Replace with image attribution",
     "license": "Replace with imagery license"
-}"""
+}
+"""
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
