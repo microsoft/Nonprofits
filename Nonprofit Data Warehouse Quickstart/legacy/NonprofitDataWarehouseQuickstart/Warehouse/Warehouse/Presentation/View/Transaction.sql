@@ -1,0 +1,33 @@
+﻿-- Copyright (c) Microsoft Corporation.
+-- Licensed under the MIT License.
+
+CREATE VIEW [Presentation].[Transaction]
+AS 
+SELECT
+	 [TransactionKey]
+	,[IatiIdentifier]
+	,[DefaultCurrency]
+	,[TransactionAidType]
+	,[TransactionDisbursementChannel]
+	,[TransactionDescriptionNarrative]
+	,[TransactionFlowType]
+	,[TransactionProviderOrgProviderActivityId]
+	,[TransactionProviderOrgRef]
+	,[TransactionProviderOrgType]
+	,[TransactionProviderOrg]
+	,[TransactionReceiverOrgReceiverActivityId]
+	,[TransactionReceiverOrgRef]
+	,[TransactionReceiverOrgType]
+	,[TransactionReceiverOrg]
+	,[TransactionRecipientCountry]
+	,[TransactionRecipientRegion]
+	,[TransactionSector]
+	,[TransactionSectorCategory]
+	,[TransactionTiedStatus]
+	,[TransactionIsoDate]
+	,[TransactionType]
+	,[TransactionValueCurrency]
+	,[TransactionValueDate]
+	,[TransactionValue]
+	,[InsertedDate]
+FROM [Persisted].[Transaction]

@@ -1,0 +1,17 @@
+{
+	"name": "LS_SynapseAnalytics",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "SynapseAnalytics-ConnectionString"
+			}
+		}
+	}
+}

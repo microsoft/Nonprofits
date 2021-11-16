@@ -1,0 +1,16 @@
+{
+	"name": "DS_SynapseAnalytics",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SynapseAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "Audit",
+			"table": "PipelineLoad"
+		}
+	}
+}

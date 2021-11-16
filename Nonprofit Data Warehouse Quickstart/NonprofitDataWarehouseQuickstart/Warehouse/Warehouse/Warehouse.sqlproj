@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Warehouse</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{1c29ef12-668b-464f-8144-638e4ad056d9}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlDwDatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Warehouse</RootNamespace>
+    <AssemblyName>Warehouse</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Security" />
+    <Folder Include="Security\Schema" />
+    <Folder Include="External" />
+    <Folder Include="Persisted" />
+    <Folder Include="Presentation" />
+    <Folder Include="Presentation\View" />
+    <Folder Include="External\Tables" />
+    <Folder Include="External\Stored Procedures" />
+    <Folder Include="Persisted\Tables" />
+    <Folder Include="Project" />
+    <Folder Include="Project\Scripts" />
+    <Folder Include="Project\Scripts\PostDeployment" />
+    <Folder Include="Control" />
+    <Folder Include="Control\Tables" />
+    <Folder Include="Control\Stored Procedures" />
+    <Folder Include="Audit" />
+    <Folder Include="Audit\Tables" />
+    <Folder Include="Persisted\Stored Procedures" />
+    <Folder Include="External\Tables\External Tables" />
+    <Folder Include="External Resources" />
+    <Folder Include="External Resources\External Data Sources" />
+    <Folder Include="External Resources\External File Formats" />
+    <Folder Include="Security\Master Key" />
+    <Folder Include="Security\Database Scoped Credential" />
+    <Folder Include="Security\Permissions" />
+    <Folder Include="Audit\Views" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Security\Schema\External.Schema.sql" />
+    <Build Include="Security\Schema\Presentation.Schema.sql" />
+    <Build Include="Security\Schema\Scratch.Schema.sql" />
+    <Build Include="Security\Schema\Persisted.sql" />
+    <Build Include="Security\Schema\Control.Schema.sql" />
+    <Build Include="Security\Schema\Audit.Schema.sql" />
+    <None Include="Control\Tables\Control.SourceSystem.sql" />
+    <None Include="Control\Tables\Control.Entity.sql" />
+    <None Include="Control\Stored Procedures\Control.ObtainEntity.sql" />
+    <None Include="Control\Tables\Control.PipelineStatusType.sql" />
+    <None Include="Control\Stored Procedures\Control.ActivateNewPipeline.sql" />
+    <None Include="Audit\Tables\Audit.PipelineLoad.sql" />
+    <None Include="Control\Stored Procedures\Control.FinalisePipeline.sql" />
+    <None Include="Control\Tables\Control.CurationStage.sql" />
+    <None Include="Project\Scripts\PostDeployment\Control.CurationStage.Populate.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIActivityDate.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIActivityStatus.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIBudget.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIContactInformation.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIDescription.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIParticipatingOrganisation.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIRecipientCountry.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIRecipientRegion.sql" />
+    <Build Include="External\Tables\External Tables\External.IATIReportingOrganisation.sql" />
+    <Build Include="External\Tables\External Tables\External.IATISector.sql" />
+    <Build Include="External\Tables\External Tables\External.IATITitle.sql" />
+    <Build Include="External\Tables\External Tables\External.IATITransaction.sql" />
+    <Build Include="External Resources\External Data Sources\ExternalDataSourceADLS.sql" />
+    <Build Include="External Resources\External File Formats\ExternalFileFormatCSV.sql" />
+    <Build Include="Security\Master Key\MasterKey.sql" />
+    <Build Include="Security\Database Scoped Credential\DatabaseScopedCredentialADLS.sql" />
+    <Build Include="Persisted\Tables\Persisted.Sanitation.sql" />
+    <Build Include="External\Tables\External Tables\External.WHOSanitation.sql" />
+    <Build Include="External Resources\External File Formats\ExternalFileFormatParquet.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainTransaction.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainActivityStatus.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainBudget.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainContactInformation.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainDescription.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainParticipatingOrganisation.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainRecipientCountry.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainRecipientRegion.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainReportingOrganisation.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainSanitation.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainSector.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainTitle.sql" />
+    <Build Include="Presentation\View\Sanitation.sql" />
+    <None Include="Audit\Views\Audit.ExecutionLog.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Project\Scripts\Script.PostDeployment.sql" />
+    <None Include="Project\Scripts\PostDeployment\Control.SourceSystem.Populate.sql" />
+    <None Include="Project\Scripts\PostDeployment\Control.Entity.Populate.sql" />
+    <None Include="Project\Scripts\PostDeployment\Control.PipelineStatusType.Populate.sql" />
+    <None Include="Security\Permissions\Script.PostDeployment1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="MasterKey">
+      <DefaultValue>
+      </DefaultValue>
+      <Value>$(SqlCmdVar__2)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="StorageRootUri">
+      <DefaultValue>
+      </DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+    <Build Include="Persisted\Tables\Persisted.ActivityDate.sql" />
+    <Build Include="Persisted\Tables\Persisted.ActivityStatus.sql" />
+    <Build Include="Persisted\Tables\Persisted.Budget.sql" />
+    <Build Include="Persisted\Tables\Persisted.ContactInformation.sql" />
+    <Build Include="Persisted\Tables\Persisted.Description.sql" />
+    <Build Include="Persisted\Tables\Persisted.ParticipatingOrganisation.sql" />
+    <Build Include="Persisted\Tables\Persisted.RecipientCountry.sql" />
+    <Build Include="Persisted\Tables\Persisted.RecipientRegion.sql" />
+    <Build Include="Persisted\Tables\Persisted.ReportingOrganisation.sql" />
+    <Build Include="Persisted\Tables\Persisted.Sector.sql" />
+    <Build Include="Persisted\Tables\Persisted.Title.sql" />
+    <Build Include="Persisted\Tables\Persisted.Transaction.sql" />
+    <Build Include="Presentation\View\ActivityDate.sql" />
+    <Build Include="Presentation\View\ActivityStatus.sql" />
+    <Build Include="Presentation\View\Budget.sql" />
+    <Build Include="Presentation\View\ContactInformation.sql" />
+    <Build Include="Presentation\View\Description.sql" />
+    <Build Include="Presentation\View\ParticipatingOrganisation.sql" />
+    <Build Include="Presentation\View\RecipientCountry.sql" />
+    <Build Include="Presentation\View\RecipientRegion.sql" />
+    <Build Include="Presentation\View\ReportingOrganisation.sql" />
+    <Build Include="Presentation\View\Sector.sql" />
+    <Build Include="Presentation\View\Title.sql" />
+    <Build Include="Presentation\View\Transaction.sql" />
+    <None Include="Persisted\Stored Procedures\Persisted.ObtainActivityDate.sql" />
+  </ItemGroup>
+</Project>

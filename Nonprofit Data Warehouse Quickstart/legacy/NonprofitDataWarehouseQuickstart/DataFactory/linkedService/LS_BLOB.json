@@ -1,0 +1,10 @@
+{
+	"name": "LS_BLOB",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://mstsidhsaweudev.blob.core.windows.net/"
+		}
+	}
+}

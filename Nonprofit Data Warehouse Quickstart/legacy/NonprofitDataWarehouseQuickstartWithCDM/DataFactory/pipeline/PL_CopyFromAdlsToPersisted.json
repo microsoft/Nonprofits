@@ -1,0 +1,226 @@
+{
+	"name": "PL_CopyFromAdlsToPersisted",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Stored Procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Activate New Child Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": {
+						"value": "@{pipeline().parameters.TargetSchema}.@{pipeline().parameters.TargetStoredProcedure}",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SynapseAnalytics",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Activate New Child Pipeline",
+				"description": "Creates a record in the Audit.PipelineLoad table with a new LoadId",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlDWSource",
+						"sqlReaderStoredProcedureName": "[Control].[ActivateNewPipeline]",
+						"storedProcedureParameters": {
+							"EntityCode": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.EntityCode",
+									"type": "Expression"
+								}
+							},
+							"Environment": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.Environment",
+									"type": "Expression"
+								}
+							},
+							"PipelineName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							},
+							"PipelineRunId": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "01:00:00"
+					},
+					"dataset": {
+						"referenceName": "DS_SynapseAnalytics",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Success - Finalise Child Pipeline",
+				"description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Success",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Execute Stored Procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[Control].[FinalisePipeline]",
+					"storedProcedureParameters": {
+						"Environment": {
+							"value": {
+								"value": "@pipeline().parameters.Environment",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineRunId": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineInfo": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineStatusType": {
+							"value": {
+								"value": "Success",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SynapseAnalytics",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Failure - Finalise Child Pipeline",
+				"description": "Creates a record in the Audit.PipelineLoad table and marks the execution as Failed",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Execute Stored Procedure",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[Control].[FinalisePipeline]",
+					"storedProcedureParameters": {
+						"Environment": {
+							"value": {
+								"value": "@pipeline().parameters.Environment",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineRunId": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineInfo": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineStatusType": {
+							"value": {
+								"value": "Failed",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SynapseAnalytics",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"Environment": {
+				"type": "string"
+			},
+			"EntityCode": {
+				"type": "string"
+			},
+			"TargetStoredProcedure": {
+				"type": "string"
+			},
+			"TargetSchema": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Transformation"
+		},
+		"annotations": []
+	}
+}
