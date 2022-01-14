@@ -1,0 +1,221 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "servers_name": {
+            "defaultValue": "mstsidhsqlweudev",
+            "type": "String"
+        },
+        "vaults_name": {
+            "defaultValue": "mstsidhkvweudev",
+            "type": "String"
+        },
+        "storageAccounts_name": {
+            "defaultValue": "mstsidhsaweudev",
+            "type": "String"
+        },
+        "dataLakeStore_name": {
+            "defaultValue": "mstsidhadlsweudev",
+            "type": "String"
+        },
+        "dataWarehouse_name":{
+            "defaultValue":"mstsidhsqldwweudev",
+            "type": "String"
+        },
+        "dataFactory_name":{
+            "defaultValue":"mstsidhadfweudev",
+            "type": "String"
+        },
+        "resourceLocation":{
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String"
+        },
+        "tags":{
+            "defaultValue": {
+                "Project": "DataHub",
+                "Environment": "Dev"
+            },
+            "type": "object"
+        },
+        "sqlServerAdminLogin":{
+            "defaultValue": "",
+            "type": "String"
+        },
+        "sqlServerAdminPassword":{
+            "defaultValue": "",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+          "name": "[parameters('dataFactory_name')]",
+          "apiVersion": "2018-06-01",
+          "type": "Microsoft.DataFactory/factories",
+          "location": "[resourceGroup().location]",
+          "tags": "[parameters('tags')]",
+          "identity": {
+            "type": "SystemAssigned"
+          }
+        },
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2015-05-01-preview",
+            "name": "[parameters('servers_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "[parameters('sqlServerAdminLogin')]",
+                "administratorLoginPassword": "[parameters('sqlServerAdminPassword')]",
+                "version": "12.0"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2016-10-01",
+            "name": "[parameters('vaults_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "standard",
+                    "tenantId":"[subscription().tenantId]"
+                },
+                "tenantId":"[subscription().tenantId]",
+                "accessPolicies": [],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": true
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('dataLakeStore_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "isHnsEnabled": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('storageAccounts_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            },
+            "resources": [
+                {
+                    "type": "blobServices/containers",
+                    "apiVersion": "2018-03-01-preview",
+                    "name": "[concat('default/', 'datasources')]",
+                    "dependsOn": [
+                        "[parameters('storageAccounts_name')]"
+                    ],
+                    "properties": {
+                        "publicAccess": "None"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2017-10-01-preview",
+            "name": "[concat(parameters('servers_name'),'/',parameters('dataWarehouse_name'))]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_name'))]"
+            ],
+            "tags": "[parameters('tags')]",
+            "sku": {
+                "name": "DW100c",
+                "tier": "DataWarehouse"
+            },
+            "kind": "v12.0,user,datawarehouse,gen2",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 263882790666240,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "readScale": "Disabled",
+                "readReplicaCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2015-05-01-preview",
+            "name": "[concat(parameters('servers_name'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_name'),'/',parameters('dataWarehouse_name'),'/current')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_name'), parameters('dataWarehouse_name'))]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_name'))]"
+            ],
+            "properties": {
+                "status": "Enabled"
+            }
+        }
+    ]
+}
