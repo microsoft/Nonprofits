@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "servers_name": {
@@ -24,10 +24,6 @@
         },
         "dataFactory_name":{
             "defaultValue":"mstsidhadfweudev",
-            "type": "String"
-        },
-        "resourceLocation":{
-            "defaultValue": "[resourceGroup().location]",
             "type": "String"
         },
         "tags":{
@@ -60,7 +56,7 @@
         },
         {
             "type": "Microsoft.Sql/servers",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2021-08-01-preview",
             "name": "[parameters('servers_name')]",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tags')]",
@@ -73,7 +69,7 @@
         },
         {
             "type": "Microsoft.KeyVault/vaults",
-            "apiVersion": "2016-10-01",
+            "apiVersion": "2021-10-01",
             "name": "[parameters('vaults_name')]",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tags')]",
@@ -92,7 +88,7 @@
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2019-04-01",
+            "apiVersion": "2021-08-01",
             "name": "[parameters('dataLakeStore_name')]",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tags')]",
@@ -126,7 +122,7 @@
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2019-04-01",
+            "apiVersion": "2021-08-01",
             "name": "[parameters('storageAccounts_name')]",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tags')]",
@@ -159,7 +155,7 @@
             "resources": [
                 {
                     "type": "blobServices/containers",
-                    "apiVersion": "2018-03-01-preview",
+                    "apiVersion": "2021-08-01",
                     "name": "[concat('default/', 'datasources')]",
                     "dependsOn": [
                         "[parameters('storageAccounts_name')]"
@@ -172,7 +168,7 @@
         },
         {
             "type": "Microsoft.Sql/servers/databases",
-            "apiVersion": "2017-10-01-preview",
+            "apiVersion": "2021-08-01-preview",
             "name": "[concat(parameters('servers_name'),'/',parameters('dataWarehouse_name'))]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
@@ -194,7 +190,7 @@
         },
         {
             "type": "Microsoft.Sql/servers/firewallRules",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2021-05-01-preview",
             "name": "[concat(parameters('servers_name'), '/AllowAllWindowsAzureIps')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_name'))]"
@@ -206,7 +202,7 @@
         },
         {
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
-            "apiVersion": "2014-04-01",
+            "apiVersion": "2021-08-01-preview",
             "name": "[concat(parameters('servers_name'),'/',parameters('dataWarehouse_name'),'/current')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
@@ -214,7 +210,7 @@
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_name'))]"
             ],
             "properties": {
-                "status": "Enabled"
+                "state": "Enabled"
             }
         }
     ]
