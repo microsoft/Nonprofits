@@ -109,6 +109,18 @@
         a.leaflet-control-slider-toggle {
             width: 171px;
         }
+
+        #btnClose{
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size:2rem;
+            text-decoration:none;
+            color: #444444;
+        }
+
+        #btnClose:hover{
+            color: #cccccc;
+        }
     </style>
 
 </head>
@@ -116,7 +128,11 @@
 <body>
 
 <div id="help" style="display:None;" class="noselect">
-    <h1 class='helpTitle noselect'>Usage Instructions</h1>
+    <div>
+        <h1 class='helpTitle noselect' style="float: left;">Usage Instructions</h1>
+        <a id="btnClose" href="#" style="float: right;">[x]</a>
+    </div>
+    <div style="clear:both;"></div>
 
     <p class='helpParagraph'>
         This is a simple tool for comparing satellite imagery from two points in time along side a modeled building damage overlay.
@@ -280,7 +296,7 @@ $(document).ready(function(){
     // Setup the map
     //////////////////////////////////////////////
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        minZoom: 8,
+        minZoom: 10,
         maxZoom: 21,
         maxNativeZoom: 17,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -289,18 +305,18 @@ $(document).ready(function(){
     var pre_imagery = L.tileLayer(config["preImageryLayer"]["basemapURL"], {
         tms: true,
         attribution: config["preImageryLayer"]["attribution"],
-        minZoom: 8,
+        minZoom: 10,
         maxZoom: 21,
-        maxNativeZoom: 19,
+        maxNativeZoom: 17,
         bounds: config["preImageryLayer"]["bounds"]
     });
     
     var post_imagery = L.tileLayer(config["postImageryLayer"]["basemapURL"], {
         tms: true,
         attribution: config["postImageryLayer"]["attribution"],
-        minZoom: 8,
+        minZoom: 10,
         maxZoom: 21,
-        maxNativeZoom: 19,
+        maxNativeZoom: 17,
         bounds: config["postImageryLayer"]["bounds"]
     });
     var layers = [osm, pre_imagery, post_imagery];
@@ -310,8 +326,8 @@ $(document).ready(function(){
         change = L.tileLayer(config["changeImageryLayer"]["basemapURL"], {
             tms: true,
             attribution: "",
-            minZoom: 8,
-            maxNativeZoom: 18,
+            minZoom: 10,
+            maxNativeZoom: 17,
             maxZoom: 21,
             bounds: config["changeImageryLayer"]["bounds"]
         });
@@ -324,7 +340,7 @@ $(document).ready(function(){
     var gMap = L.map('map', {
         center: config["center"],
         zoom: config["initialZoom"],
-        minZoom: 8,
+        minZoom: 10,
         maxZoom: 21,
         zoomControl: false,
         keyboard: true,
@@ -409,6 +425,13 @@ $(document).ready(function(){
     }
 
     gMap.on("click", function (e) {
+        if(gHelpShown){
+            $("#help").hide();
+            gHelpShown = false;
+        }
+    });
+
+    $("#btnClose").click(function(){
         if(gHelpShown){
             $("#help").hide();
             gHelpShown = false;
