@@ -8,19 +8,19 @@ TRUNCATE TABLE [Control].[Entity];
 
 -- RAW
 INSERT INTO [Control].[Entity] ([EntityId],[EntityCode],[EntityName],[SourceContainer],[SourceFolderPath],[SourceFileName],[TargetContainer],[TargetFolderPath],[TargetFileName],[TargetSchema],[TargetTable],[TargetStoredProcedure],[SourceSystemId],[CurationStageId],[Active])
-VALUES (1, 'IATIACCOUNT', 'Account', 'datasources', 'iati', 'Account.csv', 'powerbi', 'CDM/Account', 'Account.csv', NULL, NULL, NULL, 1, 1, 1)
+VALUES (1, 'IATIACCOUNT', 'Account', 'datasources', 'iati', 'Account.csv', 'powerbi', 'NonprofitAccelerator/Account', 'Account.csv', NULL, NULL, NULL, 1, 1, 1)
 
 INSERT INTO [Control].[Entity] ([EntityId],[EntityCode],[EntityName],[SourceContainer],[SourceFolderPath],[SourceFileName],[TargetContainer],[TargetFolderPath],[TargetFileName],[TargetSchema],[TargetTable],[TargetStoredProcedure],[SourceSystemId],[CurationStageId],[Active])
-VALUES (2, 'IATICAMPAIGN', 'Campaign', 'datasources', 'iati', 'Campaign.csv', 'powerbi', 'CDM/Campaign', 'Campaign.csv', NULL, NULL, NULL, 1, 1, 1)
+VALUES (2, 'IATICAMPAIGN', 'Campaign', 'datasources', 'iati', 'Campaign.csv', 'powerbi', 'NonprofitAccelerator/Campaign', 'Campaign.csv', NULL, NULL, NULL, 1, 1, 1)
 
 INSERT INTO [Control].[Entity] ([EntityId],[EntityCode],[EntityName],[SourceContainer],[SourceFolderPath],[SourceFileName],[TargetContainer],[TargetFolderPath],[TargetFileName],[TargetSchema],[TargetTable],[TargetStoredProcedure],[SourceSystemId],[CurationStageId],[Active])
-VALUES (3, 'IATIPAYMENTMETHOD', 'Payment Method', 'datasources', 'iati', 'msnfp_PaymentMethod.csv', 'powerbi', 'CDM/msnfp_PaymentMethod', 'msnfp_PaymentMethod.csv', NULL, NULL, NULL, 1, 1, 1)
+VALUES (3, 'IATIPAYMENTMETHOD', 'Payment Method', 'datasources', 'iati', 'msnfp_PaymentMethod.csv', 'powerbi', 'NonprofitAccelerator/msnfp_PaymentMethod', 'msnfp_PaymentMethod.csv', NULL, NULL, NULL, 1, 1, 1)
 
 INSERT INTO [Control].[Entity] ([EntityId],[EntityCode],[EntityName],[SourceContainer],[SourceFolderPath],[SourceFileName],[TargetContainer],[TargetFolderPath],[TargetFileName],[TargetSchema],[TargetTable],[TargetStoredProcedure],[SourceSystemId],[CurationStageId],[Active])
-VALUES (4, 'IATIPAYMENTSCHEDULE', 'Payment Schedule', 'datasources', 'iati', 'msnfp_PaymentSchedule.csv', 'powerbi', 'CDM/msnfp_PaymentSchedule', 'msnfp_PaymentSchedule.csv', NULL, NULL, NULL, 1, 1, 1)
+VALUES (4, 'IATIPAYMENTSCHEDULE', 'Payment Schedule', 'datasources', 'iati', 'msnfp_PaymentSchedule.csv', 'powerbi', 'NonprofitAccelerator/msnfp_PaymentSchedule', 'msnfp_PaymentSchedule.csv', NULL, NULL, NULL, 1, 1, 1)
 
 INSERT INTO [Control].[Entity] ([EntityId],[EntityCode],[EntityName],[SourceContainer],[SourceFolderPath],[SourceFileName],[TargetContainer],[TargetFolderPath],[TargetFileName],[TargetSchema],[TargetTable],[TargetStoredProcedure],[SourceSystemId],[CurationStageId],[Active])
-VALUES (5, 'IATITRANSACTION', 'Transaction', 'datasources', 'iati', 'msnfp_Transaction.csv', 'powerbi', 'CDM/msnfp_Transaction', 'msnfp_Transaction.csv', NULL, NULL, NULL, 1, 1, 1)
+VALUES (5, 'IATITRANSACTION', 'Transaction', 'datasources', 'iati', 'msnfp_Transaction.csv', 'powerbi', 'NonprofitAccelerator/msnfp_Transaction', 'msnfp_Transaction.csv', NULL, NULL, NULL, 1, 1, 1)
 
 
 -- PERSISTED
