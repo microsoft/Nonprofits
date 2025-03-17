@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="sifund_preferredlanguagecode" localizedName="Preferred Language" description="The Language preference for a constituent" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <ExternalTypeName></ExternalTypeName>
+  <displaynames>
+    <displayname description="Preferred Language" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="The Language preference for a constituent" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="844060000" ExternalValue="">
+      <labels>
+        <label description="English" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="844060001" ExternalValue="">
+      <labels>
+        <label description="French" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="844060002" ExternalValue="">
+      <labels>
+        <label description="German" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="844060003" ExternalValue="">
+      <labels>
+        <label description="Dutch" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="844060004" ExternalValue="">
+      <labels>
+        <label description="Norwegian" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="844060005" ExternalValue="">
+      <labels>
+        <label description="Spanish" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+  </options>
+</optionset>

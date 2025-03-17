@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\build\include\Solutions.props" />
+
+  <PropertyGroup>
+    <ProjectGuid>5de621be-59be-43f6-9085-c6d5a5347a44</ProjectGuid>
+    <PackageId>SocialImpactGrants</PackageId>
+  </PropertyGroup>
+
+  <Import Project="..\build\include\Solutions.targets" />
+
+</Project>

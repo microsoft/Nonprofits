@@ -1,0 +1,707 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "industryPrefix": {
+            "type": "string",
+            "maxLength": 10,
+            "metadata": {
+                "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created."
+            }
+        },
+        "industry": {
+            "type": "string",
+            "allowedValues": [
+                "tsi"
+            ]
+        },
+        "managementSubscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "maxLength": 36,
+            "metadata": {
+                "description": "Provide the subscription ID of an existing, empty subscription you want to dedicate for management. If you don't want to bring a subscription, leave this parameter empty as is."
+            }
+        },
+        "connectivitySubscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "maxLength": 36,
+            "metadata": {
+                "description": "Provide the subscription ID of an existing, empty subscription you want to dedicate for networking."
+            }
+        },
+        "enableLogAnalytics": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "If 'Yes' is selected when also adding a subscription for management, ARM will assign two policies to enable auditing in your environment, into the Log Analytics workspace for platform monitoring. If 'No', it will be ignored."
+            }
+        },
+        "retentionInDays": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]"
+        },
+        "hubName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Virtual Network"
+            }
+        },
+        "hubAddrPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the Virtual Network"
+            }
+        },
+        "hubSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Subnet"
+            }
+        },
+        "hubSubnetAddrPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the Subnet"
+            }
+        },
+        "vpnGWSubnet": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the VPN Gateway Subnet"
+            }
+        },
+        "recoveryName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Recovery Services Vault"
+            }
+        },
+        "keyVaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Key Vault"
+            }
+        },
+        "enableDdoS": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enableDefender": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "enableDefenderLZ": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "spokeName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Virtual Network"
+            }
+        },
+        "spokeAddrPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the Virtual Network"
+            }
+        },
+        "spokeSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Subnet"
+            }
+        },
+        "spokeSubnetAddrPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the Subnet"
+            }
+        },
+        "keyVaultNameHub": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Key Vault"
+            }
+        },
+        "recoveryNameSpoke": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Recovery Services Vault"
+            }
+        }
+        
+    },
+    "variables": {
+        "mgmtGroups": {
+            "management": "[parameters('industryPrefix')]",
+            "connectivity": "[parameters('industryPrefix')]"
+        },
+        "scopes": {
+            "managementManagementGroup": "[tenantResourceId('Microsoft.Management/managementGroups/', variables('mgmtGroups').management)]"
+        },
+        "deploymentUris": {
+            "managementGroups": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/mgmtGroupStructure/mgmtGroups.json')]",
+            "hubNetwork": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/hubNetwork.json')]",
+            "monitoring": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/logAnalyticsWorkspace.json')]",
+            "ddosProtection": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/ddosProtection.json')]",
+            "recoveryVault": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/recoveryServicesVault.json')]",
+            "keyVault": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/keyVault.json')]",
+            "vpnGateway": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/vpnGateway.json')]",
+            "enableDDoS": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/enableDDoS.json')]",
+            "enableDefender": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/defenderCloud.json')]",
+            "spokeNetwork": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/spokeNetwork.json')]",
+            "peeringHubSpoke": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/peeringHubSpoke.json')]",
+            "peeringSpokeHub": "[uri(deployment().properties.templateLink.uri, 'core/subscriptionTemplates/peeringSpokeHub.json')]",
+            "customRbacRoleDefinition": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/roleDefinitions/Custom-RBACDefinitions.json')]",
+            "subscriptionPlacement": "[uri(deployment().properties.templateLink.uri, 'core/managementGroupTemplates/subscriptionOrganization/subscriptionOrganization.json')]"
+        },
+        "deploymentSuffix": "[concat('-', deployment().location, guid(parameters('industryPrefix')))]",
+        "industry": "[parameters('industry')]",
+        "deploymentNames": {
+            "mgmtGroupDeploymentName": "[take(concat(variables('industry'), '-Mgs', variables('deploymentSuffix')), 64)]",
+            "keyVaultName": "[take(concat(variables('industry'), 'kv', variables('deploymentSuffix')), 64)]",
+            "vpnGatewayName": "[take(concat(variables('industry'), '-vpnGW', variables('deploymentSuffix')), 64)]",
+            "enableDDoS": "[take(concat(variables('industry'), '-ddos-plan', variables('deploymentSuffix')), 64)]",
+            "vnetConnectivityHubDeploymentName": "[take(concat(variables('industry'), '-Hub', variables('deploymentSuffix')), 64)]",
+            "vnetConnectivitySpokeDeploymentName": "[take(concat(variables('industry'), '-Spoke', variables('deploymentSuffix')), 64)]",
+            "recoveryVaultName": "[take(concat(variables('industry'), '-rsv', variables('deploymentSuffix')), 64)]",
+            "customRbacDeploymentName": "[take(concat(variables('industry'), '-RoleDefinitions', variables('deploymentSuffix')), 64)]",
+            "mgmtSubscriptionPlacement": "[take(concat(variables('industry'), '-MgmtSub', variables('deploymentSuffix')), 64)]",
+            "connectivitySubscriptionPlacement": "[take(concat(variables('industry'), '-ConnectivitySub', variables('deploymentSuffix')), 64)]",
+            "monitoringDeploymentName": "[take(concat(variables('industry'), '-Monitoring', variables('deploymentSuffix')), 64)]",
+            "defenderEndpointPolicyDeploymentName": "[take(concat(variables('industry'), '-DefenderEndpoint', variables('deploymentSuffix')), 64)]",
+            "identityPeeringDeploymentName": "[take(concat(variables('industry'), '-IDPeeringHub', variables('deploymentSuffix')), 64)]",
+            "identityPeeringDeploymentName2": "[take(concat(variables('industry'), '-IDPeeringSpoke', variables('deploymentSuffix')), 64)]"
+        },
+        "platformRgNames": {
+            "mgmtRg": "[concat(parameters('industryPrefix'), '-mgmt')]",
+            "userAssignedIdentity": "[concat(parameters('industryPrefix'), '-policy-identity')]",
+            "connectivityRg": "[concat(parameters('industryPrefix'), '-vnethub-', parameters('location'))]",
+            "ddosRg": "[concat(parameters('industryPrefix'), '-ddos')]",
+            "privateDnsRg": "[concat(parameters('industryPrefix'), '-privatedns')]",
+            "identityVnetRg": "[concat(parameters('industryPrefix'), '-vnet-', parameters('location'))]",
+            "lzVnetRg": "[concat(parameters('industryPrefix'), '-vnet-', parameters('location'))]",
+            "logNwRg": "[concat(parameters('industryPrefix'), '-rglz')]"
+        },
+        "platformResourceNames": {
+            "logAnalyticsWorkspace": "[concat(parameters('industryPrefix'), '-law-001')]",
+            "ddosName": "[concat(parameters('industryPrefix'), '-ddos-', parameters('location'))]"
+
+        },
+        "roleDefinitions": {
+            "networkContributor": "4d97b98b-1d4f-4787-a291-c67834d212e7",
+            "contributor": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').mgmtGroupDeploymentName]",
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').managementGroups]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "[variables('deploymentNames').customRbacDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('industryPrefix'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').customRbacRoleDefinition]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('industryPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('managementSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').mgmtSubscriptionPlacement]",
+            "location": "[deployment().location]",
+            "scope": "[variables('scopes').managementManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
+                },
+                "parameters": {
+                    "targetManagementGroupId": {
+                        "value": "[variables('mgmtGroups').management]"
+                    },
+                    "subscriptionId": {
+                        "value": "[parameters('managementSubscriptionId')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('connectivitySubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').connectivitySubscriptionPlacement]",
+            "location": "[deployment().location]",
+            "scope": "[variables('scopes').managementManagementGroup]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtGroupDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').subscriptionPlacement]"
+                },
+                "parameters": {
+                    "targetManagementGroupId": {
+                        "value": "[variables('mgmtGroups').connectivity]"
+                    },
+                    "subscriptionId": {
+                        "value": "[parameters('connectivitySubscriptionId')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableLogAnalytics'), 'Yes'), not(empty(parameters('managementSubscriptionId'))))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').monitoringDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').monitoring]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "workspaceName": {
+                        "value": "[variables('platformResourceNames').logAnalyticsWorkspace]"
+                    },
+                    "workspaceRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "retentionInDays": {
+                        "value": "[parameters('retentionInDays')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('managementSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').vnetConnectivityHubDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').hubNetwork]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "hubName": {
+                        "value": "[parameters('hubName')]"
+                    },
+                    "hubRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "hubAddrPrefix": {
+                        "value": "[parameters('hubAddrPrefix')]"
+                    },
+                    "hubSubnetName": {
+                        "value": "[parameters('hubSubnetName')]"
+                    },
+                    "hubSubnetAddrPrefix": {
+                        "value": "[parameters('hubSubnetAddrPrefix')]"
+                    },
+                    "vpnGWSubnet": {
+                        "value": "[parameters('vpnGWSubnet')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('managementSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').vpnGatewayName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').vpnGateway]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "hubName": {
+                        "value": "[parameters('hubName')]"
+                    },
+                    "vpnGWRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "gatewaySubnetName": {
+                        "value": "GatewaySubnet"
+                    },
+                    "newPublicIpAddressName": {
+                        "value": "vpn-gw-imc-001-PIP-02"
+                    },
+                    "subscriptionId":{
+                        "value": "[parameters('managementSubscriptionId')]"
+                    },
+                    "resourceGroupName":{
+                        "value": "[concat(parameters('industryPrefix'),'-mgmt')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('managementSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').recoveryVaultName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').recoveryVault]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "recoveryName": {
+                        "value": "[parameters('recoveryName')]"
+                    },
+                    "rsvRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('connectivitySubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "recoveryVault-spoke",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').recoveryVault]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "recoveryName": {
+                        "value": "[parameters('recoveryNameSpoke')]"
+                    },
+                    "rsvRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableDdoS'), 'Yes'), not(empty(parameters('managementSubscriptionId'))))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').enableDDoS]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').enableDDoS]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "ddosName": {
+                        "value": "[variables('platformResourceNames').ddosName]"
+                    },
+                    "ddosRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[and(equals(parameters('enableDefender'), 'Yes'), not(empty(parameters('managementSubscriptionId'))))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').defenderEndpointPolicyDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').enableDefender]"
+                },
+                "parameters": {
+                    "defenderRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('managementSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "keyVaultName-Hub",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').keyVault]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('keyVaultNameHub')]"
+                    },
+                    "kvRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('connectivitySubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').keyVaultName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').keyVault]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('keyVaultName')]"
+                    },
+                    "kvRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('connectivitySubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').vnetConnectivitySpokeDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').spokeNetwork]"
+                },
+                "parameters": {
+                    "rgName": {
+                        "value": "[variables('platformRgNames').logNwRg]"
+                    },
+                    "spokeName": {
+                        "value": "[parameters('spokeName')]"
+                    },
+                    "spokeRegion": {
+                        "value": "[deployment().location]"
+                    },
+                    "spokeAddrPrefix": {
+                        "value": "[parameters('spokeAddrPrefix')]"
+                    },
+                    "spokeSubnetName": {
+                        "value": "[parameters('spokeSubnetName')]"
+                    },
+                    "spokeSubnetAddrPrefix": {
+                        "value": "[parameters('spokeSubnetAddrPrefix')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('managementSubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').identityPeeringDeploymentName2]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivitySpokeDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').peeringHubSpoke]"
+                },
+                "parameters": {
+                    "hubVnetResourceGroup": {
+                        "value": "[variables('platformRgNames').mgmtRg]"
+                    },
+                    "hubVnetName": {
+                        "value": "[parameters('hubName')]"
+                    },
+                    "spokeVnetResourceId": {
+                        "value": "[concat('/subscriptions/', parameters('connectivitySubscriptionId'), '/resourceGroups/', parameters('industryPrefix'), '-rglz/providers/Microsoft.Network/virtualNetworks/', parameters('spokeName'))]"
+                    },
+                    "peeringRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('connectivitySubscriptionId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').identityPeeringDeploymentName]",
+            "location": "[deployment().location]",
+            "subscriptionId": "[parameters('connectivitySubscriptionId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').connectivitySubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').mgmtSubscriptionPlacement)]",
+                "[resourceId('Microsoft.Resources/deployments', variables('deploymentNames').vnetConnectivityHubDeploymentName)]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').peeringSpokeHub]"
+                },
+                "parameters": {
+                    "spokeVnetResourceGroup": {
+                        "value": "[variables('platformRgNames').logNwRg]" 
+                    },
+                    "hubVnetResourceId": {
+                        "value": "[concat('/subscriptions/', parameters('managementSubscriptionId'), '/resourceGroups/', parameters('industryPrefix'), '-mgmt/providers/Microsoft.Network/virtualNetworks/', parameters('hubName'))]"
+                    },
+                    "spokeVnetName": {
+                        "value": "[parameters('spokeName')]"
+                    },
+                    "peeringRegion": {
+                        "value": "[deployment().location]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "deployment": {
+            "type": "string",
+            "value": "[concat(deployment().name, ' has successfully deployed.')]"
+        }
+    }
+}

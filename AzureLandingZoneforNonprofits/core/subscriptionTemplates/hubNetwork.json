@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgName": {
+            "type": "String"
+        },
+        "hubName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Virtual Network"
+            }
+        },
+        "hubAddrPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the Virtual Network"
+            }
+        },
+        "hubRegion": {
+            "type": "String",
+            "defaultValue": "[deployment().location]"
+        },
+        "hubSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Hub Subnet"
+            }
+        },
+        "hubSubnetAddrPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the Hub Subnet"
+            }
+        },
+        "vpnGWSubnet": {
+            "type": "string",
+            "metadata": {
+                "description": "CIDR prefix for the VPN Gateway Subnet"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2018-05-01",
+            "name": "[parameters('rgName')]",
+            "location": "[deployment().location]",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "hub-network",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups/', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/virtualNetworks",
+                            "apiVersion": "2021-02-01",
+                            "name": "[parameters('hubName')]",
+                            "location": "[parameters('hubRegion')]",
+                            "properties": {
+                                "addressSpace": {
+                                    "addressPrefixes": [
+                                        "[parameters('hubAddrPrefix')]"
+                                    ]
+                                },
+                                "subnets": [
+                                    {
+                                        "name": "[parameters('hubSubnetName')]",
+                                        "properties": {
+                                            "addressPrefix": "[parameters('hubSubnetAddrPrefix')]"
+                                        }
+                                    },
+                                    {
+                                        "name": "GatewaySubnet",
+                                        "properties": {
+                                            "addressPrefix": "[parameters('vpnGWSubnet')]"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

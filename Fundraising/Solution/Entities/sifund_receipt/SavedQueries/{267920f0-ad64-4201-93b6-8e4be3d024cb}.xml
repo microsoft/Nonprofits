@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{267920f0-ad64-4201-93b6-8e4be3d024cb}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="sifund_identifier" select="1" icon="1" preview="1">
+        <row name="result" id="sifund_receiptid">
+          <cell name="sifund_identifier" width="173" />
+          <cell name="sifund_donor" width="132" />
+          <cell name="sifund_amount_receipted" width="156" />
+          <cell name="sifund_deliverycode" width="100" />
+          <cell name="sifund_receiptstatus" width="121" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="sifund_receipt">
+          <attribute name="sifund_receiptid" />
+          <attribute name="sifund_identifier" />
+          <attribute name="createdon" />
+          <order attribute="sifund_identifier" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="sifund_amount_receipted" />
+          <attribute name="sifund_donor" />
+          <attribute name="sifund_deliverycode" />
+          <attribute name="sifund_receiptstatus" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Receipts" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

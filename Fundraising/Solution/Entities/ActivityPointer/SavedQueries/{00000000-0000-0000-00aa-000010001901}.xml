@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{00000000-0000-0000-00aa-000010001901}</savedqueryid>
+    <queryapi></queryapi>
+    <layoutxml>
+      <grid name="resultset" jump="subject" select="1" icon="1" preview="1">
+        <row name="result" id="activityid" multiobjectidfield="activitytypecode">
+          <cell name="subject" width="300" />
+          <cell name="regardingobjectid" width="100" />
+          <cell name="activitytypecode" width="110" />
+          <cell name="statecode" width="149" />
+          <cell name="ownerid" width="100" />
+          <cell name="prioritycode" width="100" />
+          <cell name="scheduledstart" width="126" />
+          <cell name="scheduledend" width="100" />
+          <cell name="actualend" width="140" />
+          <cell name="instancetypecode" width="100" ishidden="1" />
+          <cell name="community" width="100" ishidden="1" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="activitypointer">
+          <attribute name="activitytypecode" />
+          <attribute name="prioritycode" />
+          <attribute name="subject" />
+          <attribute name="statecode" />
+          <order attribute="subject" descending="false" />
+          <filter type="and">
+            <condition attribute="isregularactivity" operator="eq" value="1" />
+            <filter type="or">
+              <condition attribute="statecode" operator="eq" value="1" />
+              <condition attribute="statecode" operator="eq" value="2" />
+            </filter>
+          </filter>
+          <attribute name="actualend" />
+          <attribute name="activityid" />
+          <attribute name="instancetypecode" />
+          <attribute name="senton" />
+          <attribute name="statuscode" />
+          <link-entity name="email" from="activityid" to="activityid" alias="email_engagement" link-type="outer" visible="false">
+            <attribute name="isemailfollowed" />
+            <attribute name="lastopenedtime" />
+            <attribute name="delayedemailsendtime" />
+          </link-entity>
+          <attribute name="regardingobjectid" />
+          <attribute name="ownerid" />
+          <attribute name="scheduledstart" />
+          <attribute name="scheduledend" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>5.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Closed Activities" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

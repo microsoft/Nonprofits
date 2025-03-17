@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{d13b7ddd-5bfe-ee11-a1ff-000d3a1b937e}</formid>
+    <IntroducedVersion>1.0.0.21</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{5f1c0352-8ab0-4ea7-90ab-f7678383f833}" IsUserDefined="1" name="New Tab" labelid="{c33fd24f-37bc-46be-aa2c-89596ceb4256}">
+          <labels>
+            <label description="New Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{04e02927-1f33-4f96-a46f-12cc359df0a7}" name="New Section" labelid="{cc96a38f-6b01-4955-a034-f39944ee5371}">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{ee5a7d3a-93b9-4044-823f-f60dc19e0912}" labelid="{d724077c-76b8-4593-98e2-2a84d600fd18}">
+                        <labels>
+                          <label description="Donation Import" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_name" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="sifund_name" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{7e01a651-aa4e-423e-8aeb-e47e5ff08fd0}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{313fbdb8-cd08-4e1b-8b48-f8249d706295}" showlabel="false" labelid="{266ce5bf-bae5-48e3-9b5f-aa59fb93d947}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{5e035ce2-5d77-49c1-ae9f-8c5486042dcb}" showlabel="false" labelid="{b6fa4118-c6d1-4c2d-98e9-c953c26c0531}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{188d3abe-5fa8-497a-98d0-35d312da8d8e}" showlabel="false" labelid="{da4144ee-3908-474d-886c-407a5d50dd19}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{955b3402-4059-4ea9-a90d-c88caa528a26}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{1c49c396-c17d-46e4-b3a3-df1591d4eb74}" showlabel="false" labelid="{ffab9b0f-36c1-4d6d-8541-ee4ab5b46d13}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{161d6c6d-bb23-4027-a369-369fc124d85d}" showlabel="false" labelid="{a5ad3a69-c7dd-4d10-9496-506d101cc249}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{8c6b6292-1b12-44d7-83c2-a285334b0342}" showlabel="false" labelid="{ebb04b7a-6dc0-4bca-b8d7-64804bb60e72}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="DEFAULT EMPTY Donation Import main form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

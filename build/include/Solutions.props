@@ -1,0 +1,52 @@
+<Project>
+	<Import Project="common.props" />
+
+	<PropertyGroup>
+		<PowerAppsTargetsPath>$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\PowerApps</PowerAppsTargetsPath>
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
+	<Import Project="$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.props" Condition="Exists('$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.props')" />
+
+	<PropertyGroup>
+		<TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+		<TargetFramework>net462</TargetFramework>
+		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+		<SolutionRootPath>Solution</SolutionRootPath>
+		<SolutionPackageMapFilePath Condition="Exists('$(MSBuildProjectName).Map.xml')">$(MSBuildProjectName).Map.xml</SolutionPackageMapFilePath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<SolutionPackageType Condition="'$(SolutionPackageType)' == ''">Both</SolutionPackageType>
+		<EnableLocalization Condition="'$(EnableLocalization)' == '' and '$(Configuration)' == 'Debug'">false</EnableLocalization>
+		<EnableLocalization Condition="'$(EnableLocalization)' == '' and '$(Configuration)' == 'Release'">true</EnableLocalization>
+		<SolutionPackageEnableLocalization>$(EnableLocalization)</SolutionPackageEnableLocalization>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ILMergeDelaySign>$(DelaySign)</ILMergeDelaySign>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.PowerApps.MSBuild.Solution" Version="1.40.4" />
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" VersionOverride="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\.gitignore" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\bin\**" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\obj\**" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.cdsproj" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.cdsproj.user" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.sln" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\*.md" />
+		<ExcludeDirectories Include="$(MSBuildThisFileDirectory)\Documents\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)\**" Exclude="@(ExcludeDirectories)" />
+		<Content Include="$(SolutionPackageZipFilePath)">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+</Project>

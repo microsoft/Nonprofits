@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{9aad07ca-3511-ef11-9f8a-000d3a9b1588}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_name" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_benefitrecipientid">
+          <cell name="msnfp_name" width="300" />
+          <cell name="msnfp_benefitrecipienttype" width="173" />
+          <cell name="msnfp_beneficiary" width="246" />
+          <cell name="msnfp_description" width="300" disableSorting="1" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_benefitrecipient">
+          <attribute name="msnfp_name" />
+          <order attribute="msnfp_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_description" />
+          <attribute name="msnfp_benefitrecipienttype" />
+          <attribute name="msnfp_beneficiary" />
+          <attribute name="msnfp_benefitrecipientid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Benefit Recipients for Outcomes" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

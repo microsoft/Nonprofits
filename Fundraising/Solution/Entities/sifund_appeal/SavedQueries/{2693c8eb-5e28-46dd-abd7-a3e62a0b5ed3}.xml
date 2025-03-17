@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{2693c8eb-5e28-46dd-abd7-a3e62a0b5ed3}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="sifund_identifier" select="1" icon="1" preview="1">
+        <row name="result" id="sifund_appealid">
+          <cell name="sifund_identifier" width="300" />
+          <cell name="sifund_estimatedrevenue" width="149" />
+          <cell name="sifund_expenses" width="100" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="sifund_appeal">
+          <attribute name="sifund_appealid" />
+          <attribute name="sifund_identifier" />
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+          <attribute name="sifund_estimatedrevenue" />
+          <attribute name="sifund_expenses" />
+          <order attribute="createdon" descending="true" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Inactive Appeals" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

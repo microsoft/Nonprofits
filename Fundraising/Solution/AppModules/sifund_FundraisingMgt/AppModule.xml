@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppModule>
+  <UniqueName>sifund_FundraisingMgt</UniqueName>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <WebResourceId>53d140d5-bc24-ef11-840a-000d3a335058</WebResourceId>
+  <OptimizedFor></OptimizedFor>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <FormFactor>1</FormFactor>
+  <ClientType>4</ClientType>
+  <NavigationType>0</NavigationType>
+  <AppModuleComponents>
+    <AppModuleComponent type="1" schemaName="account" />
+    <AppModuleComponent type="1" schemaName="activitypointer" />
+    <AppModuleComponent type="1" schemaName="contact" />
+    <AppModuleComponent type="1" schemaName="msnfp_designatedcredit" />
+    <AppModuleComponent type="1" schemaName="msnfp_designation" />
+    <AppModuleComponent type="1" schemaName="msnfp_designationplan" />
+    <AppModuleComponent type="1" schemaName="msnfp_donorcommitment" />
+    <AppModuleComponent type="1" schemaName="msnfp_paymentschedule" />
+    <AppModuleComponent type="1" schemaName="msnfp_transaction" />
+    <AppModuleComponent type="1" schemaName="sifund_appeal" />
+    <AppModuleComponent type="1" schemaName="sifund_donationimport" />
+    <AppModuleComponent type="1" schemaName="sifund_giftbatch" />
+    <AppModuleComponent type="1" schemaName="sifund_package" />
+    <AppModuleComponent type="1" schemaName="sifund_receipt" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001899}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001900}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001901}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001902}" />
+    <AppModuleComponent type="26" id="{fb2c1b9e-1511-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{8841aba5-1511-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{9ac0b7c5-1511-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{3b5a07d8-1511-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{e5f97dff-1511-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{00586d54-1611-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{ae15685a-1611-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{3c0fdd62-1611-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{8d6ddd72-1611-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="26" id="{0d69fade-f4fb-4c97-8d59-08e9839563d0}" />
+    <AppModuleComponent type="26" id="{7a615a30-1511-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{1f13f45a-1511-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{e02bfe72-1511-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{cdbf6afb-1511-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{05d6ca2a-1611-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{67186339-1611-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{9f094aa0-1611-ef11-9f89-6045bdd5f02f}" />
+    <AppModuleComponent type="26" id="{5527c06a-155a-44c7-a7de-64bd15357921}" />
+    <AppModuleComponent type="26" id="{d5c748e2-46d0-4c00-85d3-76b91a8a4726}" />
+    <AppModuleComponent type="26" id="{7931aec8-1411-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{b8ca77d5-1411-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{dca2e112-1511-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{4078e2f1-1511-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{88ddff16-1611-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{c3ddff16-1611-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{234328b4-1611-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="26" id="{b89f10b2-1511-ef11-9f8a-7c1e521a7d7d}" />
+    <AppModuleComponent type="26" id="{48e65a2e-1611-ef11-9f8a-7c1e521a7d7d}" />
+    <AppModuleComponent type="26" id="{b79b5f41-1611-ef11-9f8a-7c1e521a7d7d}" />
+    <AppModuleComponent type="26" id="{0c24e1a7-1611-ef11-9f8a-7c1e521a7d7d}" />
+    <AppModuleComponent type="26" id="{4b5788c0-1611-ef11-9f8a-7c1e521a7d7d}" />
+    <AppModuleComponent type="60" id="{b22dbdf9-ebfc-ee11-a1ff-000d3a1b948d}" />
+    <AppModuleComponent type="60" id="{bf669456-edf5-ee11-a1fd-0022481e0b84}" />
+    <AppModuleComponent type="60" id="{5cb78889-3a0e-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="60" id="{7f054a90-3c0e-ef11-9f89-0022482f0293}" />
+    <AppModuleComponent type="60" id="{ae41cdd1-d375-4ca8-b7ee-5064d1d48401}" />
+    <AppModuleComponent type="60" id="{7cd54841-c0f5-ee11-a1fd-6045bdef1b4b}" />
+    <AppModuleComponent type="60" id="{a2581419-edf5-ee11-a1fd-6045bdef1b4b}" />
+    <AppModuleComponent type="60" id="{0c9a5d45-edf5-ee11-a1fd-6045bdef1b4b}" />
+    <AppModuleComponent type="60" id="{867b7a5c-380f-46dd-8162-693e19aa5e03}" />
+    <AppModuleComponent type="60" id="{4383348d-380e-ef11-9f89-7c1e5215ccd4}" />
+    <AppModuleComponent type="60" id="{1d7bf278-ecf5-ee11-a1fd-7c1e5219ae6a}" />
+    <AppModuleComponent type="60" id="{4c221cef-3a0e-ef11-9f8a-7c1e521a7d7d}" />
+    <AppModuleComponent type="60" id="{35f8aef4-e8fc-ee11-a1fe-7c1e521a7d7d}" />
+    <AppModuleComponent type="60" id="{ddf82332-8212-47b4-83a7-f98b4db7d19d}" />
+    <AppModuleComponent type="62" schemaName="sifund_FundraisingMgt" />
+  </AppModuleComponents>
+  <AppModuleRoleMaps>
+    <Role id="{627090ff-40a3-4053-8790-584edc5be201}" />
+    <Role id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+  </AppModuleRoleMaps>
+  <LocalizedNames>
+    <LocalizedName description="Fundraising" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Unify constituent and fundraising data across donor types and channels" languagecode="1033" />
+  </Descriptions>
+  <appsettings>
+    <appsetting settingdefinitionid.uniquename="AppChannel">
+      <iscustomizable>1</iscustomizable>
+      <value>1</value>
+    </appsetting>
+  </appsettings>
+</AppModule>

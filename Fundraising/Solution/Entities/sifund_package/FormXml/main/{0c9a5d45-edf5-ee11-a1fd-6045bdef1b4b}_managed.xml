@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{0c9a5d45-edf5-ee11-a1fd-6045bdef1b4b}</formid>
+    <IntroducedVersion>1.0.0.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{d0c41ebb-7741-4ca2-b2f5-5502a86146ef}" IsUserDefined="1" labelid="{bfcc421e-ecef-48d9-be59-2134a944b2f6}">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="true" showbar="false" IsUserDefined="0" id="{31d16f60-7348-4e6b-a7d9-49f22213a05d}" name="packageInformation" labelid="{3ee4b65b-2453-49ac-89b3-c1092fc4f6bb}">
+                  <labels>
+                    <label description="Package Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{6191648d-3f55-4eb9-b586-2ab8a75f396f}" labelid="{4a027e7c-05cb-46c7-b571-a64169e2a630}">
+                        <labels>
+                          <label description="Package" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_identifier" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="sifund_identifier" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{860dc622-ff47-4cb3-8fc5-93c24f562a9b}" locklevel="0" colspan="1" rowspan="1" labelid="{f164254f-6c08-4a68-bd73-6923d26c5a4a}">
+                        <labels>
+                          <label description="Package Name" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_packagename" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="sifund_packagename" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3ecad2d7-f4be-4d98-9532-5bf67473b04e}" locklevel="0" colspan="1" rowspan="1" labelid="{68c6e23c-bc5c-459a-915c-8e9478579476}">
+                        <labels>
+                          <label description="Appeal" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_appeal" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="sifund_appeal" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{479b945a-0d2c-4434-94d5-3ef2cd331517}" locklevel="0" colspan="1" rowspan="1" labelid="{0ca3d006-3a00-436e-90c8-fe8dcbda022c}">
+                        <labels>
+                          <label description="Estimated Revenue" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_expectedrevenue" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="sifund_expectedrevenue" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_2" id="e444fec8-04af-451c-92c5-19c441ca6cdc" IsUserDefined="0" locklevel="0" showlabel="true" labelid="{69cc2e2b-0f64-458f-9cb2-223663743349}">
+          <labels>
+            <label description="Gifts" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_2_section_1" id="56beaf15-f662-4b06-b00f-77fa110db1de" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" labelid="{6b9bb5bb-2a80-4340-8df0-013839528b21}">
+                  <labels>
+                    <label description="Transactions" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{6f8f923a-3b6f-48d5-b473-f1fdd98c017c}" rowspan="4" colspan="1" auto="false" labelid="{a40593aa-bf63-4c0e-b074-6c85cf64779c}">
+                        <labels>
+                          <label description="Transactions" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_new_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>true</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <TargetEntityType>msnfp_transaction</TargetEntityType>
+                            <ViewId>{7931AEC8-1411-EF11-9F89-7C1E5215CCD4}</ViewId>
+                            <ViewIds>{7931AEC8-1411-EF11-9F89-7C1E5215CCD4},{B8CA77D5-1411-EF11-9F89-7C1E5215CCD4}</ViewIds>
+                            <RelationshipName>sifund_msnfp_transaction_Package_sifund_package</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+                <section name="tab_2_section_3" id="03753141-3f5c-4aab-afd6-743b8122d3e6" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" labelid="{86a83720-d798-4cac-a420-6777c345516f}">
+                  <labels>
+                    <label description="Donor Commitments" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{93dd9343-8566-4af3-bdef-cf9c1d310026}" rowspan="4" colspan="1" auto="false" labelid="{944d0757-e8a9-4418-9c86-2524abbdd870}">
+                        <labels>
+                          <label description="Donor Commitments" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_new_2" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>true</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <TargetEntityType>msnfp_donorcommitment</TargetEntityType>
+                            <ViewId>{DCA2E112-1511-EF11-9F89-7C1E5215CCD4}</ViewId>
+                            <ViewIds>{DCA2E112-1511-EF11-9F89-7C1E5215CCD4},{7A615A30-1511-EF11-9F89-6045BDD5F02F}</ViewIds>
+                            <RelationshipName>sifund_msnfp_donorcommitment_Package_sifund_pack</RelationshipName>
+                            <VisualizationId>{20D64DDF-58D1-E811-A960-000D3A37870E}</VisualizationId>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+                <section name="tab_2_section_4" id="857f519b-7e51-44eb-bbaa-0bfef863824a" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" labelid="{19e3ad5b-d0ff-43bb-a06d-f98e90d31146}">
+                  <labels>
+                    <label description="Payment Schedules" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{31a32750-2e39-4c8d-aa3c-5a362cee58f9}" rowspan="4" colspan="1" auto="false" labelid="{8d8a7867-e03c-46e3-b495-0f764d0a1752}">
+                        <labels>
+                          <label description="Payment Schedules" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_new_3" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>true</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <TargetEntityType>msnfp_paymentschedule</TargetEntityType>
+                            <ViewId>{4ED6A86F-47A6-4ABF-88F1-5F12B8B13295}</ViewId>
+                            <ViewIds>{4ED6A86F-47A6-4ABF-88F1-5F12B8B13295},{5365D27E-8430-4C26-9545-F1A65ECF191A}</ViewIds>
+                            <RelationshipName>sifund_msnfp_paymentschedule_Package_sifund_pack</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_3" id="ef0e5adf-b633-4fe3-966b-b6b5364245f3" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="System" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_3_section_1" id="bfb816da-904c-45dd-83ac-e01bdfbe45d1" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell id="{5a693949-9176-4f4a-a309-d05da2a85b97}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Created By" languagecode="1033" />
+                        </labels>
+                        <control id="createdby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="createdby" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{01590562-37b3-48fd-a944-e503b2dbbc29}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Created On" languagecode="1033" />
+                        </labels>
+                        <control id="createdon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="createdon" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{53fddee8-70c6-43f1-8ec8-737e8b541310}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Modified By" languagecode="1033" />
+                        </labels>
+                        <control id="modifiedby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="modifiedby" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{03be78e3-94ef-4f86-84c1-ed839b6c7f5c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Modified On" languagecode="1033" />
+                        </labels>
+                        <control id="modifiedon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="modifiedon" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{e1a33cbd-7806-4903-9d09-7d1dd4ae5f48}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{92d2c065-aee7-4ab0-8a80-9c74e8dc302f}" showlabel="false" labelid="{a4f0172f-c231-44ba-bc8e-187aa47f5e9a}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{7b3a9e53-d5e7-4d26-b416-3575792d507b}" showlabel="false" labelid="{31a82ba5-c157-4f69-98f3-35cdf230018d}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{9ba79143-0f49-41e0-a1bf-3586d9537f86}" showlabel="false" labelid="{14643ae7-9c54-4915-b836-71aa88e9fd16}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{4e9aff59-2a0e-412e-b9eb-e5a6c8551615}" colspan="1" rowspan="1" labelid="{60b2480c-540b-40a2-899d-45ad4a2007e7}">
+              <labels>
+                <label description="Owner" languagecode="1033" />
+              </labels>
+              <control id="header_ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{848cecad-61f0-4938-85ca-744cd84d5999}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{4d8cce96-414b-4afd-91eb-ec2bbf1fee98}" showlabel="false" labelid="{a857624e-1bc8-473e-8ec8-846be3977958}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{0b5e2346-310e-43da-89eb-ae9b36c8d6e6}" showlabel="false" labelid="{a5ecc7d1-c786-4e97-8f48-613e1896c50d}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{9ceb1f6d-3702-4372-ae80-416493f0b701}" showlabel="false" labelid="{7b5c4e90-d82b-4e6a-be44-af3661a40f3b}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="1" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Package for Fundraising" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

@@ -1,0 +1,32 @@
+﻿
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "topLevelManagementGroupPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide prefix for the management group structure."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Provide location for the management group structure."
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Management/managementGroups",
+            "scope": "/",
+            "apiVersion": "2020-05-01",
+            "name": "[parameters('topLevelManagementGroupPrefix')]",
+            "properties": {}
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,6 @@
+<Project>
+	<PropertyGroup>
+		<RepositoryRoot>$(MSBuildThisFileDirectory)\..\..</RepositoryRoot>
+		<PowerAppsTargetsPath>$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\PowerApps</PowerAppsTargetsPath>
+	</PropertyGroup>
+</Project>

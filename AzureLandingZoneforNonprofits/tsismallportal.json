@@ -1,0 +1,657 @@
+{
+    "$schema": "<relative path to createFormUI.schema.json>",
+    "view": {
+        "kind": "Form",
+        "properties": {
+            "title": "Azure Landing Zone for Nonprofits",
+            "isWizard": false,
+            "steps": [
+                {
+                    "name": "basics",
+                    "label": "Deployment location",
+                    "elements": [
+                        {
+                            "name": "resourceScope",
+                            "type": "Microsoft.Common.ResourceScope"
+                        }
+                    ]
+                },
+                {
+                    "name": "lzSettings",
+                    "label": "Management Group and Subscription Organization",
+                    "subLabel": {
+                        "preValidation": "Provide a prefix for the management group structure that will be created.",
+                        "postValidation": "Done"
+                    },
+                    "bladeTitle": "Company prefix",
+                    "elements": [
+                        {
+                            "name": "info",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "text": "To deploy the following configurations it is required to have access at the tenant root (/) scope. Visit this link to ensure you have the appropriate RBAC permission to complete the deployment",
+                                "uri": "https://docs.microsoft.com/azure/role-based-access-control/elevate-access-global-admin",
+                                "style": "Info"
+                            }
+                        },
+                        {
+                            "name": "mgSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Management Groups",
+                            "elements": [
+                                {
+                                    "name": "mgmtGroup",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Here will be created the management group hierarchy under the Tenant Root Group with the prefix provided at this step, which will be used to establish a proven architecture for subscription organization and policy driven governance at scale."
+                                    }
+                                },
+                                {
+                                    "name": "esMgmtGroup",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Management Group prefix",
+                                    "toolTip": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Azure Landing Zone for Nonprofits.",
+                                    "defaultValue": "",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-z0-9A-Z-]{1,10}$",
+                                        "validationMessage": "The prefix must be 1-10 characters."
+                                    }
+                                }
+                            ],
+                            "visible": true
+                        },
+                        {
+                            "name": "rpRegistrationApi",
+                            "type": "Microsoft.Solutions.ArmApiControl",
+                            "request": {
+                                "method": "POST",
+                                "path": "[concat('/providers/Microsoft.Management/managementGroups/',steps('basics').resourceScope.tenant.tenantId, '/providers/Microsoft.PolicyInsights/register?api-version=2021-04-01')]"
+                            }
+                        },
+                        {
+                            "name": "subSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Subscription Organization",
+                            "elements": [
+                                {
+                                    "name": "subOrg",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "It is recommended to use a dedidated subscriptions for the Azure platform functionality, such as Security, Governance, Compliance, Network Connectivity, and Identity and Access. This enables the organization to scale the Azure platform and the workloads in the landing zones independently regardless of future scale-point."
+                                    }
+                                },
+                                {
+                                    "name": "subOrgsOption",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Select dedicated subscriptions or a single subscription for Azure Landing Zone for Nonprofit platform resources",
+                                    "defaultValue": "Dedicated (recommended)",
+                                    "toolTip": "Dedicated subscriptions will require separate Azure subscriptions for platform resources and is the recommended option for production environments. The single subscription option will deploy all platform resources on a single subscription.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Dedicated (recommended)",
+                                                "value": "Dedicated"
+                                            },
+                                            {
+                                                "label": "Single",
+                                                "value": "Single"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                }
+                            ],
+                            "visible": false
+                        },
+                        {
+                            "name": "esSingleSubSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Single platform subscription",
+                            "elements": [
+                                {
+                                    "name": "subWarning",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "icon": "Warning",
+                                        "text": "Dedicated subscriptions are recommended for the various platform components to ensure scale, sustainability, and segregation of duties, and especially around networking. However, a single subscription can also be used in case this is not a concern (e.g., small organizations, or testing purposes).",
+                                        "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
+                                    }
+                                },
+                                {
+                                    "name": "singleSubText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the single subscription that will be used for all platform resources during deployment, for security, logging, connectivity, and identity."
+                                    }
+                                },
+                                {
+                                    "type": "Microsoft.Common.SubscriptionSelector",
+                                    "name": "esSingleSub",
+                                    "label": "Single platform subscription"
+                                }
+                            ],
+                            "visible": "[equals(steps('lzSettings').subSection.subOrgsOption, 'Single')]"
+                        }
+                    ]
+                },
+                {
+                    "name": "esGoalState",
+                    "label": "Management and Connectivity",
+                    "subLabel": {
+                        "preValidation": "",
+                        "postValidation": ""
+                    },
+                    "bladeTitle": "lzGs",
+                    "elements": [
+                        {
+                            "type": "Microsoft.Common.Section",
+                            "name": "imcSection",
+                            "label": "Identity, Management, and Connectivity (IMC) Subscription",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "IMC refers to the core Azure components that manage and secure the communication and operations between different resources. 'Identity' relates to authentication and authorization services ensuring secure access to resources. 'Management' pertains to overseeing the lifecycle of resources, including monitoring and maintenance through tools like Azure Monitor and Log Analytics. 'Connectivity' involves networking aspects that ensure reliable and secure connections between Azure resources, including virtual networks, subnets, and VPNs as configured in Hub Network Configurations."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "multiPlatformMgmtSub",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[not(equals(steps('lzSettings').subSection.subOrgsOption, 'Single'))]",
+                            "options": {
+                                "text": "To enable platform management and monitoring, you must allocate a dedicated Azure Subscription. Please note, this Subscription will be moved to the platform Management Group, and ARM will deploy a Log Analytics workspace and requisite settings. We recommend using a new Subscription with no existing resources. Note that Azure Policy will be used to govern the configuration for the platform at scale.",
+                                "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-and-monitoring",
+                                "style": "Info"
+                            }
+                        },
+                        {
+                            "name": "singlePlatformMgmtSub",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('lzSettings').subSection.subOrgsOption, 'Single')]",
+                            "options": {
+                                "text": "To enable management and monitoring, you can configure core infra such as Log Analytics and additional monitoring solutions to your dedicated platform subscription. Note that Azure Policy will be used to govern the configuration for the platform at scale.",
+                                "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-and-monitoring",
+                                "style": "Info"
+                            }
+                        },
+                        {
+                            "name": "esMgmtSubSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Management subscription",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Azure subscription from the dropdown menu below. All resources and services configured in this deployment tab will be created within the selected subscription. This ensures that the deployment and management of resources are centralized in a single subscription, facilitating easier management and potential cost optimizations."
+                                    }
+                                },
+                                {
+                                    "type": "Microsoft.Common.SubscriptionSelector",
+                                    "name": "esMgmtSub",
+                                    "label": "Management subscription"
+                                }
+                            ],
+                            "visible": true
+                        },
+                        {
+                            "name": "azMonSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Azure Monitor",
+                            "elements": [
+                                {
+                                    "name": "azMonText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Azure Monitor with Log Analytics provides the core infrastructure to enable platform observability, security, and log retention.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-overview"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "esLogAnalytics",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Deploy Log Analytics workspace and enable monitoring for your platform and resources",
+                                    "defaultValue": "Yes (recommended)",
+                                    "toolTip": "If 'Yes' is selected when also adding a subscription for management, Log Analytics workspace will be created in the dedicated subscription and enable additional configuration options in the deployment wizard.",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                },
+                                {
+                                    "name": "esLogRetention",
+                                    "type": "Microsoft.Common.Slider",
+                                    "min": 30,
+                                    "max": 730,
+                                    "label": "Log Analytics Data Retention (days)",
+                                    "subLabel": "Days",
+                                    "defaultValue": 30,
+                                    "showStepMarkers": false,
+                                    "toolTip": "Select retention days for Azure logs. Default is 30 days. If longer retention is required, you can optionally configure Log Analytics data export to a Storage Account or an Event Hub namespace.",
+                                    "constraints": {
+                                        "required": false
+                                    },
+                                    "visible": "[equals(steps('esGoalState').azMonSection.esLogAnalytics,'Yes')]"
+                                }
+                            ],
+                            "visible": true
+                        },
+                        {
+                            "name": "hubNetworkConfigurations",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Hub Network Configurations",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "hubTopologyDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "A Hub networking topology in Azure serves as a central point of connectivity to many spoke networks. The hub acts as a central network that contains shared services accessible across different workloads in the spokes. Common services deployed in the hub include network virtual appliances, firewalls, and gateways. This central structure simplifies network management, improves security, and enhances data flow efficiency across networks. As the deployment progresses, this hub will be integrated with spoke networks to create a comprehensive network topology, facilitating efficient data transfer and centralized security management."
+                                    }
+                                },
+                                {
+                                    "name": "vnetName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Virtual Network Name",
+                                    "toolTip": "Enter the name of the VNet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$",
+                                        "validationMessage": "The VNet name must start and end with an alphanumeric character and can contain hyphens."
+                                    }
+                                },
+                                {
+                                    "name": "vnetPrefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Virtual Network Address Prefix",
+                                    "toolTip": "Enter the CIDR address prefix for the VNet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$",
+                                        "validationMessage": "Enter a valid CIDR notation."
+                                    }
+                                },
+                                {
+                                    "name": "subnetName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Subnet Name",
+                                    "toolTip": "Enter the name of the subnet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$",
+                                        "validationMessage": "The subnet name must start and end with an alphanumeric character and can contain hyphens."
+                                    }
+                                },
+                                {
+                                    "name": "subnetPrefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Subnet Address Prefix",
+                                    "toolTip": "Enter the CIDR address prefix for the subnet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$",
+                                        "validationMessage": "Enter a valid CIDR notation."
+                                    }
+                                },
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "vpnGatewayDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "A VPN Gateway is a specific type of virtual network gateway in Azure, designed to send encrypted traffic between an Azure virtual network and an on-premises location over the public Internet. It is used to establish secure, cross-premises connectivity, enabling Azure resources to communicate securely with external networks. VPN Gateways facilitate various connectivity scenarios including site-to-site VPNs, point-to-site VPNs, and VNet-to-VNet connections, thereby enhancing business continuity by providing a reliable and secure link for remote access to resources."
+                                    }
+                                },
+                                {
+                                    "name": "vpnGatewaySubnet",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "VPN Gateway Subnet",
+                                    "toolTip": "Enter the CIDR address prefix for the VPN Gateway subnet (typically x.x.x.x/27)",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$",
+                                        "validationMessage": "Enter a valid CIDR notation, typically a /27 for VPN gateways."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "networkSettings",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Network Security Settings",
+                            "bladeTitle": "Network Security Settings",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "ddosProtectionDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Azure DDoS Protection Standard provides enhanced DDoS mitigation capabilities to defend your Azure resources from DDoS attacks. DDoS Protection Standard offers cost protection by preventing scaling of resources during an attack, thus mitigating potential financial impacts. This layer of security is crucial for maintaining availability and operational resilience against widespread network threats."
+                                    }
+                                },
+                                {
+                                    "name": "enableDDoS",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Enable DDoS Protection",
+                                    "toolTip": "Select whether to enable DDoS Protection",
+                                    "defaultValue": "Yes, DDoS Network Protection (recommended)",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes, DDoS Network Protection (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "security",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Cloud Security Settings",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "defenderForCloudDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Microsoft Defender for Cloud Standard offers integrated security management and threat protection for your Azure services and hybrid environments. It automatically applies security policies to help secure your services against threats and provides continuous security assessment and actionable recommendations. This standard deployment enhances your security posture by integrating intelligent threat detection and response capabilities, helping you to prevent, detect, and respond to security threats in real time."
+                                    }
+                                },
+                                {
+                                    "name": "enableDefender",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Enable Microsoft Defender for Cloud ",
+                                    "toolTip": "Select whether to enable Microsoft Defender for Cloud",
+                                    "defaultValue": "Yes, enable Defender for Cloud (recommended)",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes, enable Defender for Cloud (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "backupAndRecovery",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Backup and Recovery",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "recoveryServicesVaultDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Azure Recovery Services Vault is a comprehensive solution for data backup and disaster recovery. It is designed to protect your Azure and on-premises resources by enabling both backup and site recovery services. This centralized vault provides a unified approach to manage your backup policies, monitor backup health, and recover services swiftly in case of data loss or corruption. It simplifies the management of your recovery points, scales on demand to meet your data protection needs, and ensures secure and reliable data storage and recovery capabilities."
+                                    }
+                                },
+                                {
+                                    "name": "recoveryServicesVaultName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Recovery Services Vault Name",
+                                    "toolTip": "Enter the name for the Recovery Services Vault",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$",
+                                        "validationMessage": "The name must start and end with an alphanumeric character and can contain hyphens but no spaces."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "keyVaultConfiguration",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Secrets and Keys Management",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "keyVaultDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Azure Key Vault is a secure and scalable service that helps safeguard cryptographic keys and secrets used by cloud applications and services. By centralizing the storage of these sensitive assets, Key Vault enables you to control their distribution, manage access with fine-grained permissions, and monitor their usage through auditable logs. It supports automatic key rotation, integration with Azure Active Directory, and compliance with stringent industry standards, ensuring that your encryption keys and other secrets are managed securely and efficiently."
+                                    }
+                                },
+                                {
+                                    "name": "keyVaultName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Key Vault Name",
+                                    "toolTip": "Enter the name for the Azure Key Vault",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]{2,23}[a-zA-Z0-9]$",
+                                        "validationMessage": "The Key Vault name must be 3-24 characters long, begin with a letter, end with an alphanumeric character and can contain hyphens."
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "esLZGoalState",
+                    "label": "Landing Zone",
+                    "subLabel": {
+                        "preValidation": "",
+                        "postValidation": ""
+                    },
+                    "bladeTitle": "lzGs",
+                    "elements": [
+                        {
+                            "name": "esNwSubSection",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Landing Zone subscription",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "subscriptionWarning",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please ensure that the subscription selected here is different from the one used for the Management and Connectivity configurations. This separation ensures optimal resource management and security compliance across different operational environments."
+                                    }
+                                },
+                                {
+                                    "type": "Microsoft.Common.SubscriptionSelector",
+                                    "name": "esNwSub",
+                                    "label": "Connectivity subscription"
+                                }
+                            ],
+                            "visible": true
+                        },
+                        {
+                            "name": "spokeNetworkConfigurations",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Spoke Network Configurations",
+                            "elements": [
+                                {
+                                    "name": "vnetName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Virtual Network Name",
+                                    "toolTip": "Enter the name of the VNet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$",
+                                        "validationMessage": "The VNet name must start and end with an alphanumeric character and can contain hyphens."
+                                    }
+                                },
+                                {
+                                    "name": "vnetPrefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Virtual Network Address Prefix",
+                                    "toolTip": "Enter the CIDR address prefix for the VNet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$",
+                                        "validationMessage": "Enter a valid CIDR notation."
+                                    }
+                                },
+                                {
+                                    "name": "subnetName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Subnet Name",
+                                    "toolTip": "Enter the name of the subnet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$",
+                                        "validationMessage": "The subnet name must start and end with an alphanumeric character and can contain hyphens."
+                                    }
+                                },
+                                {
+                                    "name": "subnetPrefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Subnet Address Prefix",
+                                    "toolTip": "Enter the CIDR address prefix for the subnet",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$",
+                                        "validationMessage": "Enter a valid CIDR notation."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "keyVaultConfiguration",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Secrets and Keys Management",
+                            "elements": [
+                                {
+                                    "name": "keyVaultName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Key Vault Name",
+                                    "toolTip": "Enter the name for the Azure Key Vault",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]{2,23}[a-zA-Z0-9]$",
+                                        "validationMessage": "The Key Vault name must be 3-24 characters long, begin with a letter, end with an alphanumeric character and can contain hyphens."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "security",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Cloud Security Settings",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "defenderForCloudDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Microsoft Defender for Cloud Standard offers integrated security management and threat protection for your Azure services and hybrid environments. It automatically applies security policies to help secure your services against threats and provides continuous security assessment and actionable recommendations. This standard deployment enhances your security posture by integrating intelligent threat detection and response capabilities, helping you to prevent, detect, and respond to security threats in real time."
+                                    }
+                                },
+                                {
+                                    "name": "enableDefender",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "label": "Enable Microsoft Defender for Cloud ",
+                                    "toolTip": "Select whether to enable Microsoft Defender for Cloud",
+                                    "defaultValue": "Yes, enable Defender for Cloud (recommended)",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes, enable Defender for Cloud (recommended)",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    "visible": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "backupAndRecovery",
+                            "type": "Microsoft.Common.Section",
+                            "label": "Backup and Recovery",
+                            "elements": [
+                                {
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "name": "recoveryServicesVaultDescription",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Azure Recovery Services Vault is a comprehensive solution for data backup and disaster recovery. It is designed to protect your Azure and on-premises resources by enabling both backup and site recovery services. This centralized vault provides a unified approach to manage your backup policies, monitor backup health, and recover services swiftly in case of data loss or corruption. It simplifies the management of your recovery points, scales on demand to meet your data protection needs, and ensures secure and reliable data storage and recovery capabilities."
+                                    }
+                                },
+                                {
+                                    "name": "recoveryServicesVaultName",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "label": "Recovery Services Vault Name",
+                                    "toolTip": "Enter the name for the Recovery Services Vault",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$",
+                                        "validationMessage": "The name must start and end with an alphanumeric character and can contain hyphens but no spaces."
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "outputs": {
+            "parameters": {
+                "industry": "tsi",
+                "industryPrefix": "[steps('lzSettings').mgSection.esMgmtGroup]",
+                "managementSubscriptionId": "[steps('esGoalState').esMgmtSubSection.esMgmtSub.subscriptionId]",
+                "enableLogAnalytics": "[steps('esGoalState').azMonSection.esLogAnalytics]",
+                "retentionInDays": "[string(steps('esGoalState').azMonSection.esLogRetention)]",
+                "hubName": "[steps('esGoalState').hubNetworkConfigurations.vnetName]",
+                "hubAddrPrefix": "[steps('esGoalState').hubNetworkConfigurations.vnetPrefix]",
+                "hubSubnetName": "[steps('esGoalState').hubNetworkConfigurations.subnetName]",
+                "hubSubnetAddrPrefix": "[steps('esGoalState').hubNetworkConfigurations.subnetPrefix]",
+                "vpnGWSubnet": "[steps('esGoalState').hubNetworkConfigurations.vpnGatewaySubnet]",
+                "recoveryName": "[steps('esGoalState').backupAndRecovery.recoveryServicesVaultName]",
+                "enableDefender": "[steps('esGoalState').security.enableDefender]",
+                "enableDDoS": "[steps('esGoalState').networkSettings.enableDDoS]",
+                "keyVaultNameHub": "[steps('esGoalState').keyVaultConfiguration.keyVaultName]",
+                "connectivitySubscriptionId": "[steps('esLZGoalState').esNwSubSection.esNwSub.subscriptionId]",
+                "enableDefenderLZ": "[steps('esLZGoalState').security.enableDefender]",
+                "keyVaultName": "[steps('esLZGoalState').keyVaultConfiguration.keyVaultName]",
+                "spokeName": "[steps('esLZGoalState').spokeNetworkConfigurations.vnetName]",
+                "spokeAddrPrefix": "[steps('esLZGoalState').spokeNetworkConfigurations.vnetPrefix]",
+                "spokeSubnetName": "[steps('esLZGoalState').spokeNetworkConfigurations.subnetName]",
+                "spokeSubnetAddrPrefix": "[steps('esLZGoalState').spokeNetworkConfigurations.subnetPrefix]",
+                "recoveryNameSpoke": "[steps('esLZGoalState').backupAndRecovery.recoveryServicesVaultName]"
+            },
+            "kind": "Tenant",
+            "location": "[steps('basics').resourceScope.location.name]"
+        }
+    }
+}

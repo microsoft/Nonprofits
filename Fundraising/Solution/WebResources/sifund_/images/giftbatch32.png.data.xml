@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{2465c1ff-0cfc-ee11-a1ff-000d3a1b937e}</WebResourceId>
+  <Name>sifund_/images/giftbatch32.png</Name>
+  <DisplayName>Gift Batch 32px</DisplayName>
+  <Description>Gift Batch 32px image for navigation</Description>
+  <LanguageCode>1033</LanguageCode>
+  <WebResourceType>5</WebResourceType>
+  <IntroducedVersion>1.0.0.13</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/sifund_imagesgiftbatch32png2465C1FF-0CFC-EE11-A1FF-000D3A1B937E</FileName>
+</WebResource>

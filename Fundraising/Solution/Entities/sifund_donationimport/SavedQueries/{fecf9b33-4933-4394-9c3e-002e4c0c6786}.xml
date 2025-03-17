@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{fecf9b33-4933-4394-9c3e-002e4c0c6786}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="sifund_name" select="1" icon="1" preview="1">
+        <row name="result" id="sifund_donationimportid">
+          <cell name="sifund_name" width="300" />
+          <cell name="createdon" width="125" />
+          <cell name="sifund_type" width="100" />
+          <cell name="sifund_amount" width="100" />
+          <cell name="sifund_paymenttypecode" width="100" />
+          <cell name="sifund_dataentryreference" width="116" />
+          <cell name="sifund_firstname" width="103" />
+          <cell name="sifund_lastname" width="102" />
+          <cell name="sifund_billing_city" width="100" />
+          <cell name="sifund_billing_stateorprovince" width="100" />
+          <cell name="sifund_giftcreated" width="110" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="sifund_donationimport">
+          <attribute name="sifund_donationimportid" />
+          <attribute name="sifund_name" />
+          <attribute name="createdon" />
+          <order attribute="sifund_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="sifund_firstname" />
+          <attribute name="sifund_lastname" />
+          <attribute name="sifund_type" />
+          <attribute name="sifund_amount" />
+          <attribute name="sifund_dataentryreference" />
+          <attribute name="sifund_billing_city" />
+          <attribute name="sifund_billing_stateorprovince" />
+          <attribute name="sifund_giftcreated" />
+          <attribute name="sifund_paymenttypecode" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Donation Imports" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

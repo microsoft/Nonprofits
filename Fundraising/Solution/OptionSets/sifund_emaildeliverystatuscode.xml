@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="sifund_emaildeliverystatuscode" localizedName="Email Delivery Status Code" description="The value that marks the receipt is ready to be delivered&#xD;&#xA;" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Email Delivery Status Code" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="The value that marks the receipt is ready to be delivered&#xD;&#xA;" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="844060000">
+      <labels>
+        <label description="Deliver by Email" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060001">
+      <labels>
+        <label description="Deliver by Email (Completed)" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060002">
+      <labels>
+        <label description="Deliver by Email (Pending)" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060003">
+      <labels>
+        <label description="Deliver by Email (Reprint)" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

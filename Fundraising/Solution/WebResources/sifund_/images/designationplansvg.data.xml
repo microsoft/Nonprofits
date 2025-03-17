@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{d5d7e8e9-13fc-ee11-a1ff-000d3a1b937e}</WebResourceId>
+  <Name>sifund_/images/designationplansvg</Name>
+  <DisplayName>Designation Plan SVG</DisplayName>
+  <WebResourceType>11</WebResourceType>
+  <IntroducedVersion>1.0.0.14</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/sifund_imagesdesignationplansvgD5D7E8E9-13FC-EE11-A1FF-000D3A1B937E</FileName>
+</WebResource>

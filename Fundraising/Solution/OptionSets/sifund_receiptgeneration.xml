@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="sifund_receiptgeneration" localizedName="Receipt Generation" description="Option set that records how the receipt was generated" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Receipt Generation" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="Option set that records how the receipt was generated" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="844060000">
+      <labels>
+        <label description="System Generated" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060001">
+      <labels>
+        <label description="Manually Generated" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060002">
+      <labels>
+        <label description="Third Party" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

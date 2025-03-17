@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="sifund_ccbrandcode" localizedName="CC Brand Code" description="The type of card" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="CC Brand Code" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="The type of card" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="844060000">
+      <labels>
+        <label description="Visa" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060001">
+      <labels>
+        <label description="MasterCard" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060002">
+      <labels>
+        <label description="Visa Debit" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060003">
+      <labels>
+        <label description="MasterCard Debit" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060004">
+      <labels>
+        <label description="American Express" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060005">
+      <labels>
+        <label description="Diners Club" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060006">
+      <labels>
+        <label description="JCB" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060007">
+      <labels>
+        <label description="Interact" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060008">
+      <labels>
+        <label description="Discover Card" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060009">
+      <labels>
+        <label description="Union Pay" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060010">
+      <labels>
+        <label description="Unknown" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

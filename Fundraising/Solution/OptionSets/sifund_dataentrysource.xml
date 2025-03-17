@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="sifund_dataentrysource" localizedName="Data Entry Source" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Data Entry Source" languagecode="1033" />
+  </displaynames>
+  <options>
+    <option value="844060000">
+      <labels>
+        <label description="Phone" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060001">
+      <labels>
+        <label description="In person" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060002">
+      <labels>
+        <label description="Direct Mail" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060003">
+      <labels>
+        <label description="Online" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060004">
+      <labels>
+        <label description="Social" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

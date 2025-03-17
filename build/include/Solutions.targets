@@ -1,0 +1,20 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
+	<Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+	<Import Project="$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.targets" Condition="Exists('$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.targets')" />
+
+	<Target Name="RemovePowerAppsPackagesBeforeBuild" BeforeTargets="BeforeBuild">
+		<ItemGroup>
+			<FilesToDelete Include="$(TargetDir)*.zip" />
+		</ItemGroup>
+		<Message Text="Deleting previous packages from $(TargetDir): @(FilesToDelete)" Importance="High" />
+		<Delete Files="@(FilesToDelete)" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="RenamePowerAppsPackageManagedOnly" AfterTargets="PowerAppsPackage" Condition="'$(SolutionPackageType)' == 'Managed'">
+		<ItemGroup>
+			<ManagedSolutionFile Include="$(TargetDir)*.zip" />
+		</ItemGroup>
+		<Message Text="Moving solution files @(ManagedSolutionFile) to @(ManagedSolutionFile->Replace('.zip', '_managed.zip'))" Importance="High" />
+		<Move SourceFiles="@(ManagedSolutionFile)" OverwriteReadOnlyFiles="true" DestinationFiles="@(ManagedSolutionFile->Replace('.zip', '_managed.zip'))" />
+	</Target>
+</Project>

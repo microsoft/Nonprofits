@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{7a615a30-1511-ef11-9f89-6045bdd5f02f}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_name" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_donorcommitmentid">
+          <cell name="msnfp_name" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msnfp_bookdate" width="101" />
+          <cell name="sifund_donor" width="154" />
+          <cell name="msnfp_totalamount" width="118" />
+          <cell name="msnfp_commitment_defaultdesignationid" width="159" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msnfp_commitmenttype" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msnfp_expectedbydate" width="142" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_donorcommitment">
+          <attribute name="msnfp_donorcommitmentid" />
+          <attribute name="msnfp_name" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+          <attribute name="msnfp_commitment_defaultdesignationid" />
+          <attribute name="msnfp_commitmenttype" />
+          <order attribute="msnfp_name" descending="false" />
+          <attribute name="sifund_donor" />
+          <attribute name="msnfp_totalamount" />
+          <attribute name="msnfp_expectedbydate" />
+          <attribute name="msnfp_bookdate" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.15</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Inactive Donor Commitments for Fundraising" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

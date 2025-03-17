@@ -1,0 +1,85 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "defenderRegion": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide location for the resource group"
+            }
+        }
+    },
+    "variables": {
+        "defenderDeploymentName": "[take(concat(deployment().name, '-ddos', parameters('defenderRegion')), 60)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('defenderDeploymentName')]",
+            "location": "[parameters('defenderRegion')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Security/pricings",
+                            "name": "VirtualMachines",
+                            "apiVersion": "2024-01-01",
+                            "properties": {
+                                "pricingTier": "Standard"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Security/pricings",
+                            "name": "SqlServers",
+                            "apiVersion": "2024-01-01",
+                            "properties": {
+                                "pricingTier": "Standard"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Security/pricings",
+                            "name": "AppServices",
+                            "apiVersion": "2024-01-01",
+                            "properties": {
+                                "pricingTier": "Standard"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Security/pricings",
+                            "name": "StorageAccounts",
+                            "apiVersion": "2024-01-01",
+                            "properties": {
+                                "pricingTier": "Standard"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Security/pricings",
+                            "name": "KeyVaults",
+                            "apiVersion": "2024-01-01",
+                            "properties": {
+                                "pricingTier": "Standard"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Security/pricings",
+                            "name": "KubernetesService",
+                            "apiVersion": "2024-01-01",
+                            "properties": {
+                                "pricingTier": "Standard"
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppModule>
+  <UniqueName>signt_GrantManagement</UniqueName>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <WebResourceId>4495e02f-bd24-ef11-840a-6045bd023d72</WebResourceId>
+  <OptimizedFor></OptimizedFor>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <FormFactor>1</FormFactor>
+  <ClientType>4</ClientType>
+  <NavigationType>0</NavigationType>
+  <AppModuleComponents>
+    <AppModuleComponent type="1" schemaName="account" />
+    <AppModuleComponent type="1" schemaName="activitypointer" />
+    <AppModuleComponent type="1" schemaName="contact" />
+    <AppModuleComponent type="1" schemaName="msnfp_award" />
+    <AppModuleComponent type="1" schemaName="msnfp_disbursement" />
+    <AppModuleComponent type="1" schemaName="msnfp_report" />
+    <AppModuleComponent type="1" schemaName="msnfp_request" />
+    <AppModuleComponent type="26" id="{85bfb9e4-3f11-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{e507b3f1-3f11-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{a5e96142-4011-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{010eb048-4011-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{88473e6d-4011-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{e496487f-4011-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{c1623413-4711-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="26" id="{f27911ce-3f11-ef11-9f8a-6045bd034d42}" />
+    <AppModuleComponent type="26" id="{e706670d-4011-ef11-9f8a-6045bd034d42}" />
+    <AppModuleComponent type="26" id="{9b04a11f-4011-ef11-9f8a-6045bd034d42}" />
+    <AppModuleComponent type="26" id="{c5b02c52-4011-ef11-9f8a-6045bd034d42}" />
+    <AppModuleComponent type="26" id="{fa212e0f-4711-ef11-9f8a-6045bd034d42}" />
+    <AppModuleComponent type="26" id="{530b8e62-4011-ef11-9f89-6045bd036aa0}" />
+    <AppModuleComponent type="26" id="{1150f686-4011-ef11-9f89-6045bd036aa0}" />
+    <AppModuleComponent type="60" id="{2656ace9-ab08-ef11-9f89-000d3a59ae96}" />
+    <AppModuleComponent type="60" id="{2cc76730-650c-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="60" id="{36b8062b-6c0c-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="60" id="{4ecf0ce9-6e0c-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="60" id="{3c40acc0-770c-ef11-9f89-00224808392f}" />
+    <AppModuleComponent type="60" id="{ad0b9010-7e0c-ef11-9f8a-6045bd034d42}" />
+    <AppModuleComponent type="62" schemaName="signt_GrantManagement" />
+  </AppModuleComponents>
+  <AppModuleRoleMaps>
+    <Role id="{627090ff-40a3-4053-8790-584edc5be201}" />
+    <Role id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+  </AppModuleRoleMaps>
+  <LocalizedNames>
+    <LocalizedName description="Grant Management" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Unify constituent and grant data throughout the grant seeking lifecycle" languagecode="1033" />
+  </Descriptions>
+  <appsettings>
+    <appsetting settingdefinitionid.uniquename="AppChannel">
+      <iscustomizable>1</iscustomizable>
+      <value>1</value>
+    </appsetting>
+  </appsettings>
+</AppModule>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{b244e616-3711-ef11-9f8a-000d3a9b1588}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" preview="1" icon="1" select="1" jump="msnfp_name">
+        <row id="msnfp_resultid" name="result">
+          <cell name="msnfp_name" width="300" />
+          <cell name="msnfp_resulttype" width="100" />
+          <cell name="msnfp_deliveryframeworkid" width="233" />
+          <cell name="msnfp_startdate" width="104" />
+          <cell name="msnfp_enddate" width="100" />
+          <cell name="msnfp_description" width="100" disableSorting="1" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch mapping="logical" version="1.0">
+        <entity name="msnfp_result">
+          <attribute name="msnfp_name" />
+          <order descending="false" attribute="msnfp_name" />
+          <filter type="and">
+            <condition value="0" attribute="statecode" operator="eq" />
+          </filter>
+          <attribute name="msnfp_startdate" />
+          <attribute name="msnfp_resulttype" />
+          <attribute name="msnfp_enddate" />
+          <attribute name="msnfp_description" />
+          <attribute name="msnfp_deliveryframeworkid" />
+          <attribute name="msnfp_resultid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Results for Outcomes" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

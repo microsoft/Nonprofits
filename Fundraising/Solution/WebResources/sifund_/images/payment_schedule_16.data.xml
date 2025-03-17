@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{d04b9451-13fc-ee11-a1fe-7c1e521a29ef}</WebResourceId>
+  <Name>sifund_/images/payment_schedule_16</Name>
+  <DisplayName>Payment Schedule 16x16</DisplayName>
+  <LanguageCode>1033</LanguageCode>
+  <WebResourceType>5</WebResourceType>
+  <IntroducedVersion>1.0.0.14</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/sifund_imagespayment_schedule_16D04B9451-13FC-EE11-A1FE-7C1E521A29EF</FileName>
+</WebResource>

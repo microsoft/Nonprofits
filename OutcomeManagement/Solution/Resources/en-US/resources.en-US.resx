@@ -1,0 +1,1960 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="Source LCID" xml:space="preserve">
+    <value>1033</value>
+  </metadata>
+  <metadata name="Source file" xml:space="preserve">
+    <value>SocialImpactOutcomes_managed.zip</value>
+  </metadata>
+  <metadata name="Source package type" xml:space="preserve">
+    <value>Both</value>
+  </metadata>
+  <metadata name="SolutionPackager Version" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uVmVyc2lvbgQAAAAGX01ham9yBl9NaW5vcgZfQnVpbGQJX1JldmlzaW9uAAAAAAgICAgJAAAAAAAAAAAAAAAAAAAACw==</value>
+  </metadata>
+  <metadata name="SolutionPackager Version String" xml:space="preserve">
+    <value>9.0.0.0</value>
+  </metadata>
+  <data name="15062:Description,microsofttechforsocialimpactsioutc86386" xml:space="preserve">
+    <value>Microsoft Tech for Social Impact</value>
+    <comment> 'microsofttechforsocialimpact' : Description for Solution Publisher</comment>
+  </data>
+  <data name="15062:LocalizedName,microsofttechforsocialimpactsioutc86386" xml:space="preserve">
+    <value>Microsoft Tech for Social Impact</value>
+    <comment> 'microsofttechforsocialimpact' : LocalizedName for Solution Publisher</comment>
+  </data>
+  <data name="15062:LocalizedName,SocialImpactOutcomes" xml:space="preserve">
+    <value>Outcome Management</value>
+    <comment> 'SocialImpactOutcomes' : LocalizedName for Solution</comment>
+  </data>
+  <data name="1:Description,Account{00000000-0000-0000-00aa-000010001200}" xml:space="preserve">
+    <value>Displays information about related accounts in the detail form of any associated account record. This view is in the Sub-Accounts side tab.</value>
+    <comment>'Account' : Description for SavedQuery on Entity QueryId: '{00000000-0000-0000-00aa-000010001200}'</comment>
+  </data>
+  <data name="1:Description,Account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Updated default Account form for outcomes.</value>
+    <comment>'Account' : Description for systemform in Entity FormXml ID: '{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:Description,Benefit Recipient{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>A form for this entity.</value>
+    <comment>'Benefit Recipient' : Description for systemform in Entity FormXml ID: '{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:Description,Contact{00000000-0000-0000-00aa-000010001210}" xml:space="preserve">
+    <value>Displays contact information in the detail form of any associated account, opportunity, quote, order, or invoice record. This view is in Contacts and Other Contacts side tabs.</value>
+    <comment>'Contact' : Description for SavedQuery on Entity QueryId: '{00000000-0000-0000-00aa-000010001210}'</comment>
+  </data>
+  <data name="1:Description,Contact{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Updated default Contact form for outcomes app.</value>
+    <comment>'Contact' : Description for systemform in Entity FormXml ID: '{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:Description,Delivery Framework{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>A form for this entity.</value>
+    <comment>'Delivery Framework' : Description for systemform in Entity FormXml ID: '{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}'</comment>
+  </data>
+  <data name="1:Description,Indicator Value{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>A form for this entity.</value>
+    <comment>'Indicator Value' : Description for systemform in Entity FormXml ID: '{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}'</comment>
+  </data>
+  <data name="1:Description,Indicator{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>A form for this entity.</value>
+    <comment>'Indicator' : Description for systemform in Entity FormXml ID: '{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}'</comment>
+  </data>
+  <data name="1:Description,msnfp_benefitrecipientmsnfp_beneficiary" xml:space="preserve">
+    <value>Account or contact linked as a beneficiary</value>
+    <comment>'msnfp_benefitrecipient' : Description for Attribute 'msnfp_beneficiary' on Entity</comment>
+  </data>
+  <data name="1:Description,Objective{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>A form for this entity.</value>
+    <comment>'Objective' : Description for systemform in Entity FormXml ID: '{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}'</comment>
+  </data>
+  <data name="1:Description,Result{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>A form for this entity.</value>
+    <comment>'Result' : Description for systemform in Entity FormXml ID: '{70dc50b3-effb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:displayname,msnfp_benefitrecipientmsnfp_beneficiary" xml:space="preserve">
+    <value>Benefit Recipient</value>
+    <comment>'msnfp_benefitrecipient' : displayname for Attribute 'msnfp_beneficiary' on Entity</comment>
+  </data>
+  <data name="1:label,Account0c6612f1-b936-4a08-b07d-160279190faf" xml:space="preserve">
+    <value>System</value>
+    <comment>'Account' : label for tab in Entity FormXml ID: '0c6612f1-b936-4a08-b07d-160279190faf'</comment>
+  </data>
+  <data name="1:label,Account791c6e8a-0fda-4dcb-8de2-91f4f29e7f27" xml:space="preserve">
+    <value>New Section</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '791c6e8a-0fda-4dcb-8de2-91f4f29e7f27'</comment>
+  </data>
+  <data name="1:label,Account{0324e97d-bb69-4edb-a765-33d3f8ddb761}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{0324e97d-bb69-4edb-a765-33d3f8ddb761}'</comment>
+  </data>
+  <data name="1:label,Account{0a536c64-788d-4f22-a388-fbddfdee8142}" xml:space="preserve">
+    <value>Do not allow Emails</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{0a536c64-788d-4f22-a388-fbddfdee8142}'</comment>
+  </data>
+  <data name="1:label,Account{0c69bf0a-a3d8-49e6-a832-8f6abd625e8e}" xml:space="preserve">
+    <value>Number of Employees</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{0c69bf0a-a3d8-49e6-a832-8f6abd625e8e}'</comment>
+  </data>
+  <data name="1:label,Account{0eb92e6c-bcb8-0d52-a188-d81543ddb7cd}" xml:space="preserve">
+    <value>Account Information</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{0eb92e6c-bcb8-0d52-a188-d81543ddb7cd}'</comment>
+  </data>
+  <data name="1:label,Account{0F664FFF-E39E-4676-9191-CBA16972B21D}" xml:space="preserve">
+    <value>Primary Contact</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{0F664FFF-E39E-4676-9191-CBA16972B21D}'</comment>
+  </data>
+  <data name="1:label,Account{11a42c72-9ded-ea04-253d-2143e731b795}" xml:space="preserve">
+    <value>Details</value>
+    <comment>'Account' : label for tab in Entity FormXml ID: '{11a42c72-9ded-ea04-253d-2143e731b795}'</comment>
+  </data>
+  <data name="1:label,Account{12927a20-3614-4546-89fc-9bdbd9b7432f}" xml:space="preserve">
+    <value>Do not allow Faxes</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{12927a20-3614-4546-89fc-9bdbd9b7432f}'</comment>
+  </data>
+  <data name="1:label,Account{1362e73d-f479-460d-9385-19c001a13618}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{1362e73d-f479-460d-9385-19c001a13618}'</comment>
+  </data>
+  <data name="1:label,Account{1b8df163-c681-4328-afd8-4eeac07dd074}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{1b8df163-c681-4328-afd8-4eeac07dd074}'</comment>
+  </data>
+  <data name="1:label,Account{1c33ad89-92a1-8433-2378-306259eb57c0}" xml:space="preserve">
+    <value>Ownership</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{1c33ad89-92a1-8433-2378-306259eb57c0}'</comment>
+  </data>
+  <data name="1:label,Account{253079f1-8b79-42bb-8139-d8ccbc5c5f67}" xml:space="preserve">
+    <value>Annual Revenue</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{253079f1-8b79-42bb-8139-d8ccbc5c5f67}'</comment>
+  </data>
+  <data name="1:label,Account{2787a122-55d5-4c8d-9b21-c8d4ec8cc3fc}" xml:space="preserve">
+    <value>Contact Preferences</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{2787a122-55d5-4c8d-9b21-c8d4ec8cc3fc}'</comment>
+  </data>
+  <data name="1:label,Account{2D126B5E-B0BB-436D-A8B3-B8A7C6E1F5A9}" xml:space="preserve">
+    <value>Assistant</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{2D126B5E-B0BB-436D-A8B3-B8A7C6E1F5A9}'</comment>
+  </data>
+  <data name="1:label,Account{3441a91e-47c5-672c-7a20-902d6baa9036}" xml:space="preserve">
+    <value>Phone</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{3441a91e-47c5-672c-7a20-902d6baa9036}'</comment>
+  </data>
+  <data name="1:label,Account{3b0b63a9-d379-689a-0ec3-e71eb4c6a841}" xml:space="preserve">
+    <value>Summary</value>
+    <comment>'Account' : label for tab in Entity FormXml ID: '{3b0b63a9-d379-689a-0ec3-e71eb4c6a841}'</comment>
+  </data>
+  <data name="1:label,Account{3edaf635-dbca-4cb3-8bce-f2a27e971c28}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{3edaf635-dbca-4cb3-8bce-f2a27e971c28}'</comment>
+  </data>
+  <data name="1:label,Account{4913500e-605a-809b-e99e-69e2710d09bd}" xml:space="preserve">
+    <value>Address 1</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{4913500e-605a-809b-e99e-69e2710d09bd}'</comment>
+  </data>
+  <data name="1:label,Account{4e7784cc-7936-47be-a787-4785eaab0e03}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{4e7784cc-7936-47be-a787-4785eaab0e03}'</comment>
+  </data>
+  <data name="1:label,Account{54b2d0a2-eb77-b3cd-b60a-03ea6944e98e}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{54b2d0a2-eb77-b3cd-b60a-03ea6944e98e}'</comment>
+  </data>
+  <data name="1:label,Account{59782911-4d1a-38dc-ce49-7dae620dbc51}" xml:space="preserve">
+    <value>Industry</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{59782911-4d1a-38dc-ce49-7dae620dbc51}'</comment>
+  </data>
+  <data name="1:label,Account{5e9c06f4-b324-44c6-9ba1-b07dcb63a089}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{5e9c06f4-b324-44c6-9ba1-b07dcb63a089}'</comment>
+  </data>
+  <data name="1:label,Account{6d5592f8-76e9-4b98-9d60-63f4074488a1}" xml:space="preserve">
+    <value>Do not allow Bulk Mails</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{6d5592f8-76e9-4b98-9d60-63f4074488a1}'</comment>
+  </data>
+  <data name="1:label,Account{76cf6d90-dc6b-4a4f-9fb0-883aa6a211cd}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{76cf6d90-dc6b-4a4f-9fb0-883aa6a211cd}'</comment>
+  </data>
+  <data name="1:label,Account{7a073b7c-5422-2418-3d26-b2a7eb290832}" xml:space="preserve">
+    <value>SOCIAL PANE</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{7a073b7c-5422-2418-3d26-b2a7eb290832}'</comment>
+  </data>
+  <data name="1:label,Account{7e87ab43-7321-21c7-5704-24c5c38000c6}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{7e87ab43-7321-21c7-5704-24c5c38000c6}'</comment>
+  </data>
+  <data name="1:label,Account{8226442a-d4d2-44fa-a3e5-80765974a402}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{8226442a-d4d2-44fa-a3e5-80765974a402}'</comment>
+  </data>
+  <data name="1:label,Account{87DE203E-B03C-44CC-8B06-438202B82553}" xml:space="preserve">
+    <value>Parent Account</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{87DE203E-B03C-44CC-8B06-438202B82553}'</comment>
+  </data>
+  <data name="1:label,Account{88cbd578-2cc4-43bc-a9cf-91b451225d0e}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{88cbd578-2cc4-43bc-a9cf-91b451225d0e}'</comment>
+  </data>
+  <data name="1:label,Account{930beba3-d531-0808-c403-de95e2ac3e62}" xml:space="preserve">
+    <value>SIC Code</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{930beba3-d531-0808-c403-de95e2ac3e62}'</comment>
+  </data>
+  <data name="1:label,Account{969a6847-2683-409a-ba4a-cdedd511d564}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{969a6847-2683-409a-ba4a-cdedd511d564}'</comment>
+  </data>
+  <data name="1:label,Account{99dc3e70-4fe0-42dc-93e3-ff7b459c5083}" xml:space="preserve">
+    <value>Primary Constituent Type</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{99dc3e70-4fe0-42dc-93e3-ff7b459c5083}'</comment>
+  </data>
+  <data name="1:label,Account{a4a726a2-8e3e-79d0-02c3-0a04a6b71089}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{a4a726a2-8e3e-79d0-02c3-0a04a6b71089}'</comment>
+  </data>
+  <data name="1:label,Account{a56cc0cd-350e-2901-599b-761d7736e569}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{a56cc0cd-350e-2901-599b-761d7736e569}'</comment>
+  </data>
+  <data name="1:label,Account{b0e82a7e-5683-d90c-308a-0d779377ea8a}" xml:space="preserve">
+    <value>Account Name</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{b0e82a7e-5683-d90c-308a-0d779377ea8a}'</comment>
+  </data>
+  <data name="1:label,Account{b187688c-8410-5990-16ec-e153968ab583}" xml:space="preserve">
+    <value>Primary Contact</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{b187688c-8410-5990-16ec-e153968ab583}'</comment>
+  </data>
+  <data name="1:label,Account{b338bc15-4ddd-4fa1-892b-d40f6173dabc}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{b338bc15-4ddd-4fa1-892b-d40f6173dabc}'</comment>
+  </data>
+  <data name="1:label,Account{be44f381-8a07-4df3-aae4-f3a7daf00ba4}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{be44f381-8a07-4df3-aae4-f3a7daf00ba4}'</comment>
+  </data>
+  <data name="1:label,Account{ca8587c5-18c0-cac1-7c34-6c639eade090}" xml:space="preserve">
+    <value>COMPANY PROFILE</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{ca8587c5-18c0-cac1-7c34-6c639eade090}'</comment>
+  </data>
+  <data name="1:label,Account{cc0fe06e-4b5f-4648-A62d-84d1514e1fc5}" xml:space="preserve">
+    <value>Address</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{cc0fe06e-4b5f-4648-A62d-84d1514e1fc5}'</comment>
+  </data>
+  <data name="1:label,Account{cfa09fa5-ccb6-4f97-bd8d-d7e037a7aab1}" xml:space="preserve">
+    <value>Do not allow Bulk Emails</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{cfa09fa5-ccb6-4f97-bd8d-d7e037a7aab1}'</comment>
+  </data>
+  <data name="1:label,Account{d4c3ee9c-ba71-5cdb-31be-2aa505750472}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{d4c3ee9c-ba71-5cdb-31be-2aa505750472}'</comment>
+  </data>
+  <data name="1:label,Account{d6eb107c-3276-484d-a5f7-2d30724353d6}" xml:space="preserve">
+    <value />
+    <comment>'Account' : label for cell in Entity FormXml ID: '{d6eb107c-3276-484d-a5f7-2d30724353d6}'</comment>
+  </data>
+  <data name="1:label,Account{e201b9ce-c3d5-c922-dba5-528c25066940}" xml:space="preserve">
+    <value>Personal Notes</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{e201b9ce-c3d5-c922-dba5-528c25066940}'</comment>
+  </data>
+  <data name="1:label,Account{e6441984-4343-813a-aa7e-e2747ad35390}" xml:space="preserve">
+    <value>Website</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{e6441984-4343-813a-aa7e-e2747ad35390}'</comment>
+  </data>
+  <data name="1:label,Account{e651d783-6c9f-4e8d-981c-c9577e344e7b}" xml:space="preserve">
+    <value>Contact Method</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{e651d783-6c9f-4e8d-981c-c9577e344e7b}'</comment>
+  </data>
+  <data name="1:label,Account{ea3bb0a6-b9dc-1b0e-5e7d-74a380ee79a3}" xml:space="preserve">
+    <value>Assistant</value>
+    <comment>'Account' : label for section in Entity FormXml ID: '{ea3bb0a6-b9dc-1b0e-5e7d-74a380ee79a3}'</comment>
+  </data>
+  <data name="1:label,Account{ed50e866-7968-483d-8388-0e6313d3c784}" xml:space="preserve">
+    <value>Do not allow Mails</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{ed50e866-7968-483d-8388-0e6313d3c784}'</comment>
+  </data>
+  <data name="1:label,Account{f587cb66-b142-47c9-bc7a-009875261840}" xml:space="preserve">
+    <value>Do not allow Phone Calls</value>
+    <comment>'Account' : label for cell in Entity FormXml ID: '{f587cb66-b142-47c9-bc7a-009875261840}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipienta09e9540-d164-40a7-9720-0cd5aff10dc9" xml:space="preserve">
+    <value>Additional Information</value>
+    <comment>'Benefit Recipient' : label for section in Entity FormXml ID: 'a09e9540-d164-40a7-9720-0cd5aff10dc9'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{20e052fd-e7cd-47cf-a779-56ae0f8d39cf}" xml:space="preserve">
+    <value />
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{20e052fd-e7cd-47cf-a779-56ae0f8d39cf}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{2bb16856-425b-640e-6073-ba0d81abaebc}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{2bb16856-425b-640e-6073-ba0d81abaebc}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{40eb1107-6fb8-49a8-9ce5-4dbcbbe5393d}" xml:space="preserve">
+    <value />
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{40eb1107-6fb8-49a8-9ce5-4dbcbbe5393d}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{541069c1-905b-4a9a-a77f-2e51788560a6}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{541069c1-905b-4a9a-a77f-2e51788560a6}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{597652ce-d7e4-4705-a337-362cb3e3b10a}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Benefit Recipient' : label for tab in Entity FormXml ID: '{597652ce-d7e4-4705-a337-362cb3e3b10a}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{648eeddd-2437-6eb9-6cb6-50c1b6d6dbec}" xml:space="preserve">
+    <value>Status</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{648eeddd-2437-6eb9-6cb6-50c1b6d6dbec}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{657be412-b8d0-7b9c-d043-e9190d6d34a3}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{657be412-b8d0-7b9c-d043-e9190d6d34a3}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{67329667-173c-ec68-4c8c-ae9ad711cba5}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{67329667-173c-ec68-4c8c-ae9ad711cba5}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{6a40e571-b0b7-4f71-bc4b-64d83de43036}" xml:space="preserve">
+    <value />
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{6a40e571-b0b7-4f71-bc4b-64d83de43036}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{76fa56a9-1fa3-4bad-88c4-f356646e73ad}" xml:space="preserve">
+    <value>Status Reason</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{76fa56a9-1fa3-4bad-88c4-f356646e73ad}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{91dec4ed-e596-eeb6-1423-8636b504d1e9}" xml:space="preserve">
+    <value>System</value>
+    <comment>'Benefit Recipient' : label for tab in Entity FormXml ID: '{91dec4ed-e596-eeb6-1423-8636b504d1e9}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{9724c999-b397-51b4-b7a6-b60a39706a22}" xml:space="preserve">
+    <value>Benefit Recipient</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{9724c999-b397-51b4-b7a6-b60a39706a22}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{ac9f8e71-3502-4d3c-abdf-529dd8260356}" xml:space="preserve">
+    <value />
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{ac9f8e71-3502-4d3c-abdf-529dd8260356}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{be4937c8-a0b8-ea17-623c-7c41021edaca}" xml:space="preserve">
+    <value>Benefit Recipient Type</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{be4937c8-a0b8-ea17-623c-7c41021edaca}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{c4128651-9b81-3828-c220-b9337a87ca52}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Benefit Recipient' : label for section in Entity FormXml ID: '{c4128651-9b81-3828-c220-b9337a87ca52}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{d4384444-b41b-4345-bd57-63a3577ffd68}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Benefit Recipient' : label for section in Entity FormXml ID: '{d4384444-b41b-4345-bd57-63a3577ffd68}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{d611ec38-1967-1004-133b-7301a3969e6e}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{d611ec38-1967-1004-133b-7301a3969e6e}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{d966e69c-c5eb-931c-2a01-4b3dc64b2aa3}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{d966e69c-c5eb-931c-2a01-4b3dc64b2aa3}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{f52b8e41-3a69-4c31-b42c-3ed2b0050ae8}" xml:space="preserve">
+    <value>Name</value>
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{f52b8e41-3a69-4c31-b42c-3ed2b0050ae8}'</comment>
+  </data>
+  <data name="1:label,Benefit Recipient{f70894dc-5619-49c6-af15-99b025a36f71}" xml:space="preserve">
+    <value />
+    <comment>'Benefit Recipient' : label for cell in Entity FormXml ID: '{f70894dc-5619-49c6-af15-99b025a36f71}'</comment>
+  </data>
+  <data name="1:label,Contacta4042299-8547-42d4-8529-7ea1bd897049" xml:space="preserve">
+    <value>Constituent Information</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: 'a4042299-8547-42d4-8529-7ea1bd897049'</comment>
+  </data>
+  <data name="1:label,Contactbe753f31-f716-47ac-98de-5af2f93b1943" xml:space="preserve">
+    <value>New Section</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: 'be753f31-f716-47ac-98de-5af2f93b1943'</comment>
+  </data>
+  <data name="1:label,Contactcf08713a-87fe-4d5c-a3f2-e2027e879dee" xml:space="preserve">
+    <value>Address</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: 'cf08713a-87fe-4d5c-a3f2-e2027e879dee'</comment>
+  </data>
+  <data name="1:label,Contactdc92cc00-8560-45e4-a05f-74b211ec61c0" xml:space="preserve">
+    <value>Account Information</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: 'dc92cc00-8560-45e4-a05f-74b211ec61c0'</comment>
+  </data>
+  <data name="1:label,Contacte2af564f-9289-426f-a720-dc6a02d8b496" xml:space="preserve">
+    <value>System</value>
+    <comment>'Contact' : label for tab in Entity FormXml ID: 'e2af564f-9289-426f-a720-dc6a02d8b496'</comment>
+  </data>
+  <data name="1:label,Contact{00CE0F9B-6162-4760-BE86-9353C6F9C06D}" xml:space="preserve">
+    <value>Assistant</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{00CE0F9B-6162-4760-BE86-9353C6F9C06D}'</comment>
+  </data>
+  <data name="1:label,Contact{041968bd-14fe-486a-baa0-719e7691e6ee}" xml:space="preserve">
+    <value>Bulk Email</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{041968bd-14fe-486a-baa0-719e7691e6ee}'</comment>
+  </data>
+  <data name="1:label,Contact{07326cde-7529-ddc0-e421-c0bcddd07b8a}" xml:space="preserve">
+    <value>Job Title</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{07326cde-7529-ddc0-e421-c0bcddd07b8a}'</comment>
+  </data>
+  <data name="1:label,Contact{0F64B9A3-01F2-4411-B0B5-6C6C39D7B011}" xml:space="preserve">
+    <value>Personal</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{0F64B9A3-01F2-4411-B0B5-6C6C39D7B011}'</comment>
+  </data>
+  <data name="1:label,Contact{133d09d6-c374-954a-315b-435e1eeb722c}" xml:space="preserve">
+    <value>Address</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{133d09d6-c374-954a-315b-435e1eeb722c}'</comment>
+  </data>
+  <data name="1:label,Contact{15bb2d4b-71da-74ea-3c5b-e497d78a55a2}" xml:space="preserve">
+    <value>Summary</value>
+    <comment>'Contact' : label for tab in Entity FormXml ID: '{15bb2d4b-71da-74ea-3c5b-e497d78a55a2}'</comment>
+  </data>
+  <data name="1:label,Contact{1f1e74f9-c3e9-465f-be94-18c0b5862fc3}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{1f1e74f9-c3e9-465f-be94-18c0b5862fc3}'</comment>
+  </data>
+  <data name="1:label,Contact{215da2d0-2b64-3481-8d2d-16107d4d7e5b}" xml:space="preserve">
+    <value>Business Phone</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{215da2d0-2b64-3481-8d2d-16107d4d7e5b}'</comment>
+  </data>
+  <data name="1:label,Contact{24be01cc-16a6-8eea-8916-42d20a1097ae}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{24be01cc-16a6-8eea-8916-42d20a1097ae}'</comment>
+  </data>
+  <data name="1:label,Contact{28d804f2-b314-42f6-92f8-982f4929bd6f}" xml:space="preserve">
+    <value>Fax</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{28d804f2-b314-42f6-92f8-982f4929bd6f}'</comment>
+  </data>
+  <data name="1:label,Contact{290b48ba-c0cc-7746-6dda-93e240e4cc78}" xml:space="preserve">
+    <value>Mobile Phone</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{290b48ba-c0cc-7746-6dda-93e240e4cc78}'</comment>
+  </data>
+  <data name="1:label,Contact{2d8cee50-7123-01e7-c2cc-0068c0ecc4c0}" xml:space="preserve">
+    <value>Marital Status</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{2d8cee50-7123-01e7-c2cc-0068c0ecc4c0}'</comment>
+  </data>
+  <data name="1:label,Contact{36c0a272-313e-455b-835d-8134bc6ebfc6}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{36c0a272-313e-455b-835d-8134bc6ebfc6}'</comment>
+  </data>
+  <data name="1:label,Contact{3b90415e-9df9-4c30-80e3-bc9a09fae894}" xml:space="preserve">
+    <value>Last Name</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{3b90415e-9df9-4c30-80e3-bc9a09fae894}'</comment>
+  </data>
+  <data name="1:label,Contact{3d77ec04-24dd-48e5-b571-8519dec38afc}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{3d77ec04-24dd-48e5-b571-8519dec38afc}'</comment>
+  </data>
+  <data name="1:label,Contact{408dda0b-48a7-c05c-e29a-56a93eb97172}" xml:space="preserve">
+    <value>Preferred Method of Contact</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{408dda0b-48a7-c05c-e29a-56a93eb97172}'</comment>
+  </data>
+  <data name="1:label,Contact{42aa148d-17fa-4c73-8213-bd22400b74ea}" xml:space="preserve">
+    <value>Contact Preferences</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{42aa148d-17fa-4c73-8213-bd22400b74ea}'</comment>
+  </data>
+  <data name="1:label,Contact{42add513-9e21-4ca7-a071-e56191dfed9d}" xml:space="preserve">
+    <value>Primary Constituent Type</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{42add513-9e21-4ca7-a071-e56191dfed9d}'</comment>
+  </data>
+  <data name="1:label,Contact{450c5a59-c7de-1289-0934-9a04bc4e1c72}" xml:space="preserve">
+    <value>Spouse/Partner Name</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{450c5a59-c7de-1289-0934-9a04bc4e1c72}'</comment>
+  </data>
+  <data name="1:label,Contact{569cf3bd-3b14-46d8-a03a-22e6317d1d41}" xml:space="preserve">
+    <value>Phone</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{569cf3bd-3b14-46d8-a03a-22e6317d1d41}'</comment>
+  </data>
+  <data name="1:label,Contact{6065da8b-ab99-4251-b72e-17e76d788951}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{6065da8b-ab99-4251-b72e-17e76d788951}'</comment>
+  </data>
+  <data name="1:label,Contact{7d538a97-98eb-b438-72de-57a808b9a308}" xml:space="preserve">
+    <value>Email</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{7d538a97-98eb-b438-72de-57a808b9a308}'</comment>
+  </data>
+  <data name="1:label,Contact{9435d60e-c5ac-2462-a159-414573dc2e45}" xml:space="preserve">
+    <value>Personal Notes</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{9435d60e-c5ac-2462-a159-414573dc2e45}'</comment>
+  </data>
+  <data name="1:label,Contact{964e05ae-815b-4cf6-9907-734d80db372d}" xml:space="preserve">
+    <value>First Name</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{964e05ae-815b-4cf6-9907-734d80db372d}'</comment>
+  </data>
+  <data name="1:label,Contact{9d943649-0387-1882-caa1-36de40d5a86c}" xml:space="preserve">
+    <value>Contact Information</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{9d943649-0387-1882-caa1-36de40d5a86c}'</comment>
+  </data>
+  <data name="1:label,Contact{a54c19c9-4722-ce25-60c5-2bb9452680d2}" xml:space="preserve">
+    <value>Account Name</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{a54c19c9-4722-ce25-60c5-2bb9452680d2}'</comment>
+  </data>
+  <data name="1:label,Contact{b8ae0f87-9403-49b3-a531-b0fc3c10aa91}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{b8ae0f87-9403-49b3-a531-b0fc3c10aa91}'</comment>
+  </data>
+  <data name="1:label,Contact{ba714204-2499-db47-78e0-d8795307301d}" xml:space="preserve">
+    <value>Anniversary</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{ba714204-2499-db47-78e0-d8795307301d}'</comment>
+  </data>
+  <data name="1:label,Contact{bac50a31-27a0-c7e2-3ab3-5d6aa8895c6e}" xml:space="preserve">
+    <value>Birthday</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{bac50a31-27a0-c7e2-3ab3-5d6aa8895c6e}'</comment>
+  </data>
+  <data name="1:label,Contact{bea579b8-8901-77b0-1128-351760e68bd4}" xml:space="preserve">
+    <value>SOCIAL PANE</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{bea579b8-8901-77b0-1128-351760e68bd4}'</comment>
+  </data>
+  <data name="1:label,Contact{cb391eb8-02ec-0ee6-9d92-6996d4311809}" xml:space="preserve">
+    <value>Gender</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{cb391eb8-02ec-0ee6-9d92-6996d4311809}'</comment>
+  </data>
+  <data name="1:label,Contact{d0c6aad7-7064-924e-b0e0-718dc557ccee}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{d0c6aad7-7064-924e-b0e0-718dc557ccee}'</comment>
+  </data>
+  <data name="1:label,Contact{d4ec2d52-6658-cee9-4a2a-7a8029ad1862}" xml:space="preserve">
+    <value>Contact Method</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{d4ec2d52-6658-cee9-4a2a-7a8029ad1862}'</comment>
+  </data>
+  <data name="1:label,Contact{db701364-1d99-369c-c409-11d17878e513}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{db701364-1d99-369c-c409-11d17878e513}'</comment>
+  </data>
+  <data name="1:label,Contact{dfe9aafd-1acc-488d-b31e-feef6f63a34d}" xml:space="preserve">
+    <value>Mail</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{dfe9aafd-1acc-488d-b31e-feef6f63a34d}'</comment>
+  </data>
+  <data name="1:label,Contact{e0676a96-1c1e-4721-b104-47fd9fcd2425}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{e0676a96-1c1e-4721-b104-47fd9fcd2425}'</comment>
+  </data>
+  <data name="1:label,Contact{e2652459-2bd7-40f3-b0c2-a92c903ffca4}" xml:space="preserve">
+    <value>New QV control 1715601236317</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{e2652459-2bd7-40f3-b0c2-a92c903ffca4}'</comment>
+  </data>
+  <data name="1:label,Contact{e6863976-203b-46e2-90be-8d6ec740650a}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{e6863976-203b-46e2-90be-8d6ec740650a}'</comment>
+  </data>
+  <data name="1:label,Contact{ea3bb0a6-b9dc-1b0e-5e7d-74a380ee79a3}" xml:space="preserve">
+    <value>Assistant</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{ea3bb0a6-b9dc-1b0e-5e7d-74a380ee79a3}'</comment>
+  </data>
+  <data name="1:label,Contact{eb05b25e-6d15-44bc-9234-0965e08f6e73}" xml:space="preserve">
+    <value>Middle Name</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{eb05b25e-6d15-44bc-9234-0965e08f6e73}'</comment>
+  </data>
+  <data name="1:label,Contact{f0b4951b-b5ec-4103-b69d-7ac2ad176ee4}" xml:space="preserve">
+    <value>Email</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{f0b4951b-b5ec-4103-b69d-7ac2ad176ee4}'</comment>
+  </data>
+  <data name="1:label,Contact{f2cc9a3f-e44a-4f0d-9d92-a05ce40980b6}" xml:space="preserve">
+    <value>Deceased?</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{f2cc9a3f-e44a-4f0d-9d92-a05ce40980b6}'</comment>
+  </data>
+  <data name="1:label,Contact{fe1c5c3b-d556-4552-a444-4781214a6d63}" xml:space="preserve">
+    <value>Details</value>
+    <comment>'Contact' : label for tab in Entity FormXml ID: '{fe1c5c3b-d556-4552-a444-4781214a6d63}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework5a1c4277-fd31-41fe-b804-744874b697a5" xml:space="preserve">
+    <value>RESULTS</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '5a1c4277-fd31-41fe-b804-744874b697a5'</comment>
+  </data>
+  <data name="1:label,Delivery Framework5cdc4825-faed-4cdf-97c4-7a8fcb17b148" xml:space="preserve">
+    <value>Item Requests</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '5cdc4825-faed-4cdf-97c4-7a8fcb17b148'</comment>
+  </data>
+  <data name="1:label,Delivery Framework5fad1988-932a-4d10-9421-0d7510f8a859" xml:space="preserve">
+    <value>Date</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '5fad1988-932a-4d10-9421-0d7510f8a859'</comment>
+  </data>
+  <data name="1:label,Delivery Frameworkda7cfdc9-e728-45bc-8b87-febd2e0c558f" xml:space="preserve">
+    <value>Item Requests</value>
+    <comment>'Delivery Framework' : label for tab in Entity FormXml ID: 'da7cfdc9-e728-45bc-8b87-febd2e0c558f'</comment>
+  </data>
+  <data name="1:label,Delivery Frameworkfb0e5577-31c0-4139-9ef2-ca719d45f16b" xml:space="preserve">
+    <value>Results</value>
+    <comment>'Delivery Framework' : label for tab in Entity FormXml ID: 'fb0e5577-31c0-4139-9ef2-ca719d45f16b'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{0a349e9b-deed-7518-9bdd-2c56989c2a6b}" xml:space="preserve">
+    <value>System</value>
+    <comment>'Delivery Framework' : label for tab in Entity FormXml ID: '{0a349e9b-deed-7518-9bdd-2c56989c2a6b}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{0aa941c7-0a0a-585c-a45e-201b2968bde9}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '{0aa941c7-0a0a-585c-a45e-201b2968bde9}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{0fac190a-b1f4-4a9c-9a14-2c2531b936fa}" xml:space="preserve">
+    <value />
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{0fac190a-b1f4-4a9c-9a14-2c2531b936fa}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{123001c6-7987-64bd-4bab-0ca742b61b45}" xml:space="preserve">
+    <value>Planned End Date</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{123001c6-7987-64bd-4bab-0ca742b61b45}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{1e08515c-32e5-2943-ded1-47de838542ce}" xml:space="preserve">
+    <value>Status</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{1e08515c-32e5-2943-ded1-47de838542ce}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{262be446-7acc-e46d-4ed3-c0eb314edb54}" xml:space="preserve">
+    <value>Note Text</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{262be446-7acc-e46d-4ed3-c0eb314edb54}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{2abc43e5-1e63-c53c-ccc8-a2d76d56b0ce}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '{2abc43e5-1e63-c53c-ccc8-a2d76d56b0ce}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{2ec37ed7-08a0-9175-6e06-a268ec43283e}" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{2ec37ed7-08a0-9175-6e06-a268ec43283e}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{339e3545-0bd6-68e2-53d3-cc5cdbccdeb9}" xml:space="preserve">
+    <value>Logframe Status</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{339e3545-0bd6-68e2-53d3-cc5cdbccdeb9}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{3b928c96-ba47-556b-ad7a-3039557179b3}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{3b928c96-ba47-556b-ad7a-3039557179b3}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{3d63e2ed-5c10-819b-6c14-9d4c063a6710}" xml:space="preserve">
+    <value>Goal</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{3d63e2ed-5c10-819b-6c14-9d4c063a6710}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{3dc80395-0513-3ee4-8502-93eb63c87190}" xml:space="preserve">
+    <value>Planned Start Date</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{3dc80395-0513-3ee4-8502-93eb63c87190}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{41ed354c-8a52-61d7-6199-7727e098a4aa}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{41ed354c-8a52-61d7-6199-7727e098a4aa}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{470e2737-3879-4f26-9cab-ab34635cccbf}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Delivery Framework' : label for tab in Entity FormXml ID: '{470e2737-3879-4f26-9cab-ab34635cccbf}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{51eb34b2-040e-13cb-b3bc-cc83da5c09e7}" xml:space="preserve">
+    <value>End Date</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{51eb34b2-040e-13cb-b3bc-cc83da5c09e7}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{6183e6aa-4d55-d254-1eed-24188cd45047}" xml:space="preserve">
+    <value>Engagement Opportunities</value>
+    <comment>'Delivery Framework' : label for tab in Entity FormXml ID: '{6183e6aa-4d55-d254-1eed-24188cd45047}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{691234ef-e096-498c-ba9f-9c1b5247e149}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{691234ef-e096-498c-ba9f-9c1b5247e149}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{69ae0b0c-17a6-c579-a4d5-a700a54a34a0}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '{69ae0b0c-17a6-c579-a4d5-a700a54a34a0}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{6ae0c0b4-594a-9632-a973-ea081c73c893}" xml:space="preserve">
+    <value>Objective</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{6ae0c0b4-594a-9632-a973-ea081c73c893}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{6d301958-4c5a-9b63-765d-c64545708192}" xml:space="preserve">
+    <value>Engagement Opportunities (Delivery Framework)</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{6d301958-4c5a-9b63-765d-c64545708192}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{78935c1c-635c-4b36-979f-da62d0372aa0}" xml:space="preserve">
+    <value />
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{78935c1c-635c-4b36-979f-da62d0372aa0}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{90c956dd-b7a1-42e8-99a6-780990587293}" xml:space="preserve">
+    <value />
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{90c956dd-b7a1-42e8-99a6-780990587293}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{968275c3-2f53-4ab6-99f2-26488ffd072f}" xml:space="preserve">
+    <value>Name</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{968275c3-2f53-4ab6-99f2-26488ffd072f}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{a4871d64-8e51-eb93-8e91-27aaa848018a}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{a4871d64-8e51-eb93-8e91-27aaa848018a}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{a99d62dd-650e-bb70-c2b6-74e9a426d79e}" xml:space="preserve">
+    <value>Delivery Framework Type</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{a99d62dd-650e-bb70-c2b6-74e9a426d79e}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{ac60a902-3c40-2310-5a74-721c8d883897}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{ac60a902-3c40-2310-5a74-721c8d883897}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{b06df371-7170-49d3-bf7d-83f7192de925}" xml:space="preserve">
+    <value>Results</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{b06df371-7170-49d3-bf7d-83f7192de925}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{b33c430b-64a8-a822-434b-d39ad20b7179}" xml:space="preserve">
+    <value>Scope</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{b33c430b-64a8-a822-434b-d39ad20b7179}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{b57e9021-e2a2-417c-80be-bf4cd3a5e7ce}" xml:space="preserve">
+    <value>New SG control 1601561566675</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{b57e9021-e2a2-417c-80be-bf4cd3a5e7ce}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{bfd19cd9-5370-4784-80b6-5d14192a1121}" xml:space="preserve">
+    <value />
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{bfd19cd9-5370-4784-80b6-5d14192a1121}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{c67c1621-1439-b694-22a2-53b046ba5b8a}" xml:space="preserve">
+    <value>Goals &amp; Objectives</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '{c67c1621-1439-b694-22a2-53b046ba5b8a}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{cb9447b0-305b-7d11-9467-d7e51abd79d8}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Delivery Framework' : label for section in Entity FormXml ID: '{cb9447b0-305b-7d11-9467-d7e51abd79d8}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{ce0aad81-96b7-4aa1-859e-58114a213f77}" xml:space="preserve">
+    <value />
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{ce0aad81-96b7-4aa1-859e-58114a213f77}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{d2495368-a2ea-0434-78ec-7d58521eb0ce}" xml:space="preserve">
+    <value>Parent Delivery Framework</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{d2495368-a2ea-0434-78ec-7d58521eb0ce}'</comment>
+  </data>
+  <data name="1:label,Delivery Framework{e7682129-da61-3c2d-9a3e-9b808738cd09}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Delivery Framework' : label for cell in Entity FormXml ID: '{e7682129-da61-3c2d-9a3e-9b808738cd09}'</comment>
+  </data>
+  <data name="1:label,Indicator Value5fe4fdf7-710f-4a55-97c7-b47d4edc86f7" xml:space="preserve">
+    <value>Benefit Recipients</value>
+    <comment>'Indicator Value' : label for tab in Entity FormXml ID: '5fe4fdf7-710f-4a55-97c7-b47d4edc86f7'</comment>
+  </data>
+  <data name="1:label,Indicator Value72fc055c-eb53-4d4b-9585-ad4dd1494f99" xml:space="preserve">
+    <value>Benefit Recipients</value>
+    <comment>'Indicator Value' : label for section in Entity FormXml ID: '72fc055c-eb53-4d4b-9585-ad4dd1494f99'</comment>
+  </data>
+  <data name="1:label,Indicator Value{06b3aafb-a6bd-4f7e-9c61-9430d75179be}" xml:space="preserve">
+    <value>Name</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{06b3aafb-a6bd-4f7e-9c61-9430d75179be}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{083700a0-87d1-6014-0913-403e284c3ee2}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{083700a0-87d1-6014-0913-403e284c3ee2}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{09135763-cdc5-6043-3c4b-78c2e374b8d5}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{09135763-cdc5-6043-3c4b-78c2e374b8d5}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{095aac0e-8843-e440-38c6-24b19e79b60c}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Indicator Value' : label for section in Entity FormXml ID: '{095aac0e-8843-e440-38c6-24b19e79b60c}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{0ad6d295-814e-ca9a-1439-7e1314396b9d}" xml:space="preserve">
+    <value>Indicator</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{0ad6d295-814e-ca9a-1439-7e1314396b9d}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{147180c7-ae59-cd8b-3d75-ee56c42e2c5a}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{147180c7-ae59-cd8b-3d75-ee56c42e2c5a}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{2e9f7e28-b280-4e8d-a09a-b23153101dbd}" xml:space="preserve">
+    <value />
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{2e9f7e28-b280-4e8d-a09a-b23153101dbd}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{2ff31147-e2e7-452b-9212-6b2d5b90f04c}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{2ff31147-e2e7-452b-9212-6b2d5b90f04c}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{42a3749e-92a4-e9ab-24a3-87bc7ea5972b}" xml:space="preserve">
+    <value>Additional Information</value>
+    <comment>'Indicator Value' : label for section in Entity FormXml ID: '{42a3749e-92a4-e9ab-24a3-87bc7ea5972b}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{433e2a3c-58a3-4d87-8a26-e0f067aec458}" xml:space="preserve">
+    <value />
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{433e2a3c-58a3-4d87-8a26-e0f067aec458}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{4d4d6863-7a28-66db-e2b5-d83dd32bca78}" xml:space="preserve">
+    <value>Value Type</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{4d4d6863-7a28-66db-e2b5-d83dd32bca78}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{604b44b3-b487-cd18-55e6-c32cb1d23742}" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{604b44b3-b487-cd18-55e6-c32cb1d23742}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{635cb190-dedb-3425-674c-c20ac057580a}" xml:space="preserve">
+    <value>System</value>
+    <comment>'Indicator Value' : label for tab in Entity FormXml ID: '{635cb190-dedb-3425-674c-c20ac057580a}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{734eac9e-713b-43ce-b6c6-47897420ff32}" xml:space="preserve">
+    <value>Benefit Recipients</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{734eac9e-713b-43ce-b6c6-47897420ff32}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{7e95e324-c2a7-5a27-8212-777be5501717}" xml:space="preserve">
+    <value>Percentage</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{7e95e324-c2a7-5a27-8212-777be5501717}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{88498b15-4c7d-aab3-a9de-c62be7e63072}" xml:space="preserve">
+    <value>Parent IndicatorValue</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{88498b15-4c7d-aab3-a9de-c62be7e63072}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{8a36356a-bc75-a92d-2604-c010054115a5}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{8a36356a-bc75-a92d-2604-c010054115a5}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{a50b6785-2991-40b1-9314-c0cc9e3a8078}" xml:space="preserve">
+    <value />
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{a50b6785-2991-40b1-9314-c0cc9e3a8078}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{a58a1a0c-a63d-4bc2-8969-89f140826593}" xml:space="preserve">
+    <value />
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{a58a1a0c-a63d-4bc2-8969-89f140826593}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{a8058b62-1a0b-6588-b853-6190bc444125}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{a8058b62-1a0b-6588-b853-6190bc444125}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{acc1a414-9800-4b93-aa51-e081eca49410}" xml:space="preserve">
+    <value />
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{acc1a414-9800-4b93-aa51-e081eca49410}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{ad10ba6b-64e1-04a1-92e2-147875641066}" xml:space="preserve">
+    <value>Number</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{ad10ba6b-64e1-04a1-92e2-147875641066}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{b2a020de-8eb9-132c-66e3-86ea4698467a}" xml:space="preserve">
+    <value>End Date</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{b2a020de-8eb9-132c-66e3-86ea4698467a}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{c048511b-2a9a-6d83-a542-b9931c89171a}" xml:space="preserve">
+    <value>Amount</value>
+    <comment>'Indicator Value' : label for cell in Entity FormXml ID: '{c048511b-2a9a-6d83-a542-b9931c89171a}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{d38e401a-1fd3-4d7f-ba65-f91e49c5d6f6}" xml:space="preserve">
+    <value>Value</value>
+    <comment>'Indicator Value' : label for section in Entity FormXml ID: '{d38e401a-1fd3-4d7f-ba65-f91e49c5d6f6}'</comment>
+  </data>
+  <data name="1:label,Indicator Value{f3a5cd95-03c3-42bd-ac43-7feb6442e748}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Indicator Value' : label for tab in Entity FormXml ID: '{f3a5cd95-03c3-42bd-ac43-7feb6442e748}'</comment>
+  </data>
+  <data name="1:label,Indicator7a3ce3d5-0f6e-49f4-b5f7-32ed96cea523" xml:space="preserve">
+    <value>INDICATOR VALUES</value>
+    <comment>'Indicator' : label for section in Entity FormXml ID: '7a3ce3d5-0f6e-49f4-b5f7-32ed96cea523'</comment>
+  </data>
+  <data name="1:label,Indicatorb4c997fc-cd50-43d9-84cf-969cb09c8331" xml:space="preserve">
+    <value>Indicator Values</value>
+    <comment>'Indicator' : label for tab in Entity FormXml ID: 'b4c997fc-cd50-43d9-84cf-969cb09c8331'</comment>
+  </data>
+  <data name="1:label,Indicator{013b382a-daa5-6b99-8458-226474116371}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{013b382a-daa5-6b99-8458-226474116371}'</comment>
+  </data>
+  <data name="1:label,Indicator{065475a8-c1b6-b974-52ec-d948e187d1c8}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{065475a8-c1b6-b974-52ec-d948e187d1c8}'</comment>
+  </data>
+  <data name="1:label,Indicator{08597575-5a0d-18c1-dc0b-d2de17532e40}" xml:space="preserve">
+    <value />
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{08597575-5a0d-18c1-dc0b-d2de17532e40}'</comment>
+  </data>
+  <data name="1:label,Indicator{09e26997-c375-757b-8c81-b14068066929}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{09e26997-c375-757b-8c81-b14068066929}'</comment>
+  </data>
+  <data name="1:label,Indicator{29ea62a1-70d5-4143-ab90-55e211904593}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{29ea62a1-70d5-4143-ab90-55e211904593}'</comment>
+  </data>
+  <data name="1:label,Indicator{2cd06c13-cc53-451c-90c7-d248d7728439}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Indicator' : label for section in Entity FormXml ID: '{2cd06c13-cc53-451c-90c7-d248d7728439}'</comment>
+  </data>
+  <data name="1:label,Indicator{32ca976c-8ee3-41fc-8e8b-905afc75d66e}" xml:space="preserve">
+    <value />
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{32ca976c-8ee3-41fc-8e8b-905afc75d66e}'</comment>
+  </data>
+  <data name="1:label,Indicator{39728886-6c57-4ce7-acb8-e2b8d4b06ea1}" xml:space="preserve">
+    <value />
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{39728886-6c57-4ce7-acb8-e2b8d4b06ea1}'</comment>
+  </data>
+  <data name="1:label,Indicator{3d45382a-90d3-e377-a27c-d9ce4db4c6a9}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{3d45382a-90d3-e377-a27c-d9ce4db4c6a9}'</comment>
+  </data>
+  <data name="1:label,Indicator{4716c67e-6fb7-498a-bb87-6fbd44a166ff}" xml:space="preserve">
+    <value />
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{4716c67e-6fb7-498a-bb87-6fbd44a166ff}'</comment>
+  </data>
+  <data name="1:label,Indicator{57132cdd-bcd0-c62a-07a8-ba06873a2bbc}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Indicator' : label for section in Entity FormXml ID: '{57132cdd-bcd0-c62a-07a8-ba06873a2bbc}'</comment>
+  </data>
+  <data name="1:label,Indicator{57176760-b355-b8a8-8b14-50d092d59590}" xml:space="preserve">
+    <value>End Date</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{57176760-b355-b8a8-8b14-50d092d59590}'</comment>
+  </data>
+  <data name="1:label,Indicator{628999c1-73e0-2508-0ab2-0e74822ac6be}" xml:space="preserve">
+    <value>Result</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{628999c1-73e0-2508-0ab2-0e74822ac6be}'</comment>
+  </data>
+  <data name="1:label,Indicator{7a62184e-c7a4-2324-4914-d07525c13ab7}" xml:space="preserve">
+    <value>Measure</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{7a62184e-c7a4-2324-4914-d07525c13ab7}'</comment>
+  </data>
+  <data name="1:label,Indicator{83bb94cc-0b33-4abc-afdf-8a8941562b38}" xml:space="preserve">
+    <value />
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{83bb94cc-0b33-4abc-afdf-8a8941562b38}'</comment>
+  </data>
+  <data name="1:label,Indicator{88999526-4197-d9b8-113e-53c4a69c5c92}" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{88999526-4197-d9b8-113e-53c4a69c5c92}'</comment>
+  </data>
+  <data name="1:label,Indicator{908943e7-de93-ba64-bc6d-707203ba36bd}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{908943e7-de93-ba64-bc6d-707203ba36bd}'</comment>
+  </data>
+  <data name="1:label,Indicator{9dd1088b-52bf-4f91-ac93-b0e71f5ff3f3}" xml:space="preserve">
+    <value>Name</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{9dd1088b-52bf-4f91-ac93-b0e71f5ff3f3}'</comment>
+  </data>
+  <data name="1:label,Indicator{cbe82a5c-1596-c190-0327-ed46b9a72c22}" xml:space="preserve">
+    <value>System</value>
+    <comment>'Indicator' : label for tab in Entity FormXml ID: '{cbe82a5c-1596-c190-0327-ed46b9a72c22}'</comment>
+  </data>
+  <data name="1:label,Indicator{f0377d71-9d16-411b-987b-b3986e7d76f0}" xml:space="preserve">
+    <value>Indicator Values</value>
+    <comment>'Indicator' : label for cell in Entity FormXml ID: '{f0377d71-9d16-411b-987b-b3986e7d76f0}'</comment>
+  </data>
+  <data name="1:label,Indicator{f4196f2b-791e-4321-a51e-d58907f5c7d7}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Indicator' : label for tab in Entity FormXml ID: '{f4196f2b-791e-4321-a51e-d58907f5c7d7}'</comment>
+  </data>
+  <data name="1:label,Objectiveaaa24065-b266-43c7-a277-d6d0c7aa1e8c" xml:space="preserve">
+    <value>DELIVERY FRAMEWORKS</value>
+    <comment>'Objective' : label for section in Entity FormXml ID: 'aaa24065-b266-43c7-a277-d6d0c7aa1e8c'</comment>
+  </data>
+  <data name="1:label,Objectivedbb7376c-abb2-4e43-b95f-640c71990842" xml:space="preserve">
+    <value>Delivery Frameworks</value>
+    <comment>'Objective' : label for tab in Entity FormXml ID: 'dbb7376c-abb2-4e43-b95f-640c71990842'</comment>
+  </data>
+  <data name="1:label,Objective{0f76d9f2-50a4-4543-932f-86a6c491c0f1}" xml:space="preserve">
+    <value>Name</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{0f76d9f2-50a4-4543-932f-86a6c491c0f1}'</comment>
+  </data>
+  <data name="1:label,Objective{1b4c37ca-06e8-46aa-d08e-9cb4c2b43516}" xml:space="preserve">
+    <value>Parent Objective</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{1b4c37ca-06e8-46aa-d08e-9cb4c2b43516}'</comment>
+  </data>
+  <data name="1:label,Objective{22fadf9d-181e-4ecb-8d24-e4139d9c6a64}" xml:space="preserve">
+    <value />
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{22fadf9d-181e-4ecb-8d24-e4139d9c6a64}'</comment>
+  </data>
+  <data name="1:label,Objective{414eabee-a55b-4996-bc92-ae65a2e6cbe1}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{414eabee-a55b-4996-bc92-ae65a2e6cbe1}'</comment>
+  </data>
+  <data name="1:label,Objective{56290814-dea2-1699-cd74-31410833d4b3}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{56290814-dea2-1699-cd74-31410833d4b3}'</comment>
+  </data>
+  <data name="1:label,Objective{61e261d0-3210-775a-715c-a129e6436c9b}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Objective' : label for section in Entity FormXml ID: '{61e261d0-3210-775a-715c-a129e6436c9b}'</comment>
+  </data>
+  <data name="1:label,Objective{639a7003-d437-c215-b458-c8635376d06d}" xml:space="preserve">
+    <value>End Date</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{639a7003-d437-c215-b458-c8635376d06d}'</comment>
+  </data>
+  <data name="1:label,Objective{6dd363a5-8aac-a3e9-0cba-1b410257de16}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{6dd363a5-8aac-a3e9-0cba-1b410257de16}'</comment>
+  </data>
+  <data name="1:label,Objective{9fbb1591-2446-4610-bebe-9e76b5ecbd1e}" xml:space="preserve">
+    <value>Delivery Frameworks</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{9fbb1591-2446-4610-bebe-9e76b5ecbd1e}'</comment>
+  </data>
+  <data name="1:label,Objective{9fdda04f-72fb-4dfd-b161-4f3ba607ccd7}" xml:space="preserve">
+    <value />
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{9fdda04f-72fb-4dfd-b161-4f3ba607ccd7}'</comment>
+  </data>
+  <data name="1:label,Objective{a0fc4b0a-3915-4903-af9f-8761dc943786}" xml:space="preserve">
+    <value />
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{a0fc4b0a-3915-4903-af9f-8761dc943786}'</comment>
+  </data>
+  <data name="1:label,Objective{a5886e45-426c-4c03-bcdd-1248be9647d7}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{a5886e45-426c-4c03-bcdd-1248be9647d7}'</comment>
+  </data>
+  <data name="1:label,Objective{b6ea2c35-cbd1-4c84-9ae1-9052e9ac8e14}" xml:space="preserve">
+    <value>Objective Information</value>
+    <comment>'Objective' : label for section in Entity FormXml ID: '{b6ea2c35-cbd1-4c84-9ae1-9052e9ac8e14}'</comment>
+  </data>
+  <data name="1:label,Objective{b96eda1e-b7d7-2aed-d2c1-217626910071}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{b96eda1e-b7d7-2aed-d2c1-217626910071}'</comment>
+  </data>
+  <data name="1:label,Objective{c68cb09e-ef69-4b29-9b9f-961d424b0add}" xml:space="preserve">
+    <value />
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{c68cb09e-ef69-4b29-9b9f-961d424b0add}'</comment>
+  </data>
+  <data name="1:label,Objective{d96a5c2b-2c72-4427-bf97-4b0ba493485f}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Objective' : label for tab in Entity FormXml ID: '{d96a5c2b-2c72-4427-bf97-4b0ba493485f}'</comment>
+  </data>
+  <data name="1:label,Objective{e27b026d-edc6-b630-3a83-41bca77c4d77}" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{e27b026d-edc6-b630-3a83-41bca77c4d77}'</comment>
+  </data>
+  <data name="1:label,Objective{e85a86c9-5139-a47a-2ddb-854b9b6c286c}" xml:space="preserve">
+    <value>System</value>
+    <comment>'Objective' : label for tab in Entity FormXml ID: '{e85a86c9-5139-a47a-2ddb-854b9b6c286c}'</comment>
+  </data>
+  <data name="1:label,Objective{eb7c6b83-63cd-7a9a-e054-a6c408051da2}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{eb7c6b83-63cd-7a9a-e054-a6c408051da2}'</comment>
+  </data>
+  <data name="1:label,Objective{eda7de17-e322-47bd-9cf2-e5b26ae0df51}" xml:space="preserve">
+    <value />
+    <comment>'Objective' : label for cell in Entity FormXml ID: '{eda7de17-e322-47bd-9cf2-e5b26ae0df51}'</comment>
+  </data>
+  <data name="1:label,Result259633e2-53c6-4021-a8a9-b0f17d379bb2" xml:space="preserve">
+    <value>Indicators</value>
+    <comment>'Result' : label for tab in Entity FormXml ID: '259633e2-53c6-4021-a8a9-b0f17d379bb2'</comment>
+  </data>
+  <data name="1:label,Resultb62fc0e5-0d52-4cab-bbc9-e2e3748cda49" xml:space="preserve">
+    <value>INDICATORS</value>
+    <comment>'Result' : label for section in Entity FormXml ID: 'b62fc0e5-0d52-4cab-bbc9-e2e3748cda49'</comment>
+  </data>
+  <data name="1:label,Result{09ddc775-eaa4-2296-c6b5-d95b1a958952}" xml:space="preserve">
+    <value>End Date</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{09ddc775-eaa4-2296-c6b5-d95b1a958952}'</comment>
+  </data>
+  <data name="1:label,Result{0b867cd1-186e-4401-ad48-c312f2947ae5}" xml:space="preserve">
+    <value>Name</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{0b867cd1-186e-4401-ad48-c312f2947ae5}'</comment>
+  </data>
+  <data name="1:label,Result{0d91a388-d3c1-2a1a-263b-a66d1e4803c6}" xml:space="preserve">
+    <value>Created On</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{0d91a388-d3c1-2a1a-263b-a66d1e4803c6}'</comment>
+  </data>
+  <data name="1:label,Result{0e41a912-0e4d-15ae-51b0-6b7a84b1e932}" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{0e41a912-0e4d-15ae-51b0-6b7a84b1e932}'</comment>
+  </data>
+  <data name="1:label,Result{130342de-075d-09ce-1081-8e8e87c2d6c5}" xml:space="preserve">
+    <value>Created By</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{130342de-075d-09ce-1081-8e8e87c2d6c5}'</comment>
+  </data>
+  <data name="1:label,Result{15a88f89-7171-4379-8d17-430874dce2c4}" xml:space="preserve">
+    <value>Indicators</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{15a88f89-7171-4379-8d17-430874dce2c4}'</comment>
+  </data>
+  <data name="1:label,Result{1ad73b78-da08-46c0-8c7d-e7fe845027e1}" xml:space="preserve">
+    <value>Owner</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{1ad73b78-da08-46c0-8c7d-e7fe845027e1}'</comment>
+  </data>
+  <data name="1:label,Result{223c16c0-8b19-4a3a-8035-db13cd572b2e}" xml:space="preserve">
+    <value />
+    <comment>'Result' : label for cell in Entity FormXml ID: '{223c16c0-8b19-4a3a-8035-db13cd572b2e}'</comment>
+  </data>
+  <data name="1:label,Result{28d6b597-5d98-9ea7-1c51-3e40e83819e3}" xml:space="preserve">
+    <value>Modified By</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{28d6b597-5d98-9ea7-1c51-3e40e83819e3}'</comment>
+  </data>
+  <data name="1:label,Result{3807c0fc-71e3-48d8-b557-34a463613214}" xml:space="preserve">
+    <value />
+    <comment>'Result' : label for cell in Entity FormXml ID: '{3807c0fc-71e3-48d8-b557-34a463613214}'</comment>
+  </data>
+  <data name="1:label,Result{4d772338-a737-456c-886b-76035aab1a04}" xml:space="preserve">
+    <value />
+    <comment>'Result' : label for cell in Entity FormXml ID: '{4d772338-a737-456c-886b-76035aab1a04}'</comment>
+  </data>
+  <data name="1:label,Result{706a4d47-c1cb-ce92-3733-7147152b5e41}" xml:space="preserve">
+    <value>Result Type</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{706a4d47-c1cb-ce92-3733-7147152b5e41}'</comment>
+  </data>
+  <data name="1:label,Result{7710b9e4-11af-4070-bf0c-e1f39204cb25}" xml:space="preserve">
+    <value>General</value>
+    <comment>'Result' : label for tab in Entity FormXml ID: '{7710b9e4-11af-4070-bf0c-e1f39204cb25}'</comment>
+  </data>
+  <data name="1:label,Result{7eda1c7e-62d3-48d1-5b07-e6802388a1ee}" xml:space="preserve">
+    <value>Modified On</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{7eda1c7e-62d3-48d1-5b07-e6802388a1ee}'</comment>
+  </data>
+  <data name="1:label,Result{804c6ba9-b602-49c8-a1f3-d5084e27a494}" xml:space="preserve">
+    <value>Result Information</value>
+    <comment>'Result' : label for section in Entity FormXml ID: '{804c6ba9-b602-49c8-a1f3-d5084e27a494}'</comment>
+  </data>
+  <data name="1:label,Result{a8bd34b8-3233-79b7-e8a5-ab44bb388d09}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{a8bd34b8-3233-79b7-e8a5-ab44bb388d09}'</comment>
+  </data>
+  <data name="1:label,Result{b277ae3e-94a5-9c1d-07cd-999924b5b5e9}" xml:space="preserve">
+    <value>Delivery Framework</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{b277ae3e-94a5-9c1d-07cd-999924b5b5e9}'</comment>
+  </data>
+  <data name="1:label,Result{b6e9e3de-9b74-b2b9-ba92-a2c8ace0e005}" xml:space="preserve">
+    <value>section</value>
+    <comment>'Result' : label for section in Entity FormXml ID: '{b6e9e3de-9b74-b2b9-ba92-a2c8ace0e005}'</comment>
+  </data>
+  <data name="1:label,Result{c5487e08-9927-4922-bd9b-dd05016eb6ee}" xml:space="preserve">
+    <value />
+    <comment>'Result' : label for cell in Entity FormXml ID: '{c5487e08-9927-4922-bd9b-dd05016eb6ee}'</comment>
+  </data>
+  <data name="1:label,Result{d0b31a65-7daa-1234-439c-6beabd5474dc}" xml:space="preserve">
+    <value>Parent Result</value>
+    <comment>'Result' : label for cell in Entity FormXml ID: '{d0b31a65-7daa-1234-439c-6beabd5474dc}'</comment>
+  </data>
+  <data name="1:label,Result{d2571840-9b2c-1149-1474-1aee3b02122a}" xml:space="preserve">
+    <value>System</value>
+    <comment>'Result' : label for tab in Entity FormXml ID: '{d2571840-9b2c-1149-1474-1aee3b02122a}'</comment>
+  </data>
+  <data name="1:LocalizedName,Account{00000000-0000-0000-00aa-000010001200}" xml:space="preserve">
+    <value>Account Associated View</value>
+    <comment>'Account' : LocalizedName for SavedQuery on Entity QueryId: '{00000000-0000-0000-00aa-000010001200}'</comment>
+  </data>
+  <data name="1:LocalizedName,Account{209172b5-3511-ef11-9f89-6045bda7565a}" xml:space="preserve">
+    <value>My Active Accounts for Outcomes</value>
+    <comment>'Account' : LocalizedName for SavedQuery on Entity QueryId: '{209172b5-3511-ef11-9f89-6045bda7565a}'</comment>
+  </data>
+  <data name="1:LocalizedName,Account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Account for Outcomes</value>
+    <comment>'Account' : LocalizedName for systemform in Entity FormXml ID: '{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:LocalizedName,Account{40c97b31-3011-ef11-9f89-002248287612}" xml:space="preserve">
+    <value>Active Accounts for Outcomes</value>
+    <comment>'Account' : LocalizedName for SavedQuery on Entity QueryId: '{40c97b31-3011-ef11-9f89-002248287612}'</comment>
+  </data>
+  <data name="1:LocalizedName,Account{63caa0a9-3511-ef11-9f8a-000d3a9884d4}" xml:space="preserve">
+    <value>Inactive Accounts for Outcomes</value>
+    <comment>'Account' : LocalizedName for SavedQuery on Entity QueryId: '{63caa0a9-3511-ef11-9f8a-000d3a9884d4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Benefit Recipient{5d71cfd3-3511-ef11-9f8a-000d3a9884d4}" xml:space="preserve">
+    <value>Inactive Benefit Recipients for Outcomes</value>
+    <comment>'Benefit Recipient' : LocalizedName for SavedQuery on Entity QueryId: '{5d71cfd3-3511-ef11-9f8a-000d3a9884d4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Benefit Recipient{9aad07ca-3511-ef11-9f8a-000d3a9b1588}" xml:space="preserve">
+    <value>Active Benefit Recipients for Outcomes</value>
+    <comment>'Benefit Recipient' : LocalizedName for SavedQuery on Entity QueryId: '{9aad07ca-3511-ef11-9f8a-000d3a9b1588}'</comment>
+  </data>
+  <data name="1:LocalizedName,Benefit Recipient{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Benefit Recipient for Outcomes</value>
+    <comment>'Benefit Recipient' : LocalizedName for systemform in Entity FormXml ID: '{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:LocalizedName,Benefit Recipient{d59e71f7-560c-44c1-8c37-67f5708a6de4}" xml:space="preserve">
+    <value>Benefit Recipient Associated View</value>
+    <comment>'Benefit Recipient' : LocalizedName for SavedQuery on Entity QueryId: '{d59e71f7-560c-44c1-8c37-67f5708a6de4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{00000000-0000-0000-00aa-000010001210}" xml:space="preserve">
+    <value>Contact Associated View</value>
+    <comment>'Contact' : LocalizedName for SavedQuery on Entity QueryId: '{00000000-0000-0000-00aa-000010001210}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{0bbed3f1-3511-ef11-9f89-6045bda7565a}" xml:space="preserve">
+    <value>Inactive Contacts for Outcomes</value>
+    <comment>'Contact' : LocalizedName for SavedQuery on Entity QueryId: '{0bbed3f1-3511-ef11-9f89-6045bda7565a}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{4781c6e5-3511-ef11-9f89-6045bda7565a}" xml:space="preserve">
+    <value>Active Contacts for Outcomes</value>
+    <comment>'Contact' : LocalizedName for SavedQuery on Entity QueryId: '{4781c6e5-3511-ef11-9f89-6045bda7565a}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Contact for Outcomes</value>
+    <comment>'Contact' : LocalizedName for systemform in Entity FormXml ID: '{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{af28c9fd-3511-ef11-9f89-6045bda7565a}" xml:space="preserve">
+    <value>My Active Contacts for Outcomes</value>
+    <comment>'Contact' : LocalizedName for SavedQuery on Entity QueryId: '{af28c9fd-3511-ef11-9f89-6045bda7565a}'</comment>
+  </data>
+  <data name="1:LocalizedName,Delivery Framework{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Delivery Framework for Outcomes</value>
+    <comment>'Delivery Framework' : LocalizedName for systemform in Entity FormXml ID: '{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}'</comment>
+  </data>
+  <data name="1:LocalizedName,Delivery Framework{1daa2a20-3611-ef11-9f89-002248287612}" xml:space="preserve">
+    <value>Active Delivery Frameworks for Outcomes</value>
+    <comment>'Delivery Framework' : LocalizedName for SavedQuery on Entity QueryId: '{1daa2a20-3611-ef11-9f89-002248287612}'</comment>
+  </data>
+  <data name="1:LocalizedName,Delivery Framework{5947a527-3611-ef11-9f89-002248287612}" xml:space="preserve">
+    <value>Inactive Delivery Frameworks for Outcomes</value>
+    <comment>'Delivery Framework' : LocalizedName for SavedQuery on Entity QueryId: '{5947a527-3611-ef11-9f89-002248287612}'</comment>
+  </data>
+  <data name="1:LocalizedName,Delivery Framework{99b9d179-52f7-4e0a-b566-8eff0909020f}" xml:space="preserve">
+    <value>Delivery Framework Associated View</value>
+    <comment>'Delivery Framework' : LocalizedName for SavedQuery on Entity QueryId: '{99b9d179-52f7-4e0a-b566-8eff0909020f}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator Value{36d641cc-3611-ef11-9f8a-000d3a9884d4}" xml:space="preserve">
+    <value>Active Indicator Values for Outcomes</value>
+    <comment>'Indicator Value' : LocalizedName for SavedQuery on Entity QueryId: '{36d641cc-3611-ef11-9f8a-000d3a9884d4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator Value{981bcb82-fec3-4a13-9adb-75b74635d9c8}" xml:space="preserve">
+    <value>Indicator Value Associated View</value>
+    <comment>'Indicator Value' : LocalizedName for SavedQuery on Entity QueryId: '{981bcb82-fec3-4a13-9adb-75b74635d9c8}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator Value{a27a7fd0-3611-ef11-9f89-002248287612}" xml:space="preserve">
+    <value>Inactive Indicator Values for Outcomes</value>
+    <comment>'Indicator Value' : LocalizedName for SavedQuery on Entity QueryId: '{a27a7fd0-3611-ef11-9f89-002248287612}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator Value{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Indicator Value for Outcomes</value>
+    <comment>'Indicator Value' : LocalizedName for systemform in Entity FormXml ID: '{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator{2893029e-3611-ef11-9f89-7c1e5219fbc7}" xml:space="preserve">
+    <value>Inactive Indicators for Outcomes</value>
+    <comment>'Indicator' : LocalizedName for SavedQuery on Entity QueryId: '{2893029e-3611-ef11-9f89-7c1e5219fbc7}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator{2fe76aee-bc35-43b6-b381-cea83fd12e21}" xml:space="preserve">
+    <value>Indicator Associated View</value>
+    <comment>'Indicator' : LocalizedName for SavedQuery on Entity QueryId: '{2fe76aee-bc35-43b6-b381-cea83fd12e21}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator{bbee3a91-3611-ef11-9f8a-000d3a9b1588}" xml:space="preserve">
+    <value>Active Indicators for Outcomes</value>
+    <comment>'Indicator' : LocalizedName for SavedQuery on Entity QueryId: '{bbee3a91-3611-ef11-9f8a-000d3a9b1588}'</comment>
+  </data>
+  <data name="1:LocalizedName,Indicator{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Indicator For Outcomes</value>
+    <comment>'Indicator' : LocalizedName for systemform in Entity FormXml ID: '{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Objective{31e13fe4-3611-ef11-9f8a-000d3a9884d4}" xml:space="preserve">
+    <value>Active Objectives for Outcomes</value>
+    <comment>'Objective' : LocalizedName for SavedQuery on Entity QueryId: '{31e13fe4-3611-ef11-9f8a-000d3a9884d4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Objective{537c51f6-3611-ef11-9f8a-000d3a9884d4}" xml:space="preserve">
+    <value>Inactive Objectives for Outcomes</value>
+    <comment>'Objective' : LocalizedName for SavedQuery on Entity QueryId: '{537c51f6-3611-ef11-9f8a-000d3a9884d4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Objective{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Objective for Outcomes</value>
+    <comment>'Objective' : LocalizedName for systemform in Entity FormXml ID: '{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}'</comment>
+  </data>
+  <data name="1:LocalizedName,Objective{fb5a430e-59ee-4f0c-a985-b88d862dd42c}" xml:space="preserve">
+    <value>Objective Associated View</value>
+    <comment>'Objective' : LocalizedName for SavedQuery on Entity QueryId: '{fb5a430e-59ee-4f0c-a985-b88d862dd42c}'</comment>
+  </data>
+  <data name="1:LocalizedName,Result{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Result for Outcomes</value>
+    <comment>'Result' : LocalizedName for systemform in Entity FormXml ID: '{70dc50b3-effb-ee11-a1fe-0022481f9a6b}'</comment>
+  </data>
+  <data name="1:LocalizedName,Result{9fe4b436-6f25-4976-9bbc-d28b766609ce}" xml:space="preserve">
+    <value>Result Associated View</value>
+    <comment>'Result' : LocalizedName for SavedQuery on Entity QueryId: '{9fe4b436-6f25-4976-9bbc-d28b766609ce}'</comment>
+  </data>
+  <data name="1:LocalizedName,Result{aa9c0623-3711-ef11-9f8a-000d3a9b1588}" xml:space="preserve">
+    <value>Inactive Results for Outcomes</value>
+    <comment>'Result' : LocalizedName for SavedQuery on Entity QueryId: '{aa9c0623-3711-ef11-9f8a-000d3a9b1588}'</comment>
+  </data>
+  <data name="1:LocalizedName,Result{b244e616-3711-ef11-9f8a-000d3a9b1588}" xml:space="preserve">
+    <value>Active Results for Outcomes</value>
+    <comment>'Result' : LocalizedName for SavedQuery on Entity QueryId: '{b244e616-3711-ef11-9f8a-000d3a9b1588}'</comment>
+  </data>
+  <data name="1:Title,AccountnavActivities{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Activities</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navActivities'</comment>
+  </data>
+  <data name="1:Title,AccountnavAddresses{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Addresses</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAddresses'</comment>
+  </data>
+  <data name="1:Title,AccountnavAsyncOperations{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Workflows</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,AccountnavAudit{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Audit History</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAudit'</comment>
+  </data>
+  <data name="1:Title,AccountnavCampaignsInSFA{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Campaigns</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navCampaignsInSFA'</comment>
+  </data>
+  <data name="1:Title,AccountnavConnections{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Connections</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navConnections'</comment>
+  </data>
+  <data name="1:Title,AccountnavContacts{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Contacts</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navContacts'</comment>
+  </data>
+  <data name="1:Title,AccountnavProcessSessions{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dialog Sessions</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navProcessSessions'</comment>
+  </data>
+  <data name="1:Title,AccountnavRelationships{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>CustomerRelationship</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navRelationships'</comment>
+  </data>
+  <data name="1:Title,AccountnavSocialprofiles{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Social Profiles</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navSocialprofiles'</comment>
+  </data>
+  <data name="1:Title,AccountnavSubAccts{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Accounts</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navSubAccts'</comment>
+  </data>
+  <data name="1:Title,Accountnav_adx_invitation_assigntoaccount{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Invitations</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_adx_invitation_assigntoaccount'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msa_account_managingpartner{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Managed Accounts</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msa_account_managingpartner'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msa_contact_managingpartner{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Managed Contacts</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msa_contact_managingpartner'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_award_FiscalSponsor{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Awards (Fiscal Sponsor)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_award_FiscalSponsor'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_award_Recipient{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Awards (Recipient)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_award_Recipient'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_deliveryframework_Account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Delivery Frameworks (Account)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_deliveryframework_Account'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_disbursement_RecipientAccount{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Disbursements</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_disbursement_RecipientAccount'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_docket_AwardRecipient{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dockets (Award Recipient)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_docket_AwardRecipient'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_award_RecommendedSupplier{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Awards</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_award_RecommendedSupplier'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_benefitrecipient_beneficiary{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Benefit Recipients</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_benefitrecipient_beneficiary'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_creditrecipient_Customer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Credit Recipients</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_creditrecipient_Customer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_deliveryframework_Donor{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Delivery Frameworks (Donor)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_deliveryframework_Donor'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_docket_docket_fiscalSponsor{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dockets (Fiscal Sponsor)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_docket_docket_fiscalSponsor'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_itemgroup_Supplier{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Item Groups</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_itemgroup_Supplier'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_item_Supplier{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Items</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_item_Supplier'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_membership_Customer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Memberships</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_membership_Customer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_need_Beneficiary{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Needs</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_need_Beneficiary'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_observation_Account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Observations</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_observation_Account'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_ofacmatch_ofacMatch_customer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>OFAC Matches</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_ofacmatch_ofacMatch_customer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_operation_Account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Operations</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_operation_Account'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_paymentschedule_DefaultHardCreditToCustomer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Payment Schedules (Default Hard Credit)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_paymentschedule_DefaultHardCreditToCustomer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_preference_preference_customer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Preferences</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_preference_preference_customer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_salutation_salutation_customer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Salutations</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_salutation_salutation_customer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_stakeholder_StakeholderName{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Stakeholders</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_stakeholder_StakeholderName'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_workitemaction_Beneficiary{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Work Item Actions</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_workitemaction_Beneficiary'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_workitemaction_ReferralTo{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Work Item Actions</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_workitemaction_ReferralTo'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_msnfp_workitem_Beneficiary{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Work Items</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_msnfp_workitem_Beneficiary'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_request_CustomerId{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Requests (Recipient)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_request_CustomerId'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_account_request_FiscalSponsor{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Requests (Fiscal Sponsor)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_account_request_FiscalSponsor'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_commitment_pledgedbyaccount{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Donor Commitments</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_commitment_pledgedbyaccount'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_commitment_pledgedOnAccount{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Donor Commitments</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_commitment_pledgedOnAccount'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_creditPlan_account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Default Credit Plans</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_creditPlan_account'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_employmentHistory_employer{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Employment History</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_employmentHistory_employer'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_plannedgiving_account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Planned Giving</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_plannedgiving_account'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_pmtMethod_account{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Payment Methods</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_pmtMethod_account'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_pmtSched_receiptOnAccount{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Payment Schedules (Receipt on Account)</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_pmtSched_receiptOnAccount'</comment>
+  </data>
+  <data name="1:Title,Accountnav_msnfp_txn_receiptOnAccount{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Receipted Transactions</value>
+    <comment>'Account' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_txn_receiptOnAccount'</comment>
+  </data>
+  <data name="1:Title,Benefit RecipientInfo{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Common</value>
+    <comment>'Benefit Recipient' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,Benefit RecipientMarketing{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Benefit Recipient' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,Benefit RecipientnavAsyncOperations{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>System Jobs</value>
+    <comment>'Benefit Recipient' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,Benefit Recipientnav_msnfp_msnfp_benefitrecipient_msnfp_benefitrecip{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Benefit Recipients</value>
+    <comment>'Benefit Recipient' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_benefitrecipient_msnfp_benefitrecip'</comment>
+  </data>
+  <data name="1:Title,Benefit Recipientnav_msnfp_msnfp_benefitrecipient_msnfp_deliveryfram{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Delivery Frameworks</value>
+    <comment>'Benefit Recipient' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_benefitrecipient_msnfp_deliveryfram'</comment>
+  </data>
+  <data name="1:Title,Benefit Recipientnav_msnfp_msnfp_benefitrecipient_msnfp_disbursement{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Disbursements</value>
+    <comment>'Benefit Recipient' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_benefitrecipient_msnfp_disbursement'</comment>
+  </data>
+  <data name="1:Title,Benefit Recipientnav_msnfp_msnfp_benefitrecipient_msnfp_indicatorval{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Indicator Values</value>
+    <comment>'Benefit Recipient' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_benefitrecipient_msnfp_indicatorval'</comment>
+  </data>
+  <data name="1:Title,Benefit RecipientProcessCenter{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Process Sessions</value>
+    <comment>'Benefit Recipient' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,Benefit RecipientSales{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Sales</value>
+    <comment>'Benefit Recipient' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,Benefit RecipientService{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Benefit Recipient' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,ContactnavAddresses{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Addresses</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAddresses'</comment>
+  </data>
+  <data name="1:Title,ContactnavAsyncOperations{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Workflows</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,ContactnavInvoices{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Invoice</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navInvoices'</comment>
+  </data>
+  <data name="1:Title,ContactnavOrders{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>SalesOrder</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navOrders'</comment>
+  </data>
+  <data name="1:Title,ContactnavProcessSessions{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dialog Sessions</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navProcessSessions'</comment>
+  </data>
+  <data name="1:Title,ContactnavQuotes{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Quote</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navQuotes'</comment>
+  </data>
+  <data name="1:Title,ContactnavRelationships{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>CustomerRelationship</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navRelationships'</comment>
+  </data>
+  <data name="1:Title,ContactnavSocialprofile{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Social Profiles</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navSocialprofile'</comment>
+  </data>
+  <data name="1:Title,ContactnavSubConts{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Contacts</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navSubConts'</comment>
+  </data>
+  <data name="1:Title,Contactnav_adx_contact_externalidentity{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>External Identities</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_adx_contact_externalidentity'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_commitment_pledgedByContact{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Donor Commitments</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_commitment_pledgedByContact'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_awardversion_PrimaryContactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Award Versions (Primary Contact)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_awardversion_PrimaryContactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_awardversion_SubmittedById{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Award Versions (Submitted By)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_awardversion_SubmittedById'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_award_InternalContactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Awards (Internal Contact)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_award_InternalContactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_award_Recipient{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Awards (Recipient)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_award_Recipient'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_disbursement_RecipientContactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Disbursements</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_disbursement_RecipientContactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_docket_AwardRecipient{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dockets (Award Recipient)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_docket_AwardRecipient'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_employmenthistory_ContactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Employment History</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_employmenthistory_ContactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_availability_contactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Availabilities</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_availability_contactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_award_RecommendedSupplier{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Awards</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_award_RecommendedSupplier'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_creditrecipient_Customer{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Credit Recipients</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_creditrecipient_Customer'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_docket_docket_fiscalSponsor{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dockets (Fiscal Sponsor)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_docket_docket_fiscalSponsor'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_itemgroup_Supplier{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Item Groups</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_itemgroup_Supplier'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_item_Supplier{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Items</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_item_Supplier'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_membership_Customer{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Memberships</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_membership_Customer'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_need_Beneficiary{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Needs</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_need_Beneficiary'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_observation_contactid{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Observations</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_observation_contactid'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_ofacmatch_ofacMatch_customer{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>OFAC Matches</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_ofacmatch_ofacMatch_customer'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_operation_contactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Operations</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_operation_contactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_participation_contactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Participations</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_participation_contactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_paymentmethod{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Payment Methods</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_paymentmethod'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_paymentschedule_DefaultHardCreditToCustomer{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Payment Schedules</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_paymentschedule_DefaultHardCreditToCustomer'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_preference_preference_customer{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Preferences</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_preference_preference_customer'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_qualification_contactId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Qualifications</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_qualification_contactId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_salutation_salutation_customer{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Salutations</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_salutation_salutation_customer'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_stakeholder_StakeholderName{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Stakeholders</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_stakeholder_StakeholderName'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_transaction{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Transactions</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_transaction'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_workitemaction_Beneficiary{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Work Item Actions</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_workitemaction_Beneficiary'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_msnfp_workitem_Beneficiary{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Work Items</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_msnfp_workitem_Beneficiary'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_reportsTo{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Direct Reports</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_reportsTo'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_request_CustomerId{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Requests (Recipient)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_request_CustomerId'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_contact_request_SubmittedById{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Requests (Submitted By)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_contact_request_SubmittedById'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_docket_assignedTo{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Dockets (Assigned To)</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_docket_assignedTo'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_education_contact{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Education</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_education_contact'</comment>
+  </data>
+  <data name="1:Title,Contactnav_msnfp_plannedGiving_contact{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Planned Giving</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_plannedGiving_contact'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworkInfo{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Common</value>
+    <comment>'Delivery Framework' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworkMarketing{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Delivery Framework' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworknavAsyncOperations{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>System Jobs</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworknavAudit{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Audits</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAudit'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_deliveryframework_budget_deliveryframeworkid{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Budgets</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_deliveryframework_budget_deliveryframeworkid'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_deliveryframework_deliveryframework_ParentDeliveryFrameworkId{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Child Delivery Frameworks</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_deliveryframework_deliveryframework_ParentDeliveryFrameworkId'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_deliveryframework_disbursementdistribution_DeliveryFrameworkId{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Disbursement Distributions</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_deliveryframework_disbursementdistribution_DeliveryFrameworkId'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_deliveryframework_measurementitemusage{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Measurement Item Usages</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_deliveryframework_measurementitemusage'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_deliveryframework_result_deliveryframeworkid{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Results</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_deliveryframework_result_deliveryframeworkid'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_benefitrecipient_msnfp_deliveryfram{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Benefit Recipients</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_benefitrecipient_msnfp_deliveryfram'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_deliveryframework_msnfp_engagementopportunity_deliveryFrameworkId{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Engagement Opportunities</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_deliveryframework_msnfp_engagementopportunity_deliveryFrameworkId'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_deliveryframework_msnfp_itemrequest_deliveryFrameworkId{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Item Requests</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_deliveryframework_msnfp_itemrequest_deliveryFrameworkId'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_deliveryframework_msnfp_operation_deliveryFrameworkId{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Operations</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_deliveryframework_msnfp_operation_deliveryFrameworkId'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_deliveryframework_msnfp_programitemrelationship_deliveryframeworkid{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Program Item Relationships</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_deliveryframework_msnfp_programitemrelationship_deliveryframeworkid'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_deliveryframework_msnfp_theoryofchangerelationship_deliveryframeworkid{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Theory of Change Relationships</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_deliveryframework_msnfp_theoryofchangerelationship_deliveryframeworkid'</comment>
+  </data>
+  <data name="1:Title,Delivery Frameworknav_msnfp_msnfp_deliveryframework_msnfp_workitem_relateddeliveryframeworkid{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Work Items</value>
+    <comment>'Delivery Framework' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_deliveryframework_msnfp_workitem_relateddeliveryframeworkid'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworkProcessCenter{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Process Sessions</value>
+    <comment>'Delivery Framework' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworkSales{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Sales</value>
+    <comment>'Delivery Framework' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,Delivery FrameworkService{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Delivery Framework' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,Indicator ValueInfo{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Common</value>
+    <comment>'Indicator Value' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,Indicator ValueMarketing{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Indicator Value' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,Indicator ValuenavAsyncOperations{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>System Jobs</value>
+    <comment>'Indicator Value' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,Indicator Valuenav_msnfp_msnfp_indicatorvalue_msnfp_indicatorvalueusage_indicatorvalueid{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Indicator Value Usages</value>
+    <comment>'Indicator Value' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_indicatorvalue_msnfp_indicatorvalueusage_indicatorvalueid'</comment>
+  </data>
+  <data name="1:Title,Indicator ValueProcessCenter{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Process Sessions</value>
+    <comment>'Indicator Value' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,Indicator ValueSales{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Sales</value>
+    <comment>'Indicator Value' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,Indicator ValueService{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Indicator Value' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,IndicatorInfo{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Common</value>
+    <comment>'Indicator' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,IndicatorMarketing{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Indicator' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,IndicatornavAsyncOperations{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>System Jobs</value>
+    <comment>'Indicator' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,Indicatornav_msnfp_indicator_measurementitemusage{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Measurement Item Usages</value>
+    <comment>'Indicator' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_indicator_measurementitemusage'</comment>
+  </data>
+  <data name="1:Title,Indicatornav_msnfp_msnfp_indicator_msnfp_programitemrelationship_indicatorid{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Program Item Relationships</value>
+    <comment>'Indicator' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_indicator_msnfp_programitemrelationship_indicatorid'</comment>
+  </data>
+  <data name="1:Title,Indicatornav_msnfp_msnfp_indicator_msnfp_theoryofchangerelationship_indicatorid{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Theory of Change Relationships</value>
+    <comment>'Indicator' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_indicator_msnfp_theoryofchangerelationship_indicatorid'</comment>
+  </data>
+  <data name="1:Title,IndicatorProcessCenter{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Process Sessions</value>
+    <comment>'Indicator' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,IndicatorSales{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Sales</value>
+    <comment>'Indicator' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,IndicatorService{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Indicator' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,ObjectiveInfo{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Common</value>
+    <comment>'Objective' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,ObjectiveMarketing{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Objective' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,ObjectivenavAsyncOperations{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>System Jobs</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,Objectivenav_msnfp_msnfp_objective_msnfp_programitemrelationship_objectiveid{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Program Item Relationships</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_objective_msnfp_programitemrelationship_objectiveid'</comment>
+  </data>
+  <data name="1:Title,Objectivenav_msnfp_msnfp_objective_msnfp_theoryofchangerelationship_objectiveid{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Theory of Change Relationships</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_objective_msnfp_theoryofchangerelationship_objectiveid'</comment>
+  </data>
+  <data name="1:Title,Objectivenav_msnfp_objective_budget_ObjectiveId{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Budgets</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_objective_budget_ObjectiveId'</comment>
+  </data>
+  <data name="1:Title,Objectivenav_msnfp_objective_deliveryframework_objectiveid{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Delivery Frameworks</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_objective_deliveryframework_objectiveid'</comment>
+  </data>
+  <data name="1:Title,Objectivenav_msnfp_objective_measurementitemusage{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Measurement Item Usages</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_objective_measurementitemusage'</comment>
+  </data>
+  <data name="1:Title,Objectivenav_msnfp_objective_parentObjective{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Child Objectives</value>
+    <comment>'Objective' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_objective_parentObjective'</comment>
+  </data>
+  <data name="1:Title,ObjectiveProcessCenter{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Process Sessions</value>
+    <comment>'Objective' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,ObjectiveSales{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Sales</value>
+    <comment>'Objective' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,ObjectiveService{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Objective' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,ResultInfo{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Common</value>
+    <comment>'Result' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,ResultMarketing{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Result' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,ResultnavAsyncOperations{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>System Jobs</value>
+    <comment>'Result' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAsyncOperations'</comment>
+  </data>
+  <data name="1:Title,Resultnav_msnfp_msnfp_result_msnfp_programitemrelationship_resultid{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Program Item Relationships</value>
+    <comment>'Result' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_result_msnfp_programitemrelationship_resultid'</comment>
+  </data>
+  <data name="1:Title,Resultnav_msnfp_msnfp_result_msnfp_theoryofchangerelationship_resultid{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Theory of Change Relationships</value>
+    <comment>'Result' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_msnfp_result_msnfp_theoryofchangerelationship_resultid'</comment>
+  </data>
+  <data name="1:Title,Resultnav_msnfp_result_measurementitemusage{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Measurement Item Usages</value>
+    <comment>'Result' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_result_measurementitemusage'</comment>
+  </data>
+  <data name="1:Title,Resultnav_msnfp_result_parentresultid_msnfp_result{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Child Results </value>
+    <comment>'Result' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'nav_msnfp_result_parentresultid_msnfp_result'</comment>
+  </data>
+  <data name="1:Title,ResultProcessCenter{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Process Sessions</value>
+    <comment>'Result' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,ResultSales{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Sales</value>
+    <comment>'Result' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,ResultService{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Result' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="80:Description,sioutc_OutcomeManagement" xml:space="preserve">
+    <value>Outcome Management app is used to manage delivery frameworks, results, and indicators for benefit recipients.</value>
+    <comment> 'sioutc_OutcomeManagement' : Description for AppModule</comment>
+  </data>
+  <data name="80:LocalizedName,sioutc_OutcomeManagement" xml:space="preserve">
+    <value>Outcome Management</value>
+    <comment> 'sioutc_OutcomeManagement' : LocalizedName for AppModule</comment>
+  </data>
+  <data name="81:LocalizedName,sioutc_OutcomeManagement" xml:space="preserve">
+    <value>Outcome Management</value>
+    <comment>'sioutc_OutcomeManagement' : LocalizedName for AppModuleSiteMap</comment>
+  </data>
+  <data name="81:Title,area_35f69eb5area_35f69eb5" xml:space="preserve">
+    <value>Area1</value>
+    <comment>Title for Area 'area_35f69eb5' Area 'area_35f69eb5'</comment>
+  </data>
+  <data name="81:Title,area_35f69eb5group_329dfe00" xml:space="preserve">
+    <value>Relationships</value>
+    <comment>Title for Area 'area_35f69eb5' Group 'group_329dfe00'</comment>
+  </data>
+  <data name="81:Title,area_35f69eb5group_9adc3bfd" xml:space="preserve">
+    <value>My Work</value>
+    <comment>Title for Area 'area_35f69eb5' Group 'group_9adc3bfd'</comment>
+  </data>
+  <data name="81:Title,area_35f69eb5group_abba2ef9" xml:space="preserve">
+    <value>Outcomes</value>
+    <comment>Title for Area 'area_35f69eb5' Group 'group_abba2ef9'</comment>
+  </data>
+</root>

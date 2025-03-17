@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{9b4dbe4d-5cfe-ee11-a1fe-7c1e521a29ef}</formid>
+    <IntroducedVersion>1.0.0.21</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{519a526f-b1c7-470f-9e28-4415f43edba4}" IsUserDefined="1" name="New Tab" labelid="{aee8458b-17f7-4c0c-800a-e9a93f1cfd96}">
+          <labels>
+            <label description="New Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{59d2f14b-0e03-4e2e-9145-09b54f271500}" name="New Section" labelid="{7c56b943-dd4e-4041-b293-f85bfe2fbdb9}">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{6a68afb9-fb5f-4c33-a4bc-52800c5cfb2a}" labelid="{7e0104f7-a996-4247-82e0-1a836513b461}">
+                        <labels>
+                          <label description="Receipt" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_identifier" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="sifund_identifier" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{b19498b2-a15a-46bb-84df-9b5c7ac9985e}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{1abd6d70-dcef-4f74-8a9a-778187bc3974}" showlabel="false" labelid="{57b6ff3c-b9bc-4903-a756-47413138af6a}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{3df22e37-f1e5-4abb-add0-321960313d48}" showlabel="false" labelid="{34c86fc3-f3f8-4e34-ab31-85c74b464f8e}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{276b0c55-dc5a-4e9a-99e0-a248bf09e82d}" showlabel="false" labelid="{716225c8-6deb-4cba-aa3c-338d37b1b849}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{46c78b12-c9c8-40be-bba0-797431238753}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{0affb794-0375-4266-bad5-e0e77aa01358}" showlabel="false" labelid="{47e0b3d2-4eb3-454b-a498-0e3f73e09860}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{2e048581-0475-4886-b0c1-d080698b2af1}" showlabel="false" labelid="{180a0101-5400-4ab0-a247-ea4996693a70}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{81ae3e14-09d6-4160-b358-61686a36bc48}" showlabel="false" labelid="{9bb1c736-125d-4c97-8e9d-7ba0b8eb314b}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="BLANK DEFAULT Receipt main form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

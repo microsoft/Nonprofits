@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{4603440b-8dfa-4a52-b4fe-01a1460ea9fc}</savedqueryid>
+    <layoutxml>
+      <grid name="sifund_packages" jump="sifund_identifier" select="1" icon="1" preview="1">
+        <row name="sifund_package" id="sifund_packageid">
+          <cell name="sifund_identifier" width="300" />
+          <cell name="sifund_appeal" width="100" />
+          <cell name="sifund_expectedrevenue" width="149" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>2</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="sifund_package">
+          <attribute name="sifund_packageid" />
+          <attribute name="sifund_identifier" />
+          <attribute name="createdon" />
+          <order attribute="sifund_identifier" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="sifund_appeal" />
+          <attribute name="sifund_expectedrevenue" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.13</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Package Associated View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

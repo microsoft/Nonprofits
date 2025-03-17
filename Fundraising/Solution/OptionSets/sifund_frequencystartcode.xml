@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="sifund_frequencystartcode" localizedName="Frequency Start Code" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Frequency Start Code" languagecode="1033" />
+  </displaynames>
+  <options>
+    <option value="844060000">
+      <labels>
+        <label description="Current Day" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060001">
+      <labels>
+        <label description="1st of the Month" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060002">
+      <labels>
+        <label description="15th of the Month" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

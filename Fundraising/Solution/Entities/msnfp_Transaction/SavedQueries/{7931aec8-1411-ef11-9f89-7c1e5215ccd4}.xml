@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{7931aec8-1411-ef11-9f89-7c1e5215ccd4}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_name" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_transactionid">
+          <cell name="msnfp_name" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msnfp_bookdate" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="sifund_donor" width="100" />
+          <cell name="msnfp_amount" width="100" />
+          <cell name="sifund_primarydesignation" width="157" />
+          <cell name="sifund_typecode" width="100" />
+          <cell name="sifund_paymenttypecode" width="121" />
+          <cell name="msnfp_transaction_paymentscheduleid" width="144" />
+          <cell name="sifund_relateddonorcommitment" width="200" />
+          <cell name="msnfp_isadjusted" width="105" />
+          <cell name="sifund_giftbatch" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_transaction">
+          <attribute name="msnfp_transactionid" />
+          <attribute name="msnfp_name" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_bookdate" />
+          <attribute name="sifund_typecode" />
+          <attribute name="msnfp_amount" />
+          <attribute name="sifund_primarydesignation" />
+          <attribute name="sifund_donor" />
+          <attribute name="msnfp_transaction_paymentscheduleid" />
+          <attribute name="sifund_relateddonorcommitment" />
+          <attribute name="msnfp_isadjusted" />
+          <attribute name="sifund_giftbatch" />
+          <attribute name="sifund_paymenttypecode" />
+          <order attribute="msnfp_bookdate" descending="true" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.15</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Transactions for Fundraising" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

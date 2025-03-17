@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{74811203-5cfe-ee11-a1fe-000d3a53ec79}</formid>
+    <IntroducedVersion>1.0.0.21</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{cc664c9b-41c9-4c6b-b65b-2f93d84a6816}" IsUserDefined="1" name="New Tab" labelid="{0c7eb134-7e3b-492b-ab24-9e1bbb0b0351}">
+          <labels>
+            <label description="New Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{d302f6c8-32bb-4d2b-a416-6648e9b81ae1}" name="New Section" labelid="{6f10cbc2-f265-4f15-9522-055937892707}">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{8e161b39-6d4e-48f6-ba9a-45d5ef2888f0}" labelid="{98525835-7403-4975-99fe-d4972f6c8bda}">
+                        <labels>
+                          <label description="Gift Batch" languagecode="1033" />
+                        </labels>
+                        <control id="sifund_identifier" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="sifund_identifier" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{9e3c3d7f-e20e-42ef-a6ce-e8615692034a}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{3120e3b9-2209-44d8-9fdf-41f79eca21f2}" showlabel="false" labelid="{07fdeecf-7fa6-4e99-80d9-0eea01087513}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{9d76e0a4-5c94-4667-9b7f-d893ffa8dc35}" showlabel="false" labelid="{1dcf8788-6db2-4429-8434-09fac22e51a3}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{623740ad-0ce9-43ab-8ba9-3de91a967c81}" showlabel="false" labelid="{77fc151f-7e84-4bdd-8441-826772844cf4}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{1af078b5-c0f3-4a53-bb80-f53963dbf564}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{090abe95-b614-4ad8-99bd-6ee3c2e113a2}" showlabel="false" labelid="{95b6083e-fa99-4793-a128-a918ab0ad95f}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{349d0e01-9577-480d-b8be-ba2b11349be2}" showlabel="false" labelid="{645a51ef-51ed-4424-ac43-8d38f8f41564}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{48d90a7b-8b95-4080-a1b2-612f19426f1e}" showlabel="false" labelid="{c5168d70-15ee-48dd-8092-e2de91330ab9}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="DEFAULT BLANK Gift Batch main form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

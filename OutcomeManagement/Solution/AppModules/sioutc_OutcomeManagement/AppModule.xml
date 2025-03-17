@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppModule>
+  <UniqueName>sioutc_OutcomeManagement</UniqueName>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <WebResourceId>fa33ea22-bd24-ef11-840b-002248287612</WebResourceId>
+  <OptimizedFor></OptimizedFor>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <FormFactor>1</FormFactor>
+  <ClientType>4</ClientType>
+  <NavigationType>0</NavigationType>
+  <AppModuleComponents>
+    <AppModuleComponent type="1" schemaName="account" />
+    <AppModuleComponent type="1" schemaName="activitypointer" />
+    <AppModuleComponent type="1" schemaName="contact" />
+    <AppModuleComponent type="1" schemaName="msnfp_benefitrecipient" />
+    <AppModuleComponent type="1" schemaName="msnfp_deliveryframework" />
+    <AppModuleComponent type="1" schemaName="msnfp_indicator" />
+    <AppModuleComponent type="1" schemaName="msnfp_indicatorvalue" />
+    <AppModuleComponent type="1" schemaName="msnfp_objective" />
+    <AppModuleComponent type="1" schemaName="msnfp_result" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001899}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001900}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001901}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001902}" />
+    <AppModuleComponent type="26" id="{63caa0a9-3511-ef11-9f8a-000d3a9884d4}" />
+    <AppModuleComponent type="26" id="{5d71cfd3-3511-ef11-9f8a-000d3a9884d4}" />
+    <AppModuleComponent type="26" id="{36d641cc-3611-ef11-9f8a-000d3a9884d4}" />
+    <AppModuleComponent type="26" id="{31e13fe4-3611-ef11-9f8a-000d3a9884d4}" />
+    <AppModuleComponent type="26" id="{537c51f6-3611-ef11-9f8a-000d3a9884d4}" />
+    <AppModuleComponent type="26" id="{9aad07ca-3511-ef11-9f8a-000d3a9b1588}" />
+    <AppModuleComponent type="26" id="{bbee3a91-3611-ef11-9f8a-000d3a9b1588}" />
+    <AppModuleComponent type="26" id="{b244e616-3711-ef11-9f8a-000d3a9b1588}" />
+    <AppModuleComponent type="26" id="{aa9c0623-3711-ef11-9f8a-000d3a9b1588}" />
+    <AppModuleComponent type="26" id="{8fba639e-cd73-df11-805d-00155db1891a}" />
+    <AppModuleComponent type="26" id="{40c97b31-3011-ef11-9f89-002248287612}" />
+    <AppModuleComponent type="26" id="{1daa2a20-3611-ef11-9f89-002248287612}" />
+    <AppModuleComponent type="26" id="{5947a527-3611-ef11-9f89-002248287612}" />
+    <AppModuleComponent type="26" id="{a27a7fd0-3611-ef11-9f89-002248287612}" />
+    <AppModuleComponent type="26" id="{ed1f0041-4f6b-4171-8757-4ac44c2fcafa}" />
+    <AppModuleComponent type="26" id="{209172b5-3511-ef11-9f89-6045bda7565a}" />
+    <AppModuleComponent type="26" id="{4781c6e5-3511-ef11-9f89-6045bda7565a}" />
+    <AppModuleComponent type="26" id="{0bbed3f1-3511-ef11-9f89-6045bda7565a}" />
+    <AppModuleComponent type="26" id="{af28c9fd-3511-ef11-9f89-6045bda7565a}" />
+    <AppModuleComponent type="26" id="{2893029e-3611-ef11-9f89-7c1e5219fbc7}" />
+    <AppModuleComponent type="60" id="{0b032abf-ecfb-ee11-a1fe-000d3a1b93ad}" />
+    <AppModuleComponent type="60" id="{bf78cd95-f1fb-ee11-a1fe-000d3a1b93ad}" />
+    <AppModuleComponent type="60" id="{70dc50b3-effb-ee11-a1fe-0022481f9a6b}" />
+    <AppModuleComponent type="60" id="{d3947edb-f2fb-ee11-a1fe-0022481f9a6b}" />
+    <AppModuleComponent type="60" id="{a08385e7-f6fb-ee11-a1fe-0022481f9a6b}" />
+    <AppModuleComponent type="60" id="{32b7d988-f8fb-ee11-a1fe-0022481f9a6b}" />
+    <AppModuleComponent type="60" id="{59eed63d-ecfb-ee11-a1fe-7c1e52005bc4}" />
+    <AppModuleComponent type="60" id="{f92f7f5d-f0fb-ee11-a1fe-7c1e52005bc4}" />
+    <AppModuleComponent type="62" schemaName="sioutc_OutcomeManagement" />
+  </AppModuleComponents>
+  <AppModuleRoleMaps>
+    <Role id="{627090ff-40a3-4053-8790-584edc5be201}" />
+    <Role id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+  </AppModuleRoleMaps>
+  <LocalizedNames>
+    <LocalizedName description="Outcome Management" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Outcome Management app is used to manage delivery frameworks, results, and indicators for benefit recipients." languagecode="1033" />
+  </Descriptions>
+  <appsettings>
+    <appsetting settingdefinitionid.uniquename="AppChannel">
+      <iscustomizable>1</iscustomizable>
+      <value>1</value>
+    </appsetting>
+  </appsettings>
+</AppModule>

@@ -1,0 +1,63 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hubVnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Hub Virtual Network."
+            }
+        },
+        "spokeVnetResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource ID of the Spoke Virtual Network."
+            }
+        },
+        "hubVnetResourceGroup":{
+            "type": "string"
+        },
+        "peeringRegion": {
+            "type": "string",
+            "defaultValue":"[deployment().location]"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "name": "hubToSpokePeering",
+            "resourceGroup": "[parameters('hubVnetResourceGroup')]",
+
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                            "apiVersion": "2020-06-01",
+                            "name": "[concat(parameters('hubVnetName'), '/AddPeeringToSpoke')]",
+                            "properties": {
+                                "allowVirtualNetworkAccess": true,
+                                "allowForwardedTraffic": false,
+                                "allowGatewayTransit": false,
+                                "useRemoteGateways": false,
+                                "remoteVirtualNetwork": {
+                                    "id": "[parameters('spokeVnetResourceId')]"
+                                }
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
