@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{f6148fd2-03b4-ec11-9840-00224804d63b}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="new_name" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_getstartedid">
+          <cell name="new_name" width="200" />
+        </row>
+        <controlDescriptions>
+          <controlDescription>
+            <customControl id="{E7A81278-8635-4d9e-8D4D-59480B391C5B}">
+              <parameters />
+            </customControl>
+            <customControl name="msnfp_VolunteerManagement.GetStarted" formFactor="0">
+              <parameters>
+                <data-set name="sampleDataSet">
+                  <ViewId>00000000-0000-0000-0000-000000000000</ViewId>
+                </data-set>
+              </parameters>
+            </customControl>
+            <customControl name="msnfp_VolunteerManagement.GetStarted" formFactor="1">
+              <parameters>
+                <data-set name="sampleDataSet">
+                  <ViewId>00000000-0000-0000-0000-000000000000</ViewId>
+                </data-set>
+              </parameters>
+            </customControl>
+            <customControl name="msnfp_VolunteerManagement.GetStarted" formFactor="2">
+              <parameters>
+                <data-set name="sampleDataSet">
+                  <ViewId>00000000-0000-0000-0000-000000000000</ViewId>
+                </data-set>
+              </parameters>
+            </customControl>
+          </controlDescription>
+        </controlDescriptions>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="msnfp_getstarted">
+          <attribute name="new_name" />
+          <attribute name="msnfp_getstartedid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Resources" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Volunteer Management" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

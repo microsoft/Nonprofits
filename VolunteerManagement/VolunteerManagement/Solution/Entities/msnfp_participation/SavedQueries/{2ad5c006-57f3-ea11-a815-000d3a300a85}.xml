@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{2ad5c006-57f3-ea11-a815-000d3a300a85}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_participationtitle" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_participationid">
+          <cell name="createdon" width="125" />
+          <cell name="msnfp_engagementopportunityid" width="300" />
+          <cell name="a_85a89927916346548ccb88bf96a55118.msnfp_startingdate" width="118" />
+          <cell name="msnfp_contactid" width="251" />
+          <cell name="a_513b08d4b01b460a9fbd1c90c45240c9.emailaddress1" width="136" />
+          <cell name="a_513b08d4b01b460a9fbd1c90c45240c9.telephone1" width="141" />
+          <cell name="a_513b08d4b01b460a9fbd1c90c45240c9.address1_city" width="100" />
+          <cell name="msnfp_status" width="192" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="msnfp_participation">
+          <attribute name="createdon" />
+          <attribute name="msnfp_status" />
+          <attribute name="msnfp_engagementopportunityid" />
+          <attribute name="msnfp_contactid" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+            <condition attribute="msnfp_status" operator="eq" value="844060000" />
+          </filter>
+          <attribute name="msnfp_participationid" />
+          <link-entity alias="a_85a89927916346548ccb88bf96a55118" name="msnfp_engagementopportunity" to="msnfp_engagementopportunityid" from="msnfp_engagementopportunityid" link-type="outer" visible="false">
+            <attribute name="msnfp_startingdate" />
+          </link-entity>
+          <order attribute="msnfp_contactid" descending="false" />
+          <link-entity alias="a_513b08d4b01b460a9fbd1c90c45240c9" name="contact" to="msnfp_contactid" from="contactid" link-type="outer" visible="false">
+            <attribute name="emailaddress1" />
+            <attribute name="telephone1" />
+            <attribute name="address1_city" />
+          </link-entity>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>2.4.2.3</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Pending Participations" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

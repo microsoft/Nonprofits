@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{a686bc31-8451-49b1-994a-bc6a05715bca}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{b3fec133-9eee-4eb3-95d2-06b38809636f}" IsUserDefined="1" name="tab_general">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{86b36001-b373-4a42-a842-dde423524dfa}" columns="11">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7813c038-dcb1-4138-acaf-4919f6aae78b}" locklevel="0">
+                        <labels>
+                          <label description="Qualification" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_qualificationid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_qualificationid" disabled="false" />
+                      </cell>
+                      <cell id="{7c6f4f2a-aa81-49df-9df9-e5593bcc71c1}" locklevel="0" colspan="1" rowspan="6">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7d53bba3-a95a-4ed0-bcb0-2b957254d956}">
+                        <labels>
+                          <label description="Stage Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_stagename" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="msnfp_stagename" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7a3ba26a-9714-4ba4-b42e-09b1ffc42e4e}" locklevel="0">
+                        <labels>
+                          <label description="Sequence Number" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_sequencenumber" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_sequencenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3f121890-4e27-4c8f-81ee-644dbf82cb5d}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Planned Length (days)" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_plannedlengthdays" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_plannedlengthdays" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{12091541-b998-4e4a-9581-26d4431155bf}" visible="false">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="null_section_3" id="b43682a2-cd7f-424f-a907-11d0e60b3f8c" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Activities" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{53e23d00-5fb6-4916-aa30-df052c1e1147}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Activities" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>activitypointer</TargetEntityType>
+                            <ViewId>{00000000-0000-0000-00AA-000010001902}</ViewId>
+                            <ViewIds>{00000000-0000-0000-00AA-000010001899},{00000000-0000-0000-00AA-000010001902}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_qualificationstage_ActivityPointers</RelationshipName>
+                            <RecordsPerPage>5</RecordsPerPage>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{b8bbd013-39fd-477e-aacd-deb1baef0226}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Stage Steps" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_2" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>msnfp_qualificationstep</TargetEntityType>
+                            <ViewId>{5C474319-67F0-42CD-BD71-799BCAF77C92}</ViewId>
+                            <ViewIds>{5C474319-67F0-42CD-BD71-799BCAF77C92}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_qualificationStep_QualificationStag</RelationshipName>
+                            <RecordsPerPage>5</RecordsPerPage>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{2b8cb0ac-7a1e-4be4-b145-30fae8ce84ad}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{0809f15a-20c0-42ba-a466-194b931e2f78}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{c39074e6-657f-4e71-b300-158856b0bda2}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{cfe71765-6050-4d51-b3ea-8db5eea1d533}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{7f066e1c-17d6-4dd4-990f-c1b772ce24bb}" locklevel="0">
+              <labels>
+                <label description="Stage Status" languagecode="1033" />
+              </labels>
+              <control id="header_msnfp_stagestatus" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_stagestatus" disabled="false" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{973a0ee2-b716-4324-8584-cadb6dbfb3b2}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{2da8c539-bef6-4c07-9a74-962501a97d01}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{a97f6b0c-cd1f-490e-9084-6300d52ef400}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{36fb5727-d160-404a-a560-2bd9a15e7da5}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+      <formLibraries>
+        <Library name="msnfp_QualificationStageForm.gen.js" libraryUniqueId="{fcd5ce16-d069-4166-b59d-f6013c9c9e03}" />
+      </formLibraries>
+      <events>
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.QualificationStageForm.OnLoad" libraryName="msnfp_QualificationStageForm.gen.js" handlerUniqueId="{6ae27214-8c64-46ed-b72a-50594f853804}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

@@ -1,0 +1,14 @@
+<form id="sortby" class="form-horizontal">
+    <div class="form-group">
+        <label for="inputEmail3" class="col-sm-offset-8 col-sm-2 control-label" style="padding-top: 0;">
+            <h5>{% include 'snippet' snippet_name: 'MSVE_MyEngagements/SortBy' %}</h5>
+        </label>
+        <div class="col-sm-2">
+            <select class="form-control" name="sortEnagementsBy" id="sortEnagementsBy">
+                <option value="startdate">{% include 'snippet' snippet_name: 'MSVE_EngagementDetails/StartDate' %}</option>
+                <option value="enddate">{% include 'snippet' snippet_name: 'MSVE_EngagementDetails/EndDate' %}</option>
+                <option value="title">{% include 'snippet' snippet_name: 'MSVE_MyEngagements/SortBy/Name' %}</option>
+            </select>
+        </div>
+    </div>
+</form>

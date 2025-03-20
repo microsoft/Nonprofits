@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.22013.126" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>VolunteerEngagement</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="Volunteer Engagement " languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.0</Version>
+    <Managed>2</Managed>
+    <Publisher>
+      <UniqueName>microsofttechforsocialimpact</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Microsoft Tech for Social Impact" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>msnfp</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>84406</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="contact" behavior="2" />
+      <RootComponent type="1" schemaName="msnfp_availability" behavior="2" />
+      <RootComponent type="1" schemaName="msnfp_preference" behavior="2" />
+      <RootComponent type="1" schemaName="msnfp_qualification" behavior="2" />
+      <RootComponent type="1" schemaName="msnfp_qualificationtype" behavior="2" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="msnfp_availability" displayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_availability" displayName="Availability" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msnfp_preference" displayName="Preference" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_preference" displayName="Preference" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msnfp_qualification" displayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_qualification" displayName="Qualification" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msnfp_qualificationtype" displayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_qualificationtype" displayName="Qualification Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_contact_msnfp_availability_contactId" displayName="msnfp_contact_msnfp_availability_contactId" parentSchemaName="contact" parentDisplayName="Contact" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_contact_msnfp_availability_contactId" displayName="msnfp_contact_msnfp_availability_contactId" parentSchemaName="contact" parentDisplayName="Contact" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_contact_msnfp_preference_preference_customer" displayName="msnfp_contact_msnfp_preference_preference_customer" parentSchemaName="contact" parentDisplayName="Contact" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_contact_msnfp_qualification_contactId" displayName="msnfp_contact_msnfp_qualification_contactId" parentSchemaName="contact" parentDisplayName="Contact" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_contact_msnfp_qualification_contactId" displayName="msnfp_contact_msnfp_qualification_contactId" parentSchemaName="contact" parentDisplayName="Contact" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_Preference_preferenceTypeId_msnfp_p" displayName="msnfp_Preference_preferenceTypeId_msnfp_p" parentSchemaName="msnfp_preferencetype" parentDisplayName="Preference Type" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="msnfp_msnfp_qualificationtype_msnfp_qualification_typeId" displayName="msnfp_msnfp_qualificationtype_msnfp_qualification_typeId" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_availabilityid" displayName="Availability" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_availability" parentDisplayName="Availability" id="{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_availabilitytitle" displayName="Availability Title" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_availability" parentDisplayName="Availability" id="{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_availabilitytitle" displayName="Availability Title" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_contactid" displayName="Contact" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_effectivefrom" displayName="Effective From" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_availability" parentDisplayName="Availability" id="{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_effectivefrom" displayName="Effective From" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_effectiveto" displayName="Effective To" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_availability" parentDisplayName="Availability" id="{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_effectiveto" displayName="Effective To" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_workingdays" displayName="Working Days" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_availability" parentDisplayName="Availability" id="{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_workingdays" displayName="Working Days" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Owner" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Availability Form" parentDisplayName="Availability" id="{a4cb80fb-3725-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="createdby" displayName="Created By" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="createdon" displayName="Created On" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="modifiedby" displayName="Modified By" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="modifiedon" displayName="Modified On" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_name" displayName="Name" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_preference_customer" displayName="Account or Contact" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_preferenceid" displayName="Preference" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Profile View" displayName="VE Profile View" parentSchemaName="msnfp_preference" parentDisplayName="Preference" id="{928fea25-e722-ec11-b6e6-000d3a57264f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_preferencetypeid" displayName="Preference Type" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="Active" />
+        <Dependent type="26" schemaName="VE Profile View" displayName="VE Profile View" parentSchemaName="msnfp_preference" parentDisplayName="Preference" id="{928fea25-e722-ec11-b6e6-000d3a57264f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_preferencetypeid" displayName="Preference Type" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Owner" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Preference" parentDisplayName="Preference" id="{bce6a365-2425-ec11-b6e5-002248262b63}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_certificationdate" displayName="Certification Date" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_contactid" displayName="Contact" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_currentstage" displayName="Current Stage" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="Active" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" id="{e4155daa-e822-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_currentstage" displayName="Current Stage" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_description" displayName="Description" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_enddate" displayName="End Date" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" id="{e4155daa-e822-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_enddate" displayName="End Date" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_qualificationid" displayName="Qualification" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" id="{e4155daa-e822-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_qualificationid" displayName="Qualification" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_qualificationstatus" displayName="Qualification Status" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_qualificationtitle" displayName="Qualification Title" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_startdate" displayName="Start Date" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" id="{e4155daa-e822-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_startdate" displayName="Start Date" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_typeid" displayName="Type" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal View" displayName="VE Portal View" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" id="{e4155daa-e822-ec11-b6e6-000d3a572bc9}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_typeid" displayName="Type" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Owner" parentSchemaName="msnfp_qualification" parentDisplayName="Qualification" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="createdon" displayName="Created On" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal Qualification Type Lookup View" displayName="VE Portal Qualification Type Lookup View" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" id="{65ee0951-3f25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_qualificationtypeid" displayName="Qualification Type" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal Qualification Type Lookup View" displayName="VE Portal Qualification Type Lookup View" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" id="{65ee0951-3f25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_qualificationtypetitle" displayName="Qualification Type Title" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal Qualification Type Lookup View" displayName="VE Portal Qualification Type Lookup View" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" id="{65ee0951-3f25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msnfp_type" displayName="Type" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="26" schemaName="VE Portal Qualification Type Lookup View" displayName="VE Portal Qualification Type Lookup View" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" id="{65ee0951-3f25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Availabilities" displayName="Active Availabilities" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" id="{11c8ec0c-abc0-4ad3-8b94-67344e1e9a99}" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Qualification Type Lookup View" displayName="Qualification Type Lookup View" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" id="{18b16670-fd2a-4f7f-ad88-a104407fbc0e}" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Preferences" displayName="Active Preferences" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" id="{39e7e428-fc67-480f-811f-b3141dbdd676}" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Inactive Qualification Types" displayName="Inactive Qualification Types" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" id="{4cadba34-b22c-423f-9b01-52557f389d47}" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Qualification Types" displayName="Active Qualification Types" parentSchemaName="msnfp_qualificationtype" parentDisplayName="Qualification Type" solution="NonprofitCore (3.0.3.2)" id="{bfbdc963-6b8b-4e73-b4b3-535c2bc596bc}" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="59" schemaName="Availability by Effective From" displayName="Availability by Effective From" parentSchemaName="msnfp_availability" parentDisplayName="Availability" solution="NonprofitCore (3.0.3.2)" id="{ad5ebd49-b1eb-ea11-a817-000d3a300a85}" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="59" schemaName="Account or Contact by Engagement Interest Type" displayName="Account or Contact by Engagement Interest Type" parentSchemaName="msnfp_preference" parentDisplayName="Preference" solution="NonprofitCore (3.0.3.2)" id="{adcb9d2a-b1eb-ea11-a817-000d3a300a85}" />
+        <Dependent type="60" displayName="Custom Profile Web Form" parentDisplayName="Contact" id="{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Profile Web Form" parentDisplayName="Contact" solution="MicrosoftPortalBase (9.2.2103.1)" id="{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}">
+          <package>CDSBasePortal (9.3.2109.20)</package>
+        </Required>
+        <Dependent type="60" displayName="Profile Web Form" parentDisplayName="Contact" id="{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="AppCommon/Contact/Contact_main_system_library.js" displayName="AppCommon/Contact/Contact_main_system_library.js" solution="msdynce_AppCommon (9.0.4.0066)">
+          <package>msdynce_AppCommonAnchor (9.0.21113.10002)</package>
+        </Required>
+        <Dependent type="60" displayName="Profile Web Form" parentDisplayName="Contact" id="{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msnfp_/images/preference_16" displayName="msnfp_/images/preference_16" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_preference" displayName="Preference" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msnfp_/images/preference_32" displayName="msnfp_/images/preference_32" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_preference" displayName="Preference" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msnfp_AvailabilitySvg" displayName="msnfp_AvailabilitySvg" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_availability" displayName="Availability" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msnfp_QualificationForm.gen.js" displayName="msnfp_QualificationForm.gen.js" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msnfp_QualificationSVG" displayName="msnfp_QualificationSVG" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_qualification" displayName="Qualification" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msnfp_QualificationTypeSvg" displayName="msnfp_QualificationTypeSvg" solution="NonprofitCore (3.0.3.2)" />
+        <Dependent type="1" schemaName="msnfp_qualificationtype" displayName="Qualification Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="msnfp_microsoftdynamics365nonprofitaccelerator.OnboardingStages" displayName="msnfp_microsoftdynamics365nonprofitaccelerator.OnboardingStages" solution="Active" />
+        <Dependent type="60" displayName="VE Portal Form" parentDisplayName="Qualification" id="{e87528a6-3a25-ec11-b6e5-002248262df0}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

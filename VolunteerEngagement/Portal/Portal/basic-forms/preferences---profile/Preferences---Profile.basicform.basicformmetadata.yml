@@ -1,0 +1,25 @@
+- adx_adddescription: false
+  adx_attributelogicalname: msnfp_name
+  adx_entityform: 0e8b3492-362f-4f36-9eb7-2705e226b0e4
+  adx_entityformmetadataid: 0642e3ff-246b-49ee-ba82-6183b1ff359b
+  adx_fieldisrequired: false
+  adx_ignoredefaultvalue: false
+  adx_onsavefromattribute: fullname
+  adx_onsavetype: 100000002
+  adx_onsavevalue: Preference -
+  adx_randomizeoptionsetvalues: false
+  adx_setvalueonsave: true
+  adx_type: 100000000
+  adx_useattributedescriptionproperty: true
+- adx_adddescription: false
+  adx_attributelogicalname: msnfp_preference_customer
+  adx_entityform: 0e8b3492-362f-4f36-9eb7-2705e226b0e4
+  adx_entityformmetadataid: dfaa07dc-96a3-49b4-a780-3d30551e3153
+  adx_fieldisrequired: false
+  adx_ignoredefaultvalue: false
+  adx_prepopulatefromattribute: contactid
+  adx_prepopulatetype: 100000002
+  adx_randomizeoptionsetvalues: false
+  adx_setvalueonsave: false
+  adx_type: 100000000
+  adx_useattributedescriptionproperty: true

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SdkMessageProcessingStep Name="Pre-Update Engagement Opportuntiy Schedule" SdkMessageProcessingStepId="{9c040360-23be-eb11-8236-000d3a31c0f1}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
+  <PluginTypeName>Plugins.EngagementOpportunityScheduleOnPreCreateUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
+  <PluginTypeId>df58085a-23be-eb11-8236-000d3a31c0f1</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunityschedule</PrimaryEntity>
+  <AsyncAutoDelete>0</AsyncAutoDelete>
+  <FilteringAttributes>msnfp_effectivefrom,msnfp_effectiveto,msnfp_minimum,msnfp_maximum,msnfp_engagementopportunity,msnfp_shiftname</FilteringAttributes>
+  <InvocationSource>1</InvocationSource>
+  <Mode>0</Mode>
+  <Rank>1</Rank>
+  <EventHandlerTypeCode>4602</EventHandlerTypeCode>
+  <Stage>20</Stage>
+  <IsCustomizable>1</IsCustomizable>
+  <IsHidden>0</IsHidden>
+  <SupportedDeployment>0</SupportedDeployment>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="schedule">
+      <SdkMessageProcessingStepImageId>{8ef29e4d-46be-eb11-8236-000d3a31c0f1}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_effectiveto,msnfp_engagementopportunity,msnfp_maximum,msnfp_minimum,msnfp_shiftname,msnfp_effectivefrom</Attributes>
+      <EntityAlias>schedule</EntityAlias>
+      <ImageType>0</ImageType>
+      <MessagePropertyName>Target</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
+</SdkMessageProcessingStep>

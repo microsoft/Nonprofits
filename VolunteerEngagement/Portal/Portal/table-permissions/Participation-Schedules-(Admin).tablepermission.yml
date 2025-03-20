@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: true
+adx_delete: false
+adx_entitylogicalname: msnfp_participationschedule
+adx_entityname: Participation Schedules (Admin)
+adx_entitypermission_webrole:
+- ad609e80-b0e5-44a5-ba67-336a19f4596a
+adx_entitypermissionid: e54c0d7b-664c-497a-bad8-605236c56b69
+adx_read: true
+adx_scope: 756150000
+adx_write: true

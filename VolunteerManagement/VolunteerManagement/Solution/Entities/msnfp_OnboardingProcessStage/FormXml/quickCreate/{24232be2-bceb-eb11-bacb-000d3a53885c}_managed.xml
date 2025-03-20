@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{24232be2-bceb-eb11-bacb-000d3a53885c}</formid>
+    <IntroducedVersion>1.0.0.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="F931FFE2-B873-473F-8F95-9502F0AA3F5E" name="tab_1" showlabel="false" labelid="{5dc058c7-262c-4411-9a15-c156a532ec3f}">
+          <labels>
+            <label description="New Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section id="0C655D4E-C6E3-424E-9AF5-71E72D30D12E" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{236ba34e-9f77-44b1-bb0e-95feac0db321}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{59e6d28b-8d0d-4b1c-9583-ba2a22b5d73e}" locklevel="0" labelid="{6233f2d3-7fd6-4b7c-8d6d-8047015db1f4}">
+                        <labels>
+                          <label description="Stage Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_stagename" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_stagename" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7369243e-dd25-4f66-9355-22bcbe7cf714}" locklevel="0" labelid="{8688766c-d51f-4a17-a391-b9df2e105121}">
+                        <labels>
+                          <label description="Sequence Number" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_sequencenumber" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_sequencenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{58abb49c-1ab9-46a1-9523-add43a7119b6}" locklevel="0" rowspan="8" labelid="{ff2b9bdd-a07d-4cfb-9528-55f298500717}">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="02DECBA0-3AE2-484D-A19F-C5353AF4F4F2" name="tab_1_column_2_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" visible="true" labelid="{bf38c846-efe1-49c1-8499-5c21eca8c5ec}">
+                  <labels>
+                    <label description="Create due date (from start of stage)" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{f1e2b7b1-0594-4e69-916f-f9fa18295379}" locklevel="0" labelid="{16bc5d65-b1b3-443c-8cb0-333f90ca85a8}">
+                        <labels>
+                          <label description="Due in Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_dueindays" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_dueindays" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{87fa6977-9121-4fed-984e-616dedcb2a73}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Qualification Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_qualificationtypeid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_qualificationtypeid" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="46FD66EA-B686-41D9-AAE0-C565BD78EC1F" name="tab_1_column_3_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" visible="false" labelid="{0404f3f4-b175-42d6-97ca-3f9b779fd29e}">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="07C04A4E-A482-45CC-BAB7-7FCA3CD02938" labelid="{5cf1b783-08b3-47fd-808b-dc5e6c7fff27}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Onboarding Process Stage quick create form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

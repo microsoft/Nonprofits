@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{7085e4fa-a597-eb11-b1ac-000d3a4f1e0f}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form showImage="true" maxWidth="1920">
+      <tabs>
+        <tab id="F931FFE2-B873-473F-8F95-9502F0AA3F5E" name="tab_1" showlabel="false" labelid="{3654c52b-fca2-4fda-9cb7-8ed66b2f5219}">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section id="0C655D4E-C6E3-424E-9AF5-71E72D30D12E" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{9307ec25-328b-49b9-a773-fb3faeef67e7}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7b4a952a-1087-4ffd-a815-33060a5f74d3}" labelid="{83ef9d72-86fd-47a4-8939-4a33aafea9c2}" visible="false">
+                        <labels>
+                          <label description="Engagement Opportunity" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunityid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_engagementopportunityid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6f8ee1d2-8d14-4b88-a47f-c9dddf086954}" labelid="{d4cfaadc-8b2f-4c6a-956c-86081eb0dde3}">
+                        <labels>
+                          <label description="Qualification Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_qualificationtypeid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_qualificationtypeid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{61e4e1c0-b13d-461a-9f70-2e9fe0bb7d78}" labelid="{c0a8d786-d0b5-4815-8ef1-77d780b3e4d2}" showlabel="true">
+                        <labels>
+                          <label description="Required" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_isrequired" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_isrequired" disabled="false" uniqueid="{cd2177d2-6bbb-45f2-8b65-e50e40319781}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e4744578-1057-4c4e-803c-3e8a93d94e30}" locklevel="0" rowspan="3">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{b0a96d9b-e77b-4b0f-bd3c-0ad0979a8ea6}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="02DECBA0-3AE2-484D-A19F-C5353AF4F4F2" name="tab_1_column_2_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{907a4672-6549-44be-b8ad-9f8c32430a64}" visible="false">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{dffaae81-cd0c-442a-84a4-839eb3ebea53}" visible="false">
+                        <labels>
+                          <label description="Engagement Opportunity Participant Qualification" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunityparticipantquatitle" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_engagementopportunityparticipantquatitle" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="46FD66EA-B686-41D9-AAE0-C565BD78EC1F" name="tab_1_column_3_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{8512fd23-c364-41ae-b0fc-1a9d0956b416}" visible="false">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="07C04A4E-A482-45CC-BAB7-7FCA3CD02938" labelid="{d64b4508-9c96-4f5d-b6eb-c4ec17bf445c}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <controlDescriptions>
+        <controlDescription forControl="{cd2177d2-6bbb-45f2-8b65-e50e40319781}">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_isrequired</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_isrequired</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_isrequired</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_isrequired</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <formLibraries>
+        <Library name="msnfp_EngagementQualificationForm.gen.js" libraryUniqueId="{46ead394-066a-8921-dd1a-aa10373b2521}" />
+      </formLibraries>
+      <events>
+        <event name="onsave" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.EngagementQualification.UpdateName" libraryName="msnfp_EngagementQualificationForm.gen.js" handlerUniqueId="{8c7e6599-3816-ad2a-91ee-d86058c62e4a}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description=" quick create form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

@@ -1,0 +1,331 @@
+/*** CSS in this section has some colors that may need to change with new themes! ***/
+
+.text-highlight {
+  background-color: #bfd7ea;
+  margin-top: 2px;
+  padding: 7px;
+}
+
+/*** 
+  CSS in this section uses neutral colors that will likely not need to change with new themes
+  unless the new themes are radically different than the defualt (ex. a "dark mode" style theme)
+***/
+.actionBar {
+  background-color: white;
+  box-shadow: 0px 0.3px 0.9px rgba(0, 0, 0, 0.1), 0px 1.6px 3.6px rgba(0, 0, 0, 0.13);
+}
+
+.card {
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: rgb(0 0 0 / 13%) 0px 1.6px 3.6px 0px, rgb(0 0 0 / 11%) 0px 0.3px 0.9px 0px;
+  transition: box-shadow 250ms ease-in-out 0s;
+  margin: 9px 0px;
+  padding: 10px;
+}
+
+.card:hover{
+  box-shadow: rgb(0 0 0 / 13%) 0px 6.4px 14.4px 0px, rgb(0 0 0 / 11%) 0px 1.2px 3.6px 0px;
+  cursor: pointer;
+}
+
+.btn.disabled, .btn[disabled], .btn.disabled:hover, .btn[disabled]:hover {
+  background-color: #E1DFDD;
+  color: #8A8886;
+  border: 1px solid #E1DFDD;
+  opacity: 100%;
+}
+
+.disabledCard {
+  background-color: #F3F2F1;
+}
+
+.disabledCard:hover {
+  box-shadow: rgb(0 0 0 / 13%) 0px 1.6px 3.6px 0px, rgb(0 0 0 / 11%) 0px 0.3px 0.9px 0px;
+  cursor: not-allowed;
+}
+
+.homeSubHeader {
+  font-weight: 400;
+  font-size: 36px;
+}
+
+.left-sidebar {
+  border-left: 1px solid #D2D0CE;
+  height: 100%;
+}
+
+.nav > li:not(.active) > a:hover > span, a.list-group-item:hover, a.list-group-item:active {
+  color: white;
+}
+
+.numMoreShifts-circle {
+  border-radius: 50%;
+  background-color: #F3F2F1;
+  padding: 0.5rem 0.75rem;
+}
+
+.right-sidebar {
+  border-right: 1px solid #D2D0CE;
+  margin-right: -1px;
+  height: 100%;
+}
+
+.secondary-button {
+  background-color: white;
+  border: 1px solid #323130 
+}
+
+.secondary-button:hover {
+  background-color: #F3F2F1
+}
+
+.shine {
+  background: #F3F2F1;
+  background-image: linear-gradient(to right, #F3F2F1 0%, #E1DFDD 20%, #F3F2F1 40%, #F3F2F1 100%);
+  background-repeat: no-repeat;
+  border-radius: 2px;
+  box-shadow: rgb(0 0 0 / 13%) 0px 1.6px 3.6px 0px, rgb(0 0 0 / 11%) 0px 0.3px 0.9px 0px;
+  height: 15rem;
+  margin: 9px 0px;
+  padding: 10px;
+  
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-fill-mode: forwards; 
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: placeholderShimmer;
+  -webkit-animation-timing-function: linear;
+}
+
+.verticalDivider {
+  border-right-color: white;
+  border-right-width: 1px;
+  border-right-style: solid;
+  height: 7rem;
+  margin: 1rem 0px;
+}
+
+.whiteText {
+  color: white;
+}
+
+/*** End of CSS with hard-coded colors ***/
+
+a.cardLink {
+  color: inherit;
+  display: "block";
+}
+
+.big-icon {
+  width: inherit * 1.5;
+  height: inherit * 1.5;
+}
+
+.btn {
+  border-radius: 25px;
+  min-width: 15rem;
+}
+
+#cancelParticipationBtn {
+  border-radius: 0;
+  font-weight: 600;
+  min-width: 0;
+}
+
+.card h2, .card h3 {
+  margin-top: 11px;
+}
+
+section.container {
+  width: 100%;
+  padding: 2rem;
+}
+
+.engagementDescription {
+  height: 100%;
+}
+
+.engagementDescription strong {
+  font-weight: 600;
+}
+
+.engagementDescription ul, .engagementDescription ol {
+  list-style-position: outside;
+  padding-left: 0;
+}
+
+.fetchxml {
+  display: none;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+label {
+  font-weight: 600;
+}
+
+.iconByText {
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+.input-group {
+  margin-top: 1.5rem;
+}
+
+.input-group-btn>.btn {
+  border-radius: 4px;
+  min-width: inherit;
+  padding-top: 7px;
+}
+
+.left-space {
+  margin-left: 2rem;
+}
+
+.less-margin-bottom {
+  margin-bottom: 0px;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  background-color: inherit;
+  font-weight: 600;
+}
+
+.nav-pills>li.active>a>span, .nav-pills>li.active>a>span:focus, .nav-pills>li.active>a>span:hover {
+  padding-bottom: 1rem;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+.needsSpace {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.normal-weight {
+  font-weight: 400;
+}
+
+p.navbar-brand {
+  margin-bottom: 0;
+}
+
+.page_section.container {
+  width: 100%;
+}
+
+.no-margin {
+  margin: 0 0;
+}
+
+.section-landing {
+  padding-top: 75px;
+  padding-bottom: 50px;
+}
+
+.section-landing .row > div {
+  margin-top: 0px;
+}
+
+.section-landing {
+  background: linear-gradient(transparent, transparent), url(homeHero.png) no-repeat center;
+  background-size: cover;
+}
+
+.shift-status-desc {
+  margin-left: 2rem;
+  float: left;
+  padding-top: 2.35rem;
+}
+
+.small-title {
+  font-size: 16px;
+  margin-top: 11px;
+}
+
+.spinner {
+  animation: rotate 2s linear infinite;
+  visibility: hidden;
+  width: 40px;
+  height: 40px;  
+}
+
+.spinner .path {
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+.statusBar-desc {
+  margin-left: 2rem;
+  float: left;
+  margin-top: 10px;
+}
+
+.statusBar-desc > button.btn-link {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tab-content {
+  margin-top: 1.5rem;
+}
+
+.table-hover > tbody > tr:hover {
+  cursor: pointer;
+}
+
+.table > tbody > tr > td > h5 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+th {
+  font-weight: 600;
+}
+
+tr.disabledRow, .table-hover>tbody>tr.disabledRow:hover  {
+  background-color: inherit;
+  cursor: not-allowed;
+}
+
+vertical-align-center {
+  display: flex;
+  align-items: center;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}

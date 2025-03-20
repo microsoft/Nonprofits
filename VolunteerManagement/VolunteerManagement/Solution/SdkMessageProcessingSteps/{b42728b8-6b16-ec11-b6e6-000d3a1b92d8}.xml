@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SdkMessageProcessingStep Name="Plugins.QualificationOnPostUpdate: Update of msnfp_qualification" SdkMessageProcessingStepId="{b42728b8-6b16-ec11-b6e6-000d3a1b92d8}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
+  <PluginTypeName>Plugins.QualificationOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
+  <PluginTypeId>8edb8a98-f648-407a-86b1-590bb88ddafd</PluginTypeId>
+  <PrimaryEntity>msnfp_qualification</PrimaryEntity>
+  <AsyncAutoDelete>0</AsyncAutoDelete>
+  <Description>Plugins.QualificationOnPostUpdate: Update of msnfp_qualification</Description>
+  <FilteringAttributes>msnfp_qualificationstatus</FilteringAttributes>
+  <InvocationSource>1</InvocationSource>
+  <Mode>0</Mode>
+  <Rank>1</Rank>
+  <EventHandlerTypeCode>4602</EventHandlerTypeCode>
+  <Stage>40</Stage>
+  <IsCustomizable>1</IsCustomizable>
+  <IsHidden>0</IsHidden>
+  <SupportedDeployment>0</SupportedDeployment>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="Image">
+      <SdkMessageProcessingStepImageId>{d8a31bd8-6b16-ec11-b6e6-000d3a1b92d8}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_qualificationid,msnfp_qualificationstatus,msnfp_typeid</Attributes>
+      <EntityAlias>Image</EntityAlias>
+      <ImageType>1</ImageType>
+      <MessagePropertyName>Target</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
+</SdkMessageProcessingStep>

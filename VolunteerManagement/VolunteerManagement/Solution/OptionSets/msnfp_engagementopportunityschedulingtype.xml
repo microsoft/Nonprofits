@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="msnfp_engagementopportunityschedulingtype" localizedName="Engagement Opportunity Scheduling Type " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Engagement Opportunity Scheduling Type " languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="844060001">
+      <labels>
+        <label description="Shifts" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060003">
+      <labels>
+        <label description="No Shifts" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

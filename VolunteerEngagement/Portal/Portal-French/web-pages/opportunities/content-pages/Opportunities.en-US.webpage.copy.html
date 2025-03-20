@@ -1,0 +1,48 @@
+{% comment %} {% include 'entity_list' key: 'Opportunity' %} {% endcomment %}
+{% fetchxml opportunities %}
+<fetch top="100">
+<entity name="msnfp_publicengagementopportunity">
+<attribute name="msnfp_engagementopportunitytitle" />
+<attribute name="msnfp_description" />
+<attribute name="msnfp_location" />
+<attribute name="msnfp_number" />
+<attribute name="msnfp_maximum" />
+<attribute name="msnfp_minimum" />
+<attribute name="msnfp_startingdate" />
+</entity>
+</fetch>
+{% endfetchxml %}
+
+<!-- hidden sort control -->
+<div style="display: none" data-jplist-control="hidden-sort" data-group="group1" data-path=".name" data-order="asc" data-type="text"></div>
+
+<!-- text filter control -->
+<div class=topbar>
+<input data-jplist-control="textbox-filter" data-group="group_opportunities" data-name="title-filter-1" data-path=".title" type="text" value="" data-clear-btn-id="title-clear-btn" placeholder="Filter by Title" />
+<button type="button" id="title-clear-btn">Effacer</button>
+</div>
+<div class=sidebar>
+<div> Filtres</div>
+<div>
+<input data-jplist-control="textbox-filter" data-group="group_opportunities" data-name="location-filter-1" data-path=".location" type="text" value="" data-clear-btn-id="location-clear-btn" placeholder="Filter by Location" />
+<button type="button" id="location-clear-btn">Effacer</button>
+</div>
+</div>
+
+<!-- data -->
+<div class="group_opportunities" data-jplist-group="group_opportunities">
+{% for result in opportunities.results.entities %}
+<div data-jplist-item>
+<div class="dates">{{ result.msnfp_startingdate }}</div>
+<div class="title">{{ result.msnfp_engagementopportunitytitle | escape}}</div>
+<div class="location">{{ result.msnfp_location }}</div>
+<div class="description">{{ result.msnfp_description | escape }}</div>
+<div class="stillneeded">{{ result.msnfp_number }} Bénévoles inscrits</div>
+<div class="details"><a href="./details/?id={{result.id}}">details</a></div>
+</div>
+{% endfor %}
+</div>
+<script type="text/javascript" src="../jplist.min.js"></script>
+<script>
+jplist.init();
+</script>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="msnfp_engagementopportunitylocationtypes" localizedName="Engagement Opportunity Location Types" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Engagement Opportunity Location Types" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="844060000">
+      <labels>
+        <label description="On Location" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060001">
+      <labels>
+        <label description="Virtual" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060002">
+      <labels>
+        <label description="Both" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="844060003">
+      <labels>
+        <label description="None" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>

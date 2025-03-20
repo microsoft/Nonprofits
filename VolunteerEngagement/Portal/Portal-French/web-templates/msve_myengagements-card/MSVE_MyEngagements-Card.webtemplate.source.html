@@ -1,0 +1,64 @@
+{% capture linkToDetails %}
+  {{baseUrl}}engagement?id={{engagement['pubEngage.msnfp_publicengagementopportunityid']}}
+{% endcapture %}
+
+<a href="{{linkToDetails}}" class="cardLink">
+  <div class="row card">
+    <div class="col-md-7">
+      {% if engagement['pubEngage.msnfp_locationtype'].value != 844060003 %}
+      <h2>
+        {{ engagement['pubEngage.msnfp_engagementopportunitytitle'] }}          
+        </h2>
+        <h3 class="text-primary">
+          <time datetime="{{ engagement['pubEngage.msnfp_startingdate'] | date_to_iso8601}}">
+            {{engagement['pubEngage.msnfp_startingdate'] }}
+          </time>
+        </h3>            
+        <h3>
+          {% case engagement['pubEngage.msnfp_locationtype'].value %}
+            {% when 844060000 %}
+                {{snippets['MSVE_SVG/Location']}}                
+                {{snippets['MSVE_EngagementInfo/OnLocation']}}{%- if engagement['pubEngage.msnfp_locationname'] -%} - {{engagement['pubEngage.msnfp_locationname']}} {%- endif -%}
+            {% when 844060001 %}
+              {{snippets['MSVE_SVG/Virtual']}}
+              {{snippets['MSVE_EngagementInfo/Virtual']}}
+            {% when 844060002 %}
+              {{snippets['MSVE_SVG/Location']}}
+              {{snippets['MSVE_EngagementInfo/Virtual']}} {{snippets['MSVE_SmallWords/And']}} {{snippets['MSVE_EngagementInfo/OnLocation']}}{%- if engagement['pubEngage.msnfp_locationname'] -%} - {{engagement['pubEngage.msnfp_locationname']}} {%- endif -%}
+          {% endcase %}
+        </h3>
+      {% else %}
+        <h2>{{ engagement['pubEngage.msnfp_engagementopportunitytitle'] }}</h2>
+        <h3 class="text-primary">
+          <time datetime="{{ engagement['pubEngage.msnfp_startingdate'] | date_to_iso8601}}">
+            {{engagement['pubEngage.msnfp_startingdate']}}
+          </time>
+        </h3>        
+      {% endif %}
+    </div>
+    <div class="col-md-5 text-right">
+      <div>
+      {% include 'MSVE_Engagements/ParticipationSchedules/Fetch' participationid: engagement.msnfp_participationid %}
+        {% if pScheds.results.entities.size > 0 and engagement['pubEngage.msnfp_shifts'] == true %}
+          {% for schedule in pScheds.results.entities %}
+            <div class="col-md-8">{% include 'MSVE_EngagementInfo/Status' spot:"h3" participation:engagement pSchedStatus:schedule.msnfp_schedulestatus.value startDate:engagement['pubEngage.msnfp_startingdate'] endDate:engagement['pubEngage.msnfp_endingdate'] isMultiDays:engagement.['pubEngage.msnfp_multipledays'] %}</div>
+            <h4 class="col-md-4 text-highlight">
+              <time datetime="{{schedule['eSched.msnfp_effectivefrom'] | date_to_iso8601}}">
+                {{schedule['eSched.msnfp_effectivefrom']}}
+              </time>
+            </h4>
+          {% endfor %}
+        {% elsif pScheds.results.entities.size > 0 %}
+          {% include 'MSVE_EngagementInfo/Status' spot:"h3" participation:engagement pSchedStatus:pScheds.results.entities[0].msnfp_schedulestatus.value startDate:engagement['pubEngage.msnfp_startingdate'] endDate:engagement['pubEngage.msnfp_endingdate'] isMultiDays:engagement.['pubEngage.msnfp_multipledays'] %}
+        {% else %}       
+          {% include 'MSVE_EngagementInfo/Status' spot:"h3" participation:engagement startDate:engagement['pubEngage.msnfp_startingdate'] endDate:engagement['pubEngage.msnfp_endingdate'] isMultiDays:engagement.['pubEngage.msnfp_multipledays'] %}
+          {% if engagementStatusIndex == 1 %}
+            <a href="{{linkToDetails}}" class="btn btn-warning">{% include 'snippet' snippet_name: 'MSVE_EngagementInfo/SelectShiftBtn' %}</a>
+          {% elsif engagementStatusIndex == 2 %}
+            <h3>{% include 'snippet' snippet_name: 'MSVE_EngagementInfo/Dismissed' %}</h3>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</a>

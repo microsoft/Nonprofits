@@ -1,0 +1,1140 @@
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <entity name="adx_websitelanguage" displayname="Website Language" etc="10050" primaryidfield="adx_websitelanguageid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Portal Language" name="adx_portallanguageid" type="entityreference" lookupType="adx_portallanguage" customfield="true" />
+      <field displayname="Publishing State" name="adx_publishingstate" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+      <field updateCompare="true" displayname="Website Language" name="adx_websitelanguageid" type="guid" primaryKey="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_website" displayname="Website" etc="10019" primaryidfield="adx_websiteid" primarynamefield="adx_name" disableplugins="true">
+	<fields>
+		<field displayname="Default Language" name="adx_defaultlanguage" type="entityreference" lookupType="adx_websitelanguage" customfield="true" />
+		<field displayname="Footer Template" name="adx_footerwebtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+		<field displayname="Header Template" name="adx_headerwebtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+		<field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+		<field displayname="Language" name="adx_website_language" type="number" customfield="true" />
+		<field displayname="Name" name="adx_name" type="string" customfield="true" />
+		<field displayname="Parent Website" name="adx_parentwebsiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+		<field displayname="Partial URL" name="adx_partialurl" type="string" customfield="true" />
+		<field displayname="Primary Domain Name" name="adx_primarydomainname" type="string" customfield="true" />
+		<field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+		<field displayname="Status" name="statecode" type="state" />
+		<field displayname="Status Reason" name="statuscode" type="status" />
+		<field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+		<field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+		<field displayname="Version Number" name="versionnumber" type="bigint" />
+		<field updateCompare="true" displayname="Website" name="adx_websiteid" type="guid" primaryKey="true" />
+	</fields>
+	<relationships>
+		<relationship name="adx_website_sponsor" manyToMany="true" isreflexive="false" relatedEntityName="adx_website_sponsor" m2mTargetEntity="account" m2mTargetEntityPrimaryKey="accountid" />
+	</relationships>
+  </entity>
+  <entity name="adx_contentsnippet" displayname="Content Snippet" etc="10009" primaryidfield="adx_contentsnippetid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field updateCompare="true" displayname="Content Snippet" name="adx_contentsnippetid" type="guid" primaryKey="true" />
+      <field displayname="Content Snippet Language" name="adx_contentsnippetlanguageid" type="entityreference" lookupType="adx_websitelanguage" customfield="true" />
+      <field displayname="Created By IP Address" name="adx_createdbyipaddress" type="string" customfield="true" />
+      <field displayname="Created By Username" name="adx_createdbyusername" type="string" customfield="true" />
+      <field displayname="Display Name" name="adx_display_name" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Modified By IP Address" name="adx_modifiedbyipaddress" type="string" customfield="true" />
+      <field displayname="Modified By Username" name="adx_modifiedbyusername" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Type" name="adx_type" type="optionsetvalue" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Value" name="adx_value" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_entitypermission" displayname="Entity Permission" etc="10026" primaryidfield="adx_entitypermissionid" primarynamefield="adx_entityname" disableplugins="true">
+    <fields>
+      <field displayname="Account Relationship" name="adx_accountrelationship" type="string" customfield="true" />
+      <field displayname="Append" name="adx_append" type="bool" customfield="true" />
+      <field displayname="Append To" name="adx_appendto" type="bool" customfield="true" />
+      <field displayname="Contact Relationship" name="adx_contactrelationship" type="string" customfield="true" />
+      <field displayname="Create" name="adx_create" type="bool" customfield="true" />
+      <field displayname="Delete" name="adx_delete" type="bool" customfield="true" />
+      <field displayname="Entity Name" name="adx_entitylogicalname" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Entity Permission" name="adx_entitypermissionid" type="guid" primaryKey="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_entityname" type="string" customfield="true" />
+      <field displayname="Parent Entity Permission" name="adx_parententitypermission" type="entityreference" lookupType="adx_entitypermission" customfield="true" />
+      <field displayname="Parent Relationship" name="adx_parentrelationship" type="string" customfield="true" />
+      <field displayname="Read" name="adx_read" type="bool" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Scope" name="adx_scope" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+      <field displayname="Write" name="adx_write" type="bool" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_entitypermission_webrole" manyToMany="true" isreflexive="false" relatedEntityName="adx_entitypermission_webrole" m2mTargetEntity="adx_webrole" m2mTargetEntityPrimaryKey="adx_webroleid" />
+    </relationships>
+  </entity>
+  <entity name="adx_pagetemplate" displayname="Page Template" etc="10010" primaryidfield="adx_pagetemplateid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Entity Name" name="adx_entityname" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Is Default" name="adx_isdefault" type="bool" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Page Template" name="adx_pagetemplateid" type="guid" primaryKey="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Rewrite Url" name="adx_rewriteurl" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Type" name="adx_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Use Website Header and Footer" name="adx_usewebsiteheaderandfooter" type="bool" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Template" name="adx_webtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_portallanguage" displayname="Portal Language" etc="10036" primaryidfield="adx_portallanguageid" primarynamefield="adx_name" disableplugins="true" skipupdate="true">
+    <fields>
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Language Code" name="adx_languagecode" type="string" customfield="true" />
+      <field displayname="LCID" name="adx_lcid" type="number" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Portal Display Name" name="adx_displayname" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Portal Language" name="adx_portallanguageid" type="guid" primaryKey="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="System Language" name="adx_systemlanguage" type="number" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_publishingstate" displayname="Publishing State" etc="10037" primaryidfield="adx_publishingstateid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Display Order" name="adx_displayorder" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Is Default" name="adx_isdefault" type="bool" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Publishing State" name="adx_publishingstateid" type="guid" primaryKey="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Select whether the publishing state is visible." name="adx_isvisible" type="bool" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_publishingstatetransitionrule" displayname="Publishing State Transition Rule" etc="10038" primaryidfield="adx_publishingstatetransitionruleid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="From State" name="adx_fromstate_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Publishing State Transition Rule" name="adx_publishingstatetransitionruleid" type="guid" primaryKey="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="To State" name="adx_tostate_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_publishingstatetransitionrule_webrole" manyToMany="true" isreflexive="false" relatedEntityName="adx_publishingstatetransitionrule_webrole" m2mTargetEntity="adx_webrole" m2mTargetEntityPrimaryKey="adx_webroleid" />
+    </relationships>
+  </entity>
+  <entity name="adx_redirect" displayname="Redirect" etc="10039" primaryidfield="adx_redirectid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Inbound URL" name="adx_inboundurl" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field updateCompare="true" displayname="Redirect" name="adx_redirectid" type="guid" primaryKey="true" />
+      <field displayname="Redirect URL" name="adx_redirecturl" type="string" customfield="true" />
+      <field displayname="Site Marker" name="adx_sitemarkerid" type="entityreference" lookupType="adx_sitemarker" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Code" name="adx_statuscode" type="optionsetvalue" customfield="true" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Page" name="adx_webpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_setting" displayname="Setting" etc="10040" primaryidfield="adx_settingid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field updateCompare="true" displayname="Setting" name="adx_settingid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Value" name="adx_value" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_shortcut" displayname="Shortcut" etc="10041" primaryidfield="adx_shortcutid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Disable Shortcut Target Validation" name="adx_disabletargetvalidation" type="bool" customfield="true" />
+      <field displayname="Display Order" name="adx_displayorder" type="number" customfield="true" />
+      <field displayname="External URL" name="adx_externalurl" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Parent Page" name="adx_parentpage_webpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field updateCompare="true" displayname="Shortcut" name="adx_shortcutid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Title" name="adx_title" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web File" name="adx_webfileid" type="entityreference" lookupType="adx_webfile" customfield="true" />
+      <field displayname="Web Page" name="adx_webpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_sitemarker" displayname="Site Marker" etc="10011" primaryidfield="adx_sitemarkerid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Page" name="adx_pageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field updateCompare="true" displayname="Site Marker" name="adx_sitemarkerid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_sitesetting" displayname="Site Setting" etc="10012" primaryidfield="adx_sitesettingid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field updateCompare="true" displayname="Site Setting" name="adx_sitesettingid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Value" name="adx_value" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_tag" displayname="Tag" etc="10042" primaryidfield="adx_tagid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field updateCompare="true" displayname="Tag" name="adx_tagid" type="guid" primaryKey="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_webpage_tag" manyToMany="true" isreflexive="false" relatedEntityName="adx_webpage_tag" m2mTargetEntity="adx_webpage" m2mTargetEntityPrimaryKey="adx_webpageid" />
+    </relationships>
+  </entity>
+  <entity name="adx_urlhistory" displayname="URL History" etc="10043" primaryidfield="adx_urlhistoryid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Changed Date" name="adx_changeddate" type="datetime" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field updateCompare="true" displayname="Shows the URL history." name="adx_urlhistoryid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web File" name="adx_webfileid" type="entityreference" lookupType="adx_webfile" customfield="true" />
+      <field displayname="Web Page" name="adx_webpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_webfile" displayname="Web File" etc="10013" primaryidfield="adx_webfileid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Allow Origin" name="adx_alloworigin" type="string" customfield="true" />
+      <field displayname="Cloud Blob Address" name="adx_cloudblobaddress" type="string" customfield="true" />
+      <field displayname="Content-Disposition" name="adx_contentdisposition" type="optionsetvalue" customfield="true" />
+      <field displayname="Created By IP Address" name="adx_createdbyipaddress" type="string" customfield="true" />
+      <field displayname="Created By Username" name="adx_createdbyusername" type="string" customfield="true" />
+      <field displayname="Display Date" name="adx_displaydate" type="datetime" customfield="true" />
+      <field displayname="Display Order" name="adx_displayorder" type="number" customfield="true" />
+      <field displayname="Enable Tracking (deprecated)" name="adx_enabletracking" type="bool" customfield="true" />
+      <field displayname="Exclude From Search" name="adx_excludefromsearch" type="bool" customfield="true" />
+      <field displayname="Expiration Date" name="adx_expirationdate" type="datetime" customfield="true" />
+      <field displayname="Hidden From Sitemap" name="adx_hiddenfromsitemap" type="bool" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Master Web File" name="adx_masterwebfileid" type="entityreference" lookupType="adx_webfile" customfield="true" />
+      <field displayname="Modified By IP Address" name="adx_modifiedbyipaddress" type="string" customfield="true" />
+      <field displayname="Modified By Username" name="adx_modifiedbyusername" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Parent Page" name="adx_parentpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Partial URL" name="adx_partialurl" type="string" customfield="true" />
+      <field displayname="Publishing State" name="adx_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Release Date" name="adx_releasedate" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Subject" name="adx_subjectid" type="entityreference" lookupType="subject" customfield="true" />
+      <field displayname="Summary" name="adx_summary" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Title" name="adx_title" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web File" name="adx_webfileid" type="guid" primaryKey="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_weblink" displayname="Web Link" etc="10014" primaryidfield="adx_weblinkid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Created By IP Address" name="adx_createdbyipaddress" type="string" customfield="true" />
+      <field displayname="Created By Username" name="adx_createdbyusername" type="string" customfield="true" />
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Disable Page Validation" name="adx_disablepagevalidation" type="bool" customfield="true" />
+      <field displayname="Display Image Only" name="adx_displayimageonly" type="bool" customfield="true" />
+      <field displayname="Display Order" name="adx_displayorder" type="number" customfield="true" />
+      <field displayname="Display Page Child Links" name="adx_displaypagechildlinks" type="bool" customfield="true" />
+      <field displayname="External Url" name="adx_externalurl" type="string" customfield="true" />
+      <field displayname="Image Alt Text" name="adx_imagealttext" type="string" customfield="true" />
+      <field displayname="Image Height" name="adx_imageheight" type="number" customfield="true" />
+      <field displayname="Image Url" name="adx_imageurl" type="string" customfield="true" />
+      <field displayname="Image Width" name="adx_imagewidth" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Modified By IP Address" name="adx_modifiedbyipaddress" type="string" customfield="true" />
+      <field displayname="Modified By Username" name="adx_modifiedbyusername" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Open In New Window" name="adx_openinnewwindow" type="bool" customfield="true" />
+      <field displayname="Page" name="adx_pageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Parent Web Link" name="adx_parentweblinkid" type="entityreference" lookupType="adx_weblink" customfield="true" />
+      <field displayname="Publishing State" name="adx_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Robots Follow Link" name="adx_robotsfollowlink" type="bool" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Link" name="adx_weblinkid" type="guid" primaryKey="true" />
+      <field displayname="Web Link Set" name="adx_weblinksetid" type="entityreference" lookupType="adx_weblinkset" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_weblinkset" displayname="Web Link Set" etc="10015" primaryidfield="adx_weblinksetid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Copy" name="adx_copy" type="string" customfield="true" />
+      <field displayname="Display Name" name="adx_display_name" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Publishing State" name="adx_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Title" name="adx_title" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Link Set" name="adx_weblinksetid" type="guid" primaryKey="true" />
+      <field displayname="Web Link Set Language" name="adx_websitelanguageid" type="entityreference" lookupType="adx_websitelanguage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_webpage" displayname="Web Page" etc="10017" primaryidfield="adx_webpageid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Allow Origin" name="adx_alloworigin" type="string" customfield="true" />
+      <field displayname="Author" name="adx_authorid" type="entityreference" lookupType="contact" customfield="true" />
+      <field displayname="Category" name="adx_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Comment Policy" name="adx_feedbackpolicy" type="optionsetvalue" customfield="true" />
+      <field displayname="Copy" name="adx_copy" type="string" customfield="true" />
+      <field displayname="Created By IP Address" name="adx_createdbyipaddress" type="string" customfield="true" />
+      <field displayname="Created By Username" name="adx_createdbyusername" type="string" customfield="true" />
+      <field displayname="Custom CSS" name="adx_customcss" type="string" customfield="true" />
+      <field displayname="Custom JavaScript" name="adx_customjavascript" type="string" customfield="true" />
+      <field displayname="Description" name="adx_meta_description" type="string" customfield="true" />
+      <field displayname="Display Date" name="adx_displaydate" type="datetime" customfield="true" />
+      <field displayname="Display Order" name="adx_displayorder" type="number" customfield="true" />
+      <field displayname="Editorial Comments" name="adx_editorialcomments" type="string" customfield="true" />
+      <field displayname="Enable Ratings" name="adx_enablerating" type="bool" customfield="true" />
+      <field displayname="Enable Tracking (deprecated)" name="adx_enabletracking" type="bool" customfield="true" />
+      <field displayname="Entity Form" name="adx_entityform" type="entityreference" lookupType="adx_entityform" customfield="true" />
+      <field displayname="Entity List" name="adx_entitylist" type="entityreference" lookupType="adx_entitylist" customfield="true" />
+      <field displayname="Exclude From Search" name="adx_excludefromsearch" type="bool" customfield="true" />
+      <field displayname="Expiration Date" name="adx_expirationdate" type="datetime" customfield="true" />
+      <field displayname="Hidden From Sitemap" name="adx_hiddenfromsitemap" type="bool" customfield="true" />
+      <field displayname="Image" name="adx_image" type="entityreference" lookupType="adx_webfile" customfield="true" />
+      <field displayname="Image URL" name="adx_imageurl" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Is Root" name="adx_isroot" type="bool" customfield="true" />
+      <field displayname="Master Web Page" name="adx_masterwebpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Modified By IP Address" name="adx_modifiedbyipaddress" type="string" customfield="true" />
+      <field displayname="Modified By Username" name="adx_modifiedbyusername" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Navigation" name="adx_navigation" type="entityreference" lookupType="adx_weblinkset" customfield="true" />
+      <field displayname="Page Template" name="adx_pagetemplateid" type="entityreference" lookupType="adx_pagetemplate" customfield="true" />
+      <field displayname="Parent Page" name="adx_parentpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Partial URL" name="adx_partialurl" type="string" customfield="true" />
+      <field displayname="Publishing State" name="adx_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Release Date" name="adx_releasedate" type="datetime" customfield="true" />
+      <field displayname="Root Webpage" name="adx_rootwebpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Shared Page Configuration" name="adx_sharedpageconfiguration" type="bool" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Subject" name="adx_subjectid" type="entityreference" lookupType="subject" customfield="true" />
+      <field displayname="Summary" name="adx_summary" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Title" name="adx_title" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Form" name="adx_webform" type="entityreference" lookupType="adx_webform" customfield="true" />
+      <field updateCompare="true" displayname="Web Page" name="adx_webpageid" type="guid" primaryKey="true" />
+      <field displayname="Webpage Language" name="adx_webpagelanguageid" type="entityreference" lookupType="adx_websitelanguage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_webpageaccesscontrolrule" displayname="Web Page Access Control Rule" etc="10045" primaryidfield="adx_webpageaccesscontrolruleid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Right" name="adx_right" type="optionsetvalue" customfield="true" />
+      <field displayname="Scope" name="adx_scope" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Page" name="adx_webpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field updateCompare="true" displayname="Webpage Access Control Rule" name="adx_webpageaccesscontrolruleid" type="guid" primaryKey="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_accesscontrolrule_publishingstate" manyToMany="true" isreflexive="false" relatedEntityName="adx_accesscontrolrule_publishingstate" m2mTargetEntity="adx_publishingstate" m2mTargetEntityPrimaryKey="adx_publishingstateid" />
+      <relationship name="adx_webpageaccesscontrolrule_webrole" manyToMany="true" isreflexive="false" relatedEntityName="adx_webpageaccesscontrolrule_webrole" m2mTargetEntity="adx_webrole" m2mTargetEntityPrimaryKey="adx_webroleid" />
+    </relationships>
+  </entity>
+  <entity name="adx_webrole" displayname="Web Role" etc="10018" primaryidfield="adx_webroleid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Anonymous Users Role" name="adx_anonymoususersrole" type="bool" customfield="true" />
+      <field displayname="Authenticated Users Role" name="adx_authenticatedusersrole" type="bool" customfield="true" />
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Key" name="adx_key" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Role" name="adx_webroleid" type="guid" primaryKey="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_webrole_contact" manyToMany="true" isreflexive="false" relatedEntityName="adx_webrole_contact" m2mTargetEntity="contact" m2mTargetEntityPrimaryKey="contactid" />
+      <relationship name="adx_webrole_account" manyToMany="true" isreflexive="false" relatedEntityName="adx_webrole_account" m2mTargetEntity="account" m2mTargetEntityPrimaryKey="accountid" />
+      <relationship name="adx_webrole_systemuser" manyToMany="true" isreflexive="false" relatedEntityName="adx_webrole_systemuser" m2mTargetEntity="systemuser" m2mTargetEntityPrimaryKey="systemuserid" />
+    </relationships>
+  </entity>
+  <entity name="adx_webtemplate" displayname="Web Template" etc="10051" primaryidfield="adx_webtemplateid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="MIME Type" name="adx_mimetype" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Source" name="adx_source" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Template" name="adx_webtemplateid" type="guid" primaryKey="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity> 
+  <entity name="adx_websiteaccess" displayname="Website Access" etc="10048" primaryidfield="adx_websiteaccessid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Manage Content Snippets" name="adx_managecontentsnippets" type="bool" customfield="true" />
+      <field displayname="Manage Site Markers" name="adx_managesitemarkers" type="bool" customfield="true" />
+      <field displayname="Manage Web Link Sets" name="adx_manageweblinksets" type="bool" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Preview Unpublished Entities" name="adx_previewunpublishedentities" type="bool" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+      <field updateCompare="true" displayname="Website Access" name="adx_websiteaccessid" type="guid" primaryKey="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_websiteaccess_webrole" manyToMany="true" isreflexive="false" relatedEntityName="adx_websiteaccess_webrole" m2mTargetEntity="adx_webrole" m2mTargetEntityPrimaryKey="adx_webroleid" />
+    </relationships>
+  </entity>
+  <entity name="adx_webnotificationurl" displayname="Web Notification URL" etc="10016" primaryidfield="adx_webnotificationurlid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Token" name="adx_token" type="string" customfield="true" />
+      <field displayname="URL" name="adx_url" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Notification URL" name="adx_webnotificationurlid" type="guid" primaryKey="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_entityform" displayname="Entity Form" etc="10069" primaryidfield="adx_entityformid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Address Line Field Name" name="adx_geolocation_addresslinefieldname" type="string" customfield="true" />
+      <field displayname="Allow Create If Null" name="adx_recordsourceallowcreateonnull" type="bool" customfield="true" />
+      <field displayname="Append Entity ID To Query String" name="adx_redirecturlappendentityidquerystring" type="bool" customfield="true" />
+      <field displayname="Append Query String" name="adx_appendquerystring" type="bool" customfield="true" />
+      <field displayname="Associate Current Portal User" name="adx_associatecurrentportaluser" type="bool" customfield="true" />
+      <field displayname="Attach File" name="adx_attachfile" type="bool" customfield="true" />
+      <field displayname="Attach File Allow Multiple" name="adx_attachfileallowmultiple" type="bool" customfield="true" />
+      <field displayname="Attach File Extension Type Accept" name="adx_attachfileacceptextensions" type="string" customfield="true" />
+      <field displayname="Attach File Label" name="adx_attachfilelabel" type="string" customfield="true" />
+      <field displayname="Attach File MIME Type Accept" name="adx_attachfileaccept" type="string" customfield="true" />
+      <field displayname="Attach File Required" name="adx_attachfilerequired" type="bool" customfield="true" />
+      <field displayname="Attach File Required Error Message" name="adx_attachfilerequirederrormessage" type="string" customfield="true" />
+      <field displayname="Attach File Save Option" name="adx_attachfilesaveoption" type="optionsetvalue" customfield="true" />
+      <field displayname="Attach File Size Error Message" name="adx_attachfilesizeerrormessage" type="string" customfield="true" />
+      <field displayname="Attach File Storage Location" name="adx_attachfilestoragelocation" type="optionsetvalue" customfield="true" />
+      <field displayname="Attach File Type Error Message" name="adx_attachfiletypeerrormessage" type="string" customfield="true" />
+      <field displayname="Attribute Logical Name" name="adx_redirecturlquerystringattribute" type="string" customfield="true" />
+      <field displayname="Auto Generate Steps From Tabs" name="adx_autogeneratesteps" type="bool" customfield="true" />
+      <field displayname="Captcha Required" name="adx_captcharequired" type="bool" customfield="true" />
+      <field displayname="City Field Name" name="adx_geolocation_cityfieldname" type="string" customfield="true" />
+      <field displayname="Country/Region Field Name" name="adx_geolocation_countryfieldname" type="string" customfield="true" />
+      <field displayname="County Field Name" name="adx_geolocation_countyfieldname" type="string" customfield="true" />
+      <field displayname="Custom JavaScript" name="adx_registerstartupscript" type="string" customfield="true" />
+      <field displayname="Custom Query String" name="adx_redirecturlcustomquerystring" type="string" customfield="true" />
+      <field displayname="Display Map" name="adx_geolocation_displaymap" type="bool" customfield="true" />
+      <field displayname="Enable Entity Permissions" name="adx_entitypermissionsenabled" type="bool" customfield="true" />
+      <field displayname="Enable Validation Summary Links" name="adx_validationsummarylinksenabled" type="bool" customfield="true" />
+      <field displayname="Enabled" name="adx_geolocation_enabled" type="bool" customfield="true" />
+      <field updateCompare="true" displayname="Entity Form" name="adx_entityformid" type="guid" primaryKey="true" />
+      <field displayname="Entity Name" name="adx_entityname" type="string" customfield="true" />
+      <field displayname="Entity Source Type" name="adx_entitysourcetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Form Name" name="adx_formname" type="string" customfield="true" />
+      <field displayname="Formatted Address Field Name" name="adx_geolocation_formattedaddressfieldname" type="string" customfield="true" />
+      <field displayname="Hide Form on Success" name="adx_hideformonsuccess" type="bool" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Instructions" name="adx_instructions" type="string" customfield="true" />
+      <field displayname="Is Activity Party" name="adx_portaluserlookupattributeisactivityparty" type="bool" customfield="true" />
+      <field displayname="Latitude Field Name" name="adx_geolocation_latitudefieldname" type="string" customfield="true" />
+      <field displayname="Longitude Field Name" name="adx_geolocation_longitudefieldname" type="string" customfield="true" />
+      <field displayname="Make All Fields Required" name="adx_forceallfieldsrequired" type="bool" customfield="true" />
+      <field displayname="Map Type" name="adx_geolocation_maptype" type="optionsetvalue" customfield="true" />
+      <field displayname="Maximum File Size" name="adx_attachfilemaxsize" type="number" customfield="true" />
+      <field displayname="Mode" name="adx_mode" type="optionsetvalue" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Neighborhood Field Name" name="adx_geolocation_neighborhoodfieldname" type="string" customfield="true" />
+      <field displayname="Next Button CSS Class" name="adx_nextbuttoncssclass" type="string" customfield="true" />
+      <field displayname="Next Button Text" name="adx_nextbuttontext" type="string" customfield="true" />
+      <field displayname="On Success" name="adx_onsuccess" type="optionsetvalue" customfield="true" />
+      <field displayname="Populate Entity Reference Lookup Field" name="adx_populatereferenceentitylookupfield" type="bool" customfield="true" />
+      <field displayname="Previous Button CSS Class" name="adx_previousbuttoncssclass" type="string" customfield="true" />
+      <field displayname="Previous Button Text" name="adx_previousbuttontext" type="string" customfield="true" />
+      <field displayname="Primary Key Name" name="adx_primarykeyname" type="string" customfield="true" />
+      <field displayname="Provisioned Languages" name="adx_provisionedlanguages" type="number" customfield="true" />
+      <field displayname="Query String Parameter Name" name="adx_redirecturlquerystringattributeparamname" type="string" customfield="true" />
+      <field displayname="Recommended Fields Required" name="adx_recommendedfieldsrequired" type="bool" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Record ID Query String Parameter Name" name="adx_recordidquerystringparametername" type="string" customfield="true" />
+      <field displayname="Record Not Found Message" name="adx_recordnotfoundmessage" type="string" customfield="true" />
+      <field displayname="Record Source Entity Logical Name" name="adx_recordsourceentitylogicalname" type="string" customfield="true" />
+      <field displayname="Record Source Relationship Name" name="adx_referencerecordsourcerelationshipname" type="string" customfield="true" />
+      <field displayname="Redirect URL" name="adx_redirecturl" type="string" customfield="true" />
+      <field displayname="Redirect URL Query String Name" name="adx_redirecturlquerystringname" type="string" customfield="true" />
+      <field displayname="Redirect Web Page" name="adx_redirectwebpage" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Reference Entity Logical Name" name="adx_referenceentitylogicalname" type="string" customfield="true" />
+      <field displayname="Reference Entity Primary Key Logical Name" name="adx_referenceentityprimarykeylogicalname" type="string" customfield="true" />
+      <field displayname="Reference Entity ReadOnly Form Name" name="adx_referenceentityreadonlyformname" type="string" customfield="true" />
+      <field displayname="Reference Entity Relationship Name" name="adx_referenceentityrelationshipname" type="string" customfield="true" />
+      <field displayname="Reference Entity Source Type" name="adx_referenceentitysourcetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Reference Query Attribute Logical Name" name="adx_referencequeryattributelogicalname" type="string" customfield="true" />
+      <field displayname="Reference Query String Is Primary Key" name="adx_referencequerystringisprimarykey" type="bool" customfield="true" />
+      <field displayname="Reference Query String Name" name="adx_referencequerystringname" type="string" customfield="true" />
+      <field displayname="Reference Target Lookup Attribute Logical Name" name="adx_referencetargetlookupattributelogicalname" type="string" customfield="true" />
+      <field displayname="Relationship Name" name="adx_recordsourcerelationshipname" type="string" customfield="true" />
+      <field displayname="Render Web Resources Inline" name="adx_renderwebresourcesinline" type="bool" customfield="true" />
+      <field displayname="Restrict Files To Accepted Types" name="adx_attachfilerestrictaccept" type="bool" customfield="true" />
+      <field displayname="Set Entity Reference" name="adx_setentityreference" type="bool" customfield="true" />
+      <field displayname="Settings" name="adx_settings" type="string" customfield="true" />
+      <field displayname="Show Captcha for Authenticated Users" name="adx_showcaptchaforauthenticatedusers" type="bool" customfield="true" />
+      <field displayname="Show Owner Fields" name="adx_showownerfields" type="bool" customfield="true" />
+      <field displayname="Show Reference Entity ReadOnly Form" name="adx_referenceentityshowreadonlyform" type="bool" customfield="true" />
+      <field displayname="Show Unsupported Fields" name="adx_showunsupportedfields" type="bool" customfield="true" />
+      <field displayname="State or Province Field Name" name="adx_geolocation_statefieldname" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Submit Button Busy Text" name="adx_submitbuttonbusytext" type="string" customfield="true" />
+      <field displayname="Submit Button CSS Class" name="adx_submitbuttoncssclass" type="string" customfield="true" />
+      <field displayname="Submit Button Text" name="adx_submitbuttontext" type="string" customfield="true" />
+      <field displayname="Success Message" name="adx_successmessage" type="string" customfield="true" />
+      <field displayname="Tab Name" name="adx_tabname" type="string" customfield="true" />
+      <field displayname="Target Entity Portal User Lookup Attribute" name="adx_targetentityportaluserlookupattribute" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="ToolTip Enabled" name="adx_tooltipenabled" type="bool" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Validation Group" name="adx_validationgroup" type="string" customfield="true" />
+      <field displayname="Validation Summary CSS Class" name="adx_validationsummarycssclass" type="string" customfield="true" />
+      <field displayname="Validation Summary Header Text" name="adx_validationsummaryheadertext" type="string" customfield="true" />
+      <field displayname="Validation Summary Link Text" name="adx_validationsummarylinktext" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+      <field displayname="Zip/Postal Code Field Name" name="adx_geolocation_postalcodefieldname" type="string" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_entityformmetadata" displayname="Entity Form Metadata" etc="10070" primaryidfield="adx_entityformmetadataid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Add Description" name="adx_adddescription" type="bool" customfield="true" />
+      <field displayname="Attribute Logical Name" name="adx_attributelogicalname" type="string" customfield="true" />
+      <field displayname="Constant Sum Maximum Total" name="adx_constantsummaximumtotal" type="number" customfield="true" />
+      <field displayname="Constant Sum Minimum Total" name="adx_constantsumminimumtotal" type="number" customfield="true" />
+      <field displayname="Constant Sum Validation Error Message" name="adx_constantsumvalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Control Style" name="adx_controlstyle" type="optionsetvalue" customfield="true" />
+      <field displayname="CSS Class" name="adx_cssclass" type="string" customfield="true" />
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Entity Form" name="adx_entityform" type="entityreference" lookupType="adx_entityform" customfield="true" />
+      <field displayname="Entity Form for Create" name="adx_entityformforcreate" type="entityreference" lookupType="adx_entityform" customfield="true" />
+      <field updateCompare="true" displayname="Entity Form Metadata" name="adx_entityformmetadataid" type="guid" primaryKey="true" />
+      <field displayname="Field is Required" name="adx_fieldisrequired" type="bool" customfield="true" />
+      <field displayname="Geolocation Validator Error Message" name="adx_geolocationvalidatorerrormessage" type="string" customfield="true" />
+      <field displayname="Group Name" name="adx_groupname" type="string" customfield="true" />
+      <field displayname="Ignore Default Value" name="adx_ignoredefaultvalue" type="bool" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Label" name="adx_label" type="string" customfield="true" />
+      <field displayname="Multiple Choice Max Selected Count" name="adx_maxmultiplechoiceselectedcount" type="number" customfield="true" />
+      <field displayname="Multiple Choice Minimum Required Selected Count" name="adx_minmultiplechoiceselectedcount" type="number" customfield="true" />
+      <field displayname="Multiple Choice Validation Error Message" name="adx_multiplechoicevalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Notes Settings" name="adx_notes_settings" type="string" customfield="true" />
+      <field displayname="On Save From Attribute" name="adx_onsavefromattribute" type="string" customfield="true" />
+      <field displayname="On Save Type" name="adx_onsavetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Position" name="adx_descriptionposition" type="optionsetvalue" customfield="true" />
+      <field displayname="Prepopulate From Attribute" name="adx_prepopulatefromattribute" type="string" customfield="true" />
+      <field displayname="Prepopulate Type" name="adx_prepopulatetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Prepopulate Value" name="adx_prepopulatevalue" type="string" customfield="true" />
+      <field displayname="Provisioned Languages" name="adx_provisionedlanguages" type="number" customfield="true" />
+      <field displayname="Randomize Option Set Values" name="adx_randomizeoptionsetvalues" type="bool" customfield="true" />
+      <field displayname="Range Validation Error Message" name="adx_rangevalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Rank Order No Ties Validation Error Message" name="adx_rankordernotiesvalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Regular Expression Validation Error Message" name="adx_validationregularexpressionerrormessage" type="string" customfield="true" />
+      <field displayname="Required Field Validation Error Message" name="adx_requiredfieldvalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Section Name" name="adx_sectionname" type="string" customfield="true" />
+      <field displayname="Set Value On Save" name="adx_setvalueonsave" type="bool" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Subgrid Name" name="adx_subgrid_name" type="string" customfield="true" />
+      <field displayname="Subgrid Settings" name="adx_subgrid_settings" type="string" customfield="true" />
+      <field displayname="Tab Name" name="adx_tabname" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Timeline Settings" name="adx_timeline_settings" type="string" customfield="true" />
+      <field displayname="Type" name="adx_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Use Attribute's Description Property" name="adx_useattributedescriptionproperty" type="bool" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Validation Error Message" name="adx_validationerrormessage" type="string" customfield="true" />
+      <field displayname="Validation Regular Expression" name="adx_validationregularexpression" type="string" customfield="true" />
+      <field displayname="Value" name="adx_onsavevalue" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_webformmetadata" displayname="Web Form Metadata" etc="10073" primaryidfield="adx_webformmetadataid" primarynamefield="adx_attributelogicalname" disableplugins="true">
+    <fields>
+      <field displayname="Add Description" name="adx_adddescription" type="bool" customfield="true" />
+      <field displayname="Attribute Logical Name" name="adx_attributelogicalname" type="string" customfield="true" />
+      <field displayname="Constant Sum Maximum Total" name="adx_constantsummaximumtotal" type="number" customfield="true" />
+      <field displayname="Constant Sum Minimum Total" name="adx_constantsumminimumtotal" type="number" customfield="true" />
+      <field displayname="Constant Sum Validation Error Message" name="adx_constantsumvalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Control Style" name="adx_controlstyle" type="optionsetvalue" customfield="true" />
+      <field displayname="Create Invoice on Payment" name="adx_purchasecreateinvoiceonpayment" type="bool" customfield="true" />
+      <field displayname="CSS Class" name="adx_cssclass" type="string" customfield="true" />
+      <field displayname="Description" name="adx_description" type="string" customfield="true" />
+      <field displayname="Entity Form for Create" name="adx_entityformforcreate" type="entityreference" lookupType="adx_webform" customfield="true" />
+      <field displayname="Field is Required" name="adx_fieldisrequired" type="bool" customfield="true" />
+      <field displayname="Fulfill Order on Payment" name="adx_purchasefulfillorderonpayment" type="bool" customfield="true" />
+      <field displayname="Geolocation Validator Error Message" name="adx_geolocationvalidatorerrormessage" type="string" customfield="true" />
+      <field displayname="Group Name" name="adx_groupname" type="string" customfield="true" />
+      <field displayname="Ignore Default Value" name="adx_ignoredefaultvalue" type="bool" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Label" name="adx_label" type="string" customfield="true" />
+      <field displayname="Line Item Description Attribute Name" name="adx_purchaselineitemdescriptionattribute" type="string" customfield="true" />
+      <field displayname="Line Item Instructions Attribute Name" name="adx_purchaselineiteminstructionsattribute" type="string" customfield="true" />
+      <field displayname="Line Item Order Attribute Name" name="adx_purchaselineitemorderattribute" type="string" customfield="true" />
+      <field displayname="Line Item Product Attribute Name" name="adx_purchaselineitemproductattribute" type="string" customfield="true" />
+      <field displayname="Line Item Quantity Attribute Name" name="adx_purchaselineitemquantityattribute" type="string" customfield="true" />
+      <field displayname="Line Item Relationship Name" name="adx_purchaselineitemrelationship" type="string" customfield="true" />
+      <field displayname="Line Item Required Attribute Name" name="adx_purchaselineitemrequiredattribute" type="string" customfield="true" />
+      <field displayname="Line Item UoM Attribute Name" name="adx_purchaselineitemuomattribute" type="string" customfield="true" />
+      <field displayname="Multiple Choice Max Selected Count" name="adx_maxmultiplechoiceselectedcount" type="number" customfield="true" />
+      <field displayname="Multiple Choice Minimum Required Selected Count" name="adx_minmultiplechoiceselectedcount" type="number" customfield="true" />
+      <field displayname="Multiple Choice Validation Error Message" name="adx_multiplechoicevalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Notes Settings" name="adx_notes_settings" type="string" customfield="true" />
+      <field displayname="On Save From Attribute" name="adx_onsavefromattribute" type="string" customfield="true" />
+      <field displayname="On Save Type" name="adx_onsavetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Optional Products Relationship Name" name="adx_purchaseoptionalproductsrelationship" type="string" customfield="true" />
+      <field displayname="Position" name="adx_descriptionposition" type="optionsetvalue" customfield="true" />
+      <field displayname="Prepopulate From Attribute" name="adx_prepopulatefromattribute" type="string" customfield="true" />
+      <field displayname="Prepopulate Type" name="adx_prepopulatetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Prepopulate Value" name="adx_prepopulatevalue" type="string" customfield="true" />
+      <field displayname="Provisioned Languages" name="adx_provisionedlanguages" type="number" customfield="true" />
+      <field displayname="Quote Name" name="adx_purchasequotename" type="string" customfield="true" />
+      <field displayname="Randomize Option Set Values" name="adx_randomizeoptionsetvalues" type="bool" customfield="true" />
+      <field displayname="Range Validation Error Message" name="adx_rangevalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Rank Order No Ties Validation Error Message" name="adx_rankordernotiesvalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Regular Expression Validation Error Message" name="adx_validationregularexpressionerrormessage" type="string" customfield="true" />
+      <field displayname="Required Field Validation Error Message" name="adx_requiredfieldvalidationerrormessage" type="string" customfield="true" />
+      <field displayname="Required Products Relationship Name" name="adx_purchaserequiredproductsrelationship" type="string" customfield="true" />
+      <field displayname="Requires Shipping" name="adx_purchaserequiresshipping" type="bool" customfield="true" />
+      <field displayname="Section Name" name="adx_sectionname" type="string" customfield="true" />
+      <field displayname="Set Value On Save" name="adx_setvalueonsave" type="bool" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Subgrid Name" name="adx_subgrid_name" type="string" customfield="true" />
+      <field displayname="Subgrid Settings" name="adx_subgrid_settings" type="string" customfield="true" />
+      <field displayname="Tab Name" name="adx_tabname" type="string" customfield="true" />
+      <field displayname="Target Entity Invoice Relationship Name" name="adx_purchasetargetentityinvoicerelationship" type="string" customfield="true" />
+      <field displayname="Target Entity Order Relationship Name" name="adx_purchasetargetentityorderrelationship" type="string" customfield="true" />
+      <field displayname="Target Entity Relationship Name" name="adx_purchasetargetentityrelationship" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Timeline Settings" name="adx_timeline_settings" type="string" customfield="true" />
+      <field displayname="Type" name="adx_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Use Attribute's Description Property" name="adx_useattributedescriptionproperty" type="bool" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Validation Error Message" name="adx_validationerrormessage" type="string" customfield="true" />
+      <field displayname="Validation Regular Expression" name="adx_validationregularexpression" type="string" customfield="true" />
+      <field displayname="Value" name="adx_onsavevalue" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Form Metadata" name="adx_webformmetadataid" type="guid" primaryKey="true" />
+      <field displayname="Web Form Step" name="adx_webformstep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_entitylist" displayname="Entity List" etc="10071" primaryidfield="adx_entitylistid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Apply Button Label" name="adx_filter_applybuttonlabel" type="string" customfield="true" />
+      <field displayname="Calendar Initial Date" name="adx_calendar_initialdate" type="datetime" customfield="true" />
+      <field displayname="Calendar Initial View" name="adx_calendar_initialview" type="optionsetvalue" customfield="true" />
+      <field displayname="Calendar Style" name="adx_calendar_style" type="optionsetvalue" customfield="true" />
+      <field displayname="Calendar View Enabled" name="adx_calendar_enabled" type="bool" customfield="true" />
+      <field displayname="Create Button Label" name="adx_createbuttonlabel" type="string" customfield="true" />
+      <field displayname="Credentials" name="adx_map_credentials" type="string" customfield="true" />
+      <field displayname="Custom JavaScript" name="adx_registerstartupscript" type="string" customfield="true" />
+      <field displayname="Description Field Name" name="adx_calendar_descriptionfieldname" type="string" customfield="true" />
+      <field displayname="Details Button Label" name="adx_detailsbuttonlabel" type="string" customfield="true" />
+      <field displayname="Display Time Zone" name="adx_calendar_timezone" type="number" customfield="true" />
+      <field displayname="Distance Units" name="adx_map_distanceunits" type="optionsetvalue" customfield="true" />
+      <field displayname="Distance Values" name="adx_map_distancevalues" type="string" customfield="true" />
+      <field displayname="Empty List Text" name="adx_emptylisttext" type="string" customfield="true" />
+      <field displayname="Enable Entity Permissions" name="adx_entitypermissionsenabled" type="bool" customfield="true" />
+      <field displayname="End Date Field Name" name="adx_calendar_enddatefieldname" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Entity List" name="adx_entitylistid" type="guid" primaryKey="true" />
+      <field displayname="Entity Name" name="adx_entityname" type="string" customfield="true" />
+      <field displayname="Filter Account Attribute" name="adx_filteraccount" type="string" customfield="true" />
+      <field displayname="Filter Definition" name="adx_filter_definition" type="string" customfield="true" />
+      <field displayname="Filter Enabled" name="adx_filter_enabled" type="bool" customfield="true" />
+      <field displayname="Filter Orientation" name="adx_filter_orientation" type="optionsetvalue" customfield="true" />
+      <field displayname="Filter Portal User Attribute" name="adx_filterportaluser" type="string" customfield="true" />
+      <field displayname="Filter Website Attribute" name="adx_filterwebsite" type="string" customfield="true" />
+      <field displayname="ID Query String Parameter Name" name="adx_idquerystringparametername" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Infobox Description Field Name" name="adx_map_infoboxdescriptionfieldname" type="string" customfield="true" />
+      <field displayname="Infobox Offset x" name="adx_map_infoboxoffsetx" type="number" customfield="true" />
+      <field displayname="Infobox Offset y" name="adx_map_infoboxoffsety" type="number" customfield="true" />
+      <field displayname="Infobox Title Field Name" name="adx_map_infoboxtitlefieldname" type="string" customfield="true" />
+      <field displayname="Is All Day Field Name" name="adx_calendar_alldayfieldname" type="string" customfield="true" />
+      <field displayname="Key" name="adx_key" type="string" customfield="true" />
+      <field displayname="Latitude" name="adx_map_latitude" type="float" customfield="true" />
+      <field displayname="Latitude Field Name" name="adx_map_latitudefieldname" type="string" customfield="true" />
+      <field displayname="Location Field Name" name="adx_calendar_locationfieldname" type="string" customfield="true" />
+      <field displayname="Longitude" name="adx_map_longitude" type="float" customfield="true" />
+      <field displayname="Longitude Field Name" name="adx_map_longitudefieldname" type="string" customfield="true" />
+      <field displayname="Map Enabled" name="adx_map_enabled" type="bool" customfield="true" />
+      <field displayname="Map Type" name="adx_map_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="OData Enabled" name="adx_odata_enabled" type="bool" customfield="true" />
+      <field displayname="OData Entity Set Name" name="adx_odata_entitysetname" type="string" customfield="true" />
+      <field displayname="OData Entity Type Name" name="adx_odata_entitytypename" type="string" customfield="true" />
+      <field displayname="OData View" name="adx_odata_view" type="string" customfield="true" />
+      <field displayname="Organizer Field Name" name="adx_calendar_organizerfieldname" type="string" customfield="true" />
+      <field displayname="Page Size" name="adx_pagesize" type="number" customfield="true" />
+      <field displayname="Pin Image Height" name="adx_map_pushpinheight" type="number" customfield="true" />
+      <field displayname="Pin Image URL" name="adx_map_pushpinurl" type="string" customfield="true" />
+      <field displayname="Pin Image Width" name="adx_map_pushpinwidth" type="number" customfield="true" />
+      <field displayname="Primary Key Name" name="adx_primarykeyname" type="string" customfield="true" />
+      <field displayname="Provisioned Languages" name="adx_provisionedlanguages" type="number" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="REST URL" name="adx_map_resturl" type="string" customfield="true" />
+      <field displayname="Search Enabled" name="adx_searchenabled" type="bool" customfield="true" />
+      <field displayname="Search Placeholder Text" name="adx_searchplaceholdertext" type="string" customfield="true" />
+      <field displayname="Search Tooltip Text" name="adx_searchtooltiptext" type="string" customfield="true" />
+      <field displayname="Settings" name="adx_settings" type="string" customfield="true" />
+      <field displayname="Start Date Field Name" name="adx_calendar_startdatefieldname" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Summary Field Name" name="adx_calendar_summaryfieldname" type="string" customfield="true" />
+      <field displayname="Time Zone Display Mode" name="adx_calendar_timezonemode" type="optionsetvalue" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="View" name="adx_view" type="string" customfield="true" />
+      <field displayname="Views" name="adx_views" type="string" customfield="true" />
+      <field displayname="Web Page for Create" name="adx_webpageforcreate" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Web Page for Details View" name="adx_webpagefordetailsview" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+      <field displayname="Zoom" name="adx_map_zoom" type="number" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_webform" displayname="Web Form" etc="10072" primaryidfield="adx_webformid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Authentication Required" name="adx_authenticationrequired" type="bool" customfield="true" />
+      <field displayname="Display Save Changes Warning On Close" name="adx_savechangeswarningonclose" type="bool" customfield="true" />
+      <field displayname="Edit Existing Record Permitted" name="adx_editexistingrecordpermitted" type="bool" customfield="true" />
+      <field displayname="Edit Expired Message" name="adx_editexpiredmessage" type="string" customfield="true" />
+      <field displayname="Edit Expired State Code" name="adx_editexpiredstatecode" type="number" customfield="true" />
+      <field displayname="Edit Expired Status Code" name="adx_editexpiredstatuscode" type="number" customfield="true" />
+      <field displayname="Edit Not Permitted Message" name="adx_editnotpermittedmessage" type="string" customfield="true" />
+      <field displayname="Enabled" name="adx_progressindicatorenabled" type="bool" customfield="true" />
+      <field displayname="Ignore Last Step In Progress Count" name="adx_progressindicatorignorelaststep" type="bool" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Multiple Records Per User Permitted" name="adx_multiplerecordsperuserpermitted" type="bool" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Position" name="adx_progressindicatorposition" type="optionsetvalue" customfield="true" />
+      <field displayname="Prepend Step Number to Step Title" name="adx_progressindicatorprependstepnum" type="bool" customfield="true" />
+      <field displayname="Provisioned Languages" name="adx_provisionedlanguages" type="number" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Save Changes Warning Message" name="adx_savechangeswarningmessage" type="string" customfield="true" />
+      <field displayname="Start New Session On Load" name="adx_startnewsessiononload" type="bool" customfield="true" />
+      <field displayname="Start Step" name="adx_startstep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Type" name="adx_progressindicatortype" type="optionsetvalue" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field updateCompare="true" displayname="Web Form" name="adx_webformid" type="guid" primaryKey="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_webformstep" displayname="Web Form Step" etc="10075" primaryidfield="adx_webformstepid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Accept" name="adx_accept" type="string" customfield="true" />
+      <field displayname="Address Line Field Name" name="adx_geolocation_addresslinefieldname" type="string" customfield="true" />
+      <field displayname="Allow Multiple Files" name="adx_allowmultiplefiles" type="bool" customfield="true" />
+      <field displayname="Append Entity ID To Query String" name="adx_redirecturlappendentityidquerystring" type="bool" customfield="true" />
+      <field displayname="Append Query String" name="adx_appendquerystring" type="bool" customfield="true" />
+      <field displayname="Associate Current Portal User" name="adx_associatecurrentportaluser" type="bool" customfield="true" />
+      <field displayname="Attach File" name="adx_attachfile" type="bool" customfield="true" />
+      <field displayname="Attach File Label" name="adx_attachfilelabel" type="string" customfield="true" />
+      <field displayname="Attach File Maximum Size" name="adx_attachfilemaxsize" type="number" customfield="true" />
+      <field displayname="Attach File Required" name="adx_attachfilerequired" type="bool" customfield="true" />
+      <field displayname="Attach File Required Error Message" name="adx_attachfilerequirederrormessage" type="string" customfield="true" />
+      <field displayname="Attach File Restrict Accept" name="adx_attachfilerestrictaccept" type="bool" customfield="true" />
+      <field displayname="Attach File Size Error Message" name="adx_attachfilesizeerrormessage" type="string" customfield="true" />
+      <field displayname="Attach File Storage Location" name="adx_attachfilestoragelocation" type="optionsetvalue" customfield="true" />
+      <field displayname="Attach File Type Error Message" name="adx_attachfiletypeerrormessage" type="string" customfield="true" />
+      <field displayname="Attribute Logical Name" name="adx_redirecturlquerystringattribute" type="string" customfield="true" />
+      <field displayname="Auto Generate Steps From Tabs" name="adx_autogeneratesteps" type="bool" customfield="true" />
+      <field displayname="Auto Number Attribute Logical Name" name="adx_autonumberattributelogicalname" type="string" customfield="true" />
+      <field displayname="Auto Number Definition Name" name="adx_autonumberdefinitionname" type="string" customfield="true" />
+      <field displayname="Captcha Required" name="adx_captcharequired" type="bool" customfield="true" />
+      <field displayname="City Field Name" name="adx_geolocation_cityfieldname" type="string" customfield="true" />
+      <field displayname="Condition" name="adx_condition" type="string" customfield="true" />
+      <field displayname="Condition Default Next Step" name="adx_conditiondefaultnextstep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+      <field displayname="Country/Region Field Name" name="adx_geolocation_countryfieldname" type="string" customfield="true" />
+      <field displayname="County Field Name" name="adx_geolocation_countyfieldname" type="string" customfield="true" />
+      <field displayname="Create Auto Number" name="adx_createautonumber" type="bool" customfield="true" />
+      <field displayname="Custom JavaScript" name="adx_registerstartupscript" type="string" customfield="true" />
+      <field displayname="Custom Query String" name="adx_redirecturlcustomquerystring" type="string" customfield="true" />
+      <field displayname="Display Map" name="adx_geolocation_displaymap" type="bool" customfield="true" />
+      <field displayname="Edit Existing Record Permitted" name="adx_editexistingrecordpermitted" type="bool" customfield="true" />
+      <field displayname="Edit Expired Message" name="adx_editexpiredmessage" type="string" customfield="true" />
+      <field displayname="Edit Expired State Code" name="adx_editexpiredstatecode" type="number" customfield="true" />
+      <field displayname="Edit Expired Status Reason" name="adx_editexpiredstatusreason" type="number" customfield="true" />
+      <field displayname="Edit Not Permitted Message" name="adx_editnotpermittedmessage" type="string" customfield="true" />
+      <field displayname="Enable Entity Permissions" name="adx_entitypermissionsenabled" type="bool" customfield="true" />
+      <field displayname="Enable Validation Summary Links" name="adx_validationsummarylinksenabled" type="bool" customfield="true" />
+      <field displayname="Enabled" name="adx_geolocation_enabled" type="bool" customfield="true" />
+      <field displayname="Entity Source Step" name="adx_entitysourcestep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+      <field displayname="Entity Source Type" name="adx_entitysourcetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Form Name" name="adx_formname" type="string" customfield="true" />
+      <field displayname="Formatted Address Field Name" name="adx_geolocation_formattedaddressfieldname" type="string" customfield="true" />
+      <field displayname="Hide Form on Success" name="adx_hideformonsuccess" type="bool" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Instructions" name="adx_instructions" type="string" customfield="true" />
+      <field displayname="Is Activity Party" name="adx_portaluserlookupattributeisactivityparty" type="bool" customfield="true" />
+      <field displayname="Latitude Field Name" name="adx_geolocation_latitudefieldname" type="string" customfield="true" />
+      <field displayname="Load Event Key Name" name="adx_loadeventkeyname" type="string" customfield="true" />
+      <field displayname="Log User" name="adx_loguser" type="bool" customfield="true" />
+      <field displayname="Longitude Field Name" name="adx_geolocation_longitudefieldname" type="string" customfield="true" />
+      <field displayname="Make All Fields Required" name="adx_forceallfieldsrequired" type="bool" customfield="true" />
+      <field displayname="Map Type" name="adx_geolocation_maptype" type="optionsetvalue" customfield="true" />
+      <field displayname="Mode" name="adx_mode" type="optionsetvalue" customfield="true" />
+      <field displayname="Move Previous Event Key Name" name="adx_movepreviouseventkeyname" type="string" customfield="true" />
+      <field displayname="Move Previous Permitted" name="adx_movepreviouspermitted" type="bool" customfield="true" />
+      <field displayname="Multiple Records Per User Permitted" name="adx_multiplerecordsperuserpermitted" type="bool" customfield="true" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Neighborhood Field Name" name="adx_geolocation_neighborhoodfieldname" type="string" customfield="true" />
+      <field displayname="Next Button CSS Class" name="adx_nextbuttoncssclass" type="string" customfield="true" />
+      <field displayname="Next Button Text" name="adx_nextbuttontext" type="string" customfield="true" />
+      <field displayname="Next Step" name="adx_nextstep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+      <field displayname="Populate Entity Reference Lookup Field" name="adx_populatereferenceentitylookupfield" type="bool" customfield="true" />
+      <field displayname="Post Back URL" name="adx_postbackurl" type="string" customfield="true" />
+      <field displayname="Previous Button CSS Class" name="adx_previousbuttoncssclass" type="string" customfield="true" />
+      <field displayname="Previous Button Text" name="adx_previousbuttontext" type="string" customfield="true" />
+      <field displayname="Previous Step" name="adx_previousstep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+      <field displayname="Primary Key Attribute Logical Name" name="adx_primarykeyattributelogicalname" type="string" customfield="true" />
+      <field displayname="Primary Key Query String Parameter Name" name="adx_primarykeyquerystringparametername" type="string" customfield="true" />
+      <field displayname="Provisioned Languages" name="adx_provisionedlanguages" type="number" customfield="true" />
+      <field displayname="Query String Parameter Name" name="adx_redirecturlquerystringattributeparamname" type="string" customfield="true" />
+      <field displayname="Recommended Fields Required" name="adx_recommendedfieldsrequired" type="bool" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Record Not Found Message" name="adx_recordnotfoundmessage" type="string" customfield="true" />
+      <field displayname="Record Source Relationship Name" name="adx_referencerecordsourcerelationshipname" type="string" customfield="true" />
+      <field displayname="Redirect URL" name="adx_redirecturl" type="string" customfield="true" />
+      <field displayname="Redirect URL Query String Name" name="adx_redirecturlquerystringname" type="string" customfield="true" />
+      <field displayname="Redirect Web Page" name="adx_redirectwebpage" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Reference Entity Logical Name" name="adx_referenceentitylogicalname" type="string" customfield="true" />
+      <field displayname="Reference Entity Primary Key Logical Name" name="adx_referenceentityprimarykeylogicalname" type="string" customfield="true" />
+      <field displayname="Reference Entity ReadOnly Form Name" name="adx_referenceentityreadonlyformname" type="string" customfield="true" />
+      <field displayname="Reference Entity Relationship Name" name="adx_referenceentityrelationshipname" type="string" customfield="true" />
+      <field displayname="Reference Entity Source Type" name="adx_referenceentitysourcetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Reference Entity Step" name="adx_referenceentitystep" type="entityreference" lookupType="adx_webformstep" customfield="true" />
+      <field displayname="Reference Query Attribute Logical Name" name="adx_referencequeryattributelogicalname" type="string" customfield="true" />
+      <field displayname="Reference Query String Is Primary Key" name="adx_referencequerystringisprimarykey" type="bool" customfield="true" />
+      <field displayname="Reference Query String Name" name="adx_referencequerystringname" type="string" customfield="true" />
+      <field displayname="Reference Source Entity Logical Name" name="adx_referencesourceentitylogicalname" type="string" customfield="true" />
+      <field displayname="Reference Target Lookup Attribute Logical Name" name="adx_referencetargetlookupattributelogicalname" type="string" customfield="true" />
+      <field displayname="Relationship Name" name="adx_recordsourcerelationshipname" type="string" customfield="true" />
+      <field displayname="Render Web Resources Inline" name="adx_renderwebresourcesinline" type="bool" customfield="true" />
+      <field displayname="Saved Event Key Name" name="adx_savedeventkeyname" type="string" customfield="true" />
+      <field displayname="Saving Event Key Name" name="adx_savingeventkeyname" type="string" customfield="true" />
+      <field displayname="Set Entity Reference" name="adx_setentityreference" type="bool" customfield="true" />
+      <field displayname="Settings" name="adx_settings" type="string" customfield="true" />
+      <field displayname="Show Captcha for authenticated users" name="adx_showcaptchaforauthenticatedusers" type="bool" customfield="true" />
+      <field displayname="Show Owner Fields" name="adx_showownerfields" type="bool" customfield="true" />
+      <field displayname="Show Reference Entity ReadOnly Form" name="adx_referenceentityshowreadonlyform" type="bool" customfield="true" />
+      <field displayname="Show Unsupported Fields" name="adx_showunsupportedfields" type="bool" customfield="true" />
+      <field displayname="State or Province Field Name" name="adx_geolocation_statefieldname" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Submit Button Busy Text" name="adx_submitbuttonbusytext" type="string" customfield="true" />
+      <field displayname="Submit Button CSS Class" name="adx_submitbuttoncssclass" type="string" customfield="true" />
+      <field displayname="Submit Button Text" name="adx_submitbuttontext" type="string" customfield="true" />
+      <field displayname="Submit Event Key Name" name="adx_submiteventkeyname" type="string" customfield="true" />
+      <field displayname="Success Message" name="adx_successmessage" type="string" customfield="true" />
+      <field displayname="Tab Name" name="adx_tabname" type="string" customfield="true" />
+      <field displayname="Target Entity Logical Name" name="adx_targetentitylogicalname" type="string" customfield="true" />
+      <field displayname="Target Entity Portal User Lookup Attribute" name="adx_targetentityportaluserlookupattribute" type="string" customfield="true" />
+      <field displayname="Target Entity Primary Key Logical Name" name="adx_targetentityprimarykeylogicalname" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Title" name="adx_title" type="string" customfield="true" />
+      <field displayname="ToolTip Enabled" name="adx_tooltipenabled" type="bool" customfield="true" />
+      <field displayname="Type" name="adx_type" type="optionsetvalue" customfield="true" />
+      <field displayname="User Control Path" name="adx_usercontrolpath" type="string" customfield="true" />
+      <field displayname="User Control Title" name="adx_usercontroltitle" type="string" customfield="true" />
+      <field displayname="User Host Address Attribute Logical Name" name="adx_userhostaddressattributelogicalname" type="string" customfield="true" />
+      <field displayname="User Identity Name Attribute Logical Name" name="adx_useridentitynameattributelogicalname" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Validation Group" name="adx_validationgroup" type="string" customfield="true" />
+      <field displayname="Validation Summary CSS Class" name="adx_validationsummarycssclass" type="string" customfield="true" />
+      <field displayname="Validation Summary Header Text" name="adx_validationsummaryheadertext" type="string" customfield="true" />
+      <field displayname="Validation Summary Link Text" name="adx_validationsummarylinktext" type="string" customfield="true" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Form" name="adx_webform" type="entityreference" lookupType="adx_webform" customfield="true" />
+      <field updateCompare="true" displayname="Web Form Step" name="adx_webformstepid" type="guid" primaryKey="true" />
+      <field displayname="Zip/Postal Code Field Name" name="adx_geolocation_postalcodefieldname" type="string" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="annotation" displayname="Note" etc="5" primaryidfield="annotationid" primarynamefield="subject" disableplugins="true">
+    <fields>
+      <field displayname="Description" name="notetext" type="string" />
+      <field displayname="Document" name="documentbody" type="string" />
+      <field displayname="File Name" name="filename" type="string" />
+      <field displayname="File Size (Bytes)" name="filesize" type="number" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Is Document" name="isdocument" type="bool" />
+      <field displayname="Language ID" name="langid" type="string" />
+      <field displayname="Mime Type" name="mimetype" type="string" />
+      <field displayname="Modified By (Delegate)" name="modifiedonbehalfby" type="entityreference" lookupType="systemuser" />
+      <field updateCompare="true" displayname="Note" name="annotationid" type="guid" primaryKey="true" />
+      <field displayname="Object Type " name="objecttypecode" type="string" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Regarding" name="objectid" type="entityreference" lookupType="account|adx_ad|adx_adplacement|adx_alertsubscription|adx_blog|adx_blogpost|adx_casedeflection|adx_communityforum|adx_communityforumaccesspermission|adx_communityforumannouncement|adx_communityforumpost|adx_communityforumthread|adx_contentaccesslevel|adx_dealregistrationrequest|adx_entitypermission|adx_idea|adx_ideaforum|adx_invitation|adx_inviteredemption|adx_poll|adx_polloption|adx_pollplacement|adx_portalcomment|adx_publishingstatetransitionrule|adx_redirect|adx_shortcut|adx_sitesetting|adx_webfile|adx_weblink|adx_webnotificationurl|adx_webpage|adx_webrole|adx_website|appointment|bookableresource|bookableresourcebooking|bookableresourcebookingheader|bookableresourcecategoryassn|bookableresourcecharacteristic|bookableresourcegroup|bulkoperation|calendar|campaign|campaignactivity|campaignresponse|channelaccessprofile|channelaccessprofilerule|channelaccessprofileruleitem|commitment|competitor|contact|contract|contractdetail|convertrule|duplicaterule|email|emailserverprofile|equipment|fax|goal|invoice|kbarticle|knowledgearticle|knowledgebaserecord|lead|letter|mailbox|msdyn_postalbum|orderclose|phonecall|product|recurringappointmentmaster|resourcespec|routingrule|routingruleitem|salesorder|service|serviceappointment|sharepointdocument|sla|socialactivity|task|workflow" />
+      <field displayname="Step Id" name="stepid" type="string" />
+      <field displayname="Title" name="subject" type="string" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_ad" displayname="Ad" etc="10025" primaryidfield="adx_adid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field updateCompare="true" displayname="Ad" name="adx_adid" type="guid" primaryKey="true" />
+      <field displayname="Copy" name="adx_copy" type="string" customfield="true" />
+      <field displayname="Expiration Date" name="adx_expirationdate" type="datetime" customfield="true" />
+      <field displayname="Image Alt Text" name="adx_imagealttext" type="string" customfield="true" />
+      <field displayname="Image Height" name="adx_imageheight" type="number" customfield="true" />
+      <field displayname="image URL" name="adx_image" type="string" customfield="true" />
+      <field displayname="Image Width" name="adx_imagewidth" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Open In New Window" name="adx_openinnewwindow" type="bool" customfield="true" />
+      <field displayname="Publishing State" name="adx_publishingstateid" type="entityreference" lookupType="adx_publishingstate" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Redirect URL" name="adx_url" type="string" customfield="true" />
+      <field displayname="Redirect Web File" name="adx_redirectwebfileid" type="entityreference" lookupType="adx_webfile" customfield="true" />
+      <field displayname="Release Date" name="adx_releasedate" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="Title" name="adx_title" type="string" customfield="true" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web File" name="adx_webfileid" type="entityreference" lookupType="adx_webfile" customfield="true" />
+      <field displayname="Web Template" name="adx_webtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+      <field displayname="WebPage" name="adx_webpageid" type="entityreference" lookupType="adx_webpage" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_adplacement" displayname="Ad Placement" etc="10026" primaryidfield="adx_adplacementid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field updateCompare="true" displayname="Ad Placement" name="adx_adplacementid" type="guid" primaryKey="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Template" name="adx_webtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_adplacement_ad" manyToMany="true" isreflexive="false" relatedEntityName="adx_adplacement_ad" m2mTargetEntity="adx_ad" m2mTargetEntityPrimaryKey="adx_adid" />
+    </relationships>
+  </entity>
+  <entity name="adx_poll" displayname="Poll" etc="10034" primaryidfield="adx_pollid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Active" name="adx_active" type="bool" customfield="true" />
+      <field displayname="Close Voting Date" name="adx_closevotingdate" type="datetime" customfield="true" />
+      <field displayname="Expiration Date" name="adx_expirationdate" type="datetime" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Poll" name="adx_pollid" type="guid" primaryKey="true" />
+      <field displayname="Question" name="adx_question" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Release Date" name="adx_releasedate" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Submit Button Label" name="adx_submitbuttonlabel" type="string" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Template" name="adx_webtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_polloption" displayname="Poll Option" etc="10035" primaryidfield="adx_polloptionid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Display Order" name="adx_displayorder" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field displayname="Poll" name="adx_pollid" type="entityreference" lookupType="adx_poll" customfield="true" />
+      <field updateCompare="true" displayname="Poll Option" name="adx_polloptionid" type="guid" primaryKey="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Response" name="adx_answer" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Votes" name="adx_votes" type="number" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="adx_pollplacement" displayname="Poll Placement" etc="10036" primaryidfield="adx_pollplacementid" primarynamefield="adx_name" disableplugins="true">
+    <fields>
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Name" name="adx_name" type="string" customfield="true" />
+      <field updateCompare="true" displayname="Poll Placement" name="adx_pollplacementid" type="guid" primaryKey="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+      <field displayname="Web Template" name="adx_webtemplateid" type="entityreference" lookupType="adx_webtemplate" customfield="true" />
+      <field displayname="Website" name="adx_websiteid" type="entityreference" lookupType="adx_website" customfield="true" />
+    </fields>
+    <relationships>
+      <relationship name="adx_pollplacement_poll" manyToMany="true" isreflexive="false" relatedEntityName="adx_pollplacement_poll" m2mTargetEntity="adx_poll" m2mTargetEntityPrimaryKey="adx_pollid" />
+    </relationships>
+  </entity>
+</entities>

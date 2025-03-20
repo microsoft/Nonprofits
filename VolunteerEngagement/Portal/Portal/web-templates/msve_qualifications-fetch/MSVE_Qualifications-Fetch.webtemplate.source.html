@@ -1,0 +1,15 @@
+{% fetch qualifications %}
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+        <entity name="msnfp_engagementopportunityparticipantqual">
+            <attribute name="msnfp_engagementopportunityparticipantqualid"/>
+            <attribute name="msnfp_description"/>
+            <link-entity name="msnfp_engagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" link-type="inner" alias="ag">
+                <link-entity name="msnfp_publicengagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" link-type="inner" alias="ah">
+                    <filter type="and">
+                        <condition attribute="msnfp_publicengagementopportunityid" operator="eq" uiname="Invasive Species Removal" uitype="msnfp_publicengagementopportunity" value="{7E25EFD1-A4FF-EB11-94EF-0022481C1637}"/>
+                    </filter>
+                </link-entity>
+            </link-entity>
+        </entity>
+    </fetch>
+{% endfetchxml %}

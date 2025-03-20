@@ -1,0 +1,15 @@
+- adx_managecontentsnippets: true
+  adx_managesitemarkers: true
+  adx_manageweblinksets: true
+  adx_name: Autorisations administratives pour le portail de base
+  adx_previewunpublishedentities: true
+  adx_websiteaccess_webrole:
+  - 0c978d9a-4e8f-4454-a279-4335a27b8e31
+  adx_websiteaccessid: ce3e7fcb-e350-4659-9e33-609186937a02
+- adx_managecontentsnippets: false
+  adx_managesitemarkers: false
+  adx_manageweblinksets: false
+  adx_name: Autorisation de prévisualisation pour le portail de base
+  adx_previewunpublishedentities: true
+  adx_websiteaccess_webrole: []
+  adx_websiteaccessid: c82384f0-5ffc-4a65-a918-cf742c4ce61a

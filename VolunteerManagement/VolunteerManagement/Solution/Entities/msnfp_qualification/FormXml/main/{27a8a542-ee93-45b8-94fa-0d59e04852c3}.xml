@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{27a8a542-ee93-45b8-94fa-0d59e04852c3}</formid>
+    <IntroducedVersion>2.4.1.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls" solutionaction="Modified">
+      <tabs>
+        <tab verticallayout="true" id="{0d2ab33f-bd2c-48b6-a343-72b7038ba4ab}" IsUserDefined="1" name="tab_details" ordinalvalue="0" solutionaction="Modified">
+          <labels>
+            <label description="Details" languagecode="1033" solutionaction="Modified" />
+          </labels>
+        </tab>
+        <tab name="tab_2" id="31816df5-33e0-499e-b06b-fcdccff30c7d" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="1" solutionaction="Added">
+          <labels>
+            <label description="Onboarding Process" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_2_section_1" id="cc380b04-b135-4139-8053-3f1d645999f9" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="activities" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{29403ba3-5b9b-b504-e244-6081dbaebb7a}" showlabel="false" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Current Stage" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_currentstage" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_currentstage" disabled="false" uniqueid="{5712bd6d-dcde-679c-e1cd-7be2cad0bb0d}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>false</DisableViewPicker>
+                            <DefaultViewId>{5F0D2861-3E30-49FD-AB6B-272D51B18A2A}</DefaultViewId>
+                            <AllowFilterOff>false</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{a8e48216-d1ba-4959-a23b-0fadf679ce4b}" ordinalvalue="10001">
+                        <labels>
+                          <label description="New QV control 1626971357020" languagecode="1033" />
+                        </labels>
+                        <control id="QuickviewControl1626971357020" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="msnfp_currentstage" disabled="false">
+                          <parameters>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="msnfp_qualificationstage"&gt;984257a5-2a51-4fa2-bf0a-8adc13cada3a&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1cf24c9c-7fe1-4dec-a446-db5f9f7c7ee1}" locklevel="0" visible="false" ordinalvalue="10002">
+                        <labels>
+                          <label description="Current Stage" languagecode="1033" />
+                        </labels>
+                        <control id="header_msnfp_currentstage" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_currentstage" disabled="false" uniqueid="{0ddb8c99-3d81-3295-ab82-50c55b265e3b}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c092dca5-7abe-6eba-1567-6c2ea0eee21a}" showlabel="false" colspan="1" auto="false" rowspan="6" ordinalvalue="10003">
+                        <labels>
+                          <label description="nextstage" languagecode="1033" />
+                        </labels>
+                        <control id="WebResource_nextstage" classid="{9FDF5F91-88B1-47f4-AD53-C11EFC01A01D}">
+                          <parameters>
+                            <Url>msnfp_/scripts/msnfp_nextstage.html</Url>
+                            <PassParameters>false</PassParameters>
+                            <ShowOnMobileClient>false</ShowOnMobileClient>
+                            <Security>false</Security>
+                            <Scrolling>no</Scrolling>
+                            <Border>false</Border>
+                            <WebResourceId>{BC6E47C6-1201-EC11-94EF-000D3A135C2D}</WebResourceId>
+                          </parameters>
+                        </control>
+                        <events>
+                          <event name="onload" application="false">
+                            <dependencies>
+                              <dependency id="header_msnfp_currentstage" />
+                            </dependencies>
+                          </event>
+                        </events>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <controlDescriptions>
+        <controlDescription forControl="{5712bd6d-dcde-679c-e1cd-7be2cad0bb0d}" solutionaction="Added">
+          <customControl id="{270BD3DB-D9AF-4782-9025-509E298DEC0A}">
+            <parameters>
+              <datafieldname>msnfp_currentstage</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="msnfp_microsoftdynamics365nonprofitaccelerator.OnboardingStages">
+            <parameters>
+              <CurrentStage>
+                <BindAttribute>msnfp_currentstage</BindAttribute>
+                <DefaultViewId>{5F0D2861-3E30-49FD-AB6B-272D51B18A2A}</DefaultViewId>
+                <FilterRelationshipName />
+                <DependentAttributeName />
+                <DependentAttributeType />
+                <AvailableViewIds />
+                <AllowFilterOff>false</AllowFilterOff>
+                <DisableQuickFind>false</DisableQuickFind>
+                <DisableViewPicker>false</DisableViewPicker>
+              </CurrentStage>
+              <EntityId type="SingleLine.Text">msnfp_qualificationid</EntityId>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="msnfp_microsoftdynamics365nonprofitaccelerator.OnboardingStages">
+            <parameters>
+              <CurrentStage>
+                <BindAttribute>msnfp_currentstage</BindAttribute>
+                <DefaultViewId>{5F0D2861-3E30-49FD-AB6B-272D51B18A2A}</DefaultViewId>
+                <FilterRelationshipName />
+                <DependentAttributeName />
+                <DependentAttributeType />
+                <AvailableViewIds />
+                <AllowFilterOff>false</AllowFilterOff>
+                <DisableQuickFind>false</DisableQuickFind>
+                <DisableViewPicker>false</DisableViewPicker>
+              </CurrentStage>
+              <EntityId type="SingleLine.Text">msnfp_qualificationid</EntityId>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="msnfp_microsoftdynamics365nonprofitaccelerator.OnboardingStages">
+            <parameters>
+              <CurrentStage>
+                <BindAttribute>msnfp_currentstage</BindAttribute>
+                <DefaultViewId>{5F0D2861-3E30-49FD-AB6B-272D51B18A2A}</DefaultViewId>
+                <FilterRelationshipName />
+                <DependentAttributeName />
+                <DependentAttributeType />
+                <AvailableViewIds />
+                <AllowFilterOff>false</AllowFilterOff>
+                <DisableQuickFind>false</DisableQuickFind>
+                <DisableViewPicker>false</DisableViewPicker>
+              </CurrentStage>
+              <EntityId type="SingleLine.Text">msnfp_qualificationid</EntityId>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <header id="{2ab92e40-86bc-4461-baad-858f368faaf5}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows>
+          <row>
+            <cell id="{4d908cf6-ca1c-4b91-8bc0-bebad31186b3}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10000">
+              <labels>
+                <label description="Qualification Status" languagecode="1033" />
+              </labels>
+              <control id="header_msnfp_qualificationstatus" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_qualificationstatus" disabled="false" />
+            </cell>
+            <cell id="{9a44ba0d-285d-4e3a-b469-80ae464a55e4}" showlabel="false" ordinalvalue="20001">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{fa3003ce-cff5-4247-82d4-38da4a2b39fc}" showlabel="false" ordinalvalue="30002">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{316efb8b-4fe4-4bd7-bedc-d4c5f3a4a144}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows />
+      </footer>
+      <formLibraries solutionaction="Added">
+        <Library name="msnfp_QualificationForm.gen.js" libraryUniqueId="{df5da9e4-b077-43a2-aca6-3595335011f7}" />
+      </formLibraries>
+      <events solutionaction="Added">
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.QualificationForm.OnLoad" libraryName="msnfp_QualificationForm.gen.js" handlerUniqueId="{3817d5df-dbe6-4088-ae8b-e485f3cf9ea2}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
+      <DisplayConditions FallbackForm="true" Order="0" solutionaction="Added">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

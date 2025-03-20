@@ -1,0 +1,188 @@
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 8
+  adx_displaypagechildlinks: false
+  adx_name: Mes engagements
+  adx_openinnewwindow: false
+  adx_pageid: b02b478c-5be9-448d-b3bd-614dc9f85d78
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 2506d232-6f09-4c74-a1b1-9c364b91c1cb
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 2
+  adx_displaypagechildlinks: false
+  adx_name: Application
+  adx_openinnewwindow: false
+  adx_parentweblinkid: 3da2e84a-6881-4b45-8604-efcb3f6548e3
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 14febd3c-db54-4b66-b197-76d0e3584faa
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 10
+  adx_displaypagechildlinks: false
+  adx_name: Récupérer les engagements
+  adx_openinnewwindow: false
+  adx_pageid: 9922bf07-6ad5-4086-9366-94a35c269926
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 2fee810b-2ebb-40dc-bc8a-da05c0d32602
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 3
+  adx_displaypagechildlinks: false
+  adx_name: Page 2 Détails
+  adx_openinnewwindow: false
+  adx_parentweblinkid: 3da2e84a-6881-4b45-8604-efcb3f6548e3
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: ccab939c-8075-4f79-99b3-0646057a06d7
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 2
+  adx_displaypagechildlinks: false
+  adx_name: Produit B (exemple)
+  adx_openinnewwindow: false
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 28bb88d7-cc7c-4bca-b54d-960c13702a21
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 9
+  adx_displaypagechildlinks: false
+  adx_name: Détails sur l’engagement
+  adx_openinnewwindow: false
+  adx_pageid: 6473dd8e-99b9-4c84-93f1-1a096599daf6
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 890d8829-cfcc-4e58-a913-1de90e0a8f11
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 9
+  adx_displaypagechildlinks: false
+  adx_name: Nouvelle page (1)
+  adx_openinnewwindow: false
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: ff7262b9-6733-4da9-9b06-0e2e42bb8116
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 1
+  adx_displaypagechildlinks: false
+  adx_name: Détails
+  adx_openinnewwindow: false
+  adx_parentweblinkid: 3da2e84a-6881-4b45-8604-efcb3f6548e3
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: de30e182-fa6e-49f5-ba1f-fed8ada263c6
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 4
+  adx_displaypagechildlinks: false
+  adx_name: Opportunités
+  adx_openinnewwindow: false
+  adx_pageid: a16e68ec-0c5d-4225-9469-46b6c7ecc500
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 3da2e84a-6881-4b45-8604-efcb3f6548e3
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 2
+  adx_displaypagechildlinks: false
+  adx_name: Services
+  adx_openinnewwindow: false
+  adx_pageid: 7bc2712b-786d-4717-bd2f-7cd403ccb2f0
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 34c26cca-e8f7-45ee-997b-396a3c0a97d1
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 1
+  adx_displaypagechildlinks: false
+  adx_name: Produit A (exemple)
+  adx_openinnewwindow: false
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 1a78b440-c639-43a8-b6fa-1e5e54f7dd22
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 8
+  adx_displaypagechildlinks: false
+  adx_name: 'Assistant Profil '
+  adx_openinnewwindow: false
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 238c1463-babe-41e2-9cc7-f57842c60002
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 11
+  adx_displaypagechildlinks: false
+  adx_name: réussite
+  adx_openinnewwindow: false
+  adx_pageid: c1ec9dba-928e-416b-8d79-7584bb9602cc
+  adx_parentweblinkid: 14febd3c-db54-4b66-b197-76d0e3584faa
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 2442e55a-57d3-41fd-a3b4-a8df653c3fef
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 4
+  adx_displaypagechildlinks: false
+  adx_name: Opportunités
+  adx_openinnewwindow: false
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 8279fa82-311a-4422-ac9c-789e127188b6
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 1
+  adx_displaypagechildlinks: false
+  adx_name: Domicile
+  adx_openinnewwindow: false
+  adx_pageid: 2b061aa0-3c8c-4a52-9248-4e89d6348643
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 421ed38c-7acd-4798-a709-ff4e1d618859
+  adx_weblinksetid: 3dae5415-9dcf-47af-a8a6-281204536cc8
+  adx_description: ' '

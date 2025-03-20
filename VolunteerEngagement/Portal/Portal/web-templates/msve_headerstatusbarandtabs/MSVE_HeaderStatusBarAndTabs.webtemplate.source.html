@@ -1,0 +1,58 @@
+{%- assign baseURL = settings['SiteUrl'] -%}
+{% comment %} -- Getting data required for the page -- {% endcomment %}
+{%- block dataCollection %}{% endblock -%}
+{% comment %} -- Primary Color Header and Sub-Header -- {% endcomment %}
+<main id="mainContent">
+  <div class="sectionBlockLayout bg-primary">
+    <div class="row no-margin">
+      <div class="col-md-offset-2 col-md-8 container-fluid">
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            <h1>{% block title %}My Title{% endblock %}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            {% block subtitle %}My SubTitle{% endblock %}
+          </div>
+        </div>    
+      </div>
+    </div>
+  </div>
+  {% comment %} -- Action Bar -- {% endcomment %}
+  {% block setShowStatusBar %}{% endblock %}
+  {% if showStatusBar == true %}
+    <div class="sectionBlockLayout actionBar">
+      <div class="row" style="margin: 0px;">
+        <div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px;">
+          <div class="container" style="box-sizing: border-box;">
+            {% block statusBar %}My Status Bar{% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% comment %} -- Tabs -- {% endcomment %}
+  {% block setTabs %}{% endblock %}
+  <div class="sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px;">
+    <div class="container" style="box-sizing: border-box;">
+      {% if tabs.size > 0 %}
+        <div class="row">
+          <ul role="tablist" class="nav nav-pills">
+            {% for tab in tabs %}    
+              <li class={% if forloop.index == 1 %}"active"{% else %}""{% endif %}>
+                <a role="tab" data-toggle="pill" href="#{{tab | replace: ' ', ''}}">
+                  <span class="text-primary">
+                      {{tab}}
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+      {% block content %}Add all tab's content in the content block!{% endblock %}
+    </div>
+  </div>
+</main>
+{% block scripts %}{% endblock %}

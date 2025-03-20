@@ -1,0 +1,13 @@
+adx_append: true
+adx_appendto: true
+adx_contactrelationship: msnfp_contact_msnfp_participation_contactId
+adx_create: true
+adx_delete: false
+adx_entitylogicalname: msnfp_participation
+adx_entityname: Participation (Authenticated)
+adx_entitypermission_webrole:
+- 466dad99-c04f-4c91-83bc-bb114fd1edf4
+adx_entitypermissionid: 276988ae-509c-4e0b-8435-13fdd5a020a1
+adx_read: true
+adx_scope: 756150001
+adx_write: true

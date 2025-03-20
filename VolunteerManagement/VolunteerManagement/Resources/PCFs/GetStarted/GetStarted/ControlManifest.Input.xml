@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  	<control namespace="VolunteerManagement" constructor="GetStarted" version="1.0.4" display-name-key="GetStarted" description-key="GetStarted description" control-type="virtual" >
+		<external-service-usage enabled="false"></external-service-usage>
+		<data-set 
+			name="sampleDataSet" 
+			display-name-key="Dataset_Display_Key"
+			cds-data-set-options="displayCommandBar:false;displayViewSelector:false;displayquickfind:false;"
+		>
+		</data-set>
+		<resources>
+			<platform-library name="React" version="16.8.6" />
+			<platform-library name="Fluent" version="8.29.0" />
+			<css path="css/GetStarted.css" order="1" />
+			<code path="index.ts" order="1"/>
+			<resx path="strings/GetStarted.1033.resx" version="1.0.1" />
+			<resx path="strings/GetStarted.1036.resx" version="1.0.0" />
+		</resources>
+  	</control>
+</manifest>

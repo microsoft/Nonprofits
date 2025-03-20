@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+	<control namespace="microsoftdynamics365nonprofitaccelerator" constructor="OnboardingStages" version="1.0.0" display-name-key="OnboardingStages" description-key="OnboardingStages description" control-type="virtual" >
+		<type-group name="strings">
+		<type>SingleLine.Text</type>
+		<type>SingleLine.Email</type>
+		<type>SingleLine.Phone</type>
+		<type>SingleLine.TextArea</type>
+		<type>SingleLine.Ticker</type>
+		<type>SingleLine.URL</type>
+		<type>Multiple</type>
+		</type-group>
+		<type-group name="dates">
+		<type>DateAndTime.DateAndTime</type>
+		<type>DateAndTime.DateOnly</type>
+		</type-group>
+		<type-group name="numbers">
+			<type>Whole.None</type>
+			<type>Currency</type>
+			<type>FP</type>
+			<type>Decimal</type>
+		</type-group>
+		<external-service-usage enabled="false">
+		</external-service-usage>
+		<property name="CurrentStage" display-name-key="Current Stage" description-key="Current Stage" of-type="Lookup.Simple" usage="bound" required="true" />
+		<property name="EntityId" display-name-key="Qualification Id" description-key="Entity Id" of-type="SingleLine.Text" usage="input" required="true" />
+		<resources>
+			<code path="index.ts" order="1"/>
+			<platform-library name="React" version="16.8.6" />
+			<platform-library name="Fluent" version="8.29.0" />
+			<resx path="strings/OnboardingStages.1033.resx" version="1.0.0" />
+			<resx path="strings/OnboardingStages.1036.resx" version="1.0.0" />
+		</resources>
+		<feature-usage>
+			<!-- <uses-feature name="Device.captureAudio" required="true" />
+			<uses-feature name="Device.captureImage" required="true" />
+			<uses-feature name="Device.captureVideo" required="true" />
+			<uses-feature name="Device.getBarcodeValue" required="true" />
+			<uses-feature name="Device.getCurrentPosition" required="true" />
+			<uses-feature name="Device.pickFile" required="true" /> -->
+			<uses-feature name="Utility" required="true" />
+			<uses-feature name="WebAPI" required="true" />
+		</feature-usage>
+	</control>
+</manifest>

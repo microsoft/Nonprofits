@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{33b94a89-1f93-eb11-b1ac-000d3a1f5f37}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="F931FFE2-B873-473F-8F95-9502F0AA3F5E" name="tab_1" showlabel="false" labelid="{816576b8-5460-4fa2-8913-d0c306cb0f34}">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section id="0C655D4E-C6E3-424E-9AF5-71E72D30D12E" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{daa29702-dbc4-41f8-9dbd-69a6864ecdd1}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7ec87409-87d9-484f-b1e4-b2982cc751b5}" locklevel="0" labelid="{62430a36-bda0-46bc-a3ec-d5e12250433e}" visible="false">
+                        <labels>
+                          <label description="Engagement Opportunity" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunityid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_engagementopportunityid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c944e086-0b0b-4149-a274-00a2d4559d79}" locklevel="0" labelid="{8d08b283-345a-4f31-8b7d-aee25092b700}">
+                        <labels>
+                          <label description="Preference Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_preferencetypeid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_preferencetypeid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9f92e9d1-90df-46e0-8483-191b93240505}" locklevel="0" labelid="{d24751ba-f6bc-4def-aade-8108281d5d15}">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="02DECBA0-3AE2-484D-A19F-C5353AF4F4F2" name="tab_1_column_2_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{337083ae-56f2-4ac3-985e-8f690a930f60}" visible="false">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="266FE48D-4D04-4E9A-8C5A-7DEF9A2F059B" labelid="{6ed5c8a0-4f5a-4dc6-87fa-7d8dd05ca2a4}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="46FD66EA-B686-41D9-AAE0-C565BD78EC1F" name="tab_1_column_3_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{4c5441e1-9936-4120-9f2b-4a6a6182b768}" visible="false">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{d6cab146-0df0-4a5e-add2-87238576aaa1}" locklevel="0" labelid="{783090e3-12c1-4c4d-95af-f326ad27c51a}" visible="false">
+                        <labels>
+                          <label description="Engagement Opportunity Preferences Title" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunitypreferencestitle" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_engagementopportunitypreferencestitle" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description=" quick create form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

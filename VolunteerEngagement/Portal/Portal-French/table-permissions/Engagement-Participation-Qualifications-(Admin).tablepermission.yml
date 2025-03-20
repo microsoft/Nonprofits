@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_qualification
+adx_entityname: Qualifications en matière d’engagement et de participation (Admin)
+adx_entitypermission_webrole:
+- 0c978d9a-4e8f-4454-a279-4335a27b8e31
+adx_entitypermissionid: 016cf34e-cbe0-4447-8b16-c499cb3fc2f4
+adx_read: true
+adx_scope: 756150000
+adx_write: false

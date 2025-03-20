@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="Source LCID" xml:space="preserve">
+    <value>1033</value>
+  </metadata>
+  <metadata name="Source file" xml:space="preserve">
+    <value>VolunteerEngagement_managed.zip</value>
+  </metadata>
+  <metadata name="Source package type" xml:space="preserve">
+    <value>Both</value>
+  </metadata>
+  <metadata name="SolutionPackager Version" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uVmVyc2lvbgQAAAAGX01ham9yBl9NaW5vcgZfQnVpbGQJX1JldmlzaW9uAAAAAAgICAgJAAAAAAAAAAAAAAAAAAAACw==</value>
+  </metadata>
+  <metadata name="SolutionPackager Version String" xml:space="preserve">
+    <value>9.0.0.0</value>
+  </metadata>
+  <data name="15062:LocalizedName,microsofttechforsocialimpactmsnfp84406" xml:space="preserve">
+    <value>Microsoft Tech for Social Impact</value>
+    <comment> 'microsofttechforsocialimpact' : LocalizedName for Solution Publisher</comment>
+  </data>
+  <data name="15062:LocalizedName,VolunteerEngagement" xml:space="preserve">
+    <value>Engagement des bénévoles </value>
+    <comment> 'VolunteerEngagement' : LocalizedName for Solution</comment>
+  </data>
+  <data name="1:Description,Availability{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" xml:space="preserve">
+    <value>Vue pour la page de profil du portail Engagement des bénévoles</value>
+    <comment>'Availability' : Description for SavedQuery on Entity QueryId: '{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}'</comment>
+  </data>
+  <data name="1:Description,Availability{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Formulaire pour l’entité Disponibilité dans la page Profil du portail Engagement des bénévoles</value>
+    <comment>'Availability' : Description for systemform in Entity FormXml ID: '{a4cb80fb-3725-ec11-b6e5-002248262df0}'</comment>
+  </data>
+  <data name="1:Description,Contact{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}" xml:space="preserve">
+    <value>Ce formulaire est utilisé par le portail pour que l’utilisateur mette à jour ses coordonnées</value>
+    <comment>'Contact' : Description for systemform in Entity FormXml ID: '{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}'</comment>
+  </data>
+  <data name="1:Description,Contact{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Ce formulaire est utilisé par le portail pour que l’utilisateur mette à jour ses coordonnées</value>
+    <comment>'Contact' : Description for systemform in Entity FormXml ID: '{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}'</comment>
+  </data>
+  <data name="1:Description,Preference{928fea25-e722-ec11-b6e6-000d3a57264f}" xml:space="preserve">
+    <value>Vue à utiliser dans le profil du portail Engagement des bénévoles</value>
+    <comment>'Preference' : Description for SavedQuery on Entity QueryId: '{928fea25-e722-ec11-b6e6-000d3a57264f}'</comment>
+  </data>
+  <data name="1:Description,Preference{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Formulaire pour créer/modifier une préférence via le portail Engagement des bénévoles</value>
+    <comment>'Preference' : Description for systemform in Entity FormXml ID: '{bce6a365-2425-ec11-b6e5-002248262b63}'</comment>
+  </data>
+  <data name="1:Description,Qualification Type{65ee0951-3f25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Permet de rechercher les qualifications non liées à l’intégration dans la page Profil du portail Engagement des bénévoles</value>
+    <comment>'Qualification Type' : Description for SavedQuery on Entity QueryId: '{65ee0951-3f25-ec11-b6e5-002248262df0}'</comment>
+  </data>
+  <data name="1:Description,Qualification{e4155daa-e822-ec11-b6e6-000d3a572bc9}" xml:space="preserve">
+    <value>Vue pour la page de profil du portail Engagement des bénévoles</value>
+    <comment>'Qualification' : Description for SavedQuery on Entity QueryId: '{e4155daa-e822-ec11-b6e6-000d3a572bc9}'</comment>
+  </data>
+  <data name="1:Description,Qualification{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Formulaire du portail Engagement des bénévoles sur la page de profil</value>
+    <comment>'Qualification' : Description for systemform in Entity FormXml ID: '{e87528a6-3a25-ec11-b6e5-002248262df0}'</comment>
+  </data>
+  <data name="1:label,Availability{20f5ce1e-10cf-4cf3-a9ca-3a2a5e265bf3}" xml:space="preserve">
+    <value />
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{20f5ce1e-10cf-4cf3-a9ca-3a2a5e265bf3}'</comment>
+  </data>
+  <data name="1:label,Availability{3474e2db-1989-45ea-a80e-57e0110243c1}" xml:space="preserve">
+    <value>Working Days</value>
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{3474e2db-1989-45ea-a80e-57e0110243c1}'</comment>
+  </data>
+  <data name="1:label,Availability{4212acac-97b1-4104-8e46-b04a3befad4a}" xml:space="preserve">
+    <value>Général</value>
+    <comment>'Availability' : label for section in Entity FormXml ID: '{4212acac-97b1-4104-8e46-b04a3befad4a}'</comment>
+  </data>
+  <data name="1:label,Availability{67dcbc14-69ce-4694-9136-aa92ac671e05}" xml:space="preserve">
+    <value />
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{67dcbc14-69ce-4694-9136-aa92ac671e05}'</comment>
+  </data>
+  <data name="1:label,Availability{6f307ea7-502d-402b-bf95-a63d1ce35618}" xml:space="preserve">
+    <value>Contact</value>
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{6f307ea7-502d-402b-bf95-a63d1ce35618}'</comment>
+  </data>
+  <data name="1:label,Availability{77831e6b-009a-4ced-9e05-e7613e19625c}" xml:space="preserve">
+    <value />
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{77831e6b-009a-4ced-9e05-e7613e19625c}'</comment>
+  </data>
+  <data name="1:label,Availability{8341efa0-1d1e-4f2e-a9c3-b7d6803df8dc}" xml:space="preserve">
+    <value>Propriétaire</value>
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{8341efa0-1d1e-4f2e-a9c3-b7d6803df8dc}'</comment>
+  </data>
+  <data name="1:label,Availability{94c695fc-b74d-43a4-9db7-97888afa6db7}" xml:space="preserve">
+    <value>Effectif à partir de</value>
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{94c695fc-b74d-43a4-9db7-97888afa6db7}'</comment>
+  </data>
+  <data name="1:label,Availability{996fe668-e547-45e8-8663-c75dbddc3c7f}" xml:space="preserve">
+    <value />
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{996fe668-e547-45e8-8663-c75dbddc3c7f}'</comment>
+  </data>
+  <data name="1:label,Availability{9f86f8a9-ac29-4202-8eb9-c1d1f6f38b64}" xml:space="preserve">
+    <value />
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{9f86f8a9-ac29-4202-8eb9-c1d1f6f38b64}'</comment>
+  </data>
+  <data name="1:label,Availability{b7f5e505-3c53-4c49-b9e8-a5cb0439b63f}" xml:space="preserve">
+    <value>Général</value>
+    <comment>'Availability' : label for tab in Entity FormXml ID: '{b7f5e505-3c53-4c49-b9e8-a5cb0439b63f}'</comment>
+  </data>
+  <data name="1:label,Availability{b9bd526e-aa2c-47e5-9836-006c95dc27ac}" xml:space="preserve">
+    <value>Titre de la disponibilité</value>
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{b9bd526e-aa2c-47e5-9836-006c95dc27ac}'</comment>
+  </data>
+  <data name="1:label,Availability{d5cd2b82-5d55-47dd-8194-64cf5af700bf}" xml:space="preserve">
+    <value />
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{d5cd2b82-5d55-47dd-8194-64cf5af700bf}'</comment>
+  </data>
+  <data name="1:label,Availability{dcab8733-2362-42e2-852c-354b03915c72}" xml:space="preserve">
+    <value>Effectif jusqu’au</value>
+    <comment>'Availability' : label for cell in Entity FormXml ID: '{dcab8733-2362-42e2-852c-354b03915c72}'</comment>
+  </data>
+  <data name="1:label,Contact2a94a064-be16-4908-91f2-788fcd61b91a" xml:space="preserve">
+    <value>Disponibilité</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '2a94a064-be16-4908-91f2-788fcd61b91a'</comment>
+  </data>
+  <data name="1:label,Contact6fba9f8d-626a-46d2-ac76-041f03a90263" xml:space="preserve">
+    <value>Préférences</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '6fba9f8d-626a-46d2-ac76-041f03a90263'</comment>
+  </data>
+  <data name="1:label,Contact7fdc60a2-94ae-4c32-aa84-fbbf3f730670" xml:space="preserve">
+    <value>Préférences et Qualifications </value>
+    <comment>'Contact' : label for tab in Entity FormXml ID: '7fdc60a2-94ae-4c32-aa84-fbbf3f730670'</comment>
+  </data>
+  <data name="1:label,Contacta384519d-33f1-484d-a385-cd9e0c601607" xml:space="preserve">
+    <value>Disponibilité </value>
+    <comment>'Contact' : label for tab in Entity FormXml ID: 'a384519d-33f1-484d-a385-cd9e0c601607'</comment>
+  </data>
+  <data name="1:label,Contactc595a24a-389a-405e-9458-97529607c46e" xml:space="preserve">
+    <value>Qualifications</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: 'c595a24a-389a-405e-9458-97529607c46e'</comment>
+  </data>
+  <data name="1:label,Contact{02c1dca9-754e-11a2-00a8-22512521ed8e}" xml:space="preserve">
+    <value>Adresse</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{02c1dca9-754e-11a2-00a8-22512521ed8e}'</comment>
+  </data>
+  <data name="1:label,Contact{06ce5296-aab8-2a1b-5326-b508b00076e2}" xml:space="preserve">
+    <value>Ville</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{06ce5296-aab8-2a1b-5326-b508b00076e2}'</comment>
+  </data>
+  <data name="1:label,Contact{0a64c421-01e1-d5c8-ac85-c872617ec380}" xml:space="preserve">
+    <value>Département/province</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{0a64c421-01e1-d5c8-ac85-c872617ec380}'</comment>
+  </data>
+  <data name="1:label,Contact{16dd5c38-5989-43fe-90ef-712b1eb2a45a}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{16dd5c38-5989-43fe-90ef-712b1eb2a45a}'</comment>
+  </data>
+  <data name="1:label,Contact{1801ae0b-ddbe-0c85-18ac-3a5c5b7d9ab8}" xml:space="preserve">
+    <value>Code postal</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{1801ae0b-ddbe-0c85-18ac-3a5c5b7d9ab8}'</comment>
+  </data>
+  <data name="1:label,Contact{2329843a-6ab4-4431-8a2b-101f3272e104}" xml:space="preserve">
+    <value>Propriétaire</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{2329843a-6ab4-4431-8a2b-101f3272e104}'</comment>
+  </data>
+  <data name="1:label,Contact{250614a2-d52c-babb-ea0c-3531de649502}" xml:space="preserve">
+    <value>Disponibilité</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{250614a2-d52c-babb-ea0c-3531de649502}'</comment>
+  </data>
+  <data name="1:label,Contact{2fd4a9dc-42af-4f52-a840-7ceea09a71bd}" xml:space="preserve">
+    <value>Statut</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{2fd4a9dc-42af-4f52-a840-7ceea09a71bd}'</comment>
+  </data>
+  <data name="1:label,Contact{478c8803-2686-4d10-8cf0-e6e5b3b6007f}" xml:space="preserve">
+    <value>Prénom</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{478c8803-2686-4d10-8cf0-e6e5b3b6007f}'</comment>
+  </data>
+  <data name="1:label,Contact{4fde05d9-89b1-4acf-a98f-13159f1bdcc8}" xml:space="preserve">
+    <value>Nom</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{4fde05d9-89b1-4acf-a98f-13159f1bdcc8}'</comment>
+  </data>
+  <data name="1:label,Contact{52927b50-ce00-4bbf-8844-19b0800b0d95}" xml:space="preserve">
+    <value>N° de téléphone</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{52927b50-ce00-4bbf-8844-19b0800b0d95}'</comment>
+  </data>
+  <data name="1:label,Contact{548e76c7-13e4-822e-9b33-e5ea58a991ed}" xml:space="preserve">
+    <value>Qualifications</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{548e76c7-13e4-822e-9b33-e5ea58a991ed}'</comment>
+  </data>
+  <data name="1:label,Contact{71c73046-8c21-7393-9ed6-75642c4e05ab}" xml:space="preserve">
+    <value>Rue 2</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{71c73046-8c21-7393-9ed6-75642c4e05ab}'</comment>
+  </data>
+  <data name="1:label,Contact{81b6028e-9ed7-a45a-5a12-9e69ce72e5c9}" xml:space="preserve">
+    <value>Rue</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{81b6028e-9ed7-a45a-5a12-9e69ce72e5c9}'</comment>
+  </data>
+  <data name="1:label,Contact{90b0776f-2977-4695-9cd4-73bb6c820f88}" xml:space="preserve">
+    <value>Coordonnées</value>
+    <comment>'Contact' : label for section in Entity FormXml ID: '{90b0776f-2977-4695-9cd4-73bb6c820f88}'</comment>
+  </data>
+  <data name="1:label,Contact{9748ec98-3746-40cc-83bf-d15c7363166f}" xml:space="preserve">
+    <value>Coordonnées</value>
+    <comment>'Contact' : label for tab in Entity FormXml ID: '{9748ec98-3746-40cc-83bf-d15c7363166f}'</comment>
+  </data>
+  <data name="1:label,Contact{adb2448c-894a-b80a-8172-1ec0ce6551e2}" xml:space="preserve">
+    <value>Pays/région</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{adb2448c-894a-b80a-8172-1ec0ce6551e2}'</comment>
+  </data>
+  <data name="1:label,Contact{c6c3ca0d-a249-41b8-9e6a-e4c406ab6f4c}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{c6c3ca0d-a249-41b8-9e6a-e4c406ab6f4c}'</comment>
+  </data>
+  <data name="1:label,Contact{d1b8098d-cc50-284e-b271-477292199692}" xml:space="preserve">
+    <value>Préférences</value>
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{d1b8098d-cc50-284e-b271-477292199692}'</comment>
+  </data>
+  <data name="1:label,Contact{d816d621-fa3d-4808-8962-4bd0019773c5}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{d816d621-fa3d-4808-8962-4bd0019773c5}'</comment>
+  </data>
+  <data name="1:label,Contact{e7228ab1-fd67-46ff-a1ab-63978c3416c0}" xml:space="preserve">
+    <value />
+    <comment>'Contact' : label for cell in Entity FormXml ID: '{e7228ab1-fd67-46ff-a1ab-63978c3416c0}'</comment>
+  </data>
+  <data name="1:label,Preference{04a73e3f-f389-4967-b243-9006f4b0ad66}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{04a73e3f-f389-4967-b243-9006f4b0ad66}'</comment>
+  </data>
+  <data name="1:label,Preference{11e9a396-5e39-c7c4-51a8-9921680920d6}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{11e9a396-5e39-c7c4-51a8-9921680920d6}'</comment>
+  </data>
+  <data name="1:label,Preference{252a1448-a4a7-262e-562e-5ae777ac1b31}" xml:space="preserve">
+    <value>Section</value>
+    <comment>'Preference' : label for section in Entity FormXml ID: '{252a1448-a4a7-262e-562e-5ae777ac1b31}'</comment>
+  </data>
+  <data name="1:label,Preference{2582a799-c4e8-0069-c5cc-751c178bbd49}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{2582a799-c4e8-0069-c5cc-751c178bbd49}'</comment>
+  </data>
+  <data name="1:label,Preference{4434543d-ea5a-4777-64ba-649c593bb441}" xml:space="preserve">
+    <value>Création le</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{4434543d-ea5a-4777-64ba-649c593bb441}'</comment>
+  </data>
+  <data name="1:label,Preference{4ac8ecf8-cb8f-4573-9031-e1ee43d71f39}" xml:space="preserve">
+    <value>Propriétaire</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{4ac8ecf8-cb8f-4573-9031-e1ee43d71f39}'</comment>
+  </data>
+  <data name="1:label,Preference{7875fef0-89a0-468e-b317-c06d1db2f4ba}" xml:space="preserve">
+    <value>Type de préférence</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{7875fef0-89a0-468e-b317-c06d1db2f4ba}'</comment>
+  </data>
+  <data name="1:label,Preference{78d3a631-4736-4764-5a34-e12cb6b36a67}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{78d3a631-4736-4764-5a34-e12cb6b36a67}'</comment>
+  </data>
+  <data name="1:label,Preference{7ce21266-8c5b-4bf8-8903-98437adf2fe8}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{7ce21266-8c5b-4bf8-8903-98437adf2fe8}'</comment>
+  </data>
+  <data name="1:label,Preference{86eb6ab1-d09a-b1b9-5432-ee9a5b6d79ca}" xml:space="preserve">
+    <value>Modification le</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{86eb6ab1-d09a-b1b9-5432-ee9a5b6d79ca}'</comment>
+  </data>
+  <data name="1:label,Preference{87e0ae3e-7d96-934d-ad3a-4e0cda8c13c7}" xml:space="preserve">
+    <value>Création par</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{87e0ae3e-7d96-934d-ad3a-4e0cda8c13c7}'</comment>
+  </data>
+  <data name="1:label,Preference{936971cb-1b5b-42ca-b0c6-f48854bc3ffb}" xml:space="preserve">
+    <value>Nom</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{936971cb-1b5b-42ca-b0c6-f48854bc3ffb}'</comment>
+  </data>
+  <data name="1:label,Preference{990f15ab-240f-4cd3-9dcc-2a805354ebb0}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{990f15ab-240f-4cd3-9dcc-2a805354ebb0}'</comment>
+  </data>
+  <data name="1:label,Preference{aa742e70-441b-c7a1-7ba0-65b814bdee59}" xml:space="preserve">
+    <value>Administratif</value>
+    <comment>'Preference' : label for tab in Entity FormXml ID: '{aa742e70-441b-c7a1-7ba0-65b814bdee59}'</comment>
+  </data>
+  <data name="1:label,Preference{abe2aedc-d83f-4f84-b1bc-52264f11a165}" xml:space="preserve">
+    <value>Général</value>
+    <comment>'Preference' : label for tab in Entity FormXml ID: '{abe2aedc-d83f-4f84-b1bc-52264f11a165}'</comment>
+  </data>
+  <data name="1:label,Preference{b288eb36-0da1-4940-9b2c-09a89e73d3e2}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{b288eb36-0da1-4940-9b2c-09a89e73d3e2}'</comment>
+  </data>
+  <data name="1:label,Preference{b6704c59-50a3-44b8-b17f-89e31dcededc}" xml:space="preserve">
+    <value>Contact</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{b6704c59-50a3-44b8-b17f-89e31dcededc}'</comment>
+  </data>
+  <data name="1:label,Preference{d2b80bf7-e473-4c5f-8ed7-2aa1e7e774d4}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{d2b80bf7-e473-4c5f-8ed7-2aa1e7e774d4}'</comment>
+  </data>
+  <data name="1:label,Preference{d47724e6-353d-47a9-8b05-f6878e74603e}" xml:space="preserve">
+    <value />
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{d47724e6-353d-47a9-8b05-f6878e74603e}'</comment>
+  </data>
+  <data name="1:label,Preference{e002a3e1-e1eb-0c66-389b-32999210a427}" xml:space="preserve">
+    <value>Modification par</value>
+    <comment>'Preference' : label for cell in Entity FormXml ID: '{e002a3e1-e1eb-0c66-389b-32999210a427}'</comment>
+  </data>
+  <data name="1:label,Preference{e4f537e4-241a-4300-95e2-e4c1a19a265e}" xml:space="preserve">
+    <value>Général</value>
+    <comment>'Preference' : label for section in Entity FormXml ID: '{e4f537e4-241a-4300-95e2-e4c1a19a265e}'</comment>
+  </data>
+  <data name="1:label,Qualification{04bad9fb-3a9c-45b1-b596-0128aa8db1a3}" xml:space="preserve">
+    <value>Propriétaire</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{04bad9fb-3a9c-45b1-b596-0128aa8db1a3}'</comment>
+  </data>
+  <data name="1:label,Qualification{0d2ab33f-bd2c-48b6-a343-72b7038ba4ab}" xml:space="preserve">
+    <value>Détails</value>
+    <comment>'Qualification' : label for tab in Entity FormXml ID: '{0d2ab33f-bd2c-48b6-a343-72b7038ba4ab}'</comment>
+  </data>
+  <data name="1:label,Qualification{3c8b5737-d24a-4d95-9628-80d098c97db4}" xml:space="preserve">
+    <value>Général</value>
+    <comment>'Qualification' : label for section in Entity FormXml ID: '{3c8b5737-d24a-4d95-9628-80d098c97db4}'</comment>
+  </data>
+  <data name="1:label,Qualification{4559535d-8d4b-2758-e305-98ee1637dd80}" xml:space="preserve">
+    <value>Type de qualification</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{4559535d-8d4b-2758-e305-98ee1637dd80}'</comment>
+  </data>
+  <data name="1:label,Qualification{477b3eb1-58a2-4ea6-b860-37252df19f47}" xml:space="preserve">
+    <value>Contact</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{477b3eb1-58a2-4ea6-b860-37252df19f47}'</comment>
+  </data>
+  <data name="1:label,Qualification{4d908cf6-ca1c-4b91-8bc0-bebad31186b3}" xml:space="preserve">
+    <value>Statut de qualification</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{4d908cf6-ca1c-4b91-8bc0-bebad31186b3}'</comment>
+  </data>
+  <data name="1:label,Qualification{5681677a-08bc-4c75-8f36-9b3437b81d78}" xml:space="preserve">
+    <value />
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{5681677a-08bc-4c75-8f36-9b3437b81d78}'</comment>
+  </data>
+  <data name="1:label,Qualification{56ddce7a-c682-9b3d-36b2-92ce0758156d}" xml:space="preserve">
+    <value>Description</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{56ddce7a-c682-9b3d-36b2-92ce0758156d}'</comment>
+  </data>
+  <data name="1:label,Qualification{80c44961-685d-4baa-60e5-2a6a5425557e}" xml:space="preserve">
+    <value>Date de début</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{80c44961-685d-4baa-60e5-2a6a5425557e}'</comment>
+  </data>
+  <data name="1:label,Qualification{9a44ba0d-285d-4e3a-b469-80ae464a55e4}" xml:space="preserve">
+    <value />
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{9a44ba0d-285d-4e3a-b469-80ae464a55e4}'</comment>
+  </data>
+  <data name="1:label,Qualification{a0c19063-5cb5-a11a-a6e0-c6db3687d89e}" xml:space="preserve">
+    <value>Date de la certification</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{a0c19063-5cb5-a11a-a6e0-c6db3687d89e}'</comment>
+  </data>
+  <data name="1:label,Qualification{db807be7-1784-ec29-3cc0-8d37746d2436}" xml:space="preserve">
+    <value>Date de fin</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{db807be7-1784-ec29-3cc0-8d37746d2436}'</comment>
+  </data>
+  <data name="1:label,Qualification{f5b299cb-121f-4ac7-b690-4966bc154f1d}" xml:space="preserve">
+    <value>Titre de la qualification</value>
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{f5b299cb-121f-4ac7-b690-4966bc154f1d}'</comment>
+  </data>
+  <data name="1:label,Qualification{fa3003ce-cff5-4247-82d4-38da4a2b39fc}" xml:space="preserve">
+    <value />
+    <comment>'Qualification' : label for cell in Entity FormXml ID: '{fa3003ce-cff5-4247-82d4-38da4a2b39fc}'</comment>
+  </data>
+  <data name="1:LocalizedName,Availability{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}" xml:space="preserve">
+    <value>Vue du portail VE</value>
+    <comment>'Availability' : LocalizedName for SavedQuery on Entity QueryId: '{3fca0c8e-e922-ec11-b6e6-000d3a572bc9}'</comment>
+  </data>
+  <data name="1:LocalizedName,Availability{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Formulaire de disponibilité du portail VE</value>
+    <comment>'Availability' : LocalizedName for systemform in Entity FormXml ID: '{a4cb80fb-3725-ec11-b6e5-002248262df0}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}" xml:space="preserve">
+    <value>Formulaire Web de profil</value>
+    <comment>'Contact' : LocalizedName for systemform in Entity FormXml ID: '{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}'</comment>
+  </data>
+  <data name="1:LocalizedName,Contact{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Formulaire Web de profil personnalisé</value>
+    <comment>'Contact' : LocalizedName for systemform in Entity FormXml ID: '{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}'</comment>
+  </data>
+  <data name="1:LocalizedName,Preference{928fea25-e722-ec11-b6e6-000d3a57264f}" xml:space="preserve">
+    <value>Vue du profil VE</value>
+    <comment>'Preference' : LocalizedName for SavedQuery on Entity QueryId: '{928fea25-e722-ec11-b6e6-000d3a57264f}'</comment>
+  </data>
+  <data name="1:LocalizedName,Preference{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Préférence pour le portail VE</value>
+    <comment>'Preference' : LocalizedName for systemform in Entity FormXml ID: '{bce6a365-2425-ec11-b6e5-002248262b63}'</comment>
+  </data>
+  <data name="1:LocalizedName,Qualification Type{65ee0951-3f25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Vue recherche des types de qualification du portail VE</value>
+    <comment>'Qualification Type' : LocalizedName for SavedQuery on Entity QueryId: '{65ee0951-3f25-ec11-b6e5-002248262df0}'</comment>
+  </data>
+  <data name="1:LocalizedName,Qualification{e4155daa-e822-ec11-b6e6-000d3a572bc9}" xml:space="preserve">
+    <value>Vue du portail VE</value>
+    <comment>'Qualification' : LocalizedName for SavedQuery on Entity QueryId: '{e4155daa-e822-ec11-b6e6-000d3a572bc9}'</comment>
+  </data>
+  <data name="1:LocalizedName,Qualification{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Formulaire de portail VE</value>
+    <comment>'Qualification' : LocalizedName for systemform in Entity FormXml ID: '{e87528a6-3a25-ec11-b6e5-002248262df0}'</comment>
+  </data>
+  <data name="1:Title,AvailabilityInfo{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Commun</value>
+    <comment>'Availability' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,AvailabilityMarketing{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Availability' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,AvailabilityProcessCenter{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Sessions de traitement</value>
+    <comment>'Availability' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,AvailabilitySales{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Vente</value>
+    <comment>'Availability' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,AvailabilityService{a4cb80fb-3725-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Availability' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,ContactInfo{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Commun</value>
+    <comment>'Contact' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,ContactMarketing{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Contact' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,ContactnavActivities{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Activités</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navActivities'</comment>
+  </data>
+  <data name="1:Title,ContactnavActivityHistory{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Activités fermées</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navActivityHistory'</comment>
+  </data>
+  <data name="1:Title,ContactnavAddresses{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Adresses supplémentaires</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navAddresses'</comment>
+  </data>
+  <data name="1:Title,ContactnavRelationships{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Relations</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navRelationships'</comment>
+  </data>
+  <data name="1:Title,ContactnavSubConts{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Contacts secondaires</value>
+    <comment>'Contact' : Title for NavBarByRelationshipItem in Entity FormXml ID: 'navSubConts'</comment>
+  </data>
+  <data name="1:Title,ContactProcessCenter{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Processus</value>
+    <comment>'Contact' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,ContactSales{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Ventes</value>
+    <comment>'Contact' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,ContactService{1a0bd723-c9e8-eb11-bacb-000d3a1b7675}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Contact' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,PreferenceInfo{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Éléments communs</value>
+    <comment>'Preference' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,PreferenceMarketing{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Preference' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,PreferenceProcessCenter{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Sessions de traitement</value>
+    <comment>'Preference' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,PreferenceSales{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Ventes</value>
+    <comment>'Preference' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,PreferenceService{bce6a365-2425-ec11-b6e5-002248262b63}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Preference' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+  <data name="1:Title,QualificationInfo{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Commun</value>
+    <comment>'Qualification' : Title for NavBarArea in Entity FormXml ID: 'Info'</comment>
+  </data>
+  <data name="1:Title,QualificationMarketing{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Marketing</value>
+    <comment>'Qualification' : Title for NavBarArea in Entity FormXml ID: 'Marketing'</comment>
+  </data>
+  <data name="1:Title,QualificationProcessCenter{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Sessions de traitement</value>
+    <comment>'Qualification' : Title for NavBarArea in Entity FormXml ID: 'ProcessCenter'</comment>
+  </data>
+  <data name="1:Title,QualificationSales{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Vente</value>
+    <comment>'Qualification' : Title for NavBarArea in Entity FormXml ID: 'Sales'</comment>
+  </data>
+  <data name="1:Title,QualificationService{e87528a6-3a25-ec11-b6e5-002248262df0}" xml:space="preserve">
+    <value>Service</value>
+    <comment>'Qualification' : Title for NavBarArea in Entity FormXml ID: 'Service'</comment>
+  </data>
+</root>

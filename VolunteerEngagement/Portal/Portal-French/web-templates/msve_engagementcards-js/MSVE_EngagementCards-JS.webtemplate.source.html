@@ -1,0 +1,295 @@
+<script>
+    /*** A list of all engagements to be used to show/hide cards */
+    var engagements;
+
+    /*** Loads the first round of cards when the page loads */
+    $(function() {
+        getPublicEngagements("");
+    });
+
+    /*** Sorts cards when a new sort option is selected */
+    $(function() {
+        $("#sortby").change(function(){
+            hideCards();
+            loadCards();
+        });
+    });
+
+    /*** Applies filters from the filter forms to the search */
+    $(function() {
+        $(".applyFiltersBtn").click(function() {
+            applyFilters();
+        });
+    });
+
+    /*** Applies filters when the enter key is pressed in search bar */
+    $(function() {
+        $('input').keyup(function(event) {
+            if (event.which === 13)
+            {
+                event.preventDefault();
+                applyFilters();
+            }
+        });
+    });
+
+    /*** Prevents the page from reloading when the user presses the enter key on the filter form */
+    $(function() {
+        $('form').submit(function(event){
+            event.preventDefault();
+        })
+    })
+
+    /*** Clears all filters */
+    $(function() {
+        $(".clearInputsBtn").click(function() {
+            $inputs = $("#titleSearch, #location, #startdate, #enddate, #preferences, #qualifications");
+            $inputs.each(function() {
+                this.value = null;
+            });
+            hideCards();
+            loadCards();
+        });
+    });
+
+    /*** Hides & loads cards based on filters */
+    function applyFilters() {
+        $(".applyFiltersBtn").prop('disabled',true);
+        hideCards();
+        getPublicEngagements();
+    }
+
+    /*** Filters an existing list of engagements */
+    function filterEngagements() {
+        var filteredEngagements = engagements;
+        titleTxt = $("#titleSearch").val();
+        locationTxt = $("#location").val();
+        startDate = $("#startdate").val();
+        endDate = $("#enddate").val();
+        prefs = $("#preferences").val();
+        quals = $("#qualifications").val();
+
+        if (titleTxt) {
+            filteredEngagements = filteredEngagements.filter(function (en) {
+                return en.Title.toLowerCase().contains(titleTxt.toLowerCase());
+            });
+        }
+        if (locationTxt) {
+            filteredEngagements = filteredEngagements.filter(function (en) {
+                if(en.City) {
+                    return en.City.toLowerCase().contains(locationTxt.toLowerCase());
+                }
+                else { return false; }
+            });
+        }
+        if (startDate) {
+            startDate = new Date(startDate);
+            filteredEngagements = filteredEngagements.filter(function (en) {
+                enStart = new Date(en.StartDate);
+                return enStart >= startDate;
+            });
+        }
+        if (endDate) {
+            endDate = new Date(endDate);
+            filteredEngagements = filteredEngagements.filter(function (en) {
+                var enEnd;
+                if (en.EndDate) {
+                    enEnd = new Date(en.EndDate);
+                }
+                else {
+                    enEnd = new Date(en.StartDate);                    
+                }
+                return enEnd <= endDate;
+            });
+        }
+        if (prefs && prefs.length > 0) {
+            filteredEngagements = filteredEngagements.filter(function (en) {
+                return prefs.some(item => en.Prefs.includes(item));
+            });
+        }
+        if (quals && quals.length > 0) {
+            filteredEngagements = filteredEngagements.filter(function (en) {
+                return quals.some(item => en.Quals.includes(item));
+            });
+        }
+        return filteredEngagements;
+    }
+
+    /*** Gets a list of all engagements */
+    function getPublicEngagements() {
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: "/get-engagements"
+        }).done(function(data) {
+            engagements = data.engagements;
+            loadCards();
+            $(".applyFiltersBtn").prop('disabled', false);         
+        }).fail(function(err) {
+            console.error(err.responseText);
+            alertHtml = buildErrorAlert(err.responseText);
+            $(".alerty").html(alertHtml);
+            $(".alerty").show();
+        });
+    }
+
+    /*** Removes the old cards and shows the shimmering loading cards */
+    function hideCards() {
+        hiddenCards = "<div class=\"card-container\">";
+        for (i = 0; i < 5; i++) {
+            hiddenCards = hiddenCards + "<div class=\"row shine\"></div>";
+        }
+        hiddenCards = hiddenCards + "</div>";
+        $(".card-container").replaceWith(hiddenCards);
+        $(".numEngagements").replaceWith('<p class="numEngagements"><em>{{snippets['MSVE_EngagementCards/Loading']}}</em></p>');
+    }
+
+    /*** Removes the shimmering loading cards and replaces them with actual data */
+    function loadCards() {
+        filteredEngagements = filterEngagements();
+        filteredEngagements = sortEngagements(filteredEngagements);
+        newCards = "<div class=\"card-container\">";
+        if (filteredEngagements && filteredEngagements.length > 0) {
+            for (i = 0; i < filteredEngagements.length; i++) {
+                newCards = newCards + buildCard(filteredEngagements[i]);
+            }
+        }
+        else {
+            newCards = newCards + `{% include 'MSVE_MissingContent' message: snippets['MSVE_EngagementCards/NoneFromSearch'] %}`;
+        }
+        newCards = newCards + "</div>";
+        $(".card-container").replaceWith(newCards);
+        if (filteredEngagements && filteredEngagements.length > 0) {
+            $(".numEngagements").replaceWith('<p class="numEngagements">' + filteredEngagements.length + ' {{snippets['MSVE_EngagementCards/Num']}}</p>');
+        }
+        else {
+            $(".numEngagements").replaceWith('<p class="numEngagements"><em>{{snippets['MSVE_EngagementCards/None']}}</em></p>');
+        }
+    }
+
+    /*** Sorts a group of engagements based on what is in the sorting dropdown */
+    function sortEngagements(filteredEngagements) {
+        sortStyle = $("#sortEnagementsBy").val();
+        switch(sortStyle) {
+            case 'startdate':
+                filteredEngagements = filteredEngagements.sort(SortByStartDate);
+                break;
+            case 'enddate':
+                filteredEngagements = filteredEngagements.sort(SortByEndDate);
+                break;
+            case 'title':
+                filteredEngagements = filteredEngagements.sort(SortByName);
+                break;
+            default: break;
+        }
+        return filteredEngagements;
+    }
+
+    /*** Builds the HTML card string for a specific engagement */
+    function buildCard(engagement) {
+        
+        // Variables to be used in the final string builder
+        linkToDetails = "/engagement/?id=" + engagement.OppId;
+        dates = "";
+        imageUrl = "";
+        locationTxt = "";
+        numVolunteersTxt = "";
+        const btnText = "{{snippets['MSVE_EngagementDetails/ViewDetails']}}";
+        const btnAriaTxt = "{{snippets['MSVE_EngagementDetails/ViewDetails']}} {{snippets['MSVE_SmallWords/About']}} " + engagement.Title;
+        const baseUrl = window.location.origin;
+
+        const localStartDateString = new Date(engagement.StartDateString).toDateString();
+        // Gets the correct date string
+        if (engagement.EndDate) {
+            const localEndDateString = new Date(engagement.EndDateString).toDateString();
+
+            dates = `${localStartDateString} - ${localEndDateString}`;
+        }
+        else {
+            dates = localStartDateString;
+        }
+
+        // Gets the correct location string & image URL
+        if (engagement.LocationTypeValue != '844060003') {
+            switch(engagement.LocationTypeValue) {
+                case '844060000':
+                    locationIcon = `{{snippets['MSVE_SVG/Location']}}`;                    
+                    locationTxt = "{{snippets['MSVE_EngagementInfo/OnLocation']}} - " + engagement.LocationTitle;
+                    if(engagement.LocationTitle) { locationTxt.concat(" - ", engagement.LocationTitle); }
+                    break;
+                case '844060001':
+                    locationIcon = `{{snippets['MSVE_SVG/Virtual']}}`;                           
+                    locationTxt = "{{snippets['MSVE_EngagementInfo/Virtual']}}";
+                    break;
+                case '844060002':
+                    locationIcon = `{{snippets['MSVE_SVG/Location']}}`;                     
+                    locationTxt = "{{snippets['MSVE_EngagementInfo/Virtual']}} {{snippets['MSVE_SmallWords/And']}} {{snippets['MSVE_EngagementInfo/OnLocation']}}";
+                    if(engagement.LocationTitle) { locationTxt.concat(" - ", engagement.LocationTitle); }                    
+                    break;
+                default: break;
+            }
+        }
+
+        // Gets the corrent number of volunteers text
+        if (engagement.MinVols > engagement.NumVols) {
+            numVolunteersTxt = engagement.MinVols - engagement.NumVols + " {{snippets['MSVE_EngagementDetails/VolunteersNeeded']}}";
+        }
+
+        // Builds the new card
+        newCard = `
+            <a href="${baseUrl}${linkToDetails}" class="cardLink">
+                <div class="row card">  
+                    <div class="col-md-8">
+                        <h2>${engagement.Title}</h2> 
+                        <h3 class="text-primary">${dates}</h3>
+                        <p class="text-info">
+                            ${locationIcon}
+                            ${locationTxt}
+                        </p>
+                        <p>${engagement.Desc}</p>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <p class="text-info">${numVolunteersTxt}</p>
+                        <a href="${baseUrl}${linkToDetails}" class="btn btn-warning" aria-label="${btnAriaTxt}">${btnText}</a>
+                    </div>
+                </div>
+            </a>
+        `;
+        return newCard;
+    }
+
+    /*** Generates the generic error alert */
+    function buildErrorAlert(message) {
+        return `<div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Error:</strong> ${message}
+                </div>`
+    }
+
+    /*** Sorts 2 engagements by their names */
+    function SortByName(a, b){
+        var aName = a.Title.toLowerCase();
+        var bName = b.Title.toLowerCase(); 
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+    }
+
+    /*** Sorts 2 engagements by their start dates */
+    function SortByStartDate(a, b) {
+        aDate = new Date(a.StartDate);
+        bDate = new Date(b.StartDate);
+        return ((aDate < bDate) ? -1 : ((aDate > bDate) ? 1 : 0));        
+    }
+
+    /*** Sorts 2 engagements by their end dates */
+    function SortByEndDate(a, b) {
+        aDate = new Date(a.EndDate);
+        bDate = new Date(b.EndDate);
+        if (!a.EndDate) {
+            aDate = new Date(a.StartDate);
+        }
+        if (!b.EndDate) {
+            bDate = new Date(b.StartDate);
+        }
+        return ((aDate < bDate) ? -1 : ((aDate > bDate) ? 1 : 0));
+    }
+</script>

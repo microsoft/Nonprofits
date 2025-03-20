@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PluginAssembly FullName="Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginAssemblyId="5d562315-37a4-eb11-b1ac-000d3a1fc0e7" CustomizationLevel="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <IsolationMode>2</IsolationMode>
+  <SourceType>0</SourceType>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <FileName>/PluginAssemblies/Plugins-5D562315-37A4-EB11-B1AC-000D3A1FC0E7/Plugins.dll</FileName>
+  <PluginTypes>
+    <PluginType AssemblyQualifiedName="Plugins.ContactPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="ea74092e-e8be-eb11-8236-000d3a31c0f1" Name="Plugins.ContactPostUpdate">
+      <FriendlyName>Plugins.ContactPostUpdate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityOnPostCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="e137afe8-051b-4ade-9bd7-051b653fb01a" Name="Plugins.EngagementOpportunityOnPostCreate">
+      <FriendlyName>Plugins.EngagementOpportunityOnPostCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityOnPostPublicPublish, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="26a8fb7c-1844-4a2a-baa3-4813f5bfd7b3" Name="Plugins.EngagementOpportunityOnPostPublicPublish">
+      <FriendlyName>1ae63550-dcd4-42c5-9736-c625efc25d18</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="82086afa-6b54-42de-a651-cb813259497f" Name="Plugins.EngagementOpportunityOnPostUpdate">
+      <FriendlyName>Plugins.EngagementOpportunityOnPostUpdate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="d44d669b-ac09-4020-968c-d79e29dcfdce" Name="Plugins.EngagementOpportunityOnPreCreate">
+      <FriendlyName>Plugins.EngagementOpportunityOnPreCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityOnPreUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="0c14a9f4-ad5f-472d-9f40-1e634fd007ef" Name="Plugins.EngagementOpportunityOnPreUpdate">
+      <FriendlyName>aeee5582-f2ad-4b5f-ad65-06a36666a343</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityPreferenceOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="cce61d3d-fef3-482b-b536-adef5972f552" Name="Plugins.EngagementOpportunityPreferenceOnPreCreate">
+      <FriendlyName>Plugins.EngagementOpportunityPreferenceOnPreCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityQualificationOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="c2baaafd-97df-4467-a571-c23f1be73e64" Name="Plugins.EngagementOpportunityQualificationOnPreCreate">
+      <FriendlyName>Plugins.EngagementOpportunityQualificationOnPreCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityScheduleOnPostUpdateAndCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="036d099d-14ce-4199-bdbb-61b613f3a826" Name="Plugins.EngagementOpportunityScheduleOnPostUpdateAndCreate">
+      <FriendlyName>Plugins.EngagementOpportunityScheduleOnPostUpdateAndCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunityScheduleOnPreCreateUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="df58085a-23be-eb11-8236-000d3a31c0f1" Name="Plugins.EngagementOpportunityScheduleOnPreCreateUpdate">
+      <FriendlyName>Plugins.EngagementOpportunityScheduleOnPreCreateUpdate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.EngagementOpportunitySettingOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="ccee094b-9aa2-49dd-b6af-00348d4ba76f" Name="Plugins.EngagementOpportunitySettingOnPreCreate">
+      <FriendlyName>Plugins.EngagementOpportunitySettingOnPreCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.GroupMembershipOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="be18fbf2-065c-4cb3-80c1-69984671d900" Name="Plugins.GroupMembershipOnPreCreate">
+      <FriendlyName>Plugins.GroupMembershipOnPreCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.GroupMembershipOnPreDelete, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="4e4be5a5-bcc3-eb11-bacc-000d3a31d619" Name="Plugins.GroupMembershipOnPreDelete">
+      <FriendlyName>Plugins.GroupMembershipOnPreDelete</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.MessageOnPostCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="157ce908-c5bc-eb11-8236-000d3a31dec1" Name="Plugins.MessageOnPostCreate">
+      <FriendlyName>Plugins.MessageOnPostCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationOnPostCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="1352f367-7d93-451e-a423-d439acb49482" Name="Plugins.ParticipationOnPostCreate">
+      <FriendlyName>Plugins.ParticipationOnPostCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="49dc1e97-2b4c-4203-86ac-ba38aa39641a" Name="Plugins.ParticipationOnPostUpdate">
+      <FriendlyName>Plugins.ParticipationOnPostUpdate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="3af5242d-43cf-4b14-8848-7bd20a44ae8c" Name="Plugins.ParticipationOnPreCreate">
+      <FriendlyName>Plugins.ParticipationOnPreCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationScheduleOnPostUpdateAndCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="9d64be49-51f1-4711-845f-6ebe1363aa1d" Name="Plugins.ParticipationScheduleOnPostUpdateAndCreate">
+      <FriendlyName>Plugins.ParticipationScheduleOnPostUpdateAndCreate</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationScheduleOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="5bccbc89-5bae-4ad9-801c-25fc4748c92b" Name="Plugins.ParticipationScheduleOnPreCreate">
+      <FriendlyName>c50de1c0-461f-4293-9702-5db9b3bcb13f</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.QualificationOnPostCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="d7b2c2d1-e5d5-4aee-9eaf-f656bd5248d5" Name="Plugins.QualificationOnPostCreate">
+      <FriendlyName>cd63de5a-e948-4d51-889f-206962fa349e</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.QualificationOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="8edb8a98-f648-407a-86b1-590bb88ddafd" Name="Plugins.QualificationOnPostUpdate">
+      <FriendlyName>e134a66b-6d6e-430a-be54-aa63a98d37bc</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.QualificationStageOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="d28e1986-4477-4cc3-92c7-b16e5522be71" Name="Plugins.QualificationStageOnPostUpdate">
+      <FriendlyName>3c412448-9412-4ee8-b139-ba839e73ccb8</FriendlyName>
+    </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.QualificationStageOnPreUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" PluginTypeId="3e7d5d74-2c9e-4fa6-815b-94f7874b17a8" Name="Plugins.QualificationStageOnPreUpdate">
+      <FriendlyName>43d8bb59-1c08-4b9a-a4c9-895937967acc</FriendlyName>
+    </PluginType>
+  </PluginTypes>
+</PluginAssembly>

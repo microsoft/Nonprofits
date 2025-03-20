@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{65ee0951-3f25-ec11-b6e5-002248262df0}</savedqueryid>
+    <layoutxml>
+      <grid name="msnfp_qualificationtypes" jump="msnfp_qualificationtypetitle" select="1" icon="1" preview="0">
+        <row name="msnfp_qualificationtype" id="msnfp_qualificationtypeid">
+          <cell name="msnfp_qualificationtypetitle" width="300" />
+          <cell name="msnfp_type" width="100" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_qualificationtype">
+          <attribute name="msnfp_qualificationtypeid" />
+          <attribute name="msnfp_qualificationtypetitle" />
+          <attribute name="createdon" />
+          <order attribute="msnfp_qualificationtypetitle" descending="false" />
+          <attribute name="msnfp_type" />
+          <filter type="and">
+            <condition attribute="msnfp_type" operator="ne" value="844060004" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="VE Portal Qualification Type Lookup View" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Used to look up non-onboarding qualifications in the Profile page of the Volunteer Engagement Portal" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

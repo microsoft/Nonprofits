@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{d4ef1080-2889-4b4e-b35f-1e7ef50415b9}</formid>
+    <IntroducedVersion>2.4.1.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls" solutionaction="Modified">
+      <tabs>
+        <tab verticallayout="true" id="{a1247eca-0a4f-46f5-8fbc-2ac3250e7d6f}" IsUserDefined="1" name="tab_general" ordinalvalue="0" solutionaction="Modified">
+          <labels>
+            <label description="Details" languagecode="1033" solutionaction="Modified" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{f356381a-d715-450f-bf70-f58c3f199f85}" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{2957a81b-1718-42f5-b378-2008c07fa5bc}" showlabel="true" locklevel="1" visible="false" ordinalvalue="10003" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{06a93529-2fd5-48a5-b61d-e7627e16fb3c}" locklevel="0" rowspan="5" ordinalvalue="10002" solutionaction="Added">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="section_stages" id="949dd845-18ba-440b-a336-e0e0f8380037" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="Stages" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{08046ae3-16e8-4bab-a0d0-1de75dda8f95}" rowspan="7" colspan="1" auto="false" showlabel="true" ordinalvalue="10000">
+                        <labels>
+                          <label description="Onboarding Stages and Steps" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" indicationOfSubgrid="true" uniqueid="{14bc5ed8-8405-b842-bd8d-2ca6211d916c}">
+                          <parameters>
+                            <TargetEntityType>msnfp_onboardingprocessstage</TargetEntityType>
+                            <ViewId>{BAC809D9-04EB-EB11-BACB-000D3A53885C}</ViewId>
+                            <ViewIds>{79B89AA7-63FA-408C-9E82-0E978303D8EE},{BAC809D9-04EB-EB11-BACB-000D3A53885C}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_OnboardingProcessStage_Qualificatio</RelationshipName>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <controlDescriptions>
+        <controlDescription forControl="{14bc5ed8-8405-b842-bd8d-2ca6211d916c}" solutionaction="Added">
+          <customControl id="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" formFactor="0">
+            <parameters />
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{BAC809D9-04EB-EB11-BACB-000D3A53885C}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_OnboardingProcessStage_Qualificatio</RelationshipName>
+                <TargetEntityType>msnfp_onboardingprocessstage</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{79B89AA7-63FA-408C-9E82-0E978303D8EE},{BAC809D9-04EB-EB11-BACB-000D3A53885C}</FilteredViewIds>
+              </data-set>
+              <data-set name="SubGrid">
+                <ViewId>{35DB8037-7AED-4E54-BFD0-AD3D0CD07425}</ViewId>
+                <IsUserView>false</IsUserView>
+                <TargetEntityType>msnfp_onboardingprocessstep</TargetEntityType>
+                <SubGridParentId>msnfp_onboardingprocessstageid</SubGridParentId>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">no</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">yes</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{BAC809D9-04EB-EB11-BACB-000D3A53885C}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_OnboardingProcessStage_Qualificatio</RelationshipName>
+                <TargetEntityType>msnfp_onboardingprocessstage</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{79B89AA7-63FA-408C-9E82-0E978303D8EE},{BAC809D9-04EB-EB11-BACB-000D3A53885C}</FilteredViewIds>
+              </data-set>
+              <data-set name="SubGrid">
+                <ViewId>{35DB8037-7AED-4E54-BFD0-AD3D0CD07425}</ViewId>
+                <IsUserView>false</IsUserView>
+                <TargetEntityType>msnfp_onboardingprocessstep</TargetEntityType>
+                <SubGridParentId>msnfp_onboardingprocessstageid</SubGridParentId>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">no</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">yes</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <header id="{d7089e11-7826-4c8b-a222-b33adf9db09c}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows />
+      </header>
+      <footer id="{8999f277-95f8-4f26-9992-d985a7ddad02}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows />
+      </footer>
+      <formLibraries solutionaction="Added">
+        <Library name="msnfp_QualificationTypeForm.gen.js" libraryUniqueId="{dd7f6e18-e464-494e-900e-4a159500873b}" />
+      </formLibraries>
+      <events solutionaction="Added">
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.QualificationTypeForm.OnLoad" libraryName="msnfp_QualificationTypeForm.gen.js" handlerUniqueId="{02f9f78c-60ab-4c6a-91e9-843cacaacdc2}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
+      <DisplayConditions FallbackForm="true" Order="0" solutionaction="Added">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

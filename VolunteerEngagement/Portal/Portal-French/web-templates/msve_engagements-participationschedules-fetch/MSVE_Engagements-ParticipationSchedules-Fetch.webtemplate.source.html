@@ -1,0 +1,22 @@
+{% fetchxml pScheds %}
+  <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+    <entity name="msnfp_participationschedule">
+      <attribute name="msnfp_participationscheduleid"/>
+      <attribute name="msnfp_schedulestatus"/>      
+      <link-entity name="msnfp_participation" from="msnfp_participationid" to="msnfp_participationid" link-type="inner" alias="parti">
+        <filter type="and">
+          <condition attribute="msnfp_participationid" operator="eq" value="{{participationid}}"/>
+          <condition attribute="createdon" operator="on-or-before" value="{{now | date: "MM-dd-yy"}}"/>
+        </filter>
+      </link-entity>
+      <link-entity name="msnfp_engagementopportunityschedule" from="msnfp_engagementopportunityscheduleid" to="msnfp_engagementopportunityscheduleid" link-type="outer" alias="eSched">
+        <attribute name="msnfp_effectivefrom"/>
+        <attribute name="msnfp_effectiveto"/>
+        <attribute name="msnfp_engagementopportunityschedule"/>
+        <attribute name="msnfp_shiftname"/>
+        <order attribute="msnfp_effectivefrom" descending="false"/>
+      </link-entity>
+    </entity>
+  </fetch>
+{% endfetchxml %}
+

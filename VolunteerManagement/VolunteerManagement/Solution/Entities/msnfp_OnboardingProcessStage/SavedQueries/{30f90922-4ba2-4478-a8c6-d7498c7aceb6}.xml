@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{30f90922-4ba2-4478-a8c6-d7498c7aceb6}</savedqueryid>
+    <layoutxml>
+      <grid name="msnfp_onboardingprocessstages" jump="msnfp_stagename" select="1" icon="1" preview="1">
+        <row name="msnfp_onboardingprocessstage" id="msnfp_onboardingprocessstageid">
+          <cell name="msnfp_stagename" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>2</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_onboardingprocessstage">
+          <attribute name="msnfp_onboardingprocessstageid" />
+          <attribute name="msnfp_stagename" />
+          <attribute name="createdon" />
+          <order attribute="msnfp_stagename" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Onboarding Process Stage Associated View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

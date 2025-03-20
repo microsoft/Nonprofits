@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{789de36d-35f3-ed11-8848-6045bdf1e76e}</WebResourceId>
+  <Name>msnfp_/strings/VolunteerManagement.Webresources.1036.resx</Name>
+  <DisplayName>msnfp_/strings/VolunteerManagement.Webresources.1036.resx</DisplayName>
+  <Description>Resx webresource for holding French strings for webresources.</Description>
+  <LanguageCode>1036</LanguageCode>
+  <WebResourceType>12</WebResourceType>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/msnfp_stringsVolunteerManagementWebresources1036re789DE36D-35F3-ED11-8848-6045BDF1E76E</FileName>
+</WebResource>

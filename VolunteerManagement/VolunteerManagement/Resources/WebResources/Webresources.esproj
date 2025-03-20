@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.83-alpha">
+	<Target Name="GetProjectOutputPath" />
+	<PropertyGroup>
+		<WebResourceBuildDir>dist</WebResourceBuildDir>
+		<SolutionPackagePath>..\..\Solution\WebResources</SolutionPackagePath>
+	</PropertyGroup>
+	<PropertyGroup>
+		<BuildCommand>npm run build</BuildCommand>
+		<CleanCommand>npm run clean</CleanCommand>
+	</PropertyGroup>
+	<Target Name="CheckForNpm" BeforeTargets="NpmInstallDependencies">
+		<Exec Command="npm --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="NPM is required to build this project." />
+	</Target>
+	<Target Name="NpmInstallDependencies" BeforeTargets="PreBuildEvent">
+		<Exec Command="npm install" />
+		<Exec Command="npm audit fix || exit 0" />
+		<Exec Command="npm run test" />
+	</Target>
+	<Target Name="SelectedOutputs">
+		<ItemGroup>
+			<WebResources Include="$(WebResourceBuildDir)\**\*" Exclude="bin\**\*.*;obj\**\*.*;node_modules\**\*.*" />
+		</ItemGroup>
+	</Target>
+	<Target Name="CopyCompiledTypeScriptFiles" DependsOnTargets="SelectedOutputs" AfterTargets="AfterBuild" Inputs="@(WebResources)" Outputs="@(WebResources->'$(MSBuildProjectDirectory)\$(SolutionPackagePath)%(RecursiveDir)')">
+		<Copy SourceFiles="@(WebResources)" DestinationFolder="$(MSBuildProjectDirectory)\$(SolutionPackagePath)\%(RecursiveDir)" Retries="3" RetryDelayMilliseconds="300" />
+	</Target>
+</Project>

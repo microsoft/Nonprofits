@@ -1,0 +1,35 @@
+.crmEntityFormView, .entitylist, .modal-content, .popover-content {
+	border: none
+}
+
+div.page-heading { 
+    color: white;
+    background: #09517B;
+    text-align: center;
+    width: 100%;
+}
+
+input[name="ctl00\$ctl00\$ctl00\$ContentContainer\$MainContent\$MainContent\$EntityControls\$EntityFormControl\$UpdateButton"] {
+    display: none;
+}
+
+ul.breadcrumb {
+    display: none;
+}
+
+.well {
+    background-color: white;
+    border: none;
+}
+
+div.well > img {
+    border-radius: 50%
+}
+
+.btn {
+    border-radius: 60px/60px;
+}
+
+input[type="text"] {
+    margin: 0px 0px 0px 0px;
+}

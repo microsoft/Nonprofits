@@ -1,0 +1,28 @@
+{
+	"name": "engagement-opportunity-summary",
+	"version": "0.0.29",
+	"description": "Project containing your PowerApps Component Framework (PCF) control.",
+	"scripts": {
+		"postinstall": "npm audit fix & npm run refreshTypes",
+		"build": "pcf-scripts build",
+		"clean": "pcf-scripts clean",
+		"rebuild": "pcf-scripts rebuild",
+		"start": "pcf-scripts start",
+		"test": "jest",
+		"test:updateSnapshot": "jest --updateSnapshot",
+		"refreshTypes": "pcf-scripts refreshTypes"
+	},
+	"dependencies": {
+		"@fluentui/react": "^8.14.5",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
+	},
+	"devDependencies": {
+		"@types/node": "^10.12.18",
+		"@types/powerapps-component-framework": "^1.2.0",
+		"@types/react-test-renderer": "^17.0.1",
+		"@typescript-eslint/eslint-plugin": "^6.7.2",
+		"pcf-scripts": "^1",
+		"pcf-start": "^1"
+	}
+}

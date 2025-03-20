@@ -1,0 +1,12 @@
+adx_append: false
+adx_appendto: false
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_engagementopportunityschedule
+adx_entityname: Calendriers d’engagement (anonymes)
+adx_entitypermission_webrole:
+- 9cacc555-0633-451f-9145-5c72dbe43b88
+adx_entitypermissionid: b2ea82a0-65eb-4cdc-8221-095b9e318441
+adx_read: true
+adx_scope: 756150000
+adx_write: false

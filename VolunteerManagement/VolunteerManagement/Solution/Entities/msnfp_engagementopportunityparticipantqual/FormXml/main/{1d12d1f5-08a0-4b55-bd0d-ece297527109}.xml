@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{1d12d1f5-08a0-4b55-bd0d-ece297527109}</formid>
+    <IntroducedVersion>2.4.1.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{b4c37349-aec6-4879-a623-2064a91eec39}" IsUserDefined="1" ordinalvalue="0">
+          <columns>
+            <column width="50%" id="0" solutionaction="Modified">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{5aa64b6d-5686-4b4c-9eca-a1b36d2e374b}" name="{5aa64b6d-5686-4b4c-9eca-a1b36d2e374b}" columns="1" locklevel="0" labelwidth="130" celllabelalignment="Left" celllabelposition="Left" ordinalvalue="0" solutionaction="Modified">
+                  <rows>
+                    <row>
+                      <cell id="{04610238-89ec-4659-8d06-a9967b8bf2cf}" visible="false" ordinalvalue="10000" solutionaction="Modified" />
+                      <cell id="{3122b370-02cb-ddab-3b8a-2351c5c9308a}" showlabel="true" locklevel="0" ordinalvalue="20001" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{9a1ca8c6-c6bd-a647-5288-6e0404a9aeb7}" showlabel="true" locklevel="0" ordinalvalue="20003" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{c4567d36-6dc3-5099-657c-9e4420c79133}" showlabel="true" locklevel="0" ordinalvalue="10004" solutionaction="Removed" />
+                      <cell id="{81726d50-2529-e8c7-ccdc-a4e579bebd75}" showlabel="true" locklevel="0" ordinalvalue="20005" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{dc6db7e9-02bb-d06a-1908-ce9c25614e30}" showlabel="true" locklevel="0" ordinalvalue="10001" solutionaction="Modified" />
+                      <cell id="{65d75400-54c6-c338-0b1d-d8e0ce649761}" showlabel="true" locklevel="0" rowspan="4" ordinalvalue="10004" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{71808dac-4952-4152-2a2b-93799d56c0de}" showlabel="true" locklevel="0" ordinalvalue="10008" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{4d391c17-6454-5590-9853-d786a513d854}" showlabel="true" locklevel="0" ordinalvalue="10009" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{4d324345-1661-482b-a9d8-7e451ac06257}" showlabel="true" locklevel="1" visible="false" ordinalvalue="10005" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{3d02fe35-4835-4e1b-80ea-353e3467a475}" ordinalvalue="10011" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{ba8178e8-b35b-481a-8f02-a3b4d6331870}" ordinalvalue="10003" solutionaction="Added">
+                        <labels>
+                          <label description="Is Required" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_isrequired" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_isrequired" disabled="false" uniqueid="{a96b6378-73f6-4eca-b947-e70443cd8f57}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%" id="1" solutionaction="Added">
+              <sections>
+                <section name="_section_974" id="d6a12cf1-d331-43ad-90e5-875a981ad9c0" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" visible="false" ordinalvalue="0">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows />
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <controlDescriptions>
+        <controlDescription forControl="{a96b6378-73f6-4eca-b947-e70443cd8f57}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_isrequired</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_isrequired</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_isrequired</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_isrequired</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <header id="{63cb6784-1a40-47aa-951e-97bca8561ca2}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{1369106c-789e-497f-9c08-5ba4d6d24fb7}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{9775a645-6ff7-4cde-893a-cbc0315cff92}" showlabel="false" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{d9158c50-dcd7-4377-897c-e24d21244bdb}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+          </row>
+        </rows>
+      </header>
+      <footer id="{8c5dfaae-77a0-4112-8631-22e202746163}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{56623caf-4397-47c3-ac3e-5fb62b69d057}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{8803d5c0-6a95-4e76-adbf-c34db62b0adf}" showlabel="false" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{26510dd3-e438-4dfc-aa97-56dfe1d8b43c}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+          </row>
+        </rows>
+      </footer>
+      <formLibraries solutionaction="Added">
+        <Library name="msnfp_EngagementQualificationForm.gen.js" libraryUniqueId="{20deee29-d2bb-41f5-b2bd-23e67e922e10}" />
+      </formLibraries>
+      <events solutionaction="Added">
+        <event name="onsave" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.EngagementQualification.UpdateName" libraryName="msnfp_EngagementQualificationForm.gen.js" handlerUniqueId="{f4249933-9efb-41a6-85b3-91f42e84617d}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

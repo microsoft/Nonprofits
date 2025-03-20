@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{b3c0c156-7ced-44c5-9de9-5a90da0c5861}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{bc8f29af-c9e9-4764-814e-68582f0e835c}" IsUserDefined="1" name="General">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{7bf206ca-6ab6-4430-935b-1a6435d88456}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{98195c59-380e-4698-80de-0c95e99007a5}">
+                        <labels>
+                          <label description="Stage Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_stagename" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="msnfp_stagename" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c25177f0-7bbd-47f5-88f3-d2dfda84438b}" locklevel="0">
+                        <labels>
+                          <label description="Sequence Number" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_sequencenumber" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_sequencenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e17fc1f0-5980-4b29-939e-948b5bb6c900}" locklevel="0" rowspan="5">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{e1823c72-2b9f-43d9-9468-833b7334dcb7}" visible="false">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="_section_411" id="578a3555-ee3e-4fb7-bf81-d75c2f5b45f5" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Create Due Date (from start of stage)" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{51e54803-c6fd-4cb7-8d07-379bcebb1f7a}" locklevel="0">
+                        <labels>
+                          <label description="Due in Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_dueindays" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_dueindays" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="General_section_4" id="5fae298b-a580-4d02-8048-8ec3628b3c2d" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Steps" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{feca6b1a-87a3-4026-b3c1-5e628569c9bd}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Steps" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>msnfp_onboardingprocessstep</TargetEntityType>
+                            <ViewId>{35DB8037-7AED-4E54-BFD0-AD3D0CD07425}</ViewId>
+                            <ViewIds>{35DB8037-7AED-4E54-BFD0-AD3D0CD07425}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_OnboardingProcessStep_OnboardingPro</RelationshipName>
+                            <RecordsPerPage>8</RecordsPerPage>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{6fd4e94c-332e-4649-85e7-c9ff99afae2f}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{36e1f095-698d-4040-a739-f67576e8de55}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{6ad5046c-2ee4-4536-8b62-7637aeaf8939}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{28aef118-3d16-4c67-aa25-c65497246016}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{051d5602-86bb-4ac4-9ac0-893f34aa3537}" locklevel="0">
+              <labels>
+                <label description="Onboarding Process" languagecode="1033" />
+              </labels>
+              <control id="header_msnfp_qualificationtypeid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_qualificationtypeid" disabled="false" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{fd682d26-642d-42ab-af46-1b3d98a11c80}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{5e6d157c-2734-4e43-8b66-ee4681898d41}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{7d1cb299-9c00-4eb4-854d-6e46a70d42cf}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{68c44841-f14f-462e-8e7a-e6c672cf2da6}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

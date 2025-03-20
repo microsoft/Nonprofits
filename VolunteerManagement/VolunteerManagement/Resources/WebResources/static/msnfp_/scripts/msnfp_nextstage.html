@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Process button</title>
+		<meta charset="utf-8">
+		<script src="./QualificationForm.gen.js"></script>
+		<link href="./msnfp_nextstage.css" rel="stylesheet">
+	</head>
+	<body style="overflow-wrap: break-word;">
+		<button id="btnProcess" class="btnprocess" onclick="nextStageOnClick()">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff"><path d="m15.953 8-7.351 7.352-.704-.704L14.047 8.5H0v-1h14.047L7.898 1.352l.704-.704Zm0 0"/></svg>
+			<span id="processButtonText"></span>
+		</button>
+
+		<script>
+			document.getElementById("processButtonText").innerText = getLocalizedText('Qualification.OnboardingProcess.NextStageText');
+
+			function nextStageOnClick()  {
+				var currentStageField = formContext.getAttribute("msnfp_currentstage")?.getValue();
+				var confirmStrings = { text: getLocalizedText('Qualification.OnboardingProcess.ProgressToNextStageDialog.Text'), title: getLocalizedText('Qualification.OnboardingProcess.ProgressToNextStageDialog.Title')};
+					if(currentStageField != null && currentStageField.length > 0){
+						var query = "?$select=activityid&$filter=isregularactivity eq true and statecode eq 0 and _regardingobjectid_value eq "+currentStageField[0].id.slice(1,37)+"&$count=true"
+						Xrm.WebApi.retrieveMultipleRecords("activitypointer",query).then(
+							function success(result) {
+								if(result.entities.length > 0){
+									Xrm.Navigation.openConfirmDialog(confirmStrings).then(
+											function (success) {
+												if (success.confirmed){   
+													this.NextStage(currentStageField)
+											}
+										}
+									);
+								}
+								else {
+									this.NextStage(currentStageField)
+								}
+							}
+						)
+					}
+					else{
+						this.UpdateCurrentStage();
+					}
+			};
+			function setClientApiContext(Xrm, formContext, getLocalizedText) {
+				window.Xrm = Xrm;
+				window.formContext = formContext;
+				window.getLocalizedText = getLocalizedText;
+
+				document.getElementById("processButtonText").innerText = getLocalizedText('Qualification.OnboardingProcess.NextStageText');
+				CheckForStageCount();
+			};
+			function NextStage(currentStageField){
+				Xrm.WebApi.updateRecord(currentStageField[0].entityType,currentStageField[0].id.slice(1,37), { "msnfp_stagestatus": 844060002 }).then(this.UpdateCurrentStage());
+				formContext.data.save();
+				formContext.data.refresh(true);
+			};
+			function UpdateCurrentStage(){
+				var select = "?$select=statecode,msnfp_stagename,_msnfp_qualificationid_value,msnfp_stagestatus,msnfp_sequencenumber";
+				var filter = "&$filter=_msnfp_qualificationid_value eq "+ formContext.entityReference.id.slice(1,37) + " and msnfp_stagestatus eq 844060000 and statecode eq 0";
+				var orderBy = "&$orderby=msnfp_sequencenumber";
+				Xrm.WebApi.retrieveMultipleRecords("msnfp_qualificationstage",select + filter + orderBy).then(
+					function success(result) {
+						if(result != null && result.entities.length > 0){
+							if(result.entities.length == 1) {document.getElementById("processButtonText").innerText = getLocalizedText('Qualification.OnboardingProcess.CompleteOnboardingText');}
+							Xrm.WebApi.updateRecord("msnfp_qualificationstage",result.entities[0].msnfp_qualificationstageid, { "msnfp_stagestatus": 844060001 }).then(
+								function success(result){
+									formContext.getAttribute("msnfp_currentstage")?.setValue([{entityType:"msnfp_qualificationstage", id:result.id}]);
+									formContext.data.refresh(true);
+								}
+							);
+						}
+						else {
+							formContext.getAttribute("msnfp_qualificationstatus")?.setValue(844060001);
+							formContext.getAttribute("msnfp_currentstage")?.setValue(null);
+							formContext.data.save();
+						}
+					}
+				);
+			};
+			function UpdateVisibility(){
+				if(formContext.getAttribute("msnfp_qualificationstatus")?.getValue() == 844060001 || formContext.getAttribute("msnfp_qualificationstatus")?.getValue() == 844060002){
+					formContext.getControl("WebResource_nextstage")?.setVisible(false);
+				}
+			};
+			function CheckForStageCount(){
+				var select = "?$select=msnfp_qualificationstageid";
+				var filter = "&$filter=_msnfp_qualificationid_value eq "+ formContext.entityReference.id.slice(1,37) + " and msnfp_stagestatus eq 844060000 and statecode eq 0";
+				Xrm.WebApi.retrieveMultipleRecords("msnfp_qualificationstage",select + filter).then(
+					function success(result) {
+						if(result != null && result.entities.length == 0){
+							document.getElementById("processButtonText").innerText = getLocalizedText('Qualification.OnboardingProcess.CompleteOnboardingText');
+						}
+					}
+				); 
+			};
+		</script>
+	</body>
+</html>

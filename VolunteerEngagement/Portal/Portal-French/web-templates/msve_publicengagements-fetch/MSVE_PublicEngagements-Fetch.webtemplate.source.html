@@ -1,0 +1,26 @@
+{% fetchxml rawEngagements %}
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="msnfp_publicengagementopportunity">
+            <attribute name="msnfp_publicengagementopportunityid"/>
+            <attribute name="msnfp_engagementopportunitytitle"/>
+            <attribute name="msnfp_statuscode"/>
+            <attribute name="msnfp_engagementopportunitystatus"/>
+            <attribute name="msnfp_startingdate"/>
+            <attribute name="msnfp_shortdescription"/>
+            <attribute name="msnfp_qualifications"/>
+            <attribute name="msnfp_locationtype"/>
+            <attribute name="msnfp_locationname"/>
+            <attribute name="msnfp_locationcitystate"/>
+            <attribute name="msnfp_number"/>
+            <attribute name="msnfp_minimum"/>
+            <attribute name="msnfp_endingdate"/>
+            <attribute name="msnfp_areas"/>
+            <order attribute="msnfp_startingdate" descending="false"/>
+            <filter type="and">
+                <condition attribute="msnfp_endingdate" operator="on-or-after" value="{{now | date: "MM-dd-yy"}}"/>
+                <condition attribute="msnfp_engagementopportunityid" operator="not-null"/>
+                <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="{{844060002}}"/> {% comment %} PublishToWeb {% endcomment %}
+            </filter>
+        </entity>
+    </fetch>
+{% endfetchxml %}

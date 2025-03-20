@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{624a060d-b4b4-eb11-8236-00224808e22b}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_engagementopportunityschedule" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_engagementopportunityscheduleid">
+          <cell name="msnfp_shiftname" width="147" />
+          <cell name="msnfp_effectivefrom" width="116" />
+          <cell name="msnfp_effectiveto" width="115" />
+          <cell name="msnfp_number" width="93" />
+          <cell name="msnfp_minimum" width="71" />
+          <cell name="msnfp_maximum" width="75" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_engagementopportunityschedule">
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_effectivefrom" />
+          <attribute name="msnfp_engagementopportunityscheduleid" />
+          <attribute name="msnfp_minimum" />
+          <order attribute="msnfp_effectivefrom" descending="true" />
+          <attribute name="msnfp_maximum" />
+          <attribute name="msnfp_shiftname" />
+          <attribute name="msnfp_effectiveto" />
+          <attribute name="msnfp_number" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Engagement Opportunity Schedules on Engagement Opportunity" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="This view is used on the engagement opportunity form. " languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

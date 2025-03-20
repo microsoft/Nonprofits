@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<control namespace="microsoftdynamics365nonprofitaccelerator"
+			constructor="EngagementOpportunitySummary"
+			version="0.0.29"
+			display-name-key="EngagementOpportunitySummary"
+			description-key="EngagementOpportunitySummary description"
+			control-type="virtual">
+		<type-group name="strings">
+			<type>SingleLine.Text</type>
+			<type>SingleLine.Email</type>
+			<type>SingleLine.Phone</type>
+			<type>SingleLine.TextArea</type>
+			<type>SingleLine.Ticker</type>
+			<type>SingleLine.URL</type>
+			<type>Multiple</type>
+		</type-group>
+		<type-group name="dates">
+			<type>DateAndTime.DateAndTime</type>
+			<type>DateAndTime.DateOnly</type>
+		</type-group>
+		<type-group name="numbers">
+			<type>Whole.None</type>
+			<type>Currency</type>
+			<type>FP</type>
+			<type>Decimal</type>
+		</type-group>
+		<property name="CurrentShifts"
+				display-name-key="Current Shifts"
+				description-key="Current Shifts"
+				of-type="Whole.None"
+				usage="bound"
+				required="true" />
+		<property name="NeedsReview"
+				display-name-key="Needs Review Participants"
+				description-key="Needs Review Participants"
+				of-type="Whole.None"
+				usage="input"
+				required="true" />
+		<property name="CancelledShifts"
+				display-name-key="Cancelled Shifts"
+				description-key="Cancelled Shifts"
+				of-type="Whole.None"
+				usage="input"
+				required="true" />
+		<property name="CompletedShifts"
+				display-name-key="Completed Shifts"
+				description-key="Completed Shifts"
+				of-type="Whole.None"
+				usage="input"
+				required="true" />
+		<property name="NoShowShifts"
+				display-name-key="No Show Shifts"
+				description-key="No Show Shifts"
+				of-type="Whole.None"
+				usage="input"
+				required="true" />
+		<property name="StartDate"
+				display-name-key="Start Date"
+				description-key="Start Date"
+				of-type="DateAndTime.DateOnly"
+				usage="input"
+				required="true" />
+		<property name="EngOppStatus"
+				display-name-key="Engagement Opportunity Status"
+				description-key="Engagement Opportunity Status"
+				of-type="OptionSet"
+				usage="input"
+				required="true" />
+		<property name="EngOppId"
+				display-name-key="Engagement Opportunity Id"
+				description-key="Engagement Opportunity Id"
+				of-type="SingleLine.Text"
+				usage="input"
+				required="true" />
+		<resources>
+			<code path="index.ts" order="1" />
+			<platform-library name="React" version="16.8.6" />
+			<platform-library name="Fluent" version="8.29.0" />
+			<resx path="strings/EngagementOpportunitySummary.1033.resx" version="1.0.0" />
+			<resx path="strings/EngagementOpportunitySummary.1036.resx" version="1.0.0" />
+		</resources>
+		<feature-usage>
+			<uses-feature name="WebAPI" required="true" />
+		</feature-usage>
+	</control>
+</manifest>

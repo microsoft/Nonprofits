@@ -1,0 +1,54 @@
+
+.btnprocess {
+	background-color: rgb(0, 120, 212);
+	color: rgb(255, 255, 255);
+	outline: transparent;
+	position: relative;
+	font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 14px;
+	font-weight: 600;
+	box-sizing: border-box;
+	border: 1px solid rgb(0, 120, 212);
+	display: flex;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer;
+	padding: 0px 20px;
+	border-radius: 2px;
+	min-width: 80px;
+	height: 32px;
+	user-select: none;
+	font-style: normal;
+	font-variant: normal;
+	appearance: auto;
+	text-rendering: auto;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text-transform: none;
+	text-indent: 0px;
+	text-shadow: none;
+	align-items: center;
+	margin: 0em;
+	flex-shrink: 1;
+}
+
+.btnprocess:focus, .btnprocess:hover {
+	outline: none;
+	border-color: #9ecaed;
+	background-color: rgb(16, 110, 190);
+	border: 1px solid rgb(16, 110, 190);
+}
+
+.btnprocess:focus {
+	outline: -webkit-focus-ring-color auto 1px;
+}
+
+
+.btnprocess svg {
+	margin-right: 8px;
+}
+
+.btnprocess span {
+	line-height: 1;
+}

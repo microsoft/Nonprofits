@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping>
+	<FileToPath map="WebResources\msnfp_\strings\*.resx" to="..\..\..\..\VolunteerManagementResources\Plugins\Resx\**" />
+	
+	<Folder map="WebResources" to="..\..\..\Resources\WebResources\static" />
+</Mapping>

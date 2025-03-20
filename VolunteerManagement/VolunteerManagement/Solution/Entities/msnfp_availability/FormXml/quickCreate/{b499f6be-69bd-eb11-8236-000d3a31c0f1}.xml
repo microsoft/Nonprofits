@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{b499f6be-69bd-eb11-8236-000d3a31c0f1}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="F931FFE2-B873-473F-8F95-9502F0AA3F5E" name="tab_1" showlabel="false" labelid="{346587f4-e17d-46e4-97a3-f3c4d514a747}">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section id="0C655D4E-C6E3-424E-9AF5-71E72D30D12E" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{86eb6f75-04ac-47bc-8c38-461fe7a4dcfc}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{86ff4a07-9aab-4121-b10b-37552e1a5a8b}" locklevel="0" labelid="{bf506916-fc6d-42d1-b67e-3802481fcc3f}">
+                        <labels>
+                          <label description="Availability Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_availabilitytitle" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_availabilitytitle" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ef3ee023-cf24-462b-b571-4091dea86149}" locklevel="0" labelid="{71c0dd2a-6ff7-487c-a827-de17b76b35ef}">
+                        <labels>
+                          <label description="Effective From" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_effectivefrom" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_effectivefrom" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d4ec3f66-8843-4de6-adc5-65616ecb3e6b}" locklevel="0" labelid="{8575cb8e-2164-4c67-8be6-c6606e438def}">
+                        <labels>
+                          <label description="Effective To" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_effectiveto" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_effectiveto" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{df8193f0-4c85-4b8b-9ab1-95426a9ce089}" locklevel="0" labelid="{31c4bb86-e9b7-4886-9acf-121c19448de1}">
+                        <labels>
+                          <label description="Working Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_workingdays" classid="{4AA28AB7-9C13-4F57-A73D-AD894D048B5F}" datafieldname="msnfp_workingdays" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="02DECBA0-3AE2-484D-A19F-C5353AF4F4F2" name="tab_1_column_2_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" visible="false" labelid="{de18cb33-4a5a-4c0b-bc08-a0bc54a5fd44}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="266FE48D-4D04-4E9A-8C5A-7DEF9A2F059B" labelid="{96e8b97f-99eb-46d8-8504-88e83270053b}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="46FD66EA-B686-41D9-AAE0-C565BD78EC1F" name="tab_1_column_3_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" visible="false" labelid="{65105c23-a110-4365-ae8a-fa9a6095788d}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="07C04A4E-A482-45CC-BAB7-7FCA3CD02938" labelid="{e3db441c-b78b-4db2-9e16-92c5e03f0edf}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description=" quick create form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

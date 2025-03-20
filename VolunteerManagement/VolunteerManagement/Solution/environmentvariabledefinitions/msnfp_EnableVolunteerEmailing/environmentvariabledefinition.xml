@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="msnfp_EnableVolunteerEmailing">
+  <defaultvalue>no</defaultvalue>
+  <description default="This will cause the system to try to send emails or just mark them as sent..">
+    <label description="This will cause the system to try to send emails or just mark them as sent.." languagecode="1033" />
+  </description>
+  <displayname default="Enable Volunteer Email">
+    <label description="Enable Volunteer Email" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.9</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000002</type>
+</environmentvariabledefinition>

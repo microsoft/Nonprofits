@@ -1,0 +1,49 @@
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 2
+  adx_displaypagechildlinks: false
+  adx_name: Disponibilité
+  adx_openinnewwindow: false
+  adx_pageid: 68b25d10-e0d2-44ca-8c88-a5e23fca799c
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 2dba0e4a-5c9d-402c-aa76-4f2a5ec27fad
+  adx_weblinksetid: 8c36ec4c-d264-4814-a722-897434b72a3e
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 1
+  adx_displaypagechildlinks: false
+  adx_name: Coordonnées
+  adx_openinnewwindow: false
+  adx_pageid: 410e6f91-1026-4121-b3aa-df2760d3287e
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 0b9f72e4-4098-4c7c-957d-458cae550e02
+  adx_weblinksetid: 8c36ec4c-d264-4814-a722-897434b72a3e
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 3
+  adx_displaypagechildlinks: false
+  adx_name: Qualifications et Préférences
+  adx_openinnewwindow: false
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: false
+  adx_weblinkid: 18e84de9-9ec3-4cf9-8546-32d62f0fecf8
+  adx_weblinksetid: 8c36ec4c-d264-4814-a722-897434b72a3e
+  statecode: 1
+  statuscode: 2
+  adx_description: ' '
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 3
+  adx_displaypagechildlinks: false
+  adx_name: Préférences et Qualifications
+  adx_openinnewwindow: false
+  adx_pageid: 898fa5f8-4c7b-4fc4-af6d-3840bc786f73
+  adx_publishingstateid: 90bbe60b-f09c-4462-bb51-70e3a5d657d8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 4615b511-0d63-4554-b38c-00fb79c9fe99
+  adx_weblinksetid: 8c36ec4c-d264-4814-a722-897434b72a3e
+  adx_description: ' '

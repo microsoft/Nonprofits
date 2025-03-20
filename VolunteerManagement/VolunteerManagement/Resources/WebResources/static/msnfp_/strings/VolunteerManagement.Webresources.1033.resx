@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EngagementOpportunity.Schedule.Minimum.MinimumValueValidationText" xml:space="preserve">
+    <value>Specify 'Min' value if 'Max' value specified</value>
+  </data>
+  <data name="EngagementOpportunity.Schedule.Maximum.MaximumValueValidationText" xml:space="preserve">
+    <value>'Min' value cannot be greater than 'Max' value</value>
+  </data>
+  <data name="EngagementOpportunity.Schedule.Shifts.ShiftDeactivationDialog.Title" xml:space="preserve">
+    <value>Existing Shifts will be deactivated!</value>
+  </data>
+  <data name="EngagementOpportunity.Schedule.Shifts.ShiftDeactivationDialog.Text" xml:space="preserve">
+    <value>Shifts will be disabled for this Engagement Opportunity.  This operation will automatically deactivate the existing Shifts and  cancel the Participation Schedules related to them.\n Do you want to continue?</value>
+  </data>
+  <data name="EngagementOpportunity.Schedule.Shifts.ShiftDeactivationDialog.TitleSuffix" xml:space="preserve">
+    <value>Auto-save</value>
+  </data>
+  <data name="EngagementOpportunity.Schedule.EndDate.EndDateValidationText" xml:space="preserve">
+    <value>Must be greater or equal to Start Date</value>
+  </data>
+  <data name="EngagementOpportunity.Schedule.Shifts.EnablementNotificationText" xml:space="preserve">
+    <value>Shifts can be added after saving this Engagement Opportunity.</value>
+  </data>
+  <data name="EngagementOpportunity.PostSettings.AutomaticallyApproveAllApplicants.AutomaticAproveDialog.Title" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="EngagementOpportunity.PostSettings.AutomaticallyApproveAllApplicants.AutomaticAproveDialog.Text" xml:space="preserve">
+    <value>Are you sure you want to change how applicants are approved? This change will be saved.</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.FormNotificationText" xml:space="preserve">
+    <value>Engagement Opportunity published successfully.</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.ConfirmButtonText" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="EngagementOpportunitySchedule.General.EngagementOpportunity.RelatedOpportunityLoadErrorText" xml:space="preserve">
+    <value>Retrieving Engagement Opportunity failed</value>
+  </data>
+  <data name="EngagementOpportunitySchedule.General.EffectiveDateRangeValidationText" xml:space="preserve">
+    <value>Must be within Engagement Opportunity dates ({0} - {1})</value>
+  </data>
+  <data name="EngagementOpportunityParticipantQualification.General.IsRequired.TitleRequiredText" xml:space="preserve">
+    <value>Required: {0} - {1}</value>
+  </data>
+  <data name="EngagementOpportunityParticipantQualification.General.IsRequired.TitleDesiredText" xml:space="preserve">
+    <value>Desired:  {0} - {1}</value>
+  </data>
+  <data name="Qualification.OnboardingProcess.NextStageText" xml:space="preserve">
+    <value>Next Stage</value>
+  </data>
+  <data name="Qualification.Details.Type.ConfirmOnboardingDialog.Title" xml:space="preserve">
+    <value>Start onboarding?</value>
+  </data>
+  <data name="Qualification.Details.Type.ConfirmOnboardingDialog.Text" xml:space="preserve">
+    <value>Adding an onboarding qualification creates the corresponding onboarding stages and steps to move this volunteer through.</value>
+  </data>
+  <data name="Qualification.OnboardingProcess.ProgressToNextStageDialog.Text" xml:space="preserve">
+    <value>There are still open activities associated with the current stage. Are you sure you want to progress to the next stage?</value>
+  </data>
+  <data name="Qualification.OnboardingProcess.ProgressToNextStageDialog.Title" xml:space="preserve">
+    <value>Progress to next stage?</value>
+  </data>
+  <data name="Qualification.OnboardingProcess.CompleteOnboardingText" xml:space="preserve">
+    <value>Complete Onboarding</value>
+  </data>
+  <data name="QualificationType.OnFormLoadNotificationText" xml:space="preserve">
+    <value>Save Details to add stages and steps to the onboarding process.</value>
+  </data>
+  <data name="EngagementOpportunitySchedule.General.EndDate.EndDateValidationText" xml:space="preserve">
+    <value>Must be greater or equal to Start Date</value>
+  </data>
+  <data name="QualificationType.Details.Type.ConfirmOnboardingDialog.Text" xml:space="preserve">
+    <value>Onboarding qualifications allow an onboarding process to be created that will kick off when the qualification is added to a volunteer. \n \n Add onboarding process stages and steps next under the Onboarding Stages tabs.</value>
+  </data>
+  <data name="QualificationType.Details.Type.ConfirmOnboardingDialog.Title" xml:space="preserve">
+    <value>Create onboarding qualification?</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.Cancelled.FormNotificationText" xml:space="preserve">
+    <value>Canceling an engagement will remove it from the public listing and prevent volunteers from signing up.</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.Cancelled.FormNotificationTitle" xml:space="preserve">
+    <value>Cancel engagement?</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.Closed.FormNotificationText" xml:space="preserve">
+    <value>Closing an engagement will remove it from the website and prevent any further participant sign ups.</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.Closed.FormNotificationTitle" xml:space="preserve">
+    <value>Close Engagement?</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.PrivatelyPublish.FormNotificationText" xml:space="preserve">
+    <value>Publishing privately will not post engagement to the web. Participants can still be added and tracked internally.</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.PrivatelyPublish.FormNotificationTitle" xml:space="preserve">
+    <value>Publish Privately?</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.PublishToWeb.FormNotificationText" xml:space="preserve">
+    <value>Engagement Opportunity will be published to a public web post. Continue publishing?</value>
+  </data>
+  <data name="EngagementOpportunity.PublishEngagementOpportunity.PublishToWeb.FormNotificationTitle" xml:space="preserve">
+    <value>Ready to publish?</value>
+  </data>
+</root>

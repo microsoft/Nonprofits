@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunitysetting.MainTab.Management.Controls._children" Sequence="20">
+      <CommandUIDefinition>
+        <Button Alt="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.Alt" Command="Mscrm.AddNewRecordFromSubGridStandard" Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard" Image32by32="/_imgs/ribbon/newrecord32.png" Image16by16="/_imgs/ribbon/New_16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.LabelText" Sequence="20" TemplateAlias="o1" ToolTipTitle="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.ToolTipTitle" ToolTipDescription="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.ToolTipDescription" ModernImage="New" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunitysetting.MainTab.Management.Controls._children" Sequence="10">
+      <CommandUIDefinition>
+        <Button Command="Mscrm.NewRecordFromGrid" Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord" Image32by32="/_imgs/ribbon/newrecord32.png" Image16by16="/_imgs/ribbon/New_16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.LabelText" Sequence="10" TemplateAlias="o1" ToolTipTitle="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.ToolTipTitle" ToolTipDescription="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.ToolTipDescription" ModernImage="New" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions />
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules />
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.Alt">
+      <Titles>
+        <Title description="Add New Automated Message" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.LabelText">
+      <Titles>
+        <Title description="New Automated Message" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.ToolTipDescription">
+      <Titles>
+        <Title description="Add a related Automated Message to this record." languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.AddNewStandard.ToolTipTitle">
+      <Titles>
+        <Title description="Add New Automated Message" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.LabelText">
+      <Titles>
+        <Title description="New Automated Message" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.ToolTipDescription">
+      <Titles>
+        <Title description="Create a new Automated Message record." languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitysetting.NewRecord.ToolTipTitle">
+      <Titles>
+        <Title description="New Automated Message" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

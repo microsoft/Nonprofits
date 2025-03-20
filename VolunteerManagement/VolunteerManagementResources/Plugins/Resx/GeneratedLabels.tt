@@ -1,0 +1,56 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ assembly name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Resources" #>
+<#@ import namespace="System.Reflection" #>
+<#
+    // Set the name of the resource file and the namespace of the generated class
+    string resourceFileName = "VolunteerManagement.Plugins";
+    string resourceFilePath = ".\\Plugins\\Resx\\";
+    string englishLocaleId = ".1033";
+    string resourceFileExtension = ".resx";
+    string namespaceName = "Plugins.Resx";
+    string webresourcePathPrefix = "msnfp_/strings/";
+
+    // Load the resource file
+    ResXResourceReader resxReader = new ResXResourceReader(resourceFilePath+resourceFileName+englishLocaleId+resourceFileExtension);
+    Dictionary<string, string> resources = new Dictionary<string, string>();
+    foreach (DictionaryEntry entry in resxReader)
+    {
+        string key = (string)entry.Key;
+        string value = (string)entry.Value;
+        resources.Add(key, value);
+    }
+#>
+namespace <#= namespaceName #>
+{
+    using Plugins.Localization;
+
+    public class Labels
+    {
+        public const string LabelWebResourcePrefix = "<#=webresourcePathPrefix+resourceFileName #>";
+
+<#
+    // Generate a property for each resource in the file
+    foreach (var pair in resources)
+    {
+        string propertyName = pair.Key.Replace(".", "_");
+        string propertyValue = pair.Value.Replace("\"", "\\\"");
+#>
+		/// <summary>
+		/// <#= propertyValue #>
+		/// </summary>
+        public LocalizationInfoModel <#= propertyName #> { get; set; }
+<#
+    }
+#>
+    }
+}

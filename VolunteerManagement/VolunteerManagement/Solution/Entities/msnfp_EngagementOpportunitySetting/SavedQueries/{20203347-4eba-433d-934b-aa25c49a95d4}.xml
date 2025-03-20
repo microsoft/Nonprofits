@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{20203347-4eba-433d-934b-aa25c49a95d4}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_name" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_engagementopportunitysettingid">
+          <cell name="msnfp_messagewhensenttype" width="169" />
+          <cell name="msnfp_messagesendtotype" width="144" />
+          <cell name="msnfp_messagesubject" width="144" />
+          <cell name="msnfp_messagetext" width="300" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_engagementopportunitysetting">
+          <attribute name="msnfp_engagementopportunitysettingid" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_messagesendtotype" />
+          <attribute name="msnfp_messagewhensenttype" />
+          <attribute name="msnfp_messagesubject" />
+          <attribute name="msnfp_messagetext" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Engagement Opportunity Settings" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

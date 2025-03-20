@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{a3dbf4d6-69b9-eb11-8236-000d3a5a52e8}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_participationtitle" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_participationid">
+          <cell name="a_d06b7362aeee47eb84a6b3428e31da33.msnfp_startingdate" width="120" />
+          <cell name="msnfp_engagementopportunityid" width="206" />
+          <cell name="msnfp_status" width="165" />
+          <cell name="msnfp_volunteergroupid" width="195" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="msnfp_participation">
+          <attribute name="createdon" />
+          <attribute name="msnfp_status" />
+          <attribute name="msnfp_volunteergroupid" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <link-entity name="msnfp_engagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" alias="aa">
+            <filter type="and">
+              <condition attribute="msnfp_startingdate" operator="last-x-years" value="100" />
+            </filter>
+          </link-entity>
+          <attribute name="msnfp_participationid" />
+          <link-entity alias="a_d06b7362aeee47eb84a6b3428e31da33" name="msnfp_engagementopportunity" to="msnfp_engagementopportunityid" from="msnfp_engagementopportunityid" link-type="outer" visible="false">
+            <attribute name="msnfp_startingdate" />
+          </link-entity>
+          <attribute name="msnfp_engagementopportunityid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Participations for Completed EO on Volunteer" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="This view is displayed on the volunteer form as completed engagements." languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

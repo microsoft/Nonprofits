@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<CustomActions>
+		<CustomAction Id="msnfp.msnfp_engagementopportunity.Button13.Button.CustomAction" Location="Mscrm.Form.msnfp_engagementopportunity.MainTab.ModernClient.Controls._children" Sequence="16">
+			<CommandUIDefinition>
+				<Button Alt="$LocLabels:msnfp.msnfp_engagementopportunity.Button13.Button.Alt" Command="msnfp.msnfp_engagementopportunity.Command3.Cancel" Id="msnfp.msnfp_engagementopportunity.Button13.Button" Image32by32="$webresource:msnfp_/images/CancelEngOpportunityButtonIcon.svg" Image16by16="$webresource:msnfp_/images/CancelEngOpportunityButtonIcon.svg" LabelText="$LocLabels:msnfp.msnfp_engagementopportunity.Button13.Button.LabelText" Sequence="16" ToolTipTitle="$LocLabels:msnfp.msnfp_engagementopportunity.Button13.Button.ToolTipTitle" ToolTipDescription="$LocLabels:msnfp.msnfp_engagementopportunity.Button13.Button.ToolTipDescription" ModernImage="$webresource:msnfp_/images/CancelEngOpportunityButtonIcon.svg" />
+			</CommandUIDefinition>
+		</CustomAction>
+		<CustomAction Id="msnfp.msnfp_engagementopportunity.Button14.Button.CustomAction" Location="Mscrm.Form.msnfp_engagementopportunity.MainTab.ModernClient.Controls._children" Sequence="15">
+			<CommandUIDefinition>
+				<Button Alt="$LocLabels:msnfp.msnfp_engagementopportunity.Button14.Button.Alt" Command="msnfp.msnfp_engagementopportunity.Command4.Close" Id="msnfp.msnfp_engagementopportunity.Button14.Button" Image32by32="$webresource:msnfp_/images/CloseEngOpportunityButtonIcon.svg" Image16by16="$webresource:msnfp_/images/CloseEngOpportunityButtonIcon.svg" LabelText="$LocLabels:msnfp.msnfp_engagementopportunity.Button14.Button.LabelText" Sequence="15" ToolTipTitle="$LocLabels:msnfp.msnfp_engagementopportunity.Button14.Button.ToolTipTitle" ToolTipDescription="$LocLabels:msnfp.msnfp_engagementopportunity.Button14.Button.ToolTipDescription" ModernImage="$webresource:msnfp_/images/CloseEngOpportunityButtonIcon.svg" />
+			</CommandUIDefinition>
+		</CustomAction>
+		<CustomAction Id="msnfp.msnfp_engagementopportunity.Button8.Button.CustomAction" Location="Mscrm.Form.msnfp_engagementopportunity.MainTab.ModernClient.Controls._children" Sequence="13">
+			<CommandUIDefinition>
+				<FlyoutAnchor Alt="$LocLabels:msnfp.msnfp_engagementopportunity.Button8.Button.Alt" Command="msnfp.msnfp_engagementopportunity.Command2.PublishAll" Id="msnfp.msnfp_engagementopportunity.Button8.Button" Image16by16="$webresource:msnfp_images/engagement-opportunity-publish-public-button-colo-ricon.svg" Image32by32="$webresource:msnfp_images/engagement-opportunity-publish-public-button-colo-ricon.svg" LabelText="$LocLabels:msnfp.msnfp_engagementopportunity.Button8.Button.LabelText" Sequence="13" ToolTipTitle="$LocLabels:msnfp.msnfp_engagementopportunity.Button8.Button.ToolTipTitle" ToolTipDescription="$LocLabels:msnfp.msnfp_engagementopportunity.Button8.Button.ToolTipDescription" ModernImage="$webresource:msnfp_images/engagement-opportunity-publish-public-button-colo-ricon.svg">
+					<Menu Id="msnfp.msnfp_engagementopportunity.Button8.Button.Menu">
+						<MenuSection Id="msnfp.msnfp_engagementopportunity.Section9.Section" Title="$LocLabels:msnfp.msnfp_engagementopportunity.Section9.Section.Title" Sequence="5" DisplayMode="Menu16">
+							<Controls Id="msnfp.msnfp_engagementopportunity.Section9.Section.Controls">
+								<Button Alt="$LocLabels:msnfp.msnfp_engagementopportunity.Button11.Button.Alt" Command="msnfp.msnfp_engagementopportunity.Command0.PublishPublicaly" Id="msnfp.msnfp_engagementopportunity.Button11.Button" Image32by32="$webresource:msnfp_images/engagement-opportunity-publish-public-button-mono-icon.svg" Image16by16="$webresource:msnfp_images/engagement-opportunity-publish-public-button-mono-icon.svg" LabelText="$LocLabels:msnfp.msnfp_engagementopportunity.Button11.Button.LabelText" Sequence="10" ToolTipTitle="$LocLabels:msnfp.msnfp_engagementopportunity.Button11.Button.ToolTipTitle" ToolTipDescription="$LocLabels:msnfp.msnfp_engagementopportunity.Button11.Button.ToolTipDescription" ModernImage="$webresource:msnfp_images/engagement-opportunity-publish-public-button-mono-icon.svg" />
+								<Button Alt="$LocLabels:msnfp.msnfp_engagementopportunity.Button10.Button.Alt" Command="msnfp.msnfp_engagementopportunity.Command1.PublishInternally" Id="msnfp.msnfp_engagementopportunity.Button10.Button" Image32by32="$webresource:msnfp_/images/engagement-opportunity-publish-privately-button-mono-icon.svg" Image16by16="$webresource:msnfp_/images/engagement-opportunity-publish-privately-button-mono-icon.svg" LabelText="$LocLabels:msnfp.msnfp_engagementopportunity.Button10.Button.LabelText" Sequence="15" ToolTipTitle="$LocLabels:msnfp.msnfp_engagementopportunity.Button10.Button.ToolTipTitle" ToolTipDescription="$LocLabels:msnfp.msnfp_engagementopportunity.Button10.Button.ToolTipDescription" ModernImage="$webresource:msnfp_/images/engagement-opportunity-publish-privately-button-mono-icon.svg" />
+							</Controls>
+						</MenuSection>
+					</Menu>
+				</FlyoutAnchor>
+			</CommandUIDefinition>
+		</CustomAction>
+	</CustomActions>
+	<Templates>
+		<RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+	</Templates>
+	<CommandDefinitions>
+		<CommandDefinition Id="msnfp.msnfp_engagementopportunity.Command0.PublishPublicaly">
+			<EnableRules>
+				<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule0.NotPublishedPublically" />
+			</EnableRules>
+			<DisplayRules />
+			<Actions>
+				<JavaScriptFunction FunctionName="window.EngagmentOpportunityForm.PublishFromRibbon" Library="$webresource:msnfp_EngagementOpportunityForm.gen.js">
+					<CrmParameter Value="PrimaryControl" />
+					<IntParameter Value="844060002" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.PublishToWeb.FormNotificationText" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.PublishToWeb.FormNotificationTitle" />
+				</JavaScriptFunction>
+			</Actions>
+		</CommandDefinition>
+		<CommandDefinition Id="msnfp.msnfp_engagementopportunity.Command1.PublishInternally">
+			<EnableRules>
+				<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule1.NotPublishedInternally" />
+			</EnableRules>
+			<DisplayRules />
+			<Actions>
+				<JavaScriptFunction FunctionName="window.EngagmentOpportunityForm.PublishFromRibbon" Library="$webresource:msnfp_EngagementOpportunityForm.gen.js">
+					<CrmParameter Value="PrimaryControl" />
+					<IntParameter Value="844060003" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.PrivatelyPublish.FormNotificationText" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.PrivatelyPublish.FormNotificationTitle" />
+				</JavaScriptFunction>
+			</Actions>
+		</CommandDefinition>
+		<CommandDefinition Id="msnfp.msnfp_engagementopportunity.Command2.PublishAll">
+			<EnableRules>
+				<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule2.ExistingForm" />
+			</EnableRules>
+			<DisplayRules />
+			<Actions />
+		</CommandDefinition>
+		<CommandDefinition Id="msnfp.msnfp_engagementopportunity.Command3.Cancel">
+			<EnableRules>
+				<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule3.NotCancelledClosedCreate" />
+			</EnableRules>
+			<DisplayRules />
+			<Actions>
+				<JavaScriptFunction FunctionName="window.EngagmentOpportunityForm.PublishFromRibbon" Library="$webresource:msnfp_EngagementOpportunityForm.gen.js">
+					<CrmParameter Value="PrimaryControl" />
+					<IntParameter Value="844060005" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.Cancelled.FormNotificationText" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.Cancelled.FormNotificationTitle" />
+				</JavaScriptFunction>
+			</Actions>
+		</CommandDefinition>
+		<CommandDefinition Id="msnfp.msnfp_engagementopportunity.Command4.Close">
+			<EnableRules>
+				<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule3.NotCancelledClosedCreate" />
+			</EnableRules>
+			<DisplayRules />
+			<Actions>
+				<JavaScriptFunction FunctionName="window.EngagmentOpportunityForm.PublishFromRibbon" Library="$webresource:msnfp_EngagementOpportunityForm.gen.js">
+					<CrmParameter Value="PrimaryControl" />
+					<IntParameter Value="844060004" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.Closed.FormNotificationText" />
+					<StringParameter Value="EngagementOpportunity.PublishEngagementOpportunity.Closed.FormNotificationTitle" />
+				</JavaScriptFunction>
+			</Actions>
+		</CommandDefinition>
+	</CommandDefinitions>
+	<RuleDefinitions>
+		<TabDisplayRules />
+		<DisplayRules />
+		<EnableRules>
+			<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule0.NotPublishedPublically">
+				<ValueRule Field="msnfp_engagementopportunitystatus" Value="844060002" InvertResult="true" />
+			</EnableRule>
+			<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule1.NotPublishedInternally">
+				<ValueRule Field="msnfp_engagementopportunitystatus" Value="844060003" InvertResult="true" />
+			</EnableRule>
+			<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule2.ExistingForm">
+				<FormStateRule State="Existing" />
+			</EnableRule>
+			<EnableRule Id="msnfp.msnfp_engagementopportunity.EnableRule3.NotCancelledClosedCreate">
+				<ValueRule Field="msnfp_engagementopportunitystatus" Value="844060004" InvertResult="true" />
+				<ValueRule Field="msnfp_engagementopportunitystatus" Value="844060005" InvertResult="true" />
+				<FormStateRule State="Create" InvertResult="true" />
+			</EnableRule>
+		</EnableRules>
+	</RuleDefinitions>
+	<LocLabels>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button10.Button.Alt">
+			<Titles>
+				<Title description="Privately Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button10.Button.LabelText">
+			<Titles>
+				<Title description="Privately Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button10.Button.ToolTipDescription">
+			<Titles>
+				<Title description="Privately Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button10.Button.ToolTipTitle">
+			<Titles>
+				<Title description="Privately Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button11.Button.Alt">
+			<Titles>
+				<Title description="Publish Publicly" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button11.Button.LabelText">
+			<Titles>
+				<Title description="Publish to the Web" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button11.Button.ToolTipDescription">
+			<Titles>
+				<Title description="Publish Publicly" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button11.Button.ToolTipTitle">
+			<Titles>
+				<Title description="Publish Publicly" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button13.Button.Alt">
+			<Titles>
+				<Title description="Cancel" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button13.Button.LabelText">
+			<Titles>
+				<Title description="Cancel" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button13.Button.ToolTipDescription">
+			<Titles>
+				<Title description="Cancel" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button13.Button.ToolTipTitle">
+			<Titles>
+				<Title description="Cancel" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button14.Button.Alt">
+			<Titles>
+				<Title description="Close" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button14.Button.LabelText">
+			<Titles>
+				<Title description="Close" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button14.Button.ToolTipDescription">
+			<Titles>
+				<Title description="Close" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button14.Button.ToolTipTitle">
+			<Titles>
+				<Title description="Close" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button8.Button.Alt">
+			<Titles>
+				<Title description="Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button8.Button.LabelText">
+			<Titles>
+				<Title description="Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button8.Button.ToolTipDescription">
+			<Titles>
+				<Title description="Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Button8.Button.ToolTipTitle">
+			<Titles>
+				<Title description="Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+		<LocLabel Id="msnfp.msnfp_engagementopportunity.Section9.Section.Title">
+			<Titles>
+				<Title description="Publish" languagecode="1033" />
+			</Titles>
+		</LocLabel>
+	</LocLabels>
+</RibbonDiffXml>

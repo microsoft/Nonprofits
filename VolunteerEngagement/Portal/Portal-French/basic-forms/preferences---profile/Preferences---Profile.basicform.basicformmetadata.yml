@@ -1,0 +1,25 @@
+- adx_adddescription: false
+  adx_attributelogicalname: msnfp_name
+  adx_entityform: 46bb606f-da44-4406-ad82-9c4cf9bacae9
+  adx_entityformmetadataid: 1977ed1e-e3dd-4937-81ce-8b92c8cb026d
+  adx_fieldisrequired: false
+  adx_ignoredefaultvalue: false
+  adx_onsavefromattribute: fullname
+  adx_onsavetype: 100000002
+  adx_onsavevalue: Preference -
+  adx_randomizeoptionsetvalues: false
+  adx_setvalueonsave: true
+  adx_type: 100000000
+  adx_useattributedescriptionproperty: true
+- adx_adddescription: false
+  adx_attributelogicalname: msnfp_preference_customer
+  adx_entityform: 46bb606f-da44-4406-ad82-9c4cf9bacae9
+  adx_entityformmetadataid: 83c31314-074a-44f4-a3f3-effe64b41055
+  adx_fieldisrequired: false
+  adx_ignoredefaultvalue: false
+  adx_prepopulatefromattribute: contactid
+  adx_prepopulatetype: 100000002
+  adx_randomizeoptionsetvalues: false
+  adx_setvalueonsave: false
+  adx_type: 100000000
+  adx_useattributedescriptionproperty: true

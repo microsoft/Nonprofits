@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{f6d462e3-1b16-ec11-b6e6-000d3a1b9d59}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_qualificationtitle" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_qualificationid">
+          <cell name="msnfp_qualificationtitle" width="149" />
+          <cell name="msnfp_typeid" width="100" />
+          <cell name="msnfp_qualificationstatus" width="148" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_qualification">
+          <attribute name="msnfp_qualificationtitle" />
+          <attribute name="createdon" />
+          <attribute name="msnfp_typeid" />
+          <attribute name="msnfp_qualificationid" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <order attribute="createdon" descending="true" />
+          <attribute name="msnfp_qualificationstatus" />
+          <link-entity name="msnfp_qualificationtype" alias="ab" link-type="inner" from="msnfp_qualificationtypeid" to="msnfp_typeid">
+            <filter type="and">
+              <condition attribute="msnfp_type" operator="eq" value="844060004" />
+            </filter>
+          </link-entity>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.16</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Onboarding Processes on Contact" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="This view is shown on the contact form. " languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

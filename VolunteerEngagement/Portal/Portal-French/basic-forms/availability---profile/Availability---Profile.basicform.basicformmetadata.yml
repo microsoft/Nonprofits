@@ -1,0 +1,12 @@
+- adx_adddescription: false
+  adx_attributelogicalname: msnfp_contactid
+  adx_entityform: 2b78552a-2120-4766-be13-7651e3a85d63
+  adx_entityformmetadataid: 37dfd9ea-1d02-42b1-a76c-5f09860dab8a
+  adx_fieldisrequired: false
+  adx_ignoredefaultvalue: false
+  adx_prepopulatefromattribute: contactid
+  adx_prepopulatetype: 100000002
+  adx_randomizeoptionsetvalues: false
+  adx_setvalueonsave: false
+  adx_type: 100000000
+  adx_useattributedescriptionproperty: true

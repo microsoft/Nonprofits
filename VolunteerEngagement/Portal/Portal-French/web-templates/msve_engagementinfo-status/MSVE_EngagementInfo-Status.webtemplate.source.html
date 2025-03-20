@@ -1,0 +1,85 @@
+{% comment %} Determines the participation's status and displays the appropriate icons/text {% endcomment %}
+{% if user %}
+    {% if {{participation}} %}
+        {% if {{participation}}.msnfp_status.value == 844060000 or {{participation}}.msnfp_status.value == 844060001 %}
+            {% assign engagementStatusIndex = 0 %}              {%comment%} Applied(0) {%endcomment%}
+        {% elsif {{participation}}.msnfp_status.value == 844060002 %}
+            {% if {{pSchedStatus}} %}
+                {% case {{pSchedStatus}} %}
+                    {% when 335940000 %}
+                        {% assign engagementStatusIndex = 3 %}  {%comment%} Registered(3) {%endcomment%}
+                    {% when 335940001 %}
+                        {% assign engagementStatusIndex = 4 %}  {%comment%} Completed(4) {%endcomment%}
+                    {% when 335940002 %}
+                        {% assign engagementStatusIndex = 6 %}  {%comment%} Missed shift(6) {%endcomment%}  
+                    {% else %}
+                        {% assign engagementStatusIndex = 5 %}  {%comment%} Canceled Shift(5) {%endcomment%}                          
+                {% endcase %}
+            {% else %}
+                {% if {{endDate}} < {{now}} and {{isMultiDays}} != true %}
+                    {% assign engagementStatusIndex = 6 %}      {%comment%} Missed because didn't sign up in time(6) {%endcomment%}        
+                {% else %}
+                    {% assign engagementStatusIndex = 1 %}      {%comment%} Accepted(1) {%endcomment%} 
+                {% endif %}       
+            {% endif %}    
+        {% elsif {{participation}}.msnfp_status.value == 844060003 %}
+            {% assign engagementStatusIndex = 2 %}              {%comment%} Reviewed/Dismissed(2) {%endcomment%}
+        {% elsif {{participation}}.msnfp_status.value == 844060004 %}
+            {% assign engagementStatusIndex = 5 %}              {%comment%} Canceled Engagement(5) {%endcomment%}
+        {% else %}
+            {% assign engagementStatusIndex = 7 %}              {%comment%} Unknown(7) {%endcomment%}
+        {% endif %}
+    {% else %}
+        {% if {{endDate}} < {{now}} and {{isMultiDays}} != true %}
+            {% assign engagementStatusIndex = 8 %}              {%comment%} Closed(8) {%endcomment%}
+        {% elsif {{engagement}}.msnfp_number >= {{engagement}}.msnfp_maximum %}
+            {% assign engagementStatusIndex = 9 %}              {%comment%} Full(9) {%endcomment%}
+        {% else %}
+            {% assign engagementStatusIndex = 10 %}             {%comment%} Apply Now(10) {%endcomment%}
+        {% endif %}
+    {% endif %}
+{% else %}
+    {% assign engagementStatusIndex = 10 %}
+{% endif %}
+
+{% assign engagementStatuses = snippets['MSVE_EngagementsInfo/Status'] | split: ',' %}
+{% assign engagementStatus = engagementStatuses[engagementStatusIndex] %}
+{% case engagementStatusIndex %}
+    {% when 0 %}
+        {%- assign iconClass = "text-warning" -%}
+        {%- assign iconSvg = 'MSVE_SVG/WaitingDocs' -%}
+    {% when 1,2 %}
+        {%- assign iconClass = "text-warning" -%}
+        {%- assign iconSvg = 'MSVE_SVG/CheckCircle' -%}
+    {% when 3,4 %}
+        {%- assign iconClass = "text-success" -%}
+        {%- assign iconSvg = 'MSVE_SVG/CheckCircle' -%}
+    {% when 8,9 %}
+        {%- assign btnClass = 'btn-default disabled' -%}
+    {% when 10 %}
+        {%- assign btnClass = 'btn-warning' -%}
+    {% else %}
+        {%- assign iconClass = "text-warning" -%}
+        {%- assign iconSvg = 'MSVE_SVG/XCircle' -%}
+{% endcase %}
+
+{% if engagementStatusIndex < 8 %}
+    {%- if spot == "h2" -%}
+    <h2 class="small-title">
+    {%- elsif spot == "h3"-%}
+    <h3>
+    {%- else -%}
+    <p>
+    {%- endif -%}
+        <span class="{{iconClass}}">{{snippets[iconSvg]}}</span>
+        <span>{{engagementStatus}}</span>
+    {%- if spot == "h2" -%}
+    </h2>
+    {%- elsif spot == "h3"-%}
+    </h3>
+    {%- else -%}
+    </p>
+    {%- endif -%}
+{% else %}
+    <button id="engagementStatusBtn" class="btn {{btnClass}}">{{engagementStatus}}</button>
+{% endif %}

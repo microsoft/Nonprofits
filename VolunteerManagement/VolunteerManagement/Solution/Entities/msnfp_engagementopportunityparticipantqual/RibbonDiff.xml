@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.MainTab.Management.Controls._children" Sequence="20">
+      <CommandUIDefinition>
+        <Button Alt="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.Alt" Command="Mscrm.AddNewRecordFromSubGridStandard" Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard" Image32by32="/_imgs/ribbon/newrecord32.png" Image16by16="/_imgs/ribbon/New_16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.LabelText" Sequence="20" TemplateAlias="o1" ToolTipTitle="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.ToolTipTitle" ToolTipDescription="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.ToolTipDescription" ModernImage="New" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.MainTab.ExportData.Controls._children" Sequence="20">
+      <CommandUIDefinition>
+        <SplitButton Command="Mscrm.ExportToExcel" Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.LabelText" Sequence="20" TemplateAlias="o3" ToolTipTitle="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.ToolTipTitle" ToolTipDescription="$Resources:Ribbon.Tooltip.ExportToExcel" ModernImage="ExportToExcel">
+          <Menu Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.Menu">
+            <MenuSection Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.MenuSection" Sequence="10" DisplayMode="Menu16">
+              <Controls Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.MenuSection.Controls">
+                <Button Command="Mscrm.ExportToExcel.Online" Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcelOnline" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources(EntityPluralDisplayName):Ribbon.SubGrid.Data.Export.ExportToExcelOnline" Sequence="40" ToolTipTitle="$Resources(EntityPluralDisplayName):Ribbon.SubGrid.Data.Export.ExportToExcelOnline" ToolTipDescription="$Resources:Ribbon.Tooltip.ExportToExcelOnline" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExportAll" Command="Mscrm.ExportToExcel.AllStaticXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunityparticipantqual.StaticWorksheetAll" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExportAll" Sequence="41" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExportAll" ToolTipDescription="$Resources:Ribbon.Tooltip.StaticExcelExportAll" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExport" Command="Mscrm.ExportToExcel.StaticXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunityparticipantqual.StaticWorksheet" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExport" Sequence="42" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExport" ToolTipDescription="$Resources:Ribbon.Tooltip.StaticExcelExport" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicExcelExport" Command="Mscrm.ExportToExcel.DynamicXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunityparticipantqual.DynamicWorkesheet" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicExcelExport" Sequence="43" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicExcelExport" ToolTipDescription="$Resources:Ribbon.Tooltip.DynamicExcelExport" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicPivotTable" Command="Mscrm.ExportToExcel.PivotXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunityparticipantqual.DynamicPivotTable" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicPivotTable" Sequence="44" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicPivotTable" ToolTipDescription="$Resources:Ribbon.Tooltip.DynamicPivotTable" ModernImage="ExportToExcel" />
+              </Controls>
+            </MenuSection>
+          </Menu>
+        </SplitButton>
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions />
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules />
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.Alt">
+      <Titles>
+        <Title description="Add Qualification (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.LabelText">
+      <Titles>
+        <Title description="Add Qualification (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.ToolTipDescription">
+      <Titles>
+        <Title description="Add a related Qualification (Engagement) to this record." languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.AddNewStandard.ToolTipTitle">
+      <Titles>
+        <Title description="Add Qualification (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.LabelText">
+      <Titles>
+        <Title description="Export Qualification (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunityparticipantqual.ExportToExcel.ToolTipTitle">
+      <Titles>
+        <Title description="Export Qualification (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

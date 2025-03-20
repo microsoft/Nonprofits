@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{9d1b680c-09b8-eb11-8236-000d3a5a52e8}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_engagementopportunitytitle" select="1" preview="1" icon="1">
+        <row name="result" id="msnfp_engagementopportunityid">
+          <cell name="msnfp_engagementopportunitytitle" width="150" />
+          <cell name="msnfp_shortdescription" width="165" disableSorting="1" />
+          <cell name="msnfp_startingdate" width="133" />
+          <cell name="msnfp_number" width="100" />
+          <cell name="msnfp_minimum" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="msnfp_engagementopportunity">
+          <attribute name="msnfp_engagementopportunitytitle" />
+          <order attribute="msnfp_startingdate" descending="false" />
+          <attribute name="msnfp_startingdate" />
+          <attribute name="msnfp_shortdescription" />
+          <attribute name="msnfp_engagementopportunityid" />
+          <attribute name="msnfp_number" />
+          <attribute name="msnfp_minimum" />
+          <filter type="and">
+            <filter type="or">
+              <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060002" />
+              <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060003" />
+            </filter>
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Published Engagements" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="This is a list of published engagement opportunities" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,1191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{ce764b0d-970c-4237-9be0-1ea5c5c81881}</formid>
+    <IntroducedVersion>2.4.1.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{6094d813-c192-428b-8428-01534adb7d2b}" IsUserDefined="1" name="tab_description" ordinalvalue="2" solutionaction="Modified">
+          <labels>
+            <label description="Description" languagecode="1033" solutionaction="Modified" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{ddbdf29d-5222-452f-b7dd-6a0d2104fbb3}" name="{ddbdf29d-5222-452f-b7dd-6a0d2104fbb3}" columns="1" locklevel="0" labelwidth="130" celllabelalignment="Left" celllabelposition="Left" ordinalvalue="0" solutionaction="Modified">
+                  <rows>
+                    <row>
+                      <cell id="{9a576d49-0b0b-ea2b-c088-76493e32b042}" showlabel="true" locklevel="0" ordinalvalue="20001" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{6ba50864-6129-6d72-0946-86e08d461824}" showlabel="true" locklevel="0" ordinalvalue="10002" solutionaction="Removed" />
+                      <cell id="{7a2bea8a-a593-890a-4b27-29885322e7b6}" showlabel="true" locklevel="0" ordinalvalue="20003" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{d025178e-dcda-3104-e46c-d31924b14ea9}" showlabel="true" locklevel="0" ordinalvalue="10004" solutionaction="Removed" />
+                      <cell id="{c8903443-3cd9-6277-7b81-6ee1b5ad403a}" showlabel="true" locklevel="0" ordinalvalue="20005" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{da483bdd-408a-eb26-934b-825937bd581a}" showlabel="true" locklevel="0" ordinalvalue="10006" solutionaction="Removed" />
+                      <cell id="{93b1bc59-849e-9e09-76b4-eb3bdb29ac50}" showlabel="true" locklevel="0" ordinalvalue="20007" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{11a56b53-48b2-ed61-912a-edc75020c557}" showlabel="true" locklevel="0" ordinalvalue="10008" solutionaction="Removed" />
+                      <cell id="{1681b8ed-bada-c663-7422-1284ab806499}" showlabel="true" locklevel="0" rowspan="4" ordinalvalue="20009" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{8aaa3c43-7035-a12e-9108-136461be89d5}" showlabel="true" locklevel="0" ordinalvalue="10010" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{941b6bbe-1f9d-4554-b3f1-dfa8094777fb}" showlabel="true" locklevel="1" visible="false" ordinalvalue="10002" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{63999530-915d-40f4-a3c3-1a1c7c662b7c}" ordinalvalue="10012" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{bcf2352c-95bc-44bd-ac4c-b3e27811c42a}" locklevel="0" rowspan="3" ordinalvalue="10001" solutionaction="Added">
+                        <labels>
+                          <label description="Short Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shortdescription" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_shortdescription" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="null_section_3" id="6ed77a69-c83b-469d-89c2-16155f4e2288" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" height="auto" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="Detailed Description" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row height="auto">
+                      <cell locklevel="0" id="{0fcc59fc-fdc1-4836-b685-52be8288050b}" auto="true" showlabel="false" ordinalvalue="10000">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_description" disabled="false" uniqueid="{00fe8d69-0372-4a8d-b033-04057413cc62}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_participants" id="{085382cb-29b8-5cd9-ac34-63d21a3c1400}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="8" solutionaction="Modified">
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_2_section_1" showlabel="false" showbar="false" locklevel="0" id="{8697aab8-41b5-1202-776e-d45e9b9d6440}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{dd321608-7521-37ad-5b83-402178700092}" showlabel="false" colspan="1" auto="false" rowspan="12" ordinalvalue="10000" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{780c1806-eb35-40e1-81b1-af4f9fce461f}" rowspan="6" colspan="1" auto="false" showlabel="false" ordinalvalue="10000" solutionaction="Added">
+                        <labels>
+                          <label description="Participants" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_2" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" indicationOfSubgrid="true" uniqueid="{a3bcd463-8556-dbdb-2ec9-bb8a7cd74751}">
+                          <parameters>
+                            <TargetEntityType>msnfp_participation</TargetEntityType>
+                            <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+                            <ViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId>{DBE1C697-B0EB-EA11-A817-000D3A300A85}</VisualizationId>
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_schedules" id="{b53b036d-ca4d-bccb-0998-ad54b55416dc}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="5" solutionaction="Modified">
+          <labels>
+            <label description="Schedule" languagecode="1033" solutionaction="Modified" />
+          </labels>
+          <columns>
+            <column width="38%" id="0" solutionaction="Modified">
+              <sections>
+                <section name="tab_3_section_1" showlabel="true" showbar="false" locklevel="0" id="{3d9b96aa-0b14-c60d-1382-14a10b438d33}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" ordinalvalue="0" solutionaction="Modified">
+                  <labels>
+                    <label description="Schedule Settings" languagecode="1033" solutionaction="Modified" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{18617dd0-52c0-de25-ada3-5e3a95ae853d}" showlabel="false" colspan="1" auto="false" rowspan="12" ordinalvalue="10000" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{33f5ddf5-fd3c-49be-9da4-ce6ae1d1480e}" ordinalvalue="10000" solutionaction="Added">
+                        <labels>
+                          <label description="Multiple Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_multipledays" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_multipledays" disabled="false" uniqueid="{d2be4d90-be25-451e-9267-9082ed22c344}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a26df949-f5a9-4ac4-be55-bc9d20487a33}" locklevel="0" ordinalvalue="10001" solutionaction="Added">
+                        <labels>
+                          <label description="Start Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_startingdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_startingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9f46dc78-366b-427b-bfaf-c7bf3a697bcc}" locklevel="0" ordinalvalue="10002" solutionaction="Added">
+                        <labels>
+                          <label description="End Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_endingdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_endingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{b435421b-b0b0-46a4-835a-d9ceec03ede3}" ordinalvalue="10003" solutionaction="Added">
+                        <labels>
+                          <label description="Shifts" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shifts" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_shifts" disabled="false" uniqueid="{71fc5335-bd10-4d89-b661-ded8fa00652e}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="tab_schedules_section_4" id="89bdbb3f-975f-4116-95ce-ce26f1f28bdd" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="Participants Needed" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{db1ffcd9-ea60-410a-81a5-8b0a6a51e1e0}" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Minimum" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_minimum" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_minimum" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f2e7286e-7457-4a47-89c6-723308a3e388}" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="Maximum" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_maximum" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_maximum" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="62%" id="1" solutionaction="Added">
+              <sections>
+                <section name="Schedules_Schedules" id="5cc083e6-d4b9-4a4d-a94b-a5a2d678ea07" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Schedules" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{18617dd0-52c0-de25-ada3-5e3a95ae853d}" showlabel="true" colspan="1" auto="true" rowspan="1" ordinalvalue="10000">
+                        <labels>
+                          <label description="Volunteer Schedule" languagecode="1033" />
+                        </labels>
+                        <control id="Schedules" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{a3b07aad-03c8-1a0e-9b3a-918d88193dbd}">
+                          <parameters>
+                            <ViewId>{624A060D-B4B4-EB11-8236-00224808E22B}</ViewId>
+                            <IsUserView>false</IsUserView>
+                            <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_engagementopportunityschedule_engagementOpportunity</RelationshipName>
+                            <TargetEntityType>msnfp_engagementopportunityschedule</TargetEntityType>
+                            <AutoExpand>Auto</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <ViewIds>{3E71CB88-F237-4E87-A121-985CB6B8EE87},{624A060D-B4B4-EB11-8236-00224808E22B}</ViewIds>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <RecordsPerPage>15</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_requirements" id="{b93aeabc-ce69-121e-8a77-5b8edcbb2098}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="4" solutionaction="Modified">
+          <labels>
+            <label description="Requirements" languagecode="1033" solutionaction="Modified" />
+          </labels>
+          <columns>
+            <column width="70%" id="0" solutionaction="Modified">
+              <sections>
+                <section name="tab_4_section_1" showlabel="true" showbar="false" locklevel="0" id="{89635c18-41c9-5462-8d8a-0035892adbe3}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" ordinalvalue="0" solutionaction="Modified">
+                  <labels>
+                    <label description="Qualifications" languagecode="1033" solutionaction="Modified" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{75168d70-744d-da7a-dc9d-386ed4ec4a60}" showlabel="false" colspan="1" rowspan="14" ordinalvalue="10000" solutionaction="Modified">
+                        <control id="Qualifications" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{c3da9125-b3e1-b09a-7b4e-39d6201bd4c0}">
+                          <parameters>
+                            <ViewId solutionaction="Modified">{453ED03F-8EBD-EB11-8236-000D3A31DEC1}</ViewId>
+                            <AutoExpand solutionaction="Modified">Auto</AutoExpand>
+                            <ViewIds solutionaction="Modified">{1BAF2360-01E7-404B-8318-ADDDACDB5CF2},{453ED03F-8EBD-EB11-8236-000D3A31DEC1}</ViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="30%" id="1" solutionaction="Added">
+              <sections>
+                <section name="_section_665" id="36b98bf5-9d24-4bc6-8e68-3a8d438d4650" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" height="auto" ordinalvalue="0">
+                  <labels>
+                    <label description="Preferences" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{25e696f4-66b4-4d46-8e2f-588a15eb9da9}" rowspan="4" colspan="1" showlabel="false" auto="true" ordinalvalue="10000">
+                        <labels>
+                          <label description="Engagement Opportunity Preferences" languagecode="1033" />
+                        </labels>
+                        <control id="EngagementOpportunityPreferences" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{06e6252d-1b09-bb37-b47d-d8e10ac7a143}">
+                          <parameters>
+                            <TargetEntityType>msnfp_engagementopportunitypreference</TargetEntityType>
+                            <ViewId>{0FB34F36-63AF-EB11-8236-000D3A5ACD59}</ViewId>
+                            <ViewIds>{7DE965EE-F9B8-4479-95AE-CE2E739E7323},{0FB34F36-63AF-EB11-8236-000D3A5ACD59}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_EngagementOpportunityPreference_eng</RelationshipName>
+                            <RecordsPerPage>20</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Auto</AutoExpand>
+                            <ChartGridMode>Grid</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>false</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_createdraft" id="ef2037e1-8660-4ecb-b79f-9c1e8e5fd32d" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="0" solutionaction="Added">
+          <labels>
+            <label description="Create Draft" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%" id="0">
+              <sections>
+                <section name="tab_9_section_1" id="0f5a44e3-899a-4fe1-84b2-48d2ee6fe6e0" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Summary" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{e685eb28-9461-47c7-8ef8-3d592d353c90}" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Engagement Title" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunitytitle" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_engagementopportunitytitle" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{42be6b6e-6aaa-423b-a8a5-2cc986c59f43}" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="Location Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_locationtype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_locationtype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{377c80f9-18b6-4886-859d-943c335ddc79}" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="Short Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shortdescription" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_shortdescription" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%" id="1">
+              <sections>
+                <section name="_section_531" id="6ddf4c1f-81d4-4027-ad43-c04852781602" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Schedule Settings" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{6bd5377f-addf-4101-b20f-9ae8814223f9}" ordinalvalue="10000">
+                        <labels>
+                          <label description="Multiple Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_multipledays" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_multipledays" disabled="false" uniqueid="{fabc8835-ae1c-45a8-8a19-c12edd6a2235}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a3ec2539-3f72-482a-9415-aee33ec32b58}" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="Start Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_startingdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_startingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{38dc5f9e-8bc9-4041-9607-eadee06928b6}" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="End Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_endingdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_endingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{b3ce15d1-f735-494c-b9a9-dd945a30732e}" ordinalvalue="10003">
+                        <labels>
+                          <label description="Has Shifts" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shifts" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_shifts" disabled="false" uniqueid="{695b092c-6062-4801-8adb-e46b0069e4b6}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_summary" id="3d8ea698-887c-483f-a871-7adb7dfeb540" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="1" solutionaction="Added">
+          <labels>
+            <label description="Summary" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="60%" id="0">
+              <sections>
+                <section name="tab_summary_sign_up_status" id="43f0cf85-77f6-4489-a850-61b74d9d57e3" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Sign Up Status" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{f8e9ee7c-b2b9-45ed-acc6-5f52f0424abe}" locklevel="0" showlabel="false" ordinalvalue="10000">
+                        <labels>
+                          <label description="Filled Shifts" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_filledshifts" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_filledshifts" disabled="false" uniqueid="{6627cbb9-27db-8a5d-0d95-11ad82507c8d}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="_section_participants" id="b71e0e4c-4538-4291-b7a5-018dab050b31" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="1">
+                  <labels>
+                    <label description="Participants" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{dd321608-7521-37ad-5b83-402178700092}" showlabel="false" colspan="1" auto="false" rowspan="12" ordinalvalue="10000">
+                        <labels>
+                          <label description="Participations (Engagement Opportunity)" languagecode="1033" />
+                        </labels>
+                        <control id="Participants" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" indicationOfSubgrid="true" uniqueid="{08762d98-6adc-9870-c231-d397b9c95493}">
+                          <parameters>
+                            <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+                            <IsUserView>false</IsUserView>
+                            <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+                            <TargetEntityType>msnfp_participation</TargetEntityType>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <ViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewIds>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId>{DBE1C697-B0EB-EA11-A817-000D3A300A85}</VisualizationId>
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <RecordsPerPage>10</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="40%" id="1">
+              <sections>
+                <section name="_section_timeline" id="410e4f6e-bc1f-4cb7-ba74-0c00dc00797d" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Timeline" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{3271fbaa-5f07-4721-9d9b-72c6228cef2b}" locklevel="0" showlabel="false" ordinalvalue="10000">
+                        <labels>
+                          <label description="Engagement Opportunity Title" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunitytitle" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_engagementopportunitytitle" disabled="false" uniqueid="{7ce4ed12-276d-48d2-6149-bab1a63a2664}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{ac558644-309c-4280-8a86-c48def7e604b}" rowspan="1" ordinalvalue="10001">
+                        <labels>
+                          <label description="Note Text" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-C143-495E-A496-C962E5B4488E}" disabled="false">
+                          <parameters>
+                            <UClientExpandFilterPane>false</UClientExpandFilterPane>
+                            <UClientActivities>appointment,email,letter,phonecall,socialactivity,task,msfp_alert,msfp_surveyinvite,msfp_surveyresponse</UClientActivities>
+                            <UClientDisplayActivityUsing>defaultfields</UClientDisplayActivityUsing>
+                            <UClientActivityCardMap>appointment:4201:,campaignactivity:4402:,campaignresponse:4401:,email:4202:,fax:4204:,incidentresolution:4206:,letter:4207:,opportunityclose:4208:,orderclose:4209:,phonecall:4210:,quoteclose:4211:,recurringappointmentmaster:4251:,serviceappointment:4214:,socialactivity:4216:,task:4212:,msfp_alert:10223:,msfp_surveyinvite:10232:,msfp_surveyresponse:10234:,msnfp_message:10371:,</UClientActivityCardMap>
+                            <UClientActivitiesConfigurationJSON>{"quoteclose":{"showStatus":false,"canCreate":false},"orderclose":{"showStatus":false,"canCreate":false},"incidentresolution":{"showStatus":false,"canCreate":false},"campaignactivity":{"showStatus":true,"canCreate":false},"opportunityclose":{"showStatus":false,"canCreate":false},"fax":{"showStatus":true,"canCreate":false},"recurringappointmentmaster":{"showStatus":true,"canCreate":false},"msfp_alert":{"showStatus":true,"canCreate":false},"msnfp_message":{"showStatus":true,"canCreate":true}}</UClientActivitiesConfigurationJSON>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_location" id="2b480fb7-10d5-4038-9eb1-b5c1a11e1c86" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="3" solutionaction="Added">
+          <labels>
+            <label description="Location" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%" id="0">
+              <sections>
+                <section name="tab_5_section_1" id="9501b785-aab0-48f6-90cc-b5310debe38a" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Location Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{0119633d-35dc-44d1-825f-75acc80f3b1c}" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Location Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_locationtype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_locationtype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a2c81335-51e5-47b2-b026-ca8535ff6016}" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="Location Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_location" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_location" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7a28c89a-32e7-41c9-bfe4-4347c8e84661}" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="Street 1" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_street1" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_street1" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b7961903-3f92-4fa0-9c8c-a74d7f193d40}" locklevel="0" ordinalvalue="10003">
+                        <labels>
+                          <label description="Street 2" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_street2" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_street2" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3689c263-e917-4e3d-ae7a-c297544bdd28}" locklevel="0" ordinalvalue="10004">
+                        <labels>
+                          <label description="Street 3" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_street3" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_street3" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e6890ef5-578f-4421-a3af-def6e753da91}" locklevel="0" ordinalvalue="10005">
+                        <labels>
+                          <label description="City" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_city" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_city" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2c99f56a-c8c9-4a5a-b347-698a222e3b3c}" locklevel="0" ordinalvalue="10006">
+                        <labels>
+                          <label description="State/Province" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_stateprovince" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_stateprovince" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{946ab825-c980-43b3-8731-058a5a5ad9b2}" locklevel="0" ordinalvalue="10007">
+                        <labels>
+                          <label description="ZIP/Postal Code" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_zippostalcode" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_zippostalcode" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{348ca236-ba33-4c9b-a6e3-05964f2cbfaa}" locklevel="0" ordinalvalue="10008">
+                        <labels>
+                          <label description="Country/Region" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_country" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_country" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{abefaf3a-73e1-40db-b447-c56690800f19}" locklevel="0" ordinalvalue="10009">
+                        <labels>
+                          <label description="County" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_county" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_county" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c24ed80f-dd5f-4691-ac41-cfecf7d81400}" locklevel="0" ordinalvalue="10010">
+                        <labels>
+                          <label description="URL" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_url" classid="{71716B6C-711E-476C-8AB8-5D11542BFB47}" datafieldname="msnfp_url" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%" id="1">
+              <sections>
+                <section name="_section_808" id="ee5e92bd-c23c-4dd2-b702-25d06fce3480" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Location Contact (Internal Use)" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{57d4f561-2982-42e2-81bc-e9fb304348e0}" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Primary Contact" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_primarycontactid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_primarycontactid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{7073617d-c5eb-40cd-bc59-d3811d25b9f6}" ordinalvalue="10001">
+                        <labels>
+                          <label description="New QV control 1617725293862" languagecode="1033" />
+                        </labels>
+                        <control id="QuickviewControl1617725293862" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="msnfp_primarycontactid" disabled="false">
+                          <parameters>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="contact"&gt;bdb0ae1c-32fa-4374-b637-8dafe107bc44&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_messagesettings" id="052f0766-6357-4bcc-bd08-2f9e0228a77f" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="6" solutionaction="Added">
+          <labels>
+            <label description="Message Settings" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_8_section_1" id="cf0b90c2-8eec-40c2-92d4-c20ad6c56dea" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Automated Messages" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{a6fab76b-1db1-4af2-953b-12cd3d0c3db4}" rowspan="1" colspan="1" showlabel="false" ordinalvalue="10000">
+                        <labels>
+                          <label description="Automated Messages" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>msnfp_engagementopportunitysetting</TargetEntityType>
+                            <ViewId>{20203347-4EBA-433D-934B-AA25C49A95D4}</ViewId>
+                            <ViewIds>{20203347-4EBA-433D-934B-AA25C49A95D4}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_EngagementOpportunitySetting_engage</RelationshipName>
+                            <RecordsPerPage>10</RecordsPerPage>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_postsettings" id="045a94ff-2515-4c82-9b5c-f630ca957b44" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="7" solutionaction="Added">
+          <labels>
+            <label description="Post Settings" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%" id="0">
+              <sections>
+                <section name="tab_7_section_1" id="af420eb2-0d59-417b-8208-4522660a03fe" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Show on Public Listing" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{31384255-af9e-405c-b794-2b309b15693e}" ordinalvalue="10000">
+                        <labels>
+                          <label description="Public Address" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_publicaddress" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_publicaddress" disabled="false" uniqueid="{8cdf49e5-7d55-4fab-9bc0-100a65ba6afc}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{900ec0dc-3112-4b56-be86-76f35a8abff8}" ordinalvalue="10001">
+                        <labels>
+                          <label description="Public City " languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_publiccity" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_publiccity" disabled="false" uniqueid="{7eafc036-eca0-40e8-8c19-c9fed63d51d0}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{dace7cd8-363c-4262-a0f9-742e18e55b8b}" ordinalvalue="10002">
+                        <labels>
+                          <label description="Virtual Engagement Url" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_virtualengagementurl" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_virtualengagementurl" disabled="false" uniqueid="{83bbc5c3-66b9-49bc-8dee-237d96435939}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%" id="1">
+              <sections>
+                <section name="_section_176" id="57c258e5-812b-4175-993f-17cfb791fb6d" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Participants" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{9e7f22a9-0996-4266-98fb-eea0a09e8a2f}" ordinalvalue="10000">
+                        <labels>
+                          <label description="Automatically Approve All Applicants" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_automaticallyapproveallapplicants" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_automaticallyapproveallapplicants" disabled="false" uniqueid="{d849f726-a334-4d03-a6c9-e5d2ec84d8c9}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <Navigation>
+        <NavBar>
+          <NavBarByRelationshipItem RelationshipName="msnfp_msnfp_engagementopportunity_msnfp_engagementopportunityparticipantqual_engagementOpportunityId" Sequence="10000" Area="Info" Id="nav_msnfp_msnfp_engagementopportunity_msnfp_engagementopportunityparticipantqual_engagementOpportunityId" Show="false" solutionaction="Added">
+            <Titles>
+              <Title LCID="1033" Text="Engagement Opportunity Participant Qualifications" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="msnfp_msnfp_engagementopportunity_msnfp_engagementopportunityschedule_engagementOpportunity" Sequence="10001" Area="Info" Id="nav_msnfp_msnfp_engagementopportunity_msnfp_engagementopportunityschedule_engagementOpportunity" Show="false" solutionaction="Added">
+            <Titles>
+              <Title LCID="1033" Text="Engagement Opportunity Schedules" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId" Sequence="10002" Area="Info" Id="nav_msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId" Show="false" solutionaction="Added">
+            <Titles>
+              <Title LCID="1033" Text="Participations" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="msnfp_EngagementOpportunityPreference_eng" Sequence="10003" Area="Info" Id="nav_msnfp_EngagementOpportunityPreference_eng" Show="false" solutionaction="Added">
+            <Titles>
+              <Title LCID="1033" Text="Engagement Opportunity Preferences" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="msnfp_EngagementOpportunitySetting_engage" Sequence="10004" Area="Info" Id="nav_msnfp_EngagementOpportunitySetting_engage" Show="false" solutionaction="Added">
+            <Titles>
+              <Title LCID="1033" Text="Engagement Opportunity Settings" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="msnfp_PublicEngagementOpportunity_engagem" Sequence="10005" Area="Info" Id="nav_msnfp_PublicEngagementOpportunity_engagem" Show="false" solutionaction="Added">
+            <Titles>
+              <Title LCID="1033" Text="Public Engagement Opportunities" />
+            </Titles>
+          </NavBarByRelationshipItem>
+        </NavBar>
+      </Navigation>
+      <controlDescriptions>
+        <controlDescription forControl="{00fe8d69-0372-4a8d-b033-04057413cc62}" solutionaction="Added">
+          <customControl id="{E0DECE4B-6FC8-4A8F-A065-082708572369}">
+            <parameters>
+              <datafieldname>msnfp_description</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.RichTextEditor.RichTextEditorControl">
+            <parameters>
+              <value type="Multiple">msnfp_description</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.RichTextEditor.RichTextEditorControl">
+            <parameters>
+              <value type="Multiple">msnfp_description</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.RichTextEditor.RichTextEditorControl">
+            <parameters>
+              <value type="Multiple">msnfp_description</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{d2be4d90-be25-451e-9267-9082ed22c344}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_multipledays</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{71fc5335-bd10-4d89-b661-ded8fa00652e}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_shifts</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{d849f726-a334-4d03-a6c9-e5d2ec84d8c9}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_automaticallyapproveallapplicants</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_automaticallyapproveallapplicants</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_automaticallyapproveallapplicants</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_automaticallyapproveallapplicants</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{a3bcd463-8556-dbdb-2ec9-bb8a7cd74751}" solutionaction="Added">
+          <customControl id="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" formFactor="0">
+            <parameters />
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+                <TargetEntityType>msnfp_participation</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</FilteredViewIds>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">yes</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">no</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+                <TargetEntityType>msnfp_participation</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</FilteredViewIds>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">yes</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">no</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{6627cbb9-27db-8a5d-0d95-11ad82507c8d}" solutionaction="Added">
+          <customControl id="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" formFactor="0">
+            <parameters>
+              <datafieldname>msnfp_filledshifts</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="msnfp_microsoftdynamics365nonprofitaccelerator.EngagementOpportunitySummary">
+            <parameters>
+              <CurrentShifts>msnfp_filledshifts</CurrentShifts>
+              <NeedsReview type="Whole.None">msnfp_needsreviewedparticipants</NeedsReview>
+              <CancelledShifts type="Whole.None">msnfp_cancelledshifts</CancelledShifts>
+              <CompletedShifts type="Whole.None">msnfp_completed</CompletedShifts>
+              <NoShowShifts type="Whole.None">msnfp_noshow</NoShowShifts>
+              <StartDate type="DateAndTime.DateOnly">msnfp_startingdate</StartDate>
+              <EngOppStatus type="OptionSet">msnfp_engagementopportunitystatus</EngOppStatus>
+              <EngOppId type="SingleLine.Text">msnfp_engagementopportunityid</EngOppId>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="msnfp_microsoftdynamics365nonprofitaccelerator.EngagementOpportunitySummary">
+            <parameters>
+              <CurrentShifts>msnfp_filledshifts</CurrentShifts>
+              <NeedsReview type="Whole.None">msnfp_needsreviewedparticipants</NeedsReview>
+              <CancelledShifts type="Whole.None">msnfp_cancelledshifts</CancelledShifts>
+              <CompletedShifts type="Whole.None">msnfp_completed</CompletedShifts>
+              <NoShowShifts type="Whole.None">msnfp_noshow</NoShowShifts>
+              <StartDate type="DateAndTime.DateOnly">msnfp_startingdate</StartDate>
+              <EngOppStatus type="OptionSet">msnfp_engagementopportunitystatus</EngOppStatus>
+              <EngOppId type="SingleLine.Text">msnfp_engagementopportunityid</EngOppId>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{8cdf49e5-7d55-4fab-9bc0-100a65ba6afc}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_publicaddress</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_publicaddress</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_publicaddress</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_publicaddress</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{7eafc036-eca0-40e8-8c19-c9fed63d51d0}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_publiccity</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_publiccity</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_publiccity</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_publiccity</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{fabc8835-ae1c-45a8-8a19-c12edd6a2235}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_multipledays</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{695b092c-6062-4801-8adb-e46b0069e4b6}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_shifts</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{7ce4ed12-276d-48d2-6149-bab1a63a2664}" solutionaction="Added">
+          <customControl id="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}">
+            <parameters>
+              <datafieldname>msnfp_engagementopportunitytitle</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages">
+            <parameters>
+              <AnchorStringField>msnfp_engagementopportunitytitle</AnchorStringField>
+              <EntityId type="SingleLine.Text">msnfp_engagementopportunityid</EntityId>
+              <EntityType static="true" type="Enum">Engagement Opportunity</EntityType>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages">
+            <parameters>
+              <AnchorStringField>msnfp_engagementopportunitytitle</AnchorStringField>
+              <EntityId type="SingleLine.Text">msnfp_engagementopportunityid</EntityId>
+              <EntityType static="true" type="Enum">Engagement Opportunity</EntityType>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages">
+            <parameters>
+              <AnchorStringField>msnfp_engagementopportunitytitle</AnchorStringField>
+              <EntityId type="SingleLine.Text">msnfp_engagementopportunityid</EntityId>
+              <EntityType static="true" type="Enum">Engagement Opportunity</EntityType>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{08762d98-6adc-9870-c231-d397b9c95493}" solutionaction="Added">
+          <customControl id="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" formFactor="0">
+            <parameters>
+              <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+              <IsUserView>false</IsUserView>
+              <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+              <TargetEntityType>msnfp_participation</TargetEntityType>
+              <AutoExpand>Fixed</AutoExpand>
+              <EnableQuickFind>false</EnableQuickFind>
+              <EnableViewPicker>false</EnableViewPicker>
+              <ViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewIds>
+              <EnableJumpBar>false</EnableJumpBar>
+              <ChartGridMode>All</ChartGridMode>
+              <VisualizationId>{DBE1C697-B0EB-EA11-A817-000D3A300A85}</VisualizationId>
+              <IsUserChart>false</IsUserChart>
+              <EnableChartPicker>true</EnableChartPicker>
+              <RecordsPerPage>10</RecordsPerPage>
+              <HeaderColorCode>#F3F3F3</HeaderColorCode>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+                <TargetEntityType>msnfp_participation</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</FilteredViewIds>
+              </data-set>
+              <data-set name="SubGrid">
+                <ViewId>{5D823901-89BD-EB11-8236-000D3A31C0F1}</ViewId>
+                <IsUserView>false</IsUserView>
+                <TargetEntityType>msnfp_participationschedule</TargetEntityType>
+                <SubGridParentId>msnfp_participationid</SubGridParentId>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">yes</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">no</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{11B97A11-64AF-EB11-8236-000D3A5ACD59}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_msnfp_engagementopportunity_msnfp_participation_engagementOpportunityId</RelationshipName>
+                <TargetEntityType>msnfp_participation</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{11B97A11-64AF-EB11-8236-000D3A5ACD59}</FilteredViewIds>
+              </data-set>
+              <data-set name="SubGrid">
+                <ViewId>{5D823901-89BD-EB11-8236-000D3A31C0F1}</ViewId>
+                <IsUserView>false</IsUserView>
+                <TargetEntityType>msnfp_participationschedule</TargetEntityType>
+                <SubGridParentId>msnfp_participationid</SubGridParentId>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">yes</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">no</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{83bbc5c3-66b9-49bc-8dee-237d96435939}" solutionaction="Added">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_virtualengagementurl</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_virtualengagementurl</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_virtualengagementurl</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_virtualengagementurl</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <header id="{a2490126-7d74-4c16-94b8-ac590c28571e}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{3f9d6415-bf16-467c-acc2-c52223ee9a55}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+          </row>
+          <row>
+            <cell id="{03f4d5d1-4e26-4bd6-a1f7-414d411d070c}" locklevel="0" ordinalvalue="10000" solutionaction="Added">
+              <labels>
+                <label description="Status" languagecode="1033" />
+              </labels>
+              <control id="header_msnfp_engagementopportunitystatus" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_engagementopportunitystatus" disabled="true" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{eaf4cba0-e405-4af9-9d16-0908e9f4bc91}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{a86f96c7-2c7d-44fd-834d-898765526da6}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{dc45ebb9-e232-4801-aeb1-4ae690baa1cc}" showlabel="false" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{9cfea78d-47dd-47dc-a06c-26600e30440d}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+          </row>
+        </rows>
+      </footer>
+      <formLibraries solutionaction="Added">
+        <Library name="msnfp_EngagementOpportunityForm.gen.js" libraryUniqueId="{34ef0d60-35b8-4bc9-b9a3-3079eb285459}" />
+      </formLibraries>
+      <events solutionaction="Added">
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.EngagmentOpportunityForm.OnLoad" libraryName="msnfp_EngagementOpportunityForm.gen.js" handlerUniqueId="{0c405f0c-5e84-42f6-b62e-407dcf136b96}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+        <event name="onsave" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.EngagmentOpportunityForm.OnSaveAsync" libraryName="msnfp_EngagementOpportunityForm.gen.js" handlerUniqueId="{40b9dd66-1beb-43b5-aeba-c35fc0d470e8}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

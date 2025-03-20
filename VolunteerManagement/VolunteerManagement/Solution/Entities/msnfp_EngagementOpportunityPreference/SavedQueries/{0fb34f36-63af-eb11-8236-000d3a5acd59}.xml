@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{0fb34f36-63af-eb11-8236-000d3a5acd59}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_engagementopportunitypreferencestitle" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_engagementopportunitypreferenceid">
+          <cell name="msnfp_preferencetypeid" width="300" />
+          <cell name="a_4feaa21518514abb85a9e07430ab1816.msnfp_type" width="191" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_engagementopportunitypreference">
+          <attribute name="msnfp_engagementopportunitypreferenceid" />
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_preferencetypeid" />
+          <link-entity alias="a_4feaa21518514abb85a9e07430ab1816" name="msnfp_preferencetype" to="msnfp_preferencetypeid" from="msnfp_preferencetypeid" link-type="outer" visible="false">
+            <attribute name="msnfp_type" />
+          </link-entity>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Preferences From Engagement Opportunity" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

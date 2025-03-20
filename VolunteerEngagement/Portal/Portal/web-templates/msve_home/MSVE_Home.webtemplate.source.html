@@ -1,0 +1,76 @@
+<main>
+  <section class="section-landing">
+    <div id="mainContent" class="container">
+      <div class="row ">
+        <div class="col-md-12 text-center">
+          <h1 class="whiteText">
+            <span class="homeSubHeader">{% editable snippets 'Home/Title' type: 'text'%}</span>
+            {% editable snippets 'Home/Subtitle' type: 'text'%}
+          </h1>
+          <div class="col-md-4 col-md-offset-4">
+            <div role="search" class="input-group">
+              <input class="form-control left-border-none"  type="text" name="search" id="titleSearch" placeholder="{{snippets['MSVE_Search/ByKeywords']}}">
+              <div class="input-group-btn">
+                <button class="btn applyFiltersBtn text-primary" type="button">{{snippets['MSVE_SVG/Search']}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="alerty"></div>
+    <div class="row">
+      <div class="col-md-3 right-sidebar">
+        <h2>{{snippets['MSVE_Search/Filters']}}</h2>
+        <form>
+          <div class="form-group">
+            <label for="location">{{snippets['MSVE_Filters/LocationName']}}</label>
+            <input type="text" class="form-control" id="location" placeholder="{{snippets['MSVE_Filters/EnterLocation']}}">
+          </div>
+          <div class="form-group">
+            <label for="startdate">{{snippets['MSVE_EngagementDetails/StartDate']}}</label>
+            <input type="date" class="form-control" id="startdate" placeholder="{{snippets['MSVE_Filters/AllDates']}}">
+          </div>
+          <div class="form-group">
+            <label for="enddate">{{snippets['MSVE_EngagementDetails/EndDate']}}</label>
+            <input type="date" class="form-control" id="enddate" placeholder="{{snippets['MSVE_Filters/AllDates']}}">
+          </div>
+          {%- include 'MSVE_PrefsAndQuals/Fetch' -%}
+          <div class="form-group">
+            <label for="preferences">{{snippets['MSVE_Filters/Prefs']}}</label>
+            <select class="form-control" id="preferences" multiple>
+              {%- for pref in preferences.results.entities -%}
+                <option value="{{pref.msnfp_preferencetypetitle}}">{{pref.msnfp_preferencetypetitle}}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qualifications">{{snippets['MSVE_EngagementDetails/Qualifications']}}</label>
+            <select class="form-control" id="qualifications" multiple>
+              {%- for qual in qualifications -%}
+                <option value="{{qual.msnfp_qualificationtypetitle}}">{{qual.msnfp_qualificationtypetitle}}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        </form>
+        <button class="btn btn-warning applyFiltersBtn">{{snippets['MSVE_Filters/Apply']}}</button>
+        <button class="float-right btn-link clearInputsBtn">{{snippets['MSVE_Filters/ClearAll']}}</a>
+      </div>
+      <div class="col-md-8 left-sidebar">
+        <p class="numEngagements">{{snippets['MSVE_EngagementCards/Loading']}}</p>
+        {% include 'MSVE_SortBy' %}
+        <div class="card-container">
+          <div class="row shine"></div>
+          <div class="row shine"></div>
+          <div class="row shine"></div>
+          <div class="row shine"></div>
+          <div class="row shine"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% include 'MSVE_EngagementCards/JS' %}

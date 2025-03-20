@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{a4cb80fb-3725-ec11-b6e5-002248262df0}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{b7f5e505-3c53-4c49-b9e8-a5cb0439b63f}" IsUserDefined="1" name="tab_general" labelid="{6c9226c7-ebc3-424d-9427-564c52fac48b}">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{4212acac-97b1-4104-8e46-b04a3befad4a}" name="{4212acac-97b1-4104-8e46-b04a3befad4a}" columns="1" locklevel="0" labelwidth="130" celllabelalignment="Left" celllabelposition="Left" labelid="{ac714eac-5020-4da3-9b7d-ad9e5faaf8bc}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b9bd526e-aa2c-47e5-9836-006c95dc27ac}" labelid="{2938934d-759b-4922-ba1b-1192a22abd0f}">
+                        <labels>
+                          <label description="Availability Title" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_availabilitytitle" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="msnfp_availabilitytitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{94c695fc-b74d-43a4-9db7-97888afa6db7}" locklevel="0" colspan="1" rowspan="1" labelid="{2824f0a6-a31a-482f-85a1-21c944f0516c}">
+                        <labels>
+                          <label description="Effective From" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_effectivefrom" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_effectivefrom" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dcab8733-2362-42e2-852c-354b03915c72}" locklevel="0" colspan="1" rowspan="1" labelid="{45e04204-c3aa-47d4-bab3-a0c8e18fb0d7}">
+                        <labels>
+                          <label description="Effective To" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_effectiveto" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_effectiveto" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3474e2db-1989-45ea-a80e-57e0110243c1}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Working Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_workingdays" classid="{4AA28AB7-9C13-4F57-A73D-AD894D048B5F}" datafieldname="msnfp_workingdays" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6f307ea7-502d-402b-bf95-a63d1ce35618}" locklevel="0" labelid="{8f93ad1b-af72-49c5-bf0c-d06472a3cfe8}" visible="false">
+                        <labels>
+                          <label description="Contact" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_contactid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_contactid" disabled="false">
+                          <parameters>
+                            <AvailableViewIds>{A2D479C5-53E3-4C69-ADDD-802327E67A0D},{00000000-0000-0000-00AA-000010001003}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{00000000-0000-0000-00AA-000010001003}</DefaultViewId>
+                            <useMainFormDialogForEdit>false</useMainFormDialogForEdit>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8341efa0-1d1e-4f2e-a9c3-b7d6803df8dc}" showlabel="true" locklevel="1" visible="false" labelid="{448c267e-a8b2-4772-9e92-c3ad1783b184}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" uniqueid="{71be4147-e9c6-3744-78c6-e2dd10da5707}" disabled="false">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <Navigation>
+        <NavBar />
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions />
+      <header id="{a175af50-618d-4901-843a-8fe3a6e22b7a}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{9f86f8a9-ac29-4202-8eb9-c1d1f6f38b64}" showlabel="false" labelid="{0f0a9036-164b-4ab8-8674-b58cf4d4c835}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{77831e6b-009a-4ced-9e05-e7613e19625c}" showlabel="false" labelid="{a96fd5e3-89e0-45ad-93e9-d2ec5f7135cd}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{d5cd2b82-5d55-47dd-8194-64cf5af700bf}" showlabel="false" labelid="{77d6861a-24eb-4b62-8ce6-7c6a44be3b2e}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{33df36a2-c936-469a-94b7-0c390886f935}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{20f5ce1e-10cf-4cf3-a9ca-3a2a5e265bf3}" showlabel="false" labelid="{6a76a1d9-1dfc-4c0b-8ad6-1c665553f416}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{67dcbc14-69ce-4694-9136-aa92ac671e05}" showlabel="false" labelid="{2766c310-7d15-426b-9955-314f8e19fe07}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{996fe668-e547-45e8-8663-c75dbddc3c7f}" showlabel="false" labelid="{6fb53934-2b92-4570-ae06-b93e2eb66c9f}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="2" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="VE Portal Availability Form" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Form for the Availability entity in the Volunteer Engagement Portal Profile page" languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

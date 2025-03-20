@@ -1,0 +1,25 @@
+- adx_name: Limiter la lecture sur Opportunités
+  adx_right: 2
+  adx_webpageaccesscontrolrule_webrole:
+  - 79a9f09f-74f3-4041-828e-b53e7c68be9d
+  adx_webpageaccesscontrolruleid: 3b0280e4-90b4-457b-95a9-597e5467abdf
+  adx_webpageid: a16e68ec-0c5d-4225-9469-46b6c7ecc500
+  statecode: 1
+  statuscode: 2
+- adx_name: Autoriser la modification du contenu
+  adx_right: 1
+  adx_webpageaccesscontrolrule_webrole: []
+  adx_webpageaccesscontrolruleid: 09920194-b5ff-4845-be9d-966902ba657e
+- adx_name: Autoriser la modification des administrateurs
+  adx_right: 1
+  adx_webpageaccesscontrolrule_webrole:
+  - 0c978d9a-4e8f-4454-a279-4335a27b8e31
+  adx_webpageaccesscontrolruleid: f04c4537-cf10-4a81-b5da-c78eddec0566
+  adx_webpageid: 2b061aa0-3c8c-4a52-9248-4e89d6348643
+- adx_name: Limiter la lecture sur les détails de l’engagement
+  adx_right: 2
+  adx_webpageaccesscontrolrule_webrole: []
+  adx_webpageaccesscontrolruleid: d518e9af-0747-458e-afbc-14f1ad11cdb4
+  adx_webpageid: 6473dd8e-99b9-4c84-93f1-1a096599daf6
+  statecode: 1
+  statuscode: 2

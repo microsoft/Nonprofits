@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{324120df-53b8-4396-ae43-e515c32d3f58}</formid>
+    <IntroducedVersion>2.4.1.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form maxWidth="400" solutionaction="Modified">
+      <tabs>
+        <tab verticallayout="true" id="{5451f821-dcc1-4cd8-ac44-9e853f473e95}" IsUserDefined="1" name="tab_General" ordinalvalue="0" solutionaction="Modified">
+          <labels>
+            <label description="General" languagecode="1033" solutionaction="Added" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{c79281c9-ec57-42d9-9266-dec1639981e6}" name="General_General" ordinalvalue="0" solutionaction="Modified">
+                  <labels>
+                    <label description="General" languagecode="1033" solutionaction="Modified" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{dab59742-a003-4a9b-9693-097645dd0944}" visible="false" ordinalvalue="10000" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{a66ea761-8e1c-491e-ab32-8595ae6f503b}" ordinalvalue="10004" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{67c2acda-c68e-17b9-b2e4-e1860d0dc105}" showlabel="true" locklevel="0" ordinalvalue="10001" solutionaction="Added">
+                        <labels>
+                          <label description="Start Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_startingdate" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="msnfp_startingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{da01d6ab-77d9-d508-a6cb-e7a62bd5602a}" showlabel="true" locklevel="0" ordinalvalue="10002" solutionaction="Added">
+                        <labels>
+                          <label description="End Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_endingdate" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="msnfp_endingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{80b79993-4c31-452d-6396-24754ec8b890}" showlabel="true" locklevel="0" ordinalvalue="10003" solutionaction="Added">
+                        <labels>
+                          <label description="Status Reason" languagecode="1033" />
+                        </labels>
+                        <control id="statuscode" classid="{5D68B988-0661-4db2-BC3E-17598AD3BE6C}" datafieldname="statuscode" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions FallbackForm="true" Order="0" solutionaction="Added">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Engagement Opportunity" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

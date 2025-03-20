@@ -1,0 +1,307 @@
+{% extends 'MSVE_HeaderStatusBarAndTabs' %}
+{% block dataCollection %}
+  <div class="fetchxml">  
+    {% include 'MSVE_Engagement/Fetch' engageOppId:request.params['id'] %}
+  </div>
+{% endblock %}
+{% block title %}
+  {% if engagement %}
+    {{engagement.msnfp_engagementopportunitytitle}}
+  {% endif %}  
+{% endblock %}
+{% block subtitle %}
+  {% if engagement %}
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        {% assign lastChar = engagement.msnfp_areas.size | minus: 2 %}
+        {% assign subStr = engagement.msnfp_areas | slice start: 1 end: lastChar  %}
+        {% assign tags = subStr | split: '", "' %}
+        {% if tags.size > 0 %}
+          <div class="row">
+            <div class="text-center">
+              <h2 class="text-center normal-weight">
+                {% for tag in tags %}
+                  {% if tag != tags[0] %}&#183;{% endif %}
+                  {{tag}}
+                {% endfor %}
+              </h2>
+            </div>
+          </div>
+        {% endif %}
+        <div class="row needsSpace">
+          <div class="col-md-1 col-md-offset-1">
+            <span class="pull-right">{{snippets['MSVE_SVG/TimeCalendar/LargeIcon']}}</span>
+          </div>
+          <div class="col-md-4">
+            <p class="less-margin-bottom">
+              <time datetime="{{engagement.msnfp_startingdate | date_to_iso8601}}">
+                {{engagement.msnfp_startingdate}}
+              </time>
+            </p>
+            <p>
+              {%- if engagement.msnfp_shifts -%}
+              {{snippets['MSVE_EngagementDetails/MultipleShifts']}}
+              {%- endif -%}
+            </p>
+          </div>
+          <div class="col-md-1 col-md-offset-1">
+            {%- if engagement.msnfp_locationtype.value == 844060001 -%}
+            <span class="pull-right">{{snippets['MSVE_SVG/Virtual/LargeIcon']}}</span>            
+            {%- else -%}
+            <span class="pull-right">{{snippets['MSVE_SVG/Location/LargeIcon']}}</span>
+            {%- endif -%}
+          </div>
+          <div class="col-md-4">
+            {%- assign locationCheck = engagement.msnfp_location | strip_newlines | remove: " " -%}
+            {%- if engagement.msnfp_locationtype.value == 844060001 -%}
+              <p class="less-margin-bottom">{{snippets['MSVE_EngagementInfo/Virtual']}}</p>
+              <p>{{engagement.msnfp_url}}</p>
+            {%- else -%}
+              {%- if engagement.msnfp_locationname -%}                
+                <p class="less-margin-bottom">{{engagement.msnfp_locationname}}</p>
+              {%- elsif engagement.msnfp_location and locationCheck != "," -%}
+                <p class="less-margin-bottom">{{engagement.msnfp_location}}</p>
+              {%- elsif engagement.msnfp_locationtype.value == 844060000 -%}
+                {{snippets['MSVE_EngagementInfo/OnLocation']}}
+              {%- elsif engagement.msnfp_locationtype.value == 844060002 -%}
+                {{snippets['MSVE_EngagementInfo/Virtual']}} {{snippets['MSVE_SmallWords/And']}} {{snippets['MSVE_EngagementInfo/OnLocation']}}
+              {%-endif-%}
+            {%- if engagement.msnfp_locationtype.value == 844060002 -%}
+              <p class="less-margin-bottom">{{engagement.msnfp_url}}</p>
+            {%- endif -%}
+            {%- assign cityCheck = engagement.msnfp_location | strip_newlines | remove: " " -%}            
+              {%- if cityCheck and cityCheck != "," -%}
+              <p>{{engagement.msnfp_locationcitystate}}</p>
+              {%- endif -%}         
+            {%- endif -%}
+          </div>          
+          </div>        
+        </div>
+      </div>
+    </div>
+  {% endif %}  
+{% endblock %}
+{% block setShowStatusBar %}
+  {% if engagement %}
+    {% assign showStatusBar = true %}
+  {% else %}
+    {% assign showStatusBar = false %}
+  {% endif %}
+{% endblock %}
+{% block statusBar %}
+  <div class="row">
+    <div class="col-md-9">
+    <div class="float-left">
+      {% if engagement.msnfp_number >= engagement.msnfp_maximum and engagement.msnfp_maximum and engagement.msnfp_number %}
+        {% assign isFull = true %}
+      {% else %}
+        {% assign isFull = false %}
+      {% endif %}
+      {% if pScheds.size > 1 %}
+        {% for pSched in pScheds %}
+          {% unless nextSched %}
+            {% if pSched.msnfp_schedulestatus.value == 335940000 %}
+              {% assign nextSched = pSched %}
+            {% endif %}
+          {% endunless %}
+        {% endfor %}
+        {% unless nextSched %}
+          {% assign nextSched = pScheds | last %}
+        {% endunless %}
+        {% include 'MSVE_EngagementInfo/Status' spot:"h2" participation:participation pSchedStatus:nextSched.msnfp_schedulestatus.value startDate:engagement.msnfp_startingdate endDate:engagement.msnfp_endingdate isMultiDays:engagement.msnfp_multipledays isFull:isFull==true %}      
+      {% elsif pScheds.size == 1 %}
+        {% include 'MSVE_EngagementInfo/Status' spot:"h2" participation:participation pSchedStatus:pScheds[0].msnfp_schedulestatus.value startDate:engagement.msnfp_startingdate endDate:engagement.msnfp_endingdate isMultiDays:engagement.msnfp_multipledays isFull:isFull==true %}
+      {% else %}
+        {% include 'MSVE_EngagementInfo/Status' spot:"h2" participation:participation startDate:engagement.msnfp_startingdate endDate:engagement.msnfp_endingdate isMultiDays:engagement.msnfp_multipledays isFull:isFull==true %}        
+      {% endif %}
+      </div>
+      <p class="text-muted statusBar-desc">
+        {% case engagementStatusIndex %}
+          {% when 10 %}
+            {% if engagement.msnfp_minimum > engagement.msnfp_number or engagement.msnfp_number == nil and engagement.msnfp_minimum %}
+              {% if engagement.msnfp_number %}
+                {{engagement.msnfp_minimum | minus operand:engagement.msnfp_number}} {{snippets['MSVE_EngagementDetails/VolunteersNeeded']}}
+              {% else %}
+                {{engagement.msnfp_minimum}} {{snippets['MSVE_EngagementDetails/VolunteersNeeded']}}
+              {% endif %}               
+            {% endif %}
+          {% when 9 %}
+            {{snippets['MSVE_EngagementDetails/Full']}}
+          {% when 8 %}
+            {{snippets['MSVE_EngagementDetails/Closed']}}
+          {% when 3 %}
+            <button class="btn btn-link" id="cancelParticipationBtn">{% include 'snippet' snippet_name:'MSVE_SmallWords/Cancel' %}</button>       
+          {% when 2 %}
+            {{snippets['MSVE_EngagementDetails/Dismissed']}}            
+          {% when 1 %}
+            {{snippets['MSVE_EngagementDetails/Accepted']}}            
+          {% when 0 %}
+            {{snippets['MSVE_EngagementDetails/Applied']}}            
+          {% else %}
+        {% endcase %}
+      </p>
+      {%- if engagementStatusIndex == 3 or engagementStatusIndex == 10 -%}
+      <span id="appLoader" class="text-primary left-space">{{snippets['MSVE_SVG/Spinner']}}</span>
+      {%- endif -%}
+    </div>
+    {% if engagement['privateOpp.msnfp_shifts'] and pScheds.size > 0 %}
+      <div class="col-md-3 pull-right">
+        {% capture nextSchedDate %}
+          {{nextSched['eSched.msnfp_effectivefrom'] | date: 'ddd, MMM d h:mm tt'}} - {{nextSched['eSched.msnfp_effectiveto'] | date: 't'}}
+        {% endcapture %}
+        <h4>
+          {{nextSchedDate}} <span class="numMoreShifts-circle">+{{pScheds.size | minus operand:1}}</span>
+        </h4>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+{% block setTabs %}
+  {% if engagement %}
+    {% assign tabs = snippets['MSVE_EngagementDetails/Tabs'] | split: ',' %}
+  {% endif %}
+{% endblock %}
+{% block content %}
+  {% if engagement %}
+    <div class="alerty"></div>
+    <div class="row tab-content">
+      <div id="{{tabs[0]}}" class="tab-pane fade in active" role="tabpanel">
+        <div class="row no-margin">
+          <div class="col-md-8 engagementDescription needsSpace">
+            {%- if engagement.msnfp_description -%}
+              {{engagement.msnfp_description}}
+            {%- else -%}
+              {{engagement.msnfp_shortdescription}}
+            {%- endif -%}
+          </div>
+          <div class="col-md-4">
+            <h2>{% include 'snippet' snippet_name: 'MSVE_EngagementDetails/Qualifications' %}</h2>
+            {% assign lastChar = engagement.msnfp_qualifications.size | minus: 2 %}
+            {% assign subStr = engagement.msnfp_qualifications | slice start: 1 end: lastChar  %}
+            {% assign qualifications = subStr | split: '", "' %}
+            {% if qualifications.size > 0 and engagement.msnfp_qualifications.size > 0 %}
+              {% for qual in qualifications %}
+                <p>{{qual}}</p>
+              {% endfor %}
+            {% else %}
+              <p>{{snippets['MSVE_EngagementDetails/NoQualifications']}}</p>
+            {% endif %}            
+            {%- if locationCheck != "," and locationCheck and engagement.msnfp_locationtype.value == 844060000 or engagement.msnfp_locationtype.value == 844060002 -%}
+            <h2>{{snippets['MSVE_EngagementDetails/Location']}}</h2>
+            <p>{{engagement.msnfp_location}}</p>
+            {%- endif -%}
+            {%- if engagement.msnfp_url and engagement.msnfp_locationtype.value == 844060001 or engagement.msnfp_locationtype.value == 844060002 -%}
+            <h2>{{snippets['MSVE_EngagementDetails/SiteAddress']}}</h2>
+            <p>{{engagement.msnfp_url}}</p>            
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+      <div id="{{tabs[1]}}" class="tab-pane fade" role="tabpanel">
+        <div class="row no-margin">
+          <div class="col-md-12">
+            <h2 class="float-left">{{snippets['MSVE_ShiftOptions']}}</h2>
+            <p class="text-muted shift-status-desc"><em>
+              {% case engagementStatusIndex %}
+                {% when 0,2,7,10 %}
+                  {{snippets['MSVE_EngagementDetails/ShiftSelection']}}                  
+                {% when 4,6,8,9 %}
+                  {{snippets['MSVE_EngagementDetails/Closed']}}
+              {% endcase %}
+              {% if engagement.msnfp_engagementopportunitystatus.value == 844060005 %}
+                {{snippets['MSVE_EngagementDetails/Closed']}}              
+              {% endif %}
+            </em></p>
+          </div>
+        </div>        
+        <div class="row no-margin">
+          {% include 'MSVE_Engagement/EngagementSchedules/Fetch' privateOppId:engagement['privateOpp.msnfp_engagementopportunityid'] participationId:participation.msnfp_participationid %}
+            <table class="table table-bordered table-hover col-xs-12 col-md-7">
+              <thead>
+                <tr>
+                  <th id="isSelected" aria-label="{{snippets['MSVE_SmallWords/Select']}}"></th>
+                  <th id="shiftName">{{snippets['MSVE_EngagementDetails/ShiftName']}}</th>
+                  <th id="shiftStart">{{snippets['MSVE_EngagementDetails/StartDate']}}</th>
+                  <th id="shiftEnd">{{snippets['MSVE_EngagementDetails/EndDate']}}</th>
+                  <th id="shiftHours" class="hidden-xs">{{snippets['MSVE_EngagementDetails/Hours']}}</th>
+                  <th id="shiftVols" class="hidden-xs">{{snippets['MSVE_EngagementDetails/VolunteersNeededHeader']}}</th>
+                  <th id="shiftStatus">{{snippets['MSVE_EngagementDetails/StatusHeader']}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for eSched in eScheds %}
+                  {% capture eSchedJson %}
+                    {
+                      "id": "{{eSched.msnfp_engagementopportunityscheduleid}}",
+                      "name": "{{eSched.msnfp_engagementopportunityschedule | split pattern:" - " | first}}",
+                      {% if engagement['privateOpp.msnfp_statuscode.value'] == 844060005 %}
+                        "isCancelled": true,
+                      {% else %}
+                        "isCancelled": false,
+                      {% endif %}                    
+                      "endDate": "{{eSched.msnfp_effectiveto}}",
+                      "maxVolunteers": {{eSched.msnfp_maximum}},
+                      "numVolunteers": {{eSched.msnfp_number}},
+                      "participationId": "{{participation.msnfp_participationid}}",
+                      "pSchedId": "{{eSched['pSched.msnfp_participationscheduleid']}}",
+                      "pSchedStatus": "{{eSched['pSched.msnfp_schedulestatus'].value}}"
+                    }
+                  {% endcapture %}
+                  {% if schedIsFull or eSched.msnfp_effectiveto < now or participation.msnfp_status.value != 844060002 or engagement.msnfp_engagementopportunitystatus.value == 844060005 or engagement.msnfp_engagementopportunitystatus.value == 844060004 or participation == nil or user == nil %}
+                    {% assign rowIsDisabled = true %}
+                  {% else %}
+                    {% assign rowIsDisabled = false %}
+                  {% endif %}
+                  <tr class="{% if rowIsDisabled %}disabledRow{% endif %}">
+                    <td>
+                      <input 
+                        {% if rowIsDisabled %}disabled{% endif %} 
+                        type="checkbox" id="{{eSched.msnfp_engagementopportunityscheduleid}}" 
+                        name="{{eSched.msnfp_engagementopportunityschedule | split pattern:" - " | first}}"
+                        aria-labelledby="isSelected"
+                        data-value='{{eSchedJson | strip }}'
+                      >
+                    </td>                 
+                    <td aria-labelledby="shiftName">{{eSched.msnfp_engagementopportunityschedule | split pattern:" - " | first}}</td>
+                   <td aria-labelledby="shiftStart">
+                      <time datetime="{{ eSched.msnfp_effectivefrom | date_to_iso8601  | h }}" >
+                        {{eSched.msnfp_effectivefrom | date:'g'}}
+                      </time>
+                    </td>
+                    <td aria-labelledby="shiftEnd">
+                    <time datetime="{{ eSched.msnfp_effectiveto | date_to_iso8601  | h }}" >
+                        {{eSched.msnfp_effectiveto | date:'g'}}
+                      </time>
+                    </td>
+                    <td aria-labelledby="shiftHours" class="hidden-xs">{{eSched.msnfp_hours}}</td>
+                    <td aria-labelledby="shiftVols" class="hidden-xs">
+                      {% if eSched.msnfp_number %}
+                        {{eSched.msnfp_maximum | minus operand:eSched.msnfp_number}}
+                      {% else %}
+                        {{eSched.msnfp_maximum}}
+                      {% endif %}
+                    </td>
+                    <td aria-labelledby="shiftStatus">                  
+                      {% if eSched['pSched.msnfp_schedulestatus'].label %}
+                        {% include 'MSVE_EngagementInfo/Status' participation:participation pSchedStatus:eSched['pSched.msnfp_schedulestatus'].value startDate:engagement.msnfp_startingdate endDate:engagement.msnfp_endingdate isMultiDays:engagement.msnfp_multipledays  isFull:schedIsFull %}                    
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>            
+            </table>
+          <div class="col-xs-12">
+            <button class="btn btn-warning float-left" id="bookShifts" disabled>{{snippets['MSVE_EngagementDetails/BookShifts']}}</button>
+            <button role="button" class="btn btn-warning float-left left-space" id="cancelShifts" disabled>{{snippets['MSVE_EngagementDetails/CancelShifts']}}</button>
+            <span id="shiftLoader" class="text-primary left-space">{{snippets['MSVE_SVG/Spinner']}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    {% include 'MSVE_MissingContent' message: snippets['MSVE_EngagementDetails/EngagementNotFound'] %}
+  {% endif %}
+{% endblock %}
+{% block scripts %}
+    {% include 'MSVE_EngagementDetails/JS' %}  
+{% endblock %}

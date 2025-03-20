@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\build\include\Solutions.props" />
+
+  <PropertyGroup>
+    <ProjectGuid>93d633c5-efce-43f6-a3fb-344715f9e8e8</ProjectGuid>
+    <PackageId>VolunteerManagement</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VolunteerManagementResources\Plugins\Plugins.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include=".\Resources\PCFs\EngagementOpportunitySummary\EngagementOpportunitySummary.pcfproj" />
+    <ProjectReference Include=".\Resources\PCFs\GetStarted\VMGetStarted.pcfproj" />
+    <ProjectReference Include=".\Resources\PCFs\OnboardingStageView\OnboardingStageView.pcfproj" />
+    <ProjectReference Include=".\Resources\PCFs\SendMessages\SendMessages.pcfproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=".\Resources\WebResources\WebResources.esproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\build\include\Solutions.targets" />
+</Project>

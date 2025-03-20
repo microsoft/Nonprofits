@@ -1,6 +1,6 @@
 # Build and deploy a Dataverse solution
 
-The [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md), [Fundraising](../Fundraising/README.md), [Grant Management](../GrantManagement/README.md), and [Outcome Management](../OutcomeManagement/README.md) are solutions built on Dataverse. The process to build and deploy is the same for each of these solutions. 
+The [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md), [Fundraising](../Fundraising/README.md), [Grant Management](../GrantManagement/README.md), [Outcome Management](../OutcomeManagement/README.md), and [Volunteer Management](../VolunteerManagement/README.md) are solutions built on Dataverse. The process to build and deploy is the same for each of these solutions. 
 
 This repository contains multiple Dataverse solutions. Always ensure you are in the correct solution folder.
 Follow the steps below to **build and deploy the solution** into a Power Platform environment.

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow WorkflowId="{fb1045fa-f15a-ef11-bfe3-002248adc71c}" Name="MaxParticipantsCheck">
+  <XamlFileName>/Workflows/MaxParticipantsCheck-FB1045FA-F15A-EF11-BFE3-002248ADC71C.xaml</XamlFileName>
+  <Type>1</Type>
+  <Subprocess>0</Subprocess>
+  <Category>0</Category>
+  <Mode>1</Mode>
+  <Scope>4</Scope>
+  <OnDemand>0</OnDemand>
+  <TriggerOnCreate>1</TriggerOnCreate>
+  <TriggerOnDelete>0</TriggerOnDelete>
+  <AsyncAutodelete>0</AsyncAutodelete>
+  <SyncWorkflowLogOnFailure>1</SyncWorkflowLogOnFailure>
+  <StateCode>1</StateCode>
+  <StatusCode>2</StatusCode>
+  <CreateStage>40</CreateStage>
+  <RunAs>1</RunAs>
+  <IsTransacted>1</IsTransacted>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <BusinessProcessType>0</BusinessProcessType>
+  <IsCustomProcessingStepAllowedForOtherPublishers>1</IsCustomProcessingStepAllowedForOtherPublishers>
+  <PrimaryEntity>msnfp_participation</PrimaryEntity>
+  <LocalizedNames>
+    <LocalizedName languagecode="1033" description="MaxParticipantsCheck" />
+  </LocalizedNames>
+  <labels>
+    <steplabels id="{83e722e1-e9ab-410f-817e-38753f4b241f}">
+      <label languagecode="1033" description="No more volunteers needed." />
+    </steplabels>
+  </labels>
+</Workflow>

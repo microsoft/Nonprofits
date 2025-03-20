@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{56b2d9d6-1249-4711-8b6a-d561665b551d}</formid>
+    <IntroducedVersion>1.0.3</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form showImage="true" shownavigationbar="true" maxWidth="1920" headerdensity="HighWithControls">
+      <tabs>
+        <tab name="SUMMARY_TAB" id="{15bb2d4b-71da-74ea-3c5b-e497d78a55a2}" IsUserDefined="0" showlabel="true" expanded="true" labelid="{46fcea4b-d89c-4410-9cae-2c59f7e21c79}" locklevel="0" ordinalvalue="0">
+          <columns>
+            <column width="34%" id="0">
+              <sections>
+                <section name="CONTACT_INFORMATION" showlabel="true" showbar="false" id="{9d943649-0387-1882-caa1-36de40d5a86c}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="150" celllabelposition="Left" labelid="{ff6a4665-8eaa-4361-9b19-b19b2ad26b32}" locklevel="0" celllabelalignment="Left" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{58d9c6d6-64bb-a506-c251-e60ba80d4e35}" showlabel="true" locklevel="0" ordinalvalue="10002" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{7d538a97-98eb-b438-72de-57a808b9a308}" showlabel="true" labelid="{36ad5774-2659-4381-a54e-33038494fd42}" ordinalvalue="10003" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{215da2d0-2b64-3481-8d2d-16107d4d7e5b}" showlabel="true" labelid="{e77f813f-4181-42f4-a502-e4f00f067f15}" locklevel="0" ordinalvalue="10004" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{290b48ba-c0cc-7746-6dda-93e240e4cc78}" showlabel="true" labelid="{f5f90a31-b9a9-4b67-86bb-3fd2dc70f9e9}" ordinalvalue="10005" solutionaction="Modified">
+                        <control id="mobilephone" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="mobilephone" disabled="false" uniqueid="{b70a4080-1308-0778-d352-e552457de111}" solutionaction="Modified" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{408dda0b-48a7-c05c-e29a-56a93eb97172}" showlabel="true" labelid="{ac8dca23-09bb-481a-b68f-6f7cd9409a50}" ordinalvalue="10006" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{133d09d6-c374-954a-315b-435e1eeb722c}" showlabel="true" locklevel="0" labelid="{f5ab8dc6-0b4a-49a0-970a-9df8f512c041}" ordinalvalue="10006" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{5a8bab7b-22bc-5021-a9b3-99ece649b495}" showlabel="true" locklevel="0" ordinalvalue="10008" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{4a83a180-f3f2-44da-b1a1-a88329d6b5aa}" locklevel="0" ordinalvalue="10001" solutionaction="Added">
+                        <labels>
+                          <label description="Salutation" languagecode="1033" />
+                        </labels>
+                        <control id="salutation" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="salutation" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9c8168e0-2dc0-e147-c1e0-b8321ab8aa9c}" showlabel="true" locklevel="0" ordinalvalue="10007" solutionaction="Added">
+                        <labels>
+                          <label description="City" languagecode="1033" />
+                        </labels>
+                        <control id="address1_city" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="address1_city" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8e3bca89-a3a5-4995-a26a-12c62b3f9e3a}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10009" solutionaction="Added">
+                        <labels>
+                          <label description="Volunteer" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_volunteer" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="msnfp_volunteer" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%" id="1">
+              <sections>
+                <section name="tab_4_section_1" showlabel="false" showbar="false" locklevel="0" id="{777b1db4-ac39-3cce-c8ba-9435179db6c1}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" labelid="{9b30b6a3-9a88-46d9-84f2-9085cfcef5c9}" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{504e92a9-ccbe-4290-6703-6c749866eada}" showlabel="false" rowspan="14" auto="false" colspan="1" locklevel="0" labelid="{43996bab-9a9c-428b-a99b-5b547835ec0a}" ordinalvalue="10000">
+                        <control id="notescontrol" classid="{06375649-c143-495e-a496-c962e5b4488e}" uniqueid="{7b410976-a492-114b-a3e4-11ea65ce293d}" disabled="false">
+                          <parameters>
+                            <UClientActivities solutionaction="Added">appointment,email,fax,letter,phonecall,recurringappointmentmaster,socialactivity,task,msnfp_onboardingtask</UClientActivities>
+                            <UClientActivityCardMap solutionaction="Added">appointment:4201:,email:4202:,fax:4204:,letter:4207:,phonecall:4210:,recurringappointmentmaster:4251:,socialactivity:4216:,task:4212:,msnfp_message:10222:,</UClientActivityCardMap>
+                            <UClientActivitiesConfigurationJSON solutionaction="Added">{"msnfp_message":{"showStatus":true,"canCreate":false},"msnfp_onboardingtask":{"showStatus":true,"canCreate":false}}</UClientActivitiesConfigurationJSON>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%" id="2">
+              <sections>
+                <section name="SUMMARY_TAB_section_4" showlabel="true" showbar="false" locklevel="0" id="{05c3aa14-a00c-4235-98d9-613542bcecd4}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="100" celllabelalignment="Left" celllabelposition="Left" labelid="{08625585-1df3-4393-992d-500efa75b890}" ordinalvalue="2" solutionaction="Modified" />
+                <section name="SUMMARY_TAB_section_5" id="a0355d59-267e-47dc-a779-be63f7585353" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0" solutionaction="Added">
+                  <labels>
+                    <label description="Engagements and Groups" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{edfb23d4-3512-4ba4-af4a-cae5bc3895d9}" rowspan="1" colspan="1" auto="false" showlabel="true" ordinalvalue="10000">
+                        <labels>
+                          <label description="Onboarding Qualifications" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_3" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{65557c80-0b57-9302-6191-19808312849e}">
+                          <parameters>
+                            <TargetEntityType>msnfp_qualification</TargetEntityType>
+                            <ViewId>{F6D462E3-1B16-EC11-B6E6-000D3A1B9D59}</ViewId>
+                            <ViewIds>{A165AA1D-F5EB-EB11-BACB-000D3A53885C},{F6D462E3-1B16-EC11-B6E6-000D3A1B9D59}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_contact_msnfp_qualification_contactId</RelationshipName>
+                            <RecordsPerPage>5</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId>{DBE1C697-B0EB-EA11-A817-000D3A300A85}</VisualizationId>
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{27ffb08b-aee9-4b9f-84f2-4da4426be461}" rowspan="6" colspan="1" auto="false" showlabel="true" ordinalvalue="10001">
+                        <labels>
+                          <label description="Recent Engagements" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_upcomingengagements" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" indicationOfSubgrid="true" uniqueid="{D5CBE7AC-8409-8068-E76A-A734810CC491}">
+                          <parameters>
+                            <TargetEntityType>msnfp_participation</TargetEntityType>
+                            <ViewId>{71F2221B-69AF-EB11-8236-000D3A5ACD59}</ViewId>
+                            <ViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{71F2221B-69AF-EB11-8236-000D3A5ACD59},{2AD5C006-57F3-EA11-A815-000D3A300A85}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_contact_msnfp_participation_contactId</RelationshipName>
+                            <RecordsPerPage>5</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId>{DBE1C697-B0EB-EA11-A817-000D3A300A85}</VisualizationId>
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+                <section name="SUMMARY_TAB_section_6" id="f0b1d665-7d07-4a99-b617-793a063d8451" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{6cba3f3a-1614-4baa-bc6f-baa03251d9a8}" rowspan="7" colspan="1" auto="false" showlabel="true" ordinalvalue="10000">
+                        <labels>
+                          <label description="Groups" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_groups" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{74712b60-53bb-c24b-8992-9ced6ea13064}">
+                          <parameters>
+                            <TargetEntityType>msnfp_groupmembership</TargetEntityType>
+                            <ViewId>{63703B79-0CE3-EC11-BB3D-000D3A595480}</ViewId>
+                            <ViewIds>{63703B79-0CE3-EC11-BB3D-000D3A595480}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_GroupMembership_contactId_Contact</RelationshipName>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>Grid</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>false</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_preferences" id="{58017d6c-d81c-d3b6-383a-e10c49ed47e7}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="1" solutionaction="Removed" />
+        <tab name="Participations" id="{1d0ca939-5119-ede7-6178-ba57a47980e6}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="1" solutionaction="Modified">
+          <labels>
+            <label description="Participation History" languagecode="1033" solutionaction="Modified" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_3_section_1" showlabel="false" showbar="false" locklevel="0" id="{0be5a1cd-e190-b577-3921-d05ad9228cc7}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{22bd7033-5bd6-0eb6-dd90-15898a153d18}" showlabel="true" colspan="1" auto="false" rowspan="13" ordinalvalue="10000">
+                        <control id="Participation" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{16104881-4680-08ba-9573-01d820a92e36}">
+                          <parameters>
+                            <ViewId solutionaction="Modified">{8874A114-96BD-EB11-8236-000D3A31C0F1}</ViewId>
+                            <ViewIds solutionaction="Modified">{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{8874A114-96BD-EB11-8236-000D3A31C0F1}</ViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_availabilities" id="2437a5bc-28a4-49d5-8229-4ee20b5a9438" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="3">
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_5_section_1" id="ecfe960d-6289-401f-8476-29c2bcd9704e" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{ffe88545-ce0c-468e-94f5-ae72be676b0b}" rowspan="1" colspan="1" showlabel="false" ordinalvalue="10000">
+                        <control id="Subgrid_2" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <ViewId solutionaction="Modified">{9CF5A22A-92BD-EB11-8236-000D3A31DEC1}</ViewId>
+                            <ViewIds solutionaction="Modified">{11C8EC0C-ABC0-4AD3-8B94-67344E1E9A99},{9CF5A22A-92BD-EB11-8236-000D3A31DEC1}</ViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_qualifications" id="f57aea62-76da-4b9c-9fdc-65e0c2503f9b" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="2" solutionaction="Modified">
+          <labels>
+            <label description="Qualifications &amp; Preferences" languagecode="1033" solutionaction="Modified" />
+          </labels>
+          <columns>
+            <column width="70%" id="0" solutionaction="Modified">
+              <sections>
+                <section name="tab_4_section_1_2" id="803d19b9-e670-49af-bd49-364d2464bfc2" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{6acc56ca-e9d6-4d02-b79d-19dfdf828464}" rowspan="1" colspan="1" showlabel="true" ordinalvalue="10000" solutionaction="Modified">
+                        <labels>
+                          <label description="Qualifications" languagecode="1033" solutionaction="Modified" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="30%" id="1" solutionaction="Added">
+              <sections>
+                <section name="_section_363" id="0abab35f-e6b5-48f0-adc8-a08dce40a7d7" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{948dc3a5-bce2-404e-b038-a1139a09c28f}" rowspan="1" colspan="1" ordinalvalue="10000">
+                        <labels>
+                          <label description="Preferences" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_4" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>msnfp_preference</TargetEntityType>
+                            <ViewId>{0A3E3152-C6EB-EA11-A817-000D3A300A85}</ViewId>
+                            <ViewIds>{39E7E428-FC67-480F-811F-B3141DBDD676},{0A3E3152-C6EB-EA11-A817-000D3A300A85}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_contact_msnfp_preference_preference_customer</RelationshipName>
+                            <RecordsPerPage>10</RecordsPerPage>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_7_address" id="9058b99d-896f-43bb-a072-fc708f84c86d" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="4" solutionaction="Added">
+          <labels>
+            <label description="Address" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%" id="0">
+              <sections>
+                <section name="tab_7_section_1" id="5cd5e23c-415d-4a57-be78-f5256875f2d8" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Address" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7ce3d33c-9536-3431-5022-3a5eb48c1223}" showlabel="true" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Address 1" languagecode="1033" />
+                        </labels>
+                        <control id="address1_composite" classid="{E0DECE4B-6FC8-4a8f-A065-082708572369}" datafieldname="address1_composite" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%" id="1">
+              <sections>
+                <section name="tab_7_address_section_4" id="11391b81-9ad5-4ea3-af18-1415ae29548e" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" visible="false" ordinalvalue="0">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows />
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{3ff9aa06-4e43-41ce-afa9-22a038af5c19}" celllabelposition="Top" columns="1111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{71733104-a657-31d7-649b-6a7297366db9}" showlabel="true" locklevel="0" labelid="{e483ff6a-8df6-4b5f-a454-10726cb0ca76}" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{d88c94aa-27e4-ce8e-07da-9cc3d1549c6a}" showlabel="true" locklevel="0" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{ce18c3ca-9ebe-38ae-3874-766560477e04}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+            <cell id="{7e443d75-2a98-623d-0a4a-e8eea41ebccc}" showlabel="false" ordinalvalue="20001" solutionaction="Modified" />
+          </row>
+          <row>
+            <cell id="{013b359e-4f02-44e4-8b9c-049862f39489}" locklevel="0" ordinalvalue="10000" solutionaction="Added">
+              <labels>
+                <label description="Joined" languagecode="1033" />
+              </labels>
+              <control id="header_createdon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="createdon" disabled="false" />
+            </cell>
+            <cell id="{103389ad-991a-4f27-af45-b2df4031bcb1}" locklevel="0" ordinalvalue="30002" solutionaction="Added">
+              <labels>
+                <label description="Total Hours" languagecode="1033" />
+              </labels>
+              <control id="header_msnfp_totalengagementhours" classid="{C3EFE0C3-0EC6-42BE-8349-CBD9079DFD8E}" datafieldname="msnfp_totalengagementhours" disabled="false" />
+            </cell>
+            <cell id="{ceb999a8-d9ef-49db-92d9-eef608485ed6}" locklevel="0" ordinalvalue="40003" solutionaction="Added">
+              <labels>
+                <label description="Total Engagements" languagecode="1033" />
+              </labels>
+              <control id="header_msnfp_totalengagements" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_totalengagements" disabled="false" />
+            </cell>
+          </row>
+          <row>
+            <cell id="{0937195c-8986-475e-8215-da903e328531}" locklevel="0" ordinalvalue="10004" solutionaction="Added">
+              <labels>
+                <label description="Status" languagecode="1033" />
+              </labels>
+              <control id="header_statecode" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="statecode" disabled="false" />
+            </cell>
+            <cell id="{a0aef613-88ce-4702-8531-dfb401283642}" showlabel="false" ordinalvalue="20005" solutionaction="Added">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{e00f59cb-2ad3-4750-b4f8-25880f1b21cb}" showlabel="false" ordinalvalue="30006" solutionaction="Added">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{4f508d67-0e3d-4413-84eb-c31b4c14fee3}" showlabel="false" ordinalvalue="40007" solutionaction="Added">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <controlDescriptions>
+        <controlDescription forControl="{D5CBE7AC-8409-8068-E76A-A734810CC491}" solutionaction="Added">
+          <customControl id="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" formFactor="0">
+            <parameters>
+              <TargetEntityType>msnfp_participation</TargetEntityType>
+              <ViewId>{71F2221B-69AF-EB11-8236-000D3A5ACD59}</ViewId>
+              <ViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{71F2221B-69AF-EB11-8236-000D3A5ACD59},{2AD5C006-57F3-EA11-A815-000D3A300A85}</ViewIds>
+              <EnableViewPicker>false</EnableViewPicker>
+              <RelationshipName>msnfp_contact_msnfp_participation_contactId</RelationshipName>
+              <RecordsPerPage>4</RecordsPerPage>
+              <HeaderColorCode>#F3F3F3</HeaderColorCode>
+              <IsUserView>false</IsUserView>
+              <EnableQuickFind>false</EnableQuickFind>
+              <EnableJumpBar>false</EnableJumpBar>
+              <AutoExpand>Fixed</AutoExpand>
+              <ChartGridMode>All</ChartGridMode>
+              <VisualizationId>{DBE1C697-B0EB-EA11-A817-000D3A300A85}</VisualizationId>
+              <IsUserChart>false</IsUserChart>
+              <EnableChartPicker>true</EnableChartPicker>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{71F2221B-69AF-EB11-8236-000D3A5ACD59}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_contact_msnfp_participation_contactId</RelationshipName>
+                <TargetEntityType>msnfp_participation</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{71F2221B-69AF-EB11-8236-000D3A5ACD59},{2AD5C006-57F3-EA11-A815-000D3A300A85}</FilteredViewIds>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">yes</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">no</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.Grid.GridControl">
+            <parameters>
+              <data-set name="Grid">
+                <ViewId>{71F2221B-69AF-EB11-8236-000D3A5ACD59}</ViewId>
+                <columnsDefaultView />
+                <IsUserView>false</IsUserView>
+                <RelationshipName>msnfp_contact_msnfp_participation_contactId</RelationshipName>
+                <TargetEntityType>msnfp_participation</TargetEntityType>
+                <EnableViewPicker>false</EnableViewPicker>
+                <FilteredViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F},{71F2221B-69AF-EB11-8236-000D3A5ACD59},{2AD5C006-57F3-EA11-A815-000D3A300A85}</FilteredViewIds>
+              </data-set>
+              <EnableGroupBy static="true" type="Enum">yes</EnableGroupBy>
+              <EnableEditing static="true" type="Enum">yes</EnableEditing>
+              <ReflowBehavior static="true" type="Enum">GridOnly</ReflowBehavior>
+              <ListLayoutDirection static="true" type="Enum">Vertical</ListLayoutDirection>
+              <EnableSubGridAutoCollapse static="true" type="Enum">false</EnableSubGridAutoCollapse>
+              <EnableFiltering static="true" type="Enum">yes</EnableFiltering>
+              <HideNestedGridColumnHeader static="true" type="Enum">no</HideNestedGridColumnHeader>
+              <EnableJumpBar static="true" type="Enum">yes</EnableJumpBar>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <footer id="{269eb65d-7745-4f4e-b555-a570847ccf01}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{745895e3-6e53-4862-9426-e41c9de35c1b}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{3f56899f-08a7-401e-a673-90afdb950f46}" showlabel="false" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{b8f3136b-e39d-43f1-a52b-7f9795087fb8}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions FallbackForm="true" Order="5">
+        <Role Id="{5AB56918-5CBD-EB11-8236-000D3A31DEC1}" solutionaction="Added" />
+      </DisplayConditions>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Volunteer" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Updated default Contact form." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

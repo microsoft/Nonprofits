@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{3bddcf2e-f8b7-eb11-8236-000d3a5a52e8}</WebResourceId>
+  <Name>msnfp_EngagementOpportunitySettingForm.gen.js</Name>
+  <DisplayName>EngagementOpportunitySettingForm.gen.js</DisplayName>
+  <LanguageCode>0</LanguageCode>
+  <WebResourceType>3</WebResourceType>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <DependencyXml>&lt;Dependencies&gt;&lt;Dependency componentType="WebResource"&gt;&lt;Library name="msnfp_/strings/VolunteerManagement.Webresources.1033.resx" displayName="msnfp_/strings/VolunteerManagement.Webresources.1033.resx" languagecode="1033" description="Resx Webresources for holding English strings for webresources. " libraryUniqueId="{ded1806a-d81e-158d-6d57-843d4aa5a1d7}"/&gt;&lt;Library name="msnfp_/strings/VolunteerManagement.Webresources.1036.resx" displayName="msnfp_/strings/VolunteerManagement.Webresources.1036.resx" languagecode="1036" description="Resx webresource for holding French strings for webresources." libraryUniqueId="{9b721864-210e-17d5-6345-535a932a2ae3}"/&gt;&lt;/Dependency&gt;&lt;/Dependencies&gt;</DependencyXml>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/msnfp_EngagementOpportunitySettingFormgenjs3BDDCF2E-F8B7-EB11-8236-000D3A5A52E8</FileName>
+</WebResource>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+	<control namespace="microsoftdynamics365nonprofitaccelerator" constructor="SendMessages" version="1.0.1" display-name-key="SendMessages" description-key="SendMessages description" control-type="virtual">
+		<type-group name="strings">
+		<type>SingleLine.Text</type>
+		<type>SingleLine.Email</type>
+		<type>SingleLine.Phone</type>
+		<type>SingleLine.TextArea</type>
+		<type>SingleLine.Ticker</type>
+		<type>SingleLine.URL</type>
+		<type>Multiple</type>
+		</type-group>
+			<type-group name="dates">
+			<type>DateAndTime.DateAndTime</type>
+			<type>DateAndTime.DateOnly</type>
+		</type-group>
+		<type-group name="numbers">
+			<type>Whole.None</type>
+			<type>Currency</type>
+			<type>FP</type>
+			<type>Decimal</type>
+		</type-group>
+		<property name="AnchorStringField" display-name-key="AnchorStringField" description-key="AnchorStringField" of-type="SingleLine.Text" usage="bound" required="true" />
+		<property name="EntityId" display-name-key="Group or Engagement Opportunity Id" description-key="Entity Id" of-type="SingleLine.Text" usage="input" required="true" />
+		<property name="EntityType" display-name-key="EntityType" description-key="EntityType" usage="input" of-type="Enum" required="true">
+			<value name="msnfp_group" display-name-key="Group" description-key="Group">Group</value>
+			<value name="msnfp_engagementopportunity" display-name-key="Engagement Opportunity" description-key="Engagement Opportunity" default="true">Engagement Opportunity</value>
+		</property>
+		<resources>
+			<platform-library name="React" version="16.8.6" />
+			<platform-library name="Fluent" version="8.29.0" />
+			<code path="index.ts" order="1"/>
+			<resx path="strings/SendMessages.1033.resx" version="1.0.0" />
+			<resx path="strings/SendMessages.1036.resx" version="1.0.0" />
+		</resources>
+		<feature-usage>
+			<uses-feature name="Utility" required="true" />
+			<uses-feature name="WebAPI" required="true" />
+		</feature-usage>
+	</control>
+</manifest>

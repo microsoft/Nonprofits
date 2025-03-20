@@ -1,0 +1,38 @@
+{%- include 'MSVE_PublicEngagements/Fetch' -%}
+{
+    "engagements": [
+        {%- for result in rawEngagements.results.entities -%}
+        {%- assign lastChar = result.msnfp_qualifications.size | minus: 2 -%}
+        {%- assign subStr = result.msnfp_qualifications | slice start: 1 end: lastChar -%}
+        {%- assign qualifications = subStr | split: '", "' -%}
+        {%- assign lastChar = result.msnfp_areas.size | minus: 2 -%}
+        {%- assign subStr = result.msnfp_areas | slice start: 1 end: lastChar -%}
+        {%- assign preferences = subStr | split: '", "' -%}
+        {
+            "OppId": "{{ result.msnfp_publicengagementopportunityid | escape }}",
+            "Title": "{{ result.msnfp_engagementopportunitytitle }}",
+            "StartDate": "{{ result.msnfp_startingdate | date: "yyyy-MM-dd" }}",
+            "StartDateString": "{{ result.msnfp_startingdate | date_to_iso8601   }}",
+            "Desc": "{{ result.msnfp_shortdescription | text_to_html }}",
+            "Quals": [
+                {%- for qual in qualifications -%}
+                "{{qual}}"{% unless forloop.last %},{% endunless %}
+                {%- endfor -%}
+            ],
+            "NumVols": {% if result.msnfp_number %}{{ result.msnfp_number }}{%else %}0{% endif %},
+            "MinVols": {% if result.msnfp_minimum %}{{ result.msnfp_minimum }}{%else %}0{% endif %},
+            "EndDate": "{{ result.msnfp_endingdate | date: "yyyy-MM-dd" }}",
+            "EndDateString": "{{ result.msnfp_endingdate | date_to_iso8601 }}",
+            "Prefs": [
+                {%- for pref in preferences -%}
+                "{{pref}}"{% unless forloop.last %},{% endunless %}
+                {%- endfor -%}
+            ],
+            "LocationTypeName": "{{ result.msnfp_locationtype.label }}",
+            "LocationTypeValue": "{{ result.msnfp_locationtype.value }}",
+            "LocationTitle": "{{ result.msnfp_locationname }}",
+            "City": "{{result.msnfp_locationcitystate}}"
+        }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+    ]
+}

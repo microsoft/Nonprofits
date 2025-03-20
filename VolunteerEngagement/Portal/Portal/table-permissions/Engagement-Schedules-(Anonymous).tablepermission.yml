@@ -1,0 +1,12 @@
+adx_append: false
+adx_appendto: false
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_engagementopportunityschedule
+adx_entityname: Engagement Schedules (Anonymous)
+adx_entitypermission_webrole:
+- fd5a8193-eb61-4010-bca3-27f43473f2af
+adx_entitypermissionid: b093696d-3c16-46bc-a8fd-0be81e77a556
+adx_read: true
+adx_scope: 756150000
+adx_write: false

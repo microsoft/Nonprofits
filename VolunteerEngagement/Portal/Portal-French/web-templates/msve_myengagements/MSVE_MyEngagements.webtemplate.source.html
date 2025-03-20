@@ -1,0 +1,60 @@
+{% extends 'MSVE_HeaderStatusBarAndTabs' %}
+{% block dataCollection %}
+  <div class="fetchxml">
+    {% include 'MSVE_MyEngagements/Fetch' timing: 'upcoming' %}
+    {% assign upcomingEngagements = engagements.results.entities %}
+    {% include 'MSVE_MyEngagements/Fetch' timing: 'past' %}
+    {% assign pastEngagements = engagements.results.entities %}    
+  </div>
+{% endblock %}
+{% block title %}
+  {% include 'snippet' snippet_name: 'MSVE_MyEngagements/Title' %}
+{% endblock %}
+{% block subtitle %}
+  <div class="col-md-offset-3 col-md-6">
+    <div class="col-xs-4 col-xs-offset-1 text-center">
+      <h2>
+        {% if user.msnfp_totalengagementhours > 0 %}{{user.msnfp_totalengagementhours | round: 2 }}{% else %}0{% endif %}
+      </h2>
+      <p>{% include 'snippet' snippet_name: 'MSVE_MyEngagements/TotalHours' %}</p>
+    </div>
+    <div class="verticalDivider col-xs-1 col-xs-offset-1"></div>
+    <div class="col-xs-4 col-xs-offset-1 text-center">
+      <h2>{% if user.msnfp_totalengagements > 0 %}{{user.msnfp_totalengagements}}{% else %}0{% endif %}</h2>
+      <p>{% include 'snippet' snippet_name: 'MSVE_MyEngagements/Attended' %}</p>
+    </div>
+  </div>
+{% endblock %}
+{% block setShowStatusBar %}
+  {% assign showStatusBar = false %}
+{% endblock %}
+{% block setTabs %}
+  {% assign tabs = snippets['MSVE_MyEngagements/Tabs'] | split: ',' %}
+{% endblock %}
+{% block content %}
+  {% if false %}
+  <div class="row">
+    {% include 'MSVE_SortBy' %}
+  </div>
+  {% endif %}
+  <div class="row tab-content">
+    <div id="{{tabs[0] | replace: ' ', ''}}" role="tabpanel" class="tab-pane fade in active">
+      {% if upcomingEngagements.size > 0 %}
+        {% for engagement in upcomingEngagements %}
+        {% include 'MSVE_MyEngagements/Card' %}
+        {% endfor %}
+      {% else %}
+        {% include 'MSVE_MissingContent' message: snippets['MSVE_MyEngagements/NoEngagements/Upcoming'] %}
+      {% endif %}
+    </div>
+    <div id="{{tabs[1] | replace: ' ', ''}}" role="tabpanel" class="tab-pane fade">
+      {% if pastEngagements.size > 0 %}
+        {% for engagement in pastEngagements %}
+        {% include 'MSVE_MyEngagements/Card' %}
+        {% endfor %}
+      {% else %}
+        {% include 'MSVE_MissingContent' message: snippets['MSVE_MyEngagements/NoEngagements/Past'] %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock%}

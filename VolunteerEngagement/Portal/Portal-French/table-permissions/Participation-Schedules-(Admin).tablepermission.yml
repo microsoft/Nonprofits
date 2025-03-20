@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: true
+adx_delete: false
+adx_entitylogicalname: msnfp_participationschedule
+adx_entityname: Calendriers de participation (Admin)
+adx_entitypermission_webrole:
+- 0c978d9a-4e8f-4454-a279-4335a27b8e31
+adx_entitypermissionid: e9f0d373-6700-4f89-8316-c2528b02cc1e
+adx_read: true
+adx_scope: 756150000
+adx_write: true

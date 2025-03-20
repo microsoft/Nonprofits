@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{c526a138-62c4-4976-ae14-fdf370736a71}</formid>
+    <IntroducedVersion>2.4.1.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls" shownavigationbar="true" showImage="false" maxWidth="1920" solutionaction="Modified">
+      <tabs>
+        <tab verticallayout="true" id="{e2c1aa74-ee06-4e90-82ff-d482d99446db}" IsUserDefined="1" name="General" ordinalvalue="0" solutionaction="Modified">
+          <columns>
+            <column width="60%" id="0" solutionaction="Modified">
+              <sections>
+                <section showlabel="true" showbar="false" IsUserDefined="0" id="{50339d7f-0360-4305-b8c6-e8e35df6e552}" name="General_ShiftDetails" columns="11" locklevel="0" labelwidth="130" celllabelalignment="Left" celllabelposition="Left" ordinalvalue="0" solutionaction="Modified">
+                  <labels>
+                    <label description="Shift Details" languagecode="1033" solutionaction="Modified" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b72a025b-7c91-4aef-897b-e9a1db9ab101}" visible="false" ordinalvalue="10000" solutionaction="Modified">
+                        <labels>
+                          <label description="Schedule Title" languagecode="1033" solutionaction="Modified" />
+                        </labels>
+                        <control id="msnfp_engagementopportunityschedule" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="msnfp_engagementopportunityschedule" uniqueid="{69d4c702-69b8-7b02-7195-0a7e73253048}" solutionaction="Removed" />
+                        <control id="header_msnfp_engagementopportunityschedule" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="msnfp_engagementopportunityschedule" uniqueid="{69d4c702-69b8-7b02-7195-0a7e73253048}" solutionaction="Added" />
+                      </cell>
+                      <cell id="{c1e40dd1-96d9-b53a-78a9-38cc8248c1d6}" showlabel="true" locklevel="0" ordinalvalue="20001" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{944b267e-4a8c-600b-b3c9-39ba8a3d3a63}" showlabel="true" locklevel="0" ordinalvalue="10002" solutionaction="Removed" />
+                      <cell id="{1bb398dc-6a3b-75c1-ecb7-a89a6a5b160e}" showlabel="true" locklevel="0" ordinalvalue="20003" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{80a75eda-4d00-7898-5741-52667d826c25}" showlabel="true" locklevel="0" ordinalvalue="10004" solutionaction="Removed" />
+                      <cell id="{1b77665c-e894-510b-c88a-88d5e0a4e9a8}" showlabel="true" locklevel="0" ordinalvalue="20001" solutionaction="Modified">
+                        <labels>
+                          <label description="Start Date" languagecode="1033" solutionaction="Modified" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ec515d49-ce13-0565-3ca6-27957a41429e}" showlabel="true" locklevel="0" ordinalvalue="10006" solutionaction="Removed" />
+                      <cell id="{6a8ee86a-d399-d874-1d6c-401ae6ca777b}" showlabel="true" locklevel="1" ordinalvalue="20003" solutionaction="Modified">
+                        <labels>
+                          <label description="End Date" languagecode="1033" solutionaction="Modified" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4e4ed6de-05dc-e530-8d1a-360189c44389}" showlabel="true" locklevel="0" ordinalvalue="10008" solutionaction="Removed" />
+                      <cell id="{8a6b33b6-6887-9195-654e-4cb3c77dd63b}" showlabel="true" locklevel="0" ordinalvalue="20009" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{5472e336-4cdf-4c38-b3f4-59f36dfdc8ce}" showlabel="true" locklevel="1" visible="false" ordinalvalue="10006" solutionaction="Modified" />
+                      <cell locklevel="0" id="{7906cfbb-958e-4d58-8a68-f5880c41248c}" ordinalvalue="20011" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{be29f584-2221-415b-945e-081eaacfab53}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10002" solutionaction="Added">
+                        <labels>
+                          <label description="Shift Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shiftname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_shiftname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ea5d115e-ba0c-45a6-b0f5-8062f3f01f70}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10004" solutionaction="Added">
+                        <labels>
+                          <label description="Engagement Opportunity" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunity" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_engagementopportunity" disabled="false" />
+                      </cell>
+                      <cell id="{81f457f4-1126-461e-b2bb-df110e5eab2b}" locklevel="0" ordinalvalue="20005" solutionaction="Added">
+                        <labels>
+                          <label description="Hours" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_hours" classid="{C3EFE0C3-0EC6-42BE-8349-CBD9079DFD8E}" datafieldname="msnfp_hours" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{302c2880-104c-49d9-85a6-278fb24604a5}" ordinalvalue="20007" solutionaction="Added">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="General_ParticipationSchedules" id="36157e6b-2faa-49c8-9495-df373a3e4abd" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="11" labelwidth="115" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="Participation Schedules" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{95e464f0-00c2-4288-ab66-3b47fc692133}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10000">
+                        <labels>
+                          <label description="Min # of Participants" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_minimum" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_minimum" disabled="false" />
+                      </cell>
+                      <cell id="{7a1f6d1a-5dbf-4e18-ad8b-5a618a8f3293}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="20001">
+                        <labels>
+                          <label description="Participants" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_number" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_number" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{02fbae36-8e45-470e-9e5d-34f155ef491b}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10002">
+                        <labels>
+                          <label description="Max # of Participants" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_maximum" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="msnfp_maximum" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{c4588b7d-0431-4799-8a9d-f3fc6251ecf4}" ordinalvalue="20003">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="40%" id="1" solutionaction="Added">
+              <sections>
+                <section name="General_EngagementOpportunity" id="ad0b4acd-43c9-4d74-8ff3-768c933d30d6" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Engagement Opportunity" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b20a64ec-3042-e9a3-ac48-3dcb8227539a}" showlabel="true" colspan="1" auto="false" rowspan="1" ordinalvalue="10000">
+                        <labels>
+                          <label description="EngagementOpportunity" languagecode="1033" />
+                        </labels>
+                        <control id="EngagementOpportunity" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="msnfp_engagementopportunity" disabled="false">
+                          <parameters>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="msnfp_engagementopportunity"&gt;324120df-53b8-4396-ae43-e515c32d3f58&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                            <ControlMode>Edit</ControlMode>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{e34569ae-1ccb-42bb-9fc9-31d987a3bcab}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{b9ad268a-d6de-4040-9873-69363687195a}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{ace643d7-7924-4cf0-8c5a-d951cfda67a6}" showlabel="false" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{1d1ec429-2a95-4cc8-a674-52e4bdc676ba}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+          </row>
+        </rows>
+      </header>
+      <footer id="{da78b1a2-8262-444d-b595-62af8e9673db}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{42e93253-4627-403d-8cc7-4eb34e6659dc}" showlabel="false" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{be28a3f2-58fe-4273-ae49-2a8f255e5f4b}" showlabel="false" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{c84dbfa6-9012-4c44-819d-2ea8ee866472}" showlabel="false" ordinalvalue="30002" solutionaction="Removed" />
+          </row>
+        </rows>
+      </footer>
+      <formLibraries solutionaction="Added">
+        <Library name="msnfp_EngagementOpportunityScheduleForm.gen.js" libraryUniqueId="{484e4632-f432-4c39-ade2-246f59b3006d}" />
+      </formLibraries>
+      <events solutionaction="Added">
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.EngagementOpportunityScheduleForm.OnLoad" libraryName="msnfp_EngagementOpportunityScheduleForm.gen.js" handlerUniqueId="{2db5e9a8-47dd-44c1-992b-7e80182cb0a4}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Associated Engagement Opportunity" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

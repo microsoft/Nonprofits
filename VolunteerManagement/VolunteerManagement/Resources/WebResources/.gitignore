@@ -1,0 +1,6 @@
+spkl.tmp/
+Log*.txt
+node_modules
+dist
+coverage
+junit.xml

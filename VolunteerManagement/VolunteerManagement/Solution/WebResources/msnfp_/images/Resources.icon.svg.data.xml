@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{85987e31-92b5-ec11-983f-000d3a34b124}</WebResourceId>
+  <Name>msnfp_/images/Resources.icon.svg</Name>
+  <DisplayName>msnfp_/images/Resources.icon.svg</DisplayName>
+  <WebResourceType>11</WebResourceType>
+  <IntroducedVersion>1.0.0.26</IntroducedVersion>
+  <IsEnabledForMobileClient>1</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>1</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/msnfp_imagesResourcesiconsvg85987E31-92B5-EC11-983F-000D3A34B124</FileName>
+</WebResource>

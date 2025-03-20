@@ -1,0 +1,62 @@
+{% fetchxml rawEngagement %}
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+        <entity name="msnfp_publicengagementopportunity">
+            <attribute name="msnfp_publicengagementopportunityid"/>
+            <attribute name="msnfp_engagementopportunitytitle"/>
+            <attribute name="msnfp_engagementopportunityid"/>
+            <attribute name="msnfp_engagementopportunitystatus"/>
+            <attribute name="msnfp_url"/>
+            <attribute name="msnfp_typecode"/>
+            <attribute name="msnfp_startingdate"/>
+            <attribute name="msnfp_qualifications"/>
+            <attribute name="msnfp_number"/>
+            <attribute name="msnfp_minimum"/>
+            <attribute name="msnfp_maximum"/>
+            <attribute name="msnfp_shifts"/>
+            <attribute name="msnfp_location"/>
+            <attribute name="msnfp_locationtype"/>
+            <attribute name="msnfp_locationname"/>
+            <attribute name="msnfp_locationcitystate"/>
+            <attribute name="msnfp_endingdate"/>
+            <attribute name="msnfp_description"/>
+            <attribute name="msnfp_shortdescription"/>
+            <attribute name="msnfp_areas"/>
+            <attribute name="msnfp_url"/>
+            <order attribute="msnfp_engagementopportunitytitle" descending="false"/>
+            <filter type="and">
+                <condition attribute="msnfp_publicengagementopportunityid" operator="eq" value="{{engageOppId}}"/>                
+            </filter>
+            <link-entity name="msnfp_engagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" link-type="outer" alias="privateOpp">
+                <attribute name="msnfp_engagementopportunityid"/>
+            </link-entity>
+        </entity>
+    </fetch>
+{% endfetchxml %}
+
+{% if rawEngagement.results.entities.size > 0 %}
+    {% assign engagement = rawEngagement.results.entities[0] %}
+    {% fetchxml rawParticipation %}
+        <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+            <entity name="msnfp_participation">
+                <attribute name="msnfp_participationtitle"/>
+                <attribute name="msnfp_participationid"/>
+                <attribute name="msnfp_status"/>
+                <order attribute="msnfp_participationtitle" descending="false"/>
+                <filter type="and">
+                    <condition attribute="msnfp_contactid" operator="eq" value="{{user.contactid}}"/>
+                    <condition attribute="createdon" operator="on-or-before" value="{{now | date: "MM-dd-yy"}}"/>
+                </filter>
+                <link-entity name="msnfp_engagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" link-type="inner" alias="ad">
+                    <filter type="and">
+                        <condition attribute="msnfp_engagementopportunityid" operator="eq" value="{{engagement['privateOpp.msnfp_engagementopportunityid']}}"/>
+                    </filter>
+                </link-entity>
+            </entity>
+        </fetch>
+    {% endfetchxml %}
+    {% if rawParticipation.results.entities.size > 0 %}
+        {% assign participation = rawParticipation.results.entities[0] %}
+        {% include 'MSVE_Engagements/ParticipationSchedules/Fetch' participationid: rawParticipation.results.entities[0].msnfp_participationid %}
+        {% assign pScheds = pScheds.results.entities %}
+    {% endif %}
+{% endif %}

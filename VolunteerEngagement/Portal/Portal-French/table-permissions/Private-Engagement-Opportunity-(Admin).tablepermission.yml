@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_engagementopportunity
+adx_entityname: Opportunité d’engagement privé (Admin)
+adx_entitypermission_webrole:
+- 0c978d9a-4e8f-4454-a279-4335a27b8e31
+adx_entitypermissionid: 6b771250-b99c-44fd-9cdc-c90a90c0e089
+adx_read: true
+adx_scope: 756150000
+adx_write: false

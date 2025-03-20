@@ -1,0 +1,29 @@
+{% fetchxml rawEScheds %}
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+        <entity name="msnfp_engagementopportunityschedule">
+            <attribute name="msnfp_engagementopportunityscheduleid"/>
+            <attribute name="msnfp_engagementopportunityschedule"/>
+            <attribute name="msnfp_shiftname"/>
+            <attribute name="msnfp_effectiveto"/>
+            <attribute name="msnfp_effectivefrom"/>
+            <attribute name="msnfp_hours"/>
+            <attribute name="msnfp_minimum"/>
+            <attribute name="msnfp_maximum"/>
+            <attribute name="msnfp_number"/>
+            <order attribute="msnfp_effectivefrom" descending="false"/>
+            <filter type="and">
+                <condition attribute="msnfp_engagementopportunity" operator="eq" value="{{privateOppId}}"/>
+                <condition attribute="createdon" operator="on-or-before" value="{{now | date: " MM-dd-yy"}}" />
+                <condition attribute="statecode" operator="eq" value="0"/>
+            </filter>
+            <link-entity name="msnfp_participationschedule" from="msnfp_engagementopportunityscheduleid" to="msnfp_engagementopportunityscheduleid" link-type="outer" alias="pSched">
+                <attribute name="msnfp_participationscheduleid"/>
+                <attribute name="msnfp_schedulestatus"/>
+                <filter type="and">
+                    <condition attribute="msnfp_participationid" operator="eq" value="{{participationId}}"/>
+                </filter>
+            </link-entity>
+        </entity>
+    </fetch>
+{% endfetchxml %}
+{% assign eScheds = rawEScheds.results.entities %}

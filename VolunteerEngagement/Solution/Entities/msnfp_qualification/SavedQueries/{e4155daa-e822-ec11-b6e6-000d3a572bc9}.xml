@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{e4155daa-e822-ec11-b6e6-000d3a572bc9}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_qualificationtitle" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_qualificationid">
+          <cell name="msnfp_typeid" width="200" />
+          <cell name="msnfp_startdate" width="100" />
+          <cell name="msnfp_enddate" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="msnfp_qualification">
+          <attribute name="msnfp_qualificationid" />
+          <attribute name="msnfp_startdate" />
+          <attribute name="msnfp_enddate" />
+          <filter type="and">
+            <condition attribute="msnfp_currentstage" operator="null" />
+          </filter>
+          <attribute name="msnfp_typeid" />
+          <order attribute="msnfp_typeid" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="VE Portal View" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="View for the Volunteer Engagement Portal Profile page" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

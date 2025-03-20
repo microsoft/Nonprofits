@@ -1,0 +1,45 @@
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 2
+  adx_displaypagechildlinks: false
+  adx_name: Availability
+  adx_openinnewwindow: false
+  adx_pageid: 3be0db25-8412-4b56-825b-16b1bf038b9e
+  adx_publishingstateid: 8cfb9786-ea00-4d6f-a765-cef998f8e4f8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 30b0f01d-c45a-4a7d-8fd5-dd8bea99eb46
+  adx_weblinksetid: ff6aa4ff-c8ca-4f83-acdf-998fe88c9f25
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 1
+  adx_displaypagechildlinks: false
+  adx_name: Contact information
+  adx_openinnewwindow: false
+  adx_pageid: a8b00085-b614-41a9-be77-419d4aabe8d7
+  adx_publishingstateid: 8cfb9786-ea00-4d6f-a765-cef998f8e4f8
+  adx_robotsfollowlink: true
+  adx_weblinkid: 3c877176-2f61-4705-95bc-da5ce9ace4eb
+  adx_weblinksetid: ff6aa4ff-c8ca-4f83-acdf-998fe88c9f25
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 3
+  adx_displaypagechildlinks: false
+  adx_name: Qualifications & Preferences
+  adx_openinnewwindow: false
+  adx_publishingstateid: 8cfb9786-ea00-4d6f-a765-cef998f8e4f8
+  adx_robotsfollowlink: false
+  adx_weblinkid: 9d9f9554-744d-4048-80e5-4f4df9a4e3a5
+  adx_weblinksetid: ff6aa4ff-c8ca-4f83-acdf-998fe88c9f25
+  statecode: 1
+  statuscode: 2
+- adx_disablepagevalidation: false
+  adx_displayimageonly: false
+  adx_displayorder: 3
+  adx_displaypagechildlinks: false
+  adx_name: Preferences and Qualifications
+  adx_openinnewwindow: false
+  adx_pageid: 9321922e-df69-4135-84a1-693ffb334b26
+  adx_publishingstateid: 8cfb9786-ea00-4d6f-a765-cef998f8e4f8
+  adx_robotsfollowlink: true
+  adx_weblinkid: d2fe772e-416c-44de-9f02-f0319315e082
+  adx_weblinksetid: ff6aa4ff-c8ca-4f83-acdf-998fe88c9f25

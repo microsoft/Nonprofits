@@ -1,0 +1,56 @@
+{% fetchxml engagements %}
+  <fetch distinct="true" mapping="logical" output-format="xml-platform" version="1.0">
+    <entity name="msnfp_participation">
+      <attribute name="msnfp_participationid"></attribute>
+      <attribute name="msnfp_status"></attribute>
+      <attribute name="msnfp_hours"></attribute>
+      <filter type="and">
+        <condition attribute="msnfp_contactid" operator="eq" value="{{user.contactid}}"></condition>
+      </filter>
+      <link-entity name="msnfp_engagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" visible="false" link-type="inner" alias="engageOpp">
+        <filter type="and">
+          <filter type="or">
+            <filter type="and">
+              {% if timing == "upcoming" %}
+              <condition attribute="msnfp_endingdate" operator="on-or-after" value="{{now}}"/>
+              <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060002"/> {% comment %} PublishToWeb {% endcomment %}
+              {% elsif timing == "past" %}
+                <filter type="or">
+                  <condition attribute="msnfp_endingdate" operator="olderthan-x-days" value="1"/>
+                  <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060004"/> {% comment %} Closed {% endcomment %}
+                  <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060005"/> {% comment %} Cancelled {% endcomment %}
+                </filter>
+              {% endif %}
+              <condition attribute="msnfp_multipledays" operator="eq" value="1"/>
+            </filter>
+            <filter type="and">
+              {% if timing == "upcoming" %}
+                <condition attribute="msnfp_startingdate" operator="on-or-after" value="{{now}}"/>
+                <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060002"/> {% comment %} PublishToWeb {% endcomment %}
+              {% elsif timing == "past" %}
+                <filter type="or">
+                  <condition attribute="msnfp_startingdate" operator="olderthan-x-days" value="1"/>
+                  <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060004"/> {% comment %} Closed {% endcomment %}
+                  <condition attribute="msnfp_engagementopportunitystatus" operator="eq" value="844060005"/> {% comment %} Cancelled {% endcomment %}
+                </filter>
+              {% endif %} 
+              <condition attribute="msnfp_multipledays" operator="eq" value="0"/>
+            </filter>
+          </filter>
+        </filter>
+        <link-entity name="msnfp_publicengagementopportunity" from="msnfp_engagementopportunityid" to="msnfp_engagementopportunityid" link-type="inner" alias="pubEngage">
+          <attribute name="msnfp_publicengagementopportunityid"/>
+          <attribute name="msnfp_engagementopportunitytitle"/>
+          <attribute name="msnfp_startingdate"/>
+          <attribute name="msnfp_endingdate"/>
+          <attribute name="msnfp_locationname"/>
+          <attribute name="msnfp_engagementopportunitystatus"/>
+          <attribute name="msnfp_locationtype"/>
+          <attribute name="msnfp_shifts"/>
+          <attribute name="msnfp_multipledays"/>
+          <order attribute="msnfp_startingdate" descending="false"/>                  
+        </link-entity>
+      </link-entity>
+    </entity>
+  </fetch>
+{% endfetchxml %}

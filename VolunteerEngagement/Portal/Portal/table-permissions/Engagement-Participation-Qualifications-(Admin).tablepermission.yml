@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_qualification
+adx_entityname: Engagement Participation Qualifications (Admin)
+adx_entitypermission_webrole:
+- ad609e80-b0e5-44a5-ba67-336a19f4596a
+adx_entitypermissionid: caf20dac-1408-49db-a23d-37d16d449f4f
+adx_read: true
+adx_scope: 756150000
+adx_write: false

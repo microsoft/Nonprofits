@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: true
+adx_delete: false
+adx_entitylogicalname: msnfp_participation
+adx_entityname: Participation (Admin)
+adx_entitypermission_webrole:
+- 0c978d9a-4e8f-4454-a279-4335a27b8e31
+adx_entitypermissionid: b68c694a-a5c2-4087-aff8-caf8be4c9060
+adx_read: true
+adx_scope: 756150000
+adx_write: true

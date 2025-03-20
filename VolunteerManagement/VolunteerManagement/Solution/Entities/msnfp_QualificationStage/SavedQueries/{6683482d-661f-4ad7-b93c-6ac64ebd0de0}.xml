@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{6683482d-661f-4ad7-b93c-6ac64ebd0de0}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_stagename" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_qualificationstageid">
+          <cell name="msnfp_stagename" width="300" />
+          <cell name="msnfp_stagestatus" width="100" />
+          <cell name="msnfp_sequencenumber" width="150" />
+          <cell name="msnfp_duedate" width="84" />
+          <cell name="msnfp_description" width="300" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_qualificationstage">
+          <attribute name="msnfp_qualificationstageid" />
+          <attribute name="msnfp_stagename" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_description" />
+          <attribute name="msnfp_stagestatus" />
+          <attribute name="msnfp_sequencenumber" />
+          <attribute name="msnfp_duedate" />
+          <order attribute="msnfp_sequencenumber" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Qualification Stages" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,14 @@
+adx_append: true
+adx_appendto: true
+adx_contactrelationship: msnfp_contact_msnfp_availability_contactId
+adx_create: true
+adx_delete: false
+adx_entitylogicalname: msnfp_availability
+adx_entityname: Availability (Admin & Auth)
+adx_entitypermission_webrole:
+- ad609e80-b0e5-44a5-ba67-336a19f4596a
+- 466dad99-c04f-4c91-83bc-bb114fd1edf4
+adx_entitypermissionid: f08771a0-a69e-43bb-9c42-1a3710fe27a3
+adx_read: true
+adx_scope: 756150001
+adx_write: true

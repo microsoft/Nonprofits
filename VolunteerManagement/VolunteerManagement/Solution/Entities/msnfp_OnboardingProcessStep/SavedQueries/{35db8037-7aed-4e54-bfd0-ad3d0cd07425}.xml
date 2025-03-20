@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{35db8037-7aed-4e54-bfd0-ad3d0cd07425}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_title" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_onboardingprocessstepid">
+          <cell name="msnfp_title" width="300" />
+          <cell name="msnfp_activitytype" width="121" />
+          <cell name="msnfp_assignto" width="123" />
+          <cell name="msnfp_duedate" width="82" />
+          <cell name="msnfp_description" width="300" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_onboardingprocessstep">
+          <attribute name="msnfp_onboardingprocessstepid" />
+          <attribute name="msnfp_title" />
+          <order attribute="msnfp_title" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_activitytype" />
+          <attribute name="msnfp_assignto" />
+          <attribute name="msnfp_description" />
+          <attribute name="msnfp_duedate" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Onboarding Process Steps" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

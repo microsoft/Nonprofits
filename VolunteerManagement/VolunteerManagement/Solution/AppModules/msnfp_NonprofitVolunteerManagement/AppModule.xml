@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppModule>
+  <UniqueName>msnfp_NonprofitVolunteerManagement</UniqueName>
+  <IntroducedVersion>1.0.0.22</IntroducedVersion>
+  <WebResourceId>953b9fac-1e5e-e611-80d6-00155ded156f</WebResourceId>
+  <OptimizedFor></OptimizedFor>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <FormFactor>1</FormFactor>
+  <ClientType>4</ClientType>
+  <NavigationType>0</NavigationType>
+  <AppModuleComponents>
+    <AppModuleComponent type="62" schemaName="msnfp_NonprofitVolunteerManagement" />
+    <AppModuleComponent type="60" id="{afbdd81e-87b8-eb11-8236-000d3a5a52e8}" />
+    <AppModuleComponent type="60" id="{ebd6e655-9cb8-eb11-8236-000d3a5a5bb7}" />
+    <AppModuleComponent type="1" schemaName="msnfp_availability" />
+    <AppModuleComponent type="60" id="{b499f6be-69bd-eb11-8236-000d3a31c0f1}" />
+    <AppModuleComponent type="26" id="{9cf5a22a-92bd-eb11-8236-000d3a31dec1}" />
+    <AppModuleComponent type="1" schemaName="contact" />
+    <AppModuleComponent type="60" id="{56b2d9d6-1249-4711-8b6a-d561665b551d}" />
+    <AppModuleComponent type="26" id="{a6ede20b-daa2-eb11-b1ac-000d3a1fc0e7}" />
+    <AppModuleComponent type="1" schemaName="msnfp_engagementopportunity" />
+    <AppModuleComponent type="60" id="{1cc74c66-cbbc-eb11-8236-000d3a31dec1}" />
+    <AppModuleComponent type="60" id="{ce764b0d-970c-4237-9be0-1ea5c5c81881}" />
+    <AppModuleComponent type="1" schemaName="msnfp_engagementopportunityparticipantqual" />
+    <AppModuleComponent type="60" id="{7085e4fa-a597-eb11-b1ac-000d3a4f1e0f}" />
+    <AppModuleComponent type="60" id="{1d12d1f5-08a0-4b55-bd0d-ece297527109}" />
+    <AppModuleComponent type="26" id="{1baf2360-01e7-404b-8318-adddacdb5cf2}" />
+    <AppModuleComponent type="26" id="{453ed03f-8ebd-eb11-8236-000d3a31dec1}" />
+    <AppModuleComponent type="1" schemaName="msnfp_engagementopportunitypreference" />
+    <AppModuleComponent type="60" id="{33b94a89-1f93-eb11-b1ac-000d3a1f5f37}" />
+    <AppModuleComponent type="1" schemaName="msnfp_engagementopportunityschedule" />
+    <AppModuleComponent type="60" id="{a5a2e00b-0093-eb11-b1ac-000d3a1f5819}" />
+    <AppModuleComponent type="60" id="{c526a138-62c4-4976-ae14-fdf370736a71}" />
+    <AppModuleComponent type="26" id="{3e71cb88-f237-4e87-a121-985cb6b8ee87}" />
+    <AppModuleComponent type="26" id="{624a060d-b4b4-eb11-8236-00224808e22b}" />
+    <AppModuleComponent type="1" schemaName="msnfp_engagementopportunitysetting" />
+    <AppModuleComponent type="60" id="{9d06fb2a-a297-eb11-b1ac-000d3a4f1e0f}" />
+    <AppModuleComponent type="60" id="{a6ce0f98-b593-4d9c-ab19-ed8a2dd4045d}" />
+    <AppModuleComponent type="1" schemaName="msnfp_getstarted" />
+    <AppModuleComponent type="26" id="{f6148fd2-03b4-ec11-9840-00224804d63b}" />
+    <AppModuleComponent type="1" schemaName="msnfp_group" />
+    <AppModuleComponent type="60" id="{0d85b65f-5f4f-4643-96ec-f7c5789237b2}" />
+    <AppModuleComponent type="1" schemaName="msnfp_groupmembership" />
+    <AppModuleComponent type="60" id="{7834a394-5b9d-eb11-b1ac-000d3a9d36e0}" />
+    <AppModuleComponent type="60" id="{d501dd14-c990-4ff4-a10c-4eae22c7e950}" />
+    <AppModuleComponent type="1" schemaName="msnfp_message" />
+    <AppModuleComponent type="60" id="{771e358e-10ad-eb11-8236-000d3a1e9d0c}" />
+    <AppModuleComponent type="60" id="{8c995f0e-2240-4304-8d0b-6d72e1210609}" />
+    <AppModuleComponent type="1" schemaName="msnfp_onboardingprocessstage" />
+    <AppModuleComponent type="1" schemaName="msnfp_onboardingprocessstep" />
+    <AppModuleComponent type="1" schemaName="msnfp_onboardingtask" />
+    <AppModuleComponent type="1" schemaName="msnfp_participation" />
+    <AppModuleComponent type="60" id="{3685f17e-5e9d-eb11-b1ac-000d3a9ad0b8}" />
+    <AppModuleComponent type="60" id="{74bf2a28-b048-49a8-9170-55f4590617c8}" />
+    <AppModuleComponent type="1" schemaName="msnfp_participationschedule" />
+    <AppModuleComponent type="60" id="{fe520326-f0a9-eb11-8236-00224821228c}" />
+    <AppModuleComponent type="60" id="{c6a933bf-0a22-4e57-95c9-6ab15c6469f7}" />
+    <AppModuleComponent type="1" schemaName="msnfp_preference" />
+    <AppModuleComponent type="60" id="{722aeb38-b735-489c-9a0f-b4251817df2d}" />
+    <AppModuleComponent type="60" id="{26a9aeb4-a977-4c80-b35c-0d3eac6ddaa5}" />
+    <AppModuleComponent type="60" id="{ae3332da-09f4-4903-9ff6-a72678a28596}" />
+    <AppModuleComponent type="60" id="{9636d778-47c5-eb11-bacc-000d3a31d619}" />
+    <AppModuleComponent type="1" schemaName="msnfp_preferencetype" />
+    <AppModuleComponent type="60" id="{9d9bf42e-4460-4ccc-8b23-90d47c939083}" />
+    <AppModuleComponent type="1" schemaName="msnfp_publicengagementopportunity" />
+    <AppModuleComponent type="1" schemaName="msnfp_qualification" />
+    <AppModuleComponent type="60" id="{b8f2e132-92d2-eb11-bacc-0022481d978f}" />
+    <AppModuleComponent type="60" id="{27a8a542-ee93-45b8-94fa-0d59e04852c3}" />
+    <AppModuleComponent type="1" schemaName="msnfp_qualificationstage" />
+    <AppModuleComponent type="60" id="{a686bc31-8451-49b1-994a-bc6a05715bca}" />
+    <AppModuleComponent type="1" schemaName="msnfp_qualificationstep" />
+    <AppModuleComponent type="1" schemaName="msnfp_qualificationtype" />
+    <AppModuleComponent type="60" id="{d4ef1080-2889-4b4e-b35f-1e7ef50415b9}" />
+  </AppModuleComponents>
+  <AppModuleRoleMaps>
+    <Role id="{627090ff-40a3-4053-8790-584edc5be201}" />
+    <Role id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+    <Role id="{5ab56918-5cbd-eb11-8236-000d3a31dec1}" />
+  </AppModuleRoleMaps>
+  <LocalizedNames>
+    <LocalizedName description="Volunteer Management" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="The cloud for nonprofit volunteer management application." languagecode="1033" />
+  </Descriptions>
+  <appsettings>
+    <appsetting settingdefinitionid.uniquename="AsyncOnSave">
+      <iscustomizable>1</iscustomizable>
+      <value>true</value>
+    </appsetting>
+  </appsettings>
+</AppModule>

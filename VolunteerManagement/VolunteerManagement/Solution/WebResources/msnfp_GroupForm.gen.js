@@ -1,0 +1,1 @@
+(()=>{"use strict";var t;t=function(){function t(){}return t.prototype.OnLoad=function(t){var e=t.getFormContext();switch(e.ui.getFormType()){case 1:e.ui.tabs.get("tab_summary").setVisible(!1);break;case 2:e.ui.tabs.get("tab_summary").setVisible(!0)}},t}(),window.GroupForm=new t})();

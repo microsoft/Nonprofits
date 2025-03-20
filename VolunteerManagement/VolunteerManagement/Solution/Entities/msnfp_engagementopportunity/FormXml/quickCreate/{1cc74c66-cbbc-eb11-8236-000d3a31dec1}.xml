@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{1cc74c66-cbbc-eb11-8236-000d3a31dec1}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="F931FFE2-B873-473F-8F95-9502F0AA3F5E" name="tab_createdraft" showlabel="false" labelid="{64c54f1a-79e5-4f50-86d6-424f58e9c30c}">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section id="0C655D4E-C6E3-424E-9AF5-71E72D30D12E" name="tab_1_column_1_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{85e9d4ac-1155-47ba-bde1-62a5f9c94ce2}">
+                  <labels>
+                    <label description="Summary" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{dd6d4eb0-e248-414f-877f-2312159ae3ce}" locklevel="0" labelid="{a8b46120-4c71-4e26-ad21-e15a6195e22f}">
+                        <labels>
+                          <label description="Title" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunitytitle" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="msnfp_engagementopportunitytitle" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{67965e45-aa61-4e6f-bd91-fead29b4365c}" locklevel="0" labelid="{faf74f57-fbdf-4c22-b650-92f99eb06dfb}">
+                        <labels>
+                          <label description="Location Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_locationtype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_locationtype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{01209d98-2cbf-4a59-903f-bd9dbddcc44f}" locklevel="0" rowspan="5" labelid="{99f4b782-87f4-4a0d-af54-afc43660af30}">
+                        <labels>
+                          <label description="Short Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shortdescription" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_shortdescription" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="02DECBA0-3AE2-484D-A19F-C5353AF4F4F2" name="tab_1_column_2_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{46ff4564-fbdc-47a8-8895-1c1434fb7e94}">
+                  <labels>
+                    <label description="Schedule Settings" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{3a5ff36a-2291-4cf5-b635-4548b5dd478a}">
+                        <labels>
+                          <label description="Multiple Days" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_multipledays" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_multipledays" disabled="false" uniqueid="{82506131-a3da-494b-a2f3-b943efb3be4e}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{05192f22-0e02-48dd-b841-c29b9f7d2502}" locklevel="0" labelid="{ec18bb9d-7a5c-4ed2-9741-5ed6832eaede}">
+                        <labels>
+                          <label description="Start Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_startingdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_startingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ca2ac8b9-b58f-4aef-8db1-bfa915e328e3}" locklevel="0" visible="true">
+                        <labels>
+                          <label description="End Date" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_endingdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="msnfp_endingdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{fff4f2e5-2f41-465d-b6b2-74ae355e1ccf}">
+                        <labels>
+                          <label description="Shifts" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_shifts" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_shifts" disabled="false" uniqueid="{5c1b437c-1a86-4859-9cba-0a4218ea62d3}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="46FD66EA-B686-41D9-AAE0-C565BD78EC1F" name="tab_1_column_3_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{977b5f93-aab1-4e12-a5db-ded33507aed0}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="07C04A4E-A482-45CC-BAB7-7FCA3CD02938" labelid="{9804ae17-b520-40b3-8339-52346f366920}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+      <formLibraries>
+        <Library name="msnfp_EngagementOpportunityForm.gen.js" libraryUniqueId="{3706b1af-2e1f-426e-b1c7-549a5d37a1e6}" />
+      </formLibraries>
+      <events>
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.EngagmentOpportunityForm.OnLoad" libraryName="msnfp_EngagementOpportunityForm.gen.js" handlerUniqueId="{44ebc857-063e-437a-a9ca-38a2e720744f}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+      <controlDescriptions>
+        <controlDescription forControl="{5c1b437c-1a86-4859-9cba-0a4218ea62d3}">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_shifts</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_shifts</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{82506131-a3da-494b-a2f3-b943efb3be4e}">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>msnfp_multipledays</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">msnfp_multipledays</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description=" quick create form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

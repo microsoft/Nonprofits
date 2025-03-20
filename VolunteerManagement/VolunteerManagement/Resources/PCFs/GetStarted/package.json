@@ -1,0 +1,35 @@
+{
+	"name": "vm-get-started",
+	"version": "1.0.4",
+	"description": "Project containing your PowerApps Component Framework (PCF) control.",
+	"scripts": {
+		"postinstall": "npm audit fix & npm run refreshTypes",
+		"build": "pcf-scripts build",
+		"clean": "pcf-scripts clean",
+		"rebuild": "pcf-scripts rebuild",
+		"start": "pcf-scripts start",
+		"refreshTypes": "pcf-scripts refreshTypes",
+		"test": "jest"
+	},
+	"dependencies": {
+		"@fluentui/react": "^8.109.3",
+		"@fluentui/theme": "^2.6.35",
+		"react": "17.0.2",
+		"react-responsive": "^9.0.2"
+	},
+	"devDependencies": {
+		"@microsoft/eslint-plugin-power-apps": "^0.2.6",
+		"@types/node": "^20.1.1",
+		"@types/powerapps-component-framework": "^1.3.4",
+		"@typescript-eslint/eslint-plugin": "^5.62.0",
+		"@typescript-eslint/parser": "^5.39.0",
+		"eslint": "^8.24.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-promise": "^6.0.1",
+		"eslint-plugin-react": "^7.31.8",
+		"pcf-scripts": "^1.22.4-daily-23042419",
+		"pcf-start": "^1.10.4",
+		"typescript": "^4.8.4"
+	}
+}

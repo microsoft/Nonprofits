@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{fcbcde15-eddc-4419-af5b-752fe1561b62}</WebResourceId>
+  <Name>msnfp_/strings/VolunteerManagement.Plugins.1036.resx</Name>
+  <DisplayName>msnfp_/strings/VolunteerManagement.Plugins.1036.resx</DisplayName>
+  <LanguageCode>1036</LanguageCode>
+  <WebResourceType>12</WebResourceType>
+  <IntroducedVersion>1.1.3.18415</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/msnfp_stringsVolunteerManagementPlugins1036FCBCDE15-EDDC-4419-AF5B-752FE1561B62</FileName>
+</WebResource>

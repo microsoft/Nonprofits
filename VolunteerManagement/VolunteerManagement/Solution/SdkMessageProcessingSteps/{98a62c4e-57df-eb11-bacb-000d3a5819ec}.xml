@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPostPublicPublish: Update of msnfp_engagementopportunity" SdkMessageProcessingStepId="{98a62c4e-57df-eb11-bacb-000d3a5819ec}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPostPublicPublish, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
+  <PluginTypeId>26a8fb7c-1844-4a2a-baa3-4813f5bfd7b3</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
+  <AsyncAutoDelete>1</AsyncAutoDelete>
+  <Description>Plugins.EngagementOpportunityOnPostPublicPublish: Update of msnfp_engagementopportunity</Description>
+  <FilteringAttributes>msnfp_city,msnfp_country,msnfp_description,msnfp_endingdate,msnfp_engagementopportunitystatus,msnfp_engagementopportunitytitle,msnfp_location,msnfp_locationtype,msnfp_maximum,msnfp_minimum,msnfp_multipledays,msnfp_number,msnfp_publicaddress,msnfp_publiccity,msnfp_shifts,msnfp_shortdescription,msnfp_startingdate,msnfp_stateprovince,msnfp_street1,msnfp_street2,msnfp_street3,msnfp_url,msnfp_virtualengagementurl,msnfp_zippostalcode</FilteringAttributes>
+  <InvocationSource>1</InvocationSource>
+  <Mode>1</Mode>
+  <Rank>2</Rank>
+  <EventHandlerTypeCode>4602</EventHandlerTypeCode>
+  <Stage>40</Stage>
+  <IsCustomizable>1</IsCustomizable>
+  <IsHidden>0</IsHidden>
+  <SupportedDeployment>0</SupportedDeployment>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="engagementopportunityimage">
+      <SdkMessageProcessingStepImageId>{37e936d6-60df-eb11-bacb-000d3a5819ec}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_engagementopportunitystatus</Attributes>
+      <EntityAlias>engagementopportunityimage</EntityAlias>
+      <ImageType>2</ImageType>
+      <MessagePropertyName>Target</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
+</SdkMessageProcessingStep>

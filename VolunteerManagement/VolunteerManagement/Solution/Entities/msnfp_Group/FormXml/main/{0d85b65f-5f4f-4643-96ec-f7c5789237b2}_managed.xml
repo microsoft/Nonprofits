@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{0d85b65f-5f4f-4643-96ec-f7c5789237b2}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls" shownavigationbar="true" showImage="false" maxWidth="1920">
+      <tabs>
+        <tab name="tab_summary" id="6681920c-2a0d-4279-b198-460cbff6be68" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Summary" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="40%">
+              <sections>
+                <section name="tab_2_section_1" id="ab2ac051-d1a8-4a19-b23f-471bf050852c" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Timeline" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{8b65e9d6-1be8-41a1-aa76-2fb22067924b}" locklevel="0" showlabel="false" visible="false">
+                        <labels>
+                          <label description="Group Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_groupname" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="msnfp_groupname" disabled="false" uniqueid="{be00e58c-90d9-cb4e-925d-c281d6c6a707}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{fd5d43de-4efe-466c-a2d2-4efd5aec9874}" rowspan="1">
+                        <labels>
+                          <label description="Note Text" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-C143-495E-A496-C962E5B4488E}" disabled="false">
+                          <parameters>
+                            <UClientActivities>appointment,email,fax,letter,phonecall,recurringappointmentmaster,socialactivity,task</UClientActivities>
+                            <UClientDisplayActivityUsing>defaultfields</UClientDisplayActivityUsing>
+                            <UClientActivityCardMap>appointment:4201:,email:4202:,fax:4204:,letter:4207:,phonecall:4210:,recurringappointmentmaster:4251:,socialactivity:4216:,task:4212:,msnfp_message:10222:,</UClientActivityCardMap>
+                            <UClientActivitiesConfigurationJSON>{"msnfp_message":{"showStatus":true,"canCreate":true}}</UClientActivitiesConfigurationJSON>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="60%">
+              <sections>
+                <section name="_section_341" id="c92919ca-7449-4137-b010-0d21f940cf26" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" visible="true">
+                  <labels>
+                    <label description="Memberships" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{5506ef39-434a-4bfa-b656-24aabf78ae6e}" rowspan="12" colspan="1" showlabel="false" auto="false">
+                        <labels>
+                          <label description="Members" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_groupmemberships" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{2342d263-3a18-1146-937e-a36cc9993d14}">
+                          <parameters>
+                            <TargetEntityType>msnfp_groupmembership</TargetEntityType>
+                            <ViewId>{C86352D0-66AF-EB11-8236-000D3A5AC5F4}</ViewId>
+                            <ViewIds>{325D32D1-9244-4F08-9F29-42FAF90396EA},{C86352D0-66AF-EB11-8236-000D3A5AC5F4}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_GroupMembership_groupId_msnfp_Group</RelationshipName>
+                            <RecordsPerPage>10</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab verticallayout="true" id="{b0339e22-ddce-4a98-a66b-fb406301e116}" IsUserDefined="1" name="tab_details">
+          <labels>
+            <label description="Details" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{3d7b4c36-dc21-46a7-9588-75411568ce58}" name="tab1_general">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{cc2d1740-7a61-4b96-830c-5475e2637322}">
+                        <labels>
+                          <label description="Group Name" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_groupname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="msnfp_groupname" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e8439b00-70c4-4317-bcc7-8c79a0333775}" locklevel="0" rowspan="5">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="msnfp_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{aedcebad-47fc-4fa9-83a0-90131ea9ebdb}" locklevel="0">
+                        <labels>
+                          <label description="Group Type" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_grouptype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_grouptype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2ab9e293-ad4f-4917-963e-634389b7f324}" visible="false">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%">
+              <sections>
+                <section name="_section_910" id="4f1a6a32-26dd-4304-9f85-e1a1c97aa3ab" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" visible="false">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell showlabel="false" locklevel="0" id="{163b80f5-bad8-4bce-aca7-da5da2cf6d83}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_3" id="4fcc585f-afcc-4a3f-a98f-c20e4edf353f" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Participation History" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_3_section_1" id="155cbd66-c79d-4cdb-b067-df85eb4fdbca" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{ed1ef23e-b554-4c32-aae4-3f5e2adc1c23}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Participations" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>msnfp_participation</TargetEntityType>
+                            <ViewId>{7744017D-F4E6-4042-8671-F3EBA4A8F41F}</ViewId>
+                            <ViewIds>{7744017D-F4E6-4042-8671-F3EBA4A8F41F}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>msnfp_participation_volunteerGroupId_msnf</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{7d818c5b-d903-440b-a860-c51a9fbb0c0d}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{71ab9074-d845-4a8e-890c-9c007a9deff8}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{ccdea63b-0822-49ca-afca-a69de6f61194}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{bb09998d-b10a-43b1-9aab-9a1decf9cc0d}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{5106a648-e80c-4955-b3d7-7acee04fdd18}" locklevel="0">
+              <labels>
+                <label description="Created" languagecode="1033" />
+              </labels>
+              <control id="header_createdon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="createdon" disabled="true" />
+            </cell>
+            <cell id="{45cb81fe-ef78-4d05-bc60-402f95520fee}" locklevel="0">
+              <labels>
+                <label description="Status" languagecode="1033" />
+              </labels>
+              <control id="header_statecode" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="statecode" disabled="true" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{1c3c39a4-e838-43e0-bb9e-216f09a23fb0}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{91265dde-ac9d-46a4-ba20-1680cf3cd1c0}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{dfb11bde-f6c5-4e9a-b46a-29b28b4ed8df}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{71554b04-c128-4b85-bccb-ece2bfd04f33}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <Navigation>
+        <NavBar />
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions>
+        <controlDescription forControl="{be00e58c-90d9-cb4e-925d-c281d6c6a707}">
+          <customControl id="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}">
+            <parameters>
+              <datafieldname>msnfp_groupname</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages">
+            <parameters>
+              <AnchorStringField>msnfp_groupname</AnchorStringField>
+              <EntityId type="SingleLine.Text">msnfp_groupid</EntityId>
+              <EntityType static="true" type="Enum">Group</EntityType>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages">
+            <parameters>
+              <AnchorStringField>msnfp_groupname</AnchorStringField>
+              <EntityId type="SingleLine.Text">msnfp_groupid</EntityId>
+              <EntityType static="true" type="Enum">Group</EntityType>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages">
+            <parameters>
+              <AnchorStringField>msnfp_groupname</AnchorStringField>
+              <EntityId type="SingleLine.Text">msnfp_groupid</EntityId>
+              <EntityType static="true" type="Enum">Group</EntityType>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <formLibraries>
+        <Library name="msnfp_GroupForm.gen.js" libraryUniqueId="{eca0cf62-c819-471c-951e-def72dcbaf94}" />
+      </formLibraries>
+      <events>
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.GroupForm.OnLoad" libraryName="msnfp_GroupForm.gen.js" handlerUniqueId="{e5a1fbae-bc94-480e-a6be-2277de358e82}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

@@ -1,0 +1,12 @@
+adx_append: true
+adx_appendto: true
+adx_create: true
+adx_delete: true
+adx_entitylogicalname: contact
+adx_entityname: Contact (Admin)
+adx_entitypermission_webrole:
+- ad609e80-b0e5-44a5-ba67-336a19f4596a
+adx_entitypermissionid: c6228bb7-d920-472e-ac5d-5b3d6cee8696
+adx_read: true
+adx_scope: 756150000
+adx_write: true

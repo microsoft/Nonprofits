@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Role id="{a1ca711d-f1b8-ed11-b596-000d3a0a237e}" name="Send Email as Another User" isinherited="0">
+	<IsCustomizable>1</IsCustomizable>
+	<RolePrivileges>
+		<RolePrivilege name="prvSendAsUser" level="Global" />
+		<RolePrivilege name="prvShareActivity" level="Global" />
+	</RolePrivileges>
+</Role>

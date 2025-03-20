@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunitypreference.MainTab.Management.Controls._children" Sequence="20">
+      <CommandUIDefinition>
+        <Button Alt="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.Alt" Command="Mscrm.AddNewRecordFromSubGridStandard" Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard" Image32by32="/_imgs/ribbon/newrecord32.png" Image16by16="/_imgs/ribbon/New_16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.LabelText" Sequence="20" TemplateAlias="o1" ToolTipTitle="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.ToolTipTitle" ToolTipDescription="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.ToolTipDescription" ModernImage="New" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunitypreference.MainTab.ExportData.Controls._children" Sequence="20">
+      <CommandUIDefinition>
+        <SplitButton Command="Mscrm.ExportToExcel" Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel.LabelText" Sequence="20" TemplateAlias="o3" ToolTipTitle="$Resources(EntityPluralDisplayName):Ribbon.SubGrid.Data.Export.ExportToExcel" ToolTipDescription="$Resources:Ribbon.Tooltip.ExportToExcel" ModernImage="ExportToExcel">
+          <Menu Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel.Menu">
+            <MenuSection Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel.MenuSection" Sequence="10" DisplayMode="Menu16">
+              <Controls Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel.MenuSection.Controls">
+                <Button Command="Mscrm.ExportToExcel.Online" Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcelOnline" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources(EntityPluralDisplayName):Ribbon.SubGrid.Data.Export.ExportToExcelOnline" Sequence="40" ToolTipTitle="$Resources(EntityPluralDisplayName):Ribbon.SubGrid.Data.Export.ExportToExcelOnline" ToolTipDescription="$Resources:Ribbon.Tooltip.ExportToExcelOnline" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExportAll" Command="Mscrm.ExportToExcel.AllStaticXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunitypreference.StaticWorksheetAll" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExportAll" Sequence="41" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExportAll" ToolTipDescription="$Resources:Ribbon.Tooltip.StaticExcelExportAll" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExport" Command="Mscrm.ExportToExcel.StaticXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunitypreference.StaticWorksheet" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExport" Sequence="42" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.StaticExcelExport" ToolTipDescription="$Resources:Ribbon.Tooltip.StaticExcelExport" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicExcelExport" Command="Mscrm.ExportToExcel.DynamicXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunitypreference.DynamicWorkesheet" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicExcelExport" Sequence="43" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicExcelExport" ToolTipDescription="$Resources:Ribbon.Tooltip.DynamicExcelExport" ModernImage="ExportToExcel" />
+                <Button Alt="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicPivotTable" Command="Mscrm.ExportToExcel.PivotXlsx" Id="Mscrm.HomepageGrid.msnfp_engagementopportunitypreference.DynamicPivotTable" Image32by32="/_imgs/ribbon/exporttoexcel32.png" Image16by16="/_imgs/ribbon/exporttoexcel16.png" LabelText="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicPivotTable" Sequence="44" ToolTipTitle="$Resources:Ribbon.HomepageGrid.Data.Export.DynamicPivotTable" ToolTipDescription="$Resources:Ribbon.Tooltip.DynamicPivotTable" ModernImage="ExportToExcel" />
+              </Controls>
+            </MenuSection>
+          </Menu>
+        </SplitButton>
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="msnfp.Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.CustomAction" Location="Mscrm.SubGrid.msnfp_engagementopportunitypreference.MainTab.Management.Controls._children" Sequence="10">
+      <CommandUIDefinition>
+        <Button Command="Mscrm.NewRecordFromGrid" Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord" Image32by32="/_imgs/ribbon/newrecord32.png" Image16by16="/_imgs/ribbon/New_16.png" LabelText="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.LabelText" Sequence="10" TemplateAlias="o1" ToolTipTitle="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.ToolTipTitle" ToolTipDescription="$LocLabels:Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.ToolTipDescription" ModernImage="New" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions />
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules />
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.Alt">
+      <Titles>
+        <Title description="Add Preference (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.LabelText">
+      <Titles>
+        <Title description="Add Preference (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.ToolTipDescription">
+      <Titles>
+        <Title description="Add a related Preference (Engagement) to this record." languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.AddNewStandard.ToolTipTitle">
+      <Titles>
+        <Title description="Add Preference (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.ExportToExcel.LabelText">
+      <Titles>
+        <Title description="Export Preference (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.LabelText">
+      <Titles>
+        <Title description="New Preference (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.ToolTipDescription">
+      <Titles>
+        <Title description="Create a new Preference (Engagement) record." languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="Mscrm.SubGrid.msnfp_engagementopportunitypreference.NewRecord.ToolTipTitle">
+      <Titles>
+        <Title description="New Preference (Engagement)" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

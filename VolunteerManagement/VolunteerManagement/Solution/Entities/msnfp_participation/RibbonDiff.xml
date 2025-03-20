@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="msnfp.msnfp_participation.Button4.Button.CustomAction" Location="Mscrm.SubGrid.msnfp_participation.MainTab.Management.Controls._children" Sequence="55">
+      <CommandUIDefinition>
+        <Button Alt="$LocLabels:msnfp.msnfp_participation.Button4.Button.Alt" Command="msnfp.msnfp_participation.Command0.Command" Id="msnfp.msnfp_participation.Button4.Button" Image32by32="$webresource:msnfp_/images/participationAddShiftButton.svg" Image16by16="$webresource:msnfp_/images/participationAddShiftButton.svg" LabelText="$LocLabels:msnfp.msnfp_participation.Button4.Button.LabelText" Sequence="55" TemplateAlias="o1" ToolTipTitle="$LocLabels:msnfp.msnfp_participation.Button4.Button.ToolTipTitle" ToolTipDescription="$LocLabels:msnfp.msnfp_participation.Button4.Button.ToolTipDescription" ModernImage="$webresource:msnfp_/images/participationAddShiftButton.svg" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions>
+    <CommandDefinition Id="msnfp.msnfp_participation.Command0.Command">
+      <EnableRules>
+        <EnableRule Id="msnfp.msnfp_participation.EnableRule0.EnableRule" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="window.EngagmentOpportunityForm.OpenQuickCreateFromSubgridRibbon" Library="$webresource:msnfp_EngagementOpportunityForm.gen.js">
+          <CrmParameter Value="PrimaryControl" />
+          <CrmParameter Value="SelectedControlSelectedItemReferences" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+  </CommandDefinitions>
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules>
+      <EnableRule Id="msnfp.msnfp_participation.EnableRule0.EnableRule">
+        <SelectionCountRule AppliesTo="SelectedEntity" Minimum="1" Maximum="1" Default="true" />
+      </EnableRule>
+    </EnableRules>
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="msnfp.msnfp_participation.Button4.Button.Alt">
+      <Titles>
+        <Title description="Add Shift" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="msnfp.msnfp_participation.Button4.Button.LabelText">
+      <Titles>
+        <Title description="Add Shift" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="msnfp.msnfp_participation.Button4.Button.ToolTipDescription">
+      <Titles>
+        <Title description="Add Shift" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="msnfp.msnfp_participation.Button4.Button.ToolTipTitle">
+      <Titles>
+        <Title description="Add Shift" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

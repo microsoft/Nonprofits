@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="msnfp_VolunteerEmailBCCLimit">
+  <defaultvalue>450</defaultvalue>
+  <description default="This is the maximum number of BCC recipients allowed in an email before creating another email. ">
+    <label description="This is the maximum number of BCC recipients allowed in an email before creating another email. " languagecode="1033" />
+  </description>
+  <displayname default="Volunteer Email BCC Limit">
+    <label description="Volunteer Email BCC Limit" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.9</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+</environmentvariabledefinition>

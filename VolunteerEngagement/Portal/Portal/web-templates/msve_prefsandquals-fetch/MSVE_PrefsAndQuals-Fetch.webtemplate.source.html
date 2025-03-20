@@ -1,0 +1,22 @@
+{% fetchxml preferences %}
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+        <entity name="msnfp_preferencetype">
+            <attribute name="msnfp_preferencetypetitle"/>
+            <order attribute="msnfp_preferencetypetitle" descending="false"/>
+        </entity>
+    </fetch>
+{% endfetchxml %}
+
+{% fetchxml rawQualifications %}
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="msnfp_qualificationtype">
+            <attribute name="msnfp_qualificationtypetitle"/>
+            <attribute name="msnfp_type"/>
+            <order attribute="msnfp_qualificationtypetitle" descending="false"/>
+            <filter type="and">
+                <condition attribute="msnfp_type" operator="ne" value="844060004"/>
+            </filter>
+        </entity>        
+    </fetch>
+{% endfetchxml %}
+{% assign qualifications = rawQualifications.results.entities %}

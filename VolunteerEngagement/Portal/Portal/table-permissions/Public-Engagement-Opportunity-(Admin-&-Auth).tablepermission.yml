@@ -1,0 +1,13 @@
+adx_append: true
+adx_appendto: true
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_publicengagementopportunity
+adx_entityname: Public Engagement Opportunity (Admin & Auth)
+adx_entitypermission_webrole:
+- ad609e80-b0e5-44a5-ba67-336a19f4596a
+- 466dad99-c04f-4c91-83bc-bb114fd1edf4
+adx_entitypermissionid: 37250206-6eba-49c0-a143-0f72f7940041
+adx_read: true
+adx_scope: 756150000
+adx_write: false

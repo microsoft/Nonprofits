@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{3685f17e-5e9d-eb11-b1ac-000d3a9ad0b8}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="F931FFE2-B873-473F-8F95-9502F0AA3F5E" name="tab_1" showlabel="false" labelid="{7122977e-fbcf-46a5-bdf0-fc637ffc8d94}">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section id="0C655D4E-C6E3-424E-9AF5-71E72D30D12E" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{47ab7cab-ef5e-4ced-995f-2e80b290ff4a}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{57395135-7fd9-447f-8ead-abbc9df19544}" locklevel="0" labelid="{29f1ddae-4cd8-4a3a-bb90-2762c2be0bf7}" visible="true">
+                        <labels>
+                          <label description="Engagement Opportunity" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_engagementopportunityid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_engagementopportunityid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b5924476-47db-4179-9616-0fa482dcb19f}" locklevel="0" labelid="{1fe54acd-2a8e-440a-a8d8-326b1ba632d6}">
+                        <labels>
+                          <label description="Contact" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_contactid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_contactid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{88f66100-30f9-49e4-b219-649a6fbafc03}" locklevel="0" labelid="{ee69b54e-1ae2-4512-9816-d1b7d09b21b1}">
+                        <labels>
+                          <label description="Participation Status" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_status" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="msnfp_status" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8a11012b-9a64-4214-808a-34c9448dc092}" locklevel="0" labelid="{b29aa7f1-8c27-4964-9944-513be82c24b5}">
+                        <labels>
+                          <label description="Volunteer Group" languagecode="1033" />
+                        </labels>
+                        <control id="msnfp_volunteergroupid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="msnfp_volunteergroupid" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="02DECBA0-3AE2-484D-A19F-C5353AF4F4F2" name="tab_1_column_2_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" visible="false" labelid="{d6e8a128-fe73-4e78-998f-395c2bb47ac8}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="266FE48D-4D04-4E9A-8C5A-7DEF9A2F059B" labelid="{9ec302f6-be8a-4294-996e-c4174ec59480}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="46FD66EA-B686-41D9-AAE0-C565BD78EC1F" name="tab_1_column_3_section_1" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" visible="false" labelid="{15584971-2ef9-4a68-bde3-3f72c8ab83c5}">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="07C04A4E-A482-45CC-BAB7-7FCA3CD02938" labelid="{7b1e93da-d680-4cc0-bbc3-1e077d1857af}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+      <formLibraries>
+        <Library name="msnfp_ParticipationForm.gen.js" libraryUniqueId="{4bc03582-8724-460b-9a4c-3701f5218b39}" />
+      </formLibraries>
+      <events>
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="window.ParticipationForm.OnLoad" libraryName="msnfp_ParticipationForm.gen.js" handlerUniqueId="{8046387e-05cb-41e9-8edf-cdd2d68923fa}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="msnfp_engagementopportunityid">
+          <Handlers>
+            <Handler functionName="window.ParticipationForm.OnLoad" libraryName="msnfp_ParticipationForm.gen.js" handlerUniqueId="{fbf45f70-d7ec-4e9b-a7cf-062c988daff0}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description=" quick create form" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

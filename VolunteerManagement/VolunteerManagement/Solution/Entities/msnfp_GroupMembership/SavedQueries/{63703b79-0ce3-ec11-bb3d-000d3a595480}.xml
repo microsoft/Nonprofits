@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{63703b79-0ce3-ec11-bb3d-000d3a595480}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msnfp_groupmembershipname" select="1" icon="1" preview="1">
+        <row name="result" id="msnfp_groupmembershipid">
+          <cell name="msnfp_groupid" width="261" />
+          <cell name="msnfp_membershiprole" width="130" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msnfp_groupmembership">
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msnfp_membershiprole" />
+          <attribute name="msnfp_groupid" />
+          <attribute name="msnfp_groupmembershipid" />
+          <order attribute="msnfp_groupid" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Volunteer Group Memberships" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

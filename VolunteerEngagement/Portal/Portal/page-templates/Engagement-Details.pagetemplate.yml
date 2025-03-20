@@ -1,0 +1,7 @@
+adx_description: Shows the details and shift schedule for an engagement whose ID was added in the URL
+adx_isdefault: false
+adx_name: Engagement Details
+adx_pagetemplateid: 659d6055-b155-49f7-9d6e-3e8f4906e156
+adx_type: 756150001
+adx_usewebsiteheaderandfooter: true
+adx_webtemplateid: 5299d639-e53e-4780-833e-53660396dda8

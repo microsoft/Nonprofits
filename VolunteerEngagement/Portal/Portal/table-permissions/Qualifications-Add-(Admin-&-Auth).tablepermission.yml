@@ -1,0 +1,14 @@
+adx_append: true
+adx_appendto: true
+adx_contactrelationship: msnfp_contact_msnfp_qualification_contactId
+adx_create: true
+adx_delete: true
+adx_entitylogicalname: msnfp_qualification
+adx_entityname: Qualifications Add (Admin & Auth)
+adx_entitypermission_webrole:
+- ad609e80-b0e5-44a5-ba67-336a19f4596a
+- 466dad99-c04f-4c91-83bc-bb114fd1edf4
+adx_entitypermissionid: ba4571a9-74e6-4ebb-9b68-2d43b6d6a310
+adx_read: true
+adx_scope: 756150001
+adx_write: true

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{bc6e47c6-1201-ec11-94ef-000d3a135c2d}</WebResourceId>
+  <Name>msnfp_/scripts/msnfp_nextstage.html</Name>
+  <DisplayName>msnfp_/scripts/msnfp_nextstage.html</DisplayName>
+  <WebResourceType>1</WebResourceType>
+  <IntroducedVersion>1.0.0.10</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <DependencyXml>&lt;Dependencies&gt;&lt;Dependency componentType="WebResource"&gt;&lt;Library name="msnfp_/strings/VolunteerManagement.Webresources.1033.resx" displayName="msnfp_/strings/VolunteerManagement.Webresources.1033.resx" languagecode="1033" description="Resx Webresources for holding English strings for webresources. " libraryUniqueId="{c79635e0-8da8-4955-c568-21ed95a87536}"/&gt;&lt;Library name="msnfp_/strings/VolunteerManagement.Webresources.1036.resx" displayName="msnfp_/strings/VolunteerManagement.Webresources.1036.resx" languagecode="1036" description="Resx webresource for holding French strings for webresources." libraryUniqueId="{434eeb19-3a1a-1a91-a371-70bc2a1d651c}"/&gt;&lt;/Dependency&gt;&lt;/Dependencies&gt;</DependencyXml>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/msnfp_scriptsmsnfp_nextstagehtmlBC6E47C6-1201-EC11-94EF-000D3A135C2D</FileName>
+</WebResource>

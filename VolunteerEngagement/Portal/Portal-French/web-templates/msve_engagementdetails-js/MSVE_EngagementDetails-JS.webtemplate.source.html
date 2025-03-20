@@ -1,0 +1,317 @@
+<script>
+    {% include 'MSVE_Global/JS/WebApiWrapper' %}
+
+    /*** Adds or removes the active class from a clicked row */
+    $(function() {
+        $("tr").click(function() {
+            if (!($(this).hasClass("disabledRow")) && !($(this).children("th").length > 0)) {
+                if ($(this).hasClass("active")) {
+                    deactivateRow(this);
+                }
+                else {                   
+                    activateRow(this);
+                }
+            }       
+        });
+    });
+
+    /*** Books all selected shifts */
+    $(function() {
+        $("#bookShifts").click(function() {
+            $("#bookShifts").prop('disabled', true);
+            oldStatus = $("#cancelShifts").prop('disabled');
+            $("#cancelShifts").prop('disabled', true);
+            $("#shiftLoader>.spinner").css("visibility", "visible");
+            $("tr.active").each(function() {
+                eSched = JSON.parse($(this).find("input[type='checkbox']").data('value'));
+                const eSchedEndDate = new Date($(this).find("td[aria-labelledby='shiftEnd'] > time").attr('datetime'));
+               
+
+                if(eSched.number && eSched.maxVolunteers && eSched.number === eSched.maxVolunteers) {
+                    console.log(eSched.name + " is full. Please choose another shift.")
+                }
+                else if(eSched.isCancelled) {
+                    console.log("This engagement has been cancelled by the volunteer organizer.");
+                }
+                else if(eSchedEndDate.getTime() < Date.now()) {
+                    console.log(eSched.name + " has already ended.");
+                }
+                else if(eSched.pSchedStatus && eSched.pSchedStatus == 335940000) {
+                    console.log("You are already registered for " + eSched.name);
+                }
+                else {
+                    if(eSched.pSchedId) {
+                        updatePSchedStatus(eSched.pSchedId, 335940000, oldStatus);
+                    }
+                    else {
+                        createPSched(eSched.id, eSched.participationId, oldStatus);
+                    }
+                }
+            });           
+        });
+    });
+    
+    /*** Cancels selected shifts */
+    $(function() {
+        $("#cancelShifts").click(function() {
+            $("#cancelShifts").prop('disabled', true);
+            oldStatus = $("#bookShifts").prop('disabled');
+            $("#bookShifts").prop('disabled', true);
+            $("#shiftLoader>.spinner").css("visibility", "visible");            
+            $("tr.active").each(function() {
+                eSched = JSON.parse($(this).find("input[type='checkbox']").data('value'));
+                const eSchedEndDate = new Date($(this).find("td[aria-labelledby='shiftEnd'] > time").attr('datetime'));
+                   
+                if(eSchedEndDate.getTime() < Date.now()) {
+                    console.log(eSched.name + " has already ended.");
+                }
+                else if(!eSched.pSchedId) {
+                    console.log("You are not registered for " + eSched.name);
+                }
+                else if(eSched.pSchedStatus && eSched.pSchedStatus == 335940003) {
+                    console.log("You have already cancelled your registration for " + eSched.name);
+                }
+                else {
+                    updatePSchedStatus(eSched.pSchedId, 335940003, oldStatus);
+                }
+            });         
+        });
+    });
+
+    /*** Allows the user to attempt to apply to an engagement */
+    $(function() {
+        $("#engagementStatusBtn").click(function() {
+            $(this).prop('disabled', true);
+            $('#appLoader>.spinner').css('visibility', 'visible');
+            {% if user != nil %}
+                {% if participation == nil %}
+                    createParticipation();
+                {% else %}
+                    updateParticipationStatus();
+                {% endif %}
+            {% else %}
+                {% capture redirectUrl %}{{settings['SiteUrl']}}/SignIn?returnUrl=%2Fengagement%2F%3Fid%3D{{request.params['id']}}{% endcapture %}
+                window.location.href = "{{redirectUrl}}";
+            {% endif %}         
+        });
+    });
+
+    /*** Allows the user to attempt to cancel their participation in an engagement */
+    $(function() {
+        $("#cancelParticipationBtn").click(function() {
+            $(this).prop('disabled', true);
+            $("#appLoader>.spinner").css("visibility", "visible");            
+            {% if user != nil %}
+                {% if participation != nil %}
+                    updateParticipationStatus();
+                {% endif %}
+            {% else %}
+                {% capture redirectUrl %}{{settings['SiteUrl']}}/SignIn?returnUrl=%2Fengagement%2F%3Fid%3D{{request.params['id']}}{% endcapture %}
+                window.location.href = "{{redirectUrl}}";
+            {% endif %}            
+        });
+    });
+
+    /*** Activates a table row */
+    function activateRow(row) {
+        $(row).addClass("active");
+        $(row).find("input").prop("checked", true);
+
+        // Check if the Book/Cancel Shift button need to be turned on
+        $status = $(row).find("p > span").last().text().trim();
+        {% assign engagementStatuses = snippets['MSVE_EngagementsInfo/Status'] | split: ',' %}        
+        goalText = "{{engagementStatuses[3]}}";  
+
+        if ($status === goalText) {
+            $cancelBtn = $("#cancelShifts");
+            if($cancelBtn.prop('disabled')) {
+                $cancelBtn.prop('disabled',false);
+            }
+        }
+        else {
+            $bookBtn = $("#bookShifts");        
+            if($bookBtn.prop('disabled')) {
+                $bookBtn.prop('disabled',false);
+            }
+        }
+    }
+
+    /*** Deactivates a table row */
+    function deactivateRow(row) {
+        $(row).removeClass("active");
+        $(row).find("input").prop("checked", false);
+            
+        // Check if the Book/Cancel Shift button needs to be turned off
+        $status = $(row).find("p > span").last().text().trim();
+        {% assign engagementStatuses = snippets['MSVE_EngagementsInfo/Status'] | split: ',' %}        
+        goalText = "{{engagementStatuses[3]}}";        
+        $otherSelectedRows = $("tr.active");
+        if ($status === goalText) {
+            $otherRegisteredRows = $otherSelectedRows.find("h5 > span").filter(function() { return ($(this).text().trim() === goalText) });
+            $cancelBtn = $("#cancelShifts");
+            if(!$cancelBtn.prop('disabled') && $otherRegisteredRows.length === 0) {
+                $cancelBtn.prop('disabled',true);
+            }
+        }
+        else {
+            $bookBtn = $("#bookShifts");
+            $otherUnregisteredRows = $otherSelectedRows.not($otherSelectedRows.filter(function() { return ($(this).find("h5 > span").text().trim() === goalText) }));    
+            if(!$bookBtn.prop('disabled') && $otherUnregisteredRows.length === 0) {
+                $bookBtn.prop('disabled',true);
+            }
+        }
+    }
+
+    /*** Creates a new participation schedule */
+    function createPSched(eSchedId, participationId, oldStatus) {
+        webapi.safeAjax({
+            type: "POST",
+            url: "/_api/msnfp_participationschedules",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "msnfp_engagementOpportunityScheduleId@odata.bind": "/msnfp_engagementopportunityschedules(" + eSchedId + ")",
+                "msnfp_participationId@odata.bind": "/msnfp_participations(" + participationId + ")",
+                "msnfp_schedulestatus": 335940000
+            }),
+            success: function(res) {
+                $("#shiftLoader>.spinner").css("visibility", "hidden"); 
+                window.location.reload();
+            },
+            error: function(err) {
+                alertHtml = buildErrorAlert(err.responseText);
+                $(".alerty").html(alertHtml);
+                $(".alerty").show();
+                $("#shiftLoader>.spinner").css("visibility", "hidden"); 
+                $("#cancelShifts").prop('disabled', oldStatus);
+                $("#bookShifts").prop('disabled', false);
+            }
+     });
+    }
+
+    /*** Updates the status of a given participation schedule */
+    function updatePSchedStatus(participationId, status, oldStatus) {
+        webapi.safeAjax({
+            type: "PATCH",
+            url: "/_api/msnfp_participationschedules(" + participationId + ")",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "msnfp_schedulestatus": status
+            }),
+            success: function(res) {
+                $("#shiftLoader>.spinner").css("visibility", "hidden"); 
+                window.location.reload();
+            },
+            error: function(err) {
+                alertHtml = buildErrorAlert(err.responseText);
+                $(".alerty").html(alertHtml);
+                $(".alerty").show();
+                $("#shiftLoader>.spinner").css("visibility", "hidden"); 
+                if(status === 335940000 ) {
+                    $("#cancelShifts").prop('disabled', oldStatus);
+                    $("#bookShifts").prop('disabled', false);
+                }
+                else {
+                    $("#cancelShifts").prop('disabled', false);
+                    $("#bookShifts").prop('disabled', oldStatus);
+                }
+            }
+        });
+        return false;
+    }
+
+    /*** Creates a participation for the given user */
+    function createParticipation() {
+        webapi.safeAjax({
+            type: "POST",
+            url: "/_api/msnfp_participations",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "msnfp_contactId@odata.bind": "/contacts({{user.contactid}})",
+                "msnfp_engagementOpportunityId@odata.bind": "/msnfp_engagementopportunities({{engagement['privateOpp.msnfp_engagementopportunityid']}})",
+                "msnfp_status": 844060000
+            }),
+            success: function(res) {
+                markContactAsVolunteer();                
+            },
+            error: function (err) {
+                alertHtml = buildErrorAlert(err.responseText);
+                $(".alerty").html(alertHtml);
+                $(".alerty").show();
+                $("#appLoader>.spinner").css("visibility", "hidden"); 
+                $("#engagementStatusBtn").prop('disabled', false);
+            }
+        });
+        return false;
+    }
+
+    /*** Updates a contact to be marked as a volunteer */
+    function markContactAsVolunteer() {
+        webapi.safeAjax({
+            type: "PATCH",
+            url: "/_api/contacts({{user.contactid}})",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "msnfp_volunteer": true
+            }),
+            success: function(res) {
+                $("#appLoader>.spinner").css("visibility", "hidden");
+                window.location.reload();
+            },
+            error: function(err) {
+                alertHtml = buildErrorAlert(err.responseText);
+                $(".alerty").html(alertHtml);
+                $(".alerty").show();
+                $("#appLoader>.spinner").css("visibility", "hidden");
+                $("#engagementStatusBtn").prop('disabled', false);
+            }
+        })
+    }
+
+    /*** Updates an existing participation for the given user */
+    function updateParticipationStatus() {
+        {% if participation.msnfp_status.value != 844060003 and engagement['privateOpp.msnfp_statuscode.value'] != 844060005 %}        
+            webapi.safeAjax({
+                type: "PATCH",
+                url: "/_api/msnfp_participations({{participation.msnfp_participationid}})",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    {% if participation.msnfp_status.value == 844060004 %}
+                        "msnfp_status": 844060000
+                    {% else  %}
+                        "msnfp_status": 844060004
+                    {% endif %}
+                }),
+                success: function(res) {
+                    $("#appLoader>.spinner").css("visibility", "hidden"); 
+                    window.location.reload();
+                },
+                error: function(err) {
+                    alertHtml = buildErrorAlert(err.responseText);
+                    $(".alerty").html(alertHtml);
+                    $(".alerty").show();
+                    $("#appLoader>.spinner").css("visibility", "hidden");
+                    {% if participation.msnfp_status.value == 844060004 %}
+                        $("#engagementStatusBtn").prop('disabled', false);
+                    {% else  %}                        
+                        $("#cancelParticipationBtn").prop('disabled', false);
+                    {% endif %}                        
+                }
+            });
+            return false;
+        {% endif %}
+    }
+
+    /*** Builds the error alert */
+    function buildErrorAlert(message) {
+        try {
+            const parsedData = JSON.parse(message);
+            message = parsedData?.error?.innererror?.message || message;
+        } catch {
+            console.log("responseText is not a JSON object");
+        }
+        return `<div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Error:</strong> ${message}
+                </div>`
+    }
+</script>

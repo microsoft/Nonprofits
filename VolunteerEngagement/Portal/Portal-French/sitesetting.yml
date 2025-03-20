@@ -1,0 +1,227 @@
+- adx_name: Profile/ForceSignUp
+  adx_sitesettingid: cef4aea1-397a-405f-a785-d921da36e449
+  adx_value: False
+  adx_description: ' '
+- adx_description: Valeur vrai ou faux. Si la valeur est vrai, le compte local sera marqué comme obsolète. L’utilisateur du portail devra migrer vers un compte non obsolète.
+  adx_name: Authentication/Registration/LocalLoginDeprecated
+  adx_sitesettingid: 2d8646a9-f40c-44eb-aa94-674021714667
+  adx_value: False
+- adx_name: Authentication/OpenAuth/LinkedIn/ConsumerKey
+  adx_sitesettingid: dce13e84-f919-40d5-8365-4d6f014b4333
+  adx_description: ' '
+- adx_description: Identifie les champs qu’un utilisateur est autorisé à modifier dans la table de participation par le biais d’appels webapi
+  adx_name: Webapi/msnfp_participation/fields
+  adx_sitesettingid: ae0802b1-ef43-43ad-9154-60092da3c314
+  adx_value: msnfp_contactId,msnfp_engagementOpportunityId,msnfp_status
+- adx_description: Permet de lire les erreurs internes à des fins de test
+  adx_name: Webapi/error/innererror
+  adx_sitesettingid: b2581ab6-c16d-4586-a4d7-1d3e9c400638
+  adx_value: true
+- adx_description: Active ou désactive Azure AD en tant que fournisseur d’identité externe. Par défaut, la valeur est définie sur vrai.
+  adx_name: Authentication/Registration/AzureADLoginEnabled
+  adx_sitesettingid: f1dd9ba2-351a-497f-845a-5371b485c12d
+  adx_value: true
+  importsequencenumber: 3
+- adx_description: Permet d’interroger les contacts via OData (limité aux seuls contacts de l’utilisateur connecté via les autorisations de la table)
+  adx_name: Webapi/contact/enabled
+  adx_sitesettingid: 37349bc4-8b2e-4eb8-ac3c-474b2f7b97c7
+  adx_value: true
+- adx_name: Authentication/OpenAuth/Twitter/ConsumerSecret
+  adx_sitesettingid: 8f54772a-57b4-47e7-8e2c-2494ae3a1b0d
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_description: Interdit l’utilisation du portail aux mineurs. Par défaut, ce paramètre est défini sur false.
+  adx_name: Authentication/Registration/DenyMinors
+  adx_sitesettingid: df96249d-b7c5-483f-9069-c13ac3b95607
+  adx_value: false
+- adx_description: Détermine si la recherche à facettes est utilisée pour ce portail.
+  adx_name: Search/FacetedView
+  adx_sitesettingid: c4f61f5c-f46f-423a-a437-677aeecf750e
+  adx_value: True
+- adx_name: Authentication/OpenAuth/LinkedIn/ConsumerSecret
+  adx_sitesettingid: 4394372c-b6f6-4c17-ad1c-4163cd52b6fb
+  adx_description: ' '
+- adx_description: Si vous activez ce paramètre, toutes les activités du client seront affichées dans la chronologie du portail.
+  adx_name: CustomerSupport/DisplayAllUserActivitiesOnTimeline
+  adx_sitesettingid: 91aa6fd1-beb0-4d2d-9011-69ad901834bc
+  adx_value: false
+- adx_name: Search/IndexQueryName
+  adx_sitesettingid: cf83c8e4-b493-4e0c-b275-5e4e32d6bc89
+  adx_value: Portal Search
+  adx_description: ' '
+- adx_name: Authentication/OpenAuth/Microsoft/ClientId
+  adx_sitesettingid: 3cc91d93-f0ac-424e-bd2b-0f7fb963f752
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_description: 'Contrôle combien de temps le cookie de l’application restera valide à partir du moment où il a été créé (le token est réémis en cas d’expiration glissante). '
+  adx_name: Authentication/ApplicationCookie/ExpireTimeSpan
+  adx_sitesettingid: 003de5f5-3d0b-41b7-97b5-1442d4280aa2
+  adx_value: 00:30:00
+- adx_name: Authentication/OpenAuth/Facebook/AppSecret
+  adx_sitesettingid: 96d5df44-7813-461f-974f-293076a75730
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_name: Authentication/OpenAuth/Twitter/ConsumerKey
+  adx_sitesettingid: ced63977-26f1-4cd3-82bd-195f1d830643
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_name: Authentication/Registration/InvitationEnabled
+  adx_sitesettingid: 6aa21cf5-1abb-4c14-b5ba-8782b3d1aa3b
+  adx_value: true
+  importsequencenumber: 3
+  adx_description: ' '
+- adx_name: Authentication/Registration/ExternalLoginEnabled
+  adx_sitesettingid: 2f1c5eb8-66b6-4603-aa61-1555f21f0f1e
+  adx_value: true
+  importsequencenumber: 3
+  adx_description: ' '
+- adx_name: Authentication/OpenAuth/Facebook/AppId
+  adx_sitesettingid: 81888dbe-4461-4e5b-a3d0-0263d9e04669
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_description: 'Délai d’attente de l’adresse IP si Authentication/LoginThrottling/MaxInvaildAttemptsFromIPAddress se produisent dans l’intervalle de temps Authentication/LoginThrottling/MaxAttemptsTimeLimitTimeSpan. Valeur par défaut : 00:10:00 (10 min)'
+  adx_name: Authentication/LoginThrottling/IpAddressTimeoutTimeSpan
+  adx_sitesettingid: 9f137e4f-329a-42d7-91f3-d4728d26c74e
+  adx_value: 00:10:00
+- adx_name: OnlineDomains
+  adx_sitesettingid: 3349597b-3d8c-4ea0-9bd3-5c08577045f9
+  adx_value: sharepoint.com;microsoftonline.com
+  adx_description: ' '
+- adx_description: Valeur vrai ou faux. Si la valeur est vrai, le champ Dernière connexion du contact de l’utilisateur du portail va être mis à jour avec la date et l’heure de connexion effective.
+  adx_name: Authentication/LoginTrackingEnabled
+  adx_sitesettingid: 82254fa5-3005-4296-b419-ed0433237978
+  adx_value: False
+- adx_description: Indique si le modèle Web d’en-tête met en cache la sortie.
+  adx_name: Header/OutputCache/Enabled
+  adx_sitesettingid: 9711892f-a652-4c30-8cba-7448e8993895
+  adx_value: True
+- adx_description: 'Le préfixe entré ici sert à filtrer le texte des notes, ce qui vous permet de contrôler les notes exposées sur le portail, par ex : *WEB*'
+  adx_name: KnowledgeManagement/NotesFilter
+  adx_sitesettingid: 4baa12de-f8d8-4b21-b436-93d812b8ebac
+  adx_value: '*WEB*'
+- adx_description: Définit si le portail peut rediriger ou non l’utilisateur vers la page de profil une fois la connexion établie. Par défaut, la valeur est définie sur vrai.
+  adx_name: Authentication/Registration/ProfileRedirectEnabled
+  adx_sitesettingid: 2af15f46-7c47-4a2c-91b3-262016f809ec
+  adx_value: true
+  importsequencenumber: 3
+- adx_description: Indique si le modèle Web de pied de page met en cache la sortie ou non.
+  adx_name: Footer/OutputCache/Enabled
+  adx_sitesettingid: daf63946-d59f-4864-b873-6dd0c113f606
+  adx_value: True
+- adx_description: Champs qui peuvent être modifiés et utilisés dans le tableau du calendrier de participation
+  adx_name: Webapi/msnfp_participationschedule/fields
+  adx_sitesettingid: 0a24412b-9a1a-4c02-a4f6-2eefdb3bc09e
+  adx_value: msnfp_participationId,msnfp_schedulestatus,msnfp_engagementOpportunityScheduleId
+- adx_name: Authentication/Registration/OpenRegistrationEnabled
+  adx_sitesettingid: 0126c95e-cf6e-4293-9f31-70167024018e
+  adx_value: true
+  importsequencenumber: 3
+  adx_description: ' '
+- adx_description: Valeur de date/heure au format GMT pour représenter la date d’effet des conditions générales actuellement publiées. Si l’acceptation des termes est activée, les utilisateurs du portail qui n’ont pas accepté les termes après cette date devront les accepter lors de leur prochaine connexion. Si la date n’est pas fournie et que l’acceptation des termes est activée, les termes seront affichés à chaque connexion des utilisateurs au portail.
+  adx_name: Authentication/Registration/TermsPublicationDate
+  adx_sitesettingid: 3f26fcaf-ec4b-4a71-a010-bed6a54a51fe
+- adx_description: Permet d’effectuer des appels WebAPI vers le tableau du calendrier de participation
+  adx_name: Webapi/msnfp_participationschedule/enabled
+  adx_sitesettingid: ed9ffbae-22f7-4df3-950f-40e4195da5b5
+  adx_value: true
+- adx_description: Paramètre de site qui détermine si le code de langue est inclus dans l’URL du portail.
+  adx_name: MultiLanguage/DisplayLanguageCodeInURL
+  adx_sitesettingid: e8d462b9-efe3-435d-8221-0bda6f80b884
+  adx_value: False
+- adx_description: URL d’accueil du portail de l’environnement actuel
+  adx_name: SiteUrl
+  adx_sitesettingid: 789ccc41-bfa3-4101-8831-7aadeda0b752
+  adx_value: https://volunteer-engagement-ve.powerappsportals.com/
+- adx_description: Le paramètre contrôle si les pièces jointes seront affichées dans les articles de base de connaissances
+  adx_name: KnowledgeManagement/DisplayNotes
+  adx_sitesettingid: a15e470d-f4d6-448f-96c9-5f3629612508
+  adx_value: false
+- adx_name: Search/Enabled
+  adx_sitesettingid: 46c1c522-3583-4473-967d-9bb43454c9a3
+  adx_value: false
+  adx_description: ' '
+- adx_description: Le paramètre SlidingExpiration est défini sur true (vrai) pour indiquer à l’intergiciel de réémettre un nouveau cookie avec un nouveau délai d’expiration chaque fois qu’il traite une requête qui se trouve à plus de la moitié de la fenêtre d’expiration.
+  adx_name: Authentication/ApplicationCookie/SlidingExpiration
+  adx_sitesettingid: 755f4fdd-1b20-4712-b3b0-e8f115c1793f
+  adx_value: true
+- adx_description: 'Remplace la requête pour la recherche sur le site, afin d’appliquer des pondérations et des filtres supplémentaires. @Query est le texte de requête saisi par un utilisateur. Référence de la syntaxe de requête Lucene : http://lucene.apache.org/core/old_versioned_docs/versions/2_9_1/queryparsersyntax.html'
+  adx_name: search/query
+  adx_sitesettingid: 0f3f6bbd-a861-436d-8785-211a6379622c
+  adx_value: +(@Query) _title:(@Query) _logicalname:knowledgearticle~0.9^0.3 _logicalname:annotation~0.9^0.25 _logicalname:adx_webpage~0.9^0.2 -_logicalname:adx_webfile~0.9 adx_partialurl:(@Query) _logicalname:adx_blogpost~0.9^0.1 -_logicalname:adx_communityforumthread~0.9
+- adx_name: Authentication/Registration/EmailConfirmationEnabled
+  adx_sitesettingid: 536f2611-c2b9-4575-9b75-404a837c5202
+  adx_value: true
+  importsequencenumber: 3
+  adx_description: ' '
+- adx_description: Permet à un utilisateur de définir son contact comme étant un bénévole par le biais d’une requête Odata.
+  adx_name: Webapi/contact/fields
+  adx_sitesettingid: 5b250add-3cd6-4852-993e-ae75934e4995
+  adx_value: msnfp_volunteer
+- adx_description: 'Nombre par défaut de tentatives de connexion sans authentification à partir d’une adresse IP avant que l’adresse IP ne soit bloquée pour Authentication/LoginThrottling/IpAddressTimeoutTimeSpan si les tentatives se produisent dans l’intervalle de temps Authentication/LoginThrottling/MaxAttemptsTimeLimitTimeSpan. Valeur par défaut : 1 000'
+  adx_name: Authentication/LoginThrottling/MaxInvaildAttemptsFromIPAddress
+  adx_sitesettingid: 2ada4779-5011-4e6f-a6a2-d93cc9106995
+  adx_value: 1000
+- adx_description: Valeur vrai ou faux. Si la valeur est vrai, le portail affiche les conditions générales du site. Les utilisateurs doivent accepter les conditions générales pour être considérés comme authentifiés et utiliser le site.
+  adx_name: Authentication/Registration/TermsAgreementEnabled
+  adx_sitesettingid: 5df5baed-c97e-4bab-b44f-4028c096e806
+  adx_value: false
+- adx_description: Utilisé pour regrouper un ensemble d’entités sous une entrée dans la vue par facette du type d’enregistrement.
+  adx_name: Search/RecordTypeFacetsEntities
+  adx_sitesettingid: 7c5fde0d-f3dc-4844-a956-5caac9adc9e6
+  adx_value: Downloads:annotation,adx_webfile
+- adx_description: Permet aux utilisateurs d’utiliser des appels webapi pour modifier la table de participation
+  adx_name: Webapi/msnfp_participation/enabled
+  adx_sitesettingid: 81d47332-3c31-4dc8-bdb4-4de1eb7acf9f
+  adx_value: true
+- adx_description: 'Intervalle de temps de Authentication/LoginThrottling/MaxInvaildAttemptsFromIPAddress avant que l’adresse IP ne doive attendre Authentication/LoginThrottling/IpAddressTimeoutTimeSpan. Valeur par défaut : 00:03:00 (3 min)'
+  adx_name: Authentication/LoginThrottling/MaxAttemptsTimeLimitTimeSpan
+  adx_sitesettingid: f9ff9249-37aa-4c1b-964f-f7891f682fab
+  adx_value: 00:03:00
+- adx_name: Authentication/Registration/Enabled
+  adx_sitesettingid: 2757c595-4331-4038-b450-e08928f667a9
+  adx_value: true
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_description: Interdit aux mineurs d’utiliser le portail sans accord parental. Par défaut, la valeur est faux.
+  adx_name: Authentication/Registration/DenyMinorsWithoutParentalConsent
+  adx_sitesettingid: 3f0d7950-8bc8-4cd1-ab7c-9f08861ad2e1
+  adx_value: false
+- adx_name: Authentication/Registration/LocalLoginEnabled
+  adx_sitesettingid: 4e33e868-9ad3-437a-bf80-3627d3cf58c5
+  adx_value: true
+  adx_description: ' '
+- adx_name: Authentication/OpenAuth/Microsoft/ClientSecret
+  adx_sitesettingid: 27b98a0b-4cfb-4562-8964-a419c6816948
+  importsequencenumber: 5
+  adx_description: ' '
+- adx_name: Profile/ShowMarketingOptionsPanel
+  adx_sitesettingid: 853ac548-2b20-4e88-8add-a56c17d596d4
+  adx_value: True
+  adx_description: ' '
+- adx_name: ThemeFeature
+  adx_sitesettingid: cfb4d122-cd1e-48a6-b4de-adb9e02a0a25
+  adx_value: '{"status":"disable","selectedThemeId":"242affab-60e9-eb11-bacb-000d3a1b79d2","siteSettingId":"eb62a868-9e5e-4cc5-a824-8c707d292e31"}'
+  adx_description: ' '
+- adx_name: Search/IndexNotesAttachments
+  adx_sitesettingid: 2cce20f6-504c-473a-92d5-afcb366d5dbd
+  adx_value: false
+  adx_description: ' '
+- adx_description: Paramètre du site qui contrôle la profondeur de la hiérarchie des pages web qui est clonée dans une langue prise en charge nouvellement ajoutée. Les jeux de liens web et les extraits de contenu sont clonés dans la langue nouvellement ajoutée lorsque les pages web sont clonées.
+  adx_name: MultiLanguage/MaximumDepthToClone
+  adx_sitesettingid: 01d1175d-d41d-44f4-a1e0-b101d6873791
+  adx_value: 3
+- adx_name: HTTP/X-Frame-Options
+  adx_sitesettingid: 3288b420-790a-4d00-85cc-69246cf750d2
+  adx_value: SAMEORIGIN
+  adx_description: ' '
+- adx_name: Authentication/Registration/LoginButtonAuthenticationType
+  adx_sitesettingid: c6588ddf-c84f-4c1c-98c2-3e369e880fff
+  importsequencenumber: 3
+  adx_description: ' '
+- adx_description: >-
+    Collection d’options de filtre de nom logique de recherche. Définir une valeur ici permet d’ajouter des options de filtre de liste déroulante pour la recherche dans tout le site.
+
+
+    Cette valeur doit avoir la forme de paires nom/valeur. Le nom et la valeur doivent être séparés par deux points et les paires par un point-virgule. Par exemple : « Forums:adx_communityforum,adx_communityforumthread,adx_communityforumpost;Blogs:adx_blog,adx_blogpost,adx_blogpostcomment ».
+  adx_name: search/filters
+  adx_sitesettingid: 725226f1-b0ea-43fd-89d2-f2392e41554b

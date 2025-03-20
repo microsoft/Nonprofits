@@ -1,0 +1,14 @@
+adx_append: false
+adx_appendto: false
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: msnfp_publicengagementopportunity
+adx_entityname: Opportunité d’engagement public (anonyme)
+adx_entitypermission_webrole:
+- 9cacc555-0633-451f-9145-5c72dbe43b88
+- 0c978d9a-4e8f-4454-a279-4335a27b8e31
+- 79a9f09f-74f3-4041-828e-b53e7c68be9d
+adx_entitypermissionid: f773c200-1498-4c37-bdbd-06900d6eefb7
+adx_read: true
+adx_scope: 756150000
+adx_write: false
