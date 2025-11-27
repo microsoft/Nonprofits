@@ -13,11 +13,11 @@ Outcome Management is built on the [Common Data Model (CDM) for Nonprofits](http
 
 Learn More:
 - Read about Outcome Management on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/outcome-management)
-- Review the [entity relationship diagram for Outcome Management](./Documents/Outcome%20Management%20-%20Data%20Model.pdf)
+- Review the [entity relationship diagram for Outcome Management](./Documents/outcome-management-data-model.pdf)
 
 ## Deploy
 
-[Deploy Outcome Management](../Documents/DataverseBuildAndDeploy.md).
+[Deploy Outcome Management](../Documents/dataverse-build-and-deploy.md).
 
 ## Use
 

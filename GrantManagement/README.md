@@ -13,11 +13,11 @@ Grant Management is built on the [Common Data Model (CDM) for Nonprofits](https:
 
 Learn More:
 - Read about Grant Management on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/grant-management)
-- Review the [entity relationship diagram for Grant Management](./Documents/Grant%20Management%20-%20Data%20Model.pdf)
+- Review the [entity relationship diagram for Grant Management](./Documents/grant-management-data-model.pdf)
 
 ## Deploy
 
-[Deploy Grant Management](../Documents/DataverseBuildAndDeploy.md).
+[Deploy Grant Management](../Documents/dataverse-build-and-deploy.md).
 
 ## Use
 
