@@ -12,14 +12,14 @@ Learn more about Microsoft’s Common Data Model on [GitHub](https://github.com/
 
 Included in this repository are:
 
-- [Entity Relationship Diagrams (ERDs)](./Documents/Common%20Data%20Model%20for%20Nonprofits%20ERDs.pdf)
-- [Common Data Model for Nonprofits ERDs and How-to Guide](./Documents/Common%20Data%20Model%20for%20Nonprofits%20ERD%20and%20How-to-Guide.pdf)
-- [Schema Reference for the Common Data Model for Nonprofits](./Documents/Common%20Data%20Model%20for%20Nonprofits%20Schema%20Reference.xlsx)
+- [Entity Relationship Diagrams (ERDs)](./Documents/common-data-model-for-nonprofits-erds.pdf)
+- [Common Data Model for Nonprofits ERDs and How-to Guide](./Documents/common-data-model-for-nonprofits-erd-and-how-to-guide.pdf)
+- [Schema Reference for the Common Data Model for Nonprofits](./Documents/common-data-model-for-nonprofits-schema-reference.xlsx)
 
 ## Deploy
 
-[Deploy the Common Data Model for Nonprofits](../Documents/DataverseBuildAndDeploy.md).
+[Deploy the Common Data Model for Nonprofits](../Documents/dataverse-build-and-deploy.md).
 
 ## Use
 
-See the [Common Data Model for Nonprofits ERD and How-to Guide](./Documents/Common%20Data%20Model%20for%20Nonprofits%20ERD%20and%20How-to-Guide.pdf).
+See the [Common Data Model for Nonprofits ERD and How-to Guide](./Documents/common-data-model-for-nonprofits-erd-and-how-to-guide.pdf).

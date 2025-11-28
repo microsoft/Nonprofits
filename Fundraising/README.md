@@ -13,11 +13,11 @@ Fundraising is built on the [Common Data Model (CDM) for Nonprofits](https://aka
 
 Learn More:
 - Read about Fundraising on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/fundraising)
-- Review the [entity relationship diagram for Fundraising](./Documents/Fundraising%20-%20Data%20Model.pdf)
+- Review the [entity relationship diagram for Fundraising](./Documents/fundraising-data-model.pdf)
 
 ## Deploy
 
-[Deploy Fundraising](../Documents/DataverseBuildAndDeploy.md).
+[Deploy Fundraising](../Documents/dataverse-build-and-deploy.md).
 
 ## Use
 

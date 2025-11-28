@@ -7,7 +7,7 @@ Learn More About:
 - [Azure Landing Zones](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/)
 
 ## Deploy
-[Deploy Azure Landing Zone for Nonprofits](../Documents/ALZBuildAndDeploy.md).
+[Deploy Azure Landing Zone for Nonprofits](../Documents/alz-build-and-deploy.md).
 
 ## Use
 Get your staff and organization ready for Azure Landing Zones with [readiness and skilling](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/suggested-skills).

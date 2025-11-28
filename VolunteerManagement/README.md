@@ -19,7 +19,7 @@ Read about Volunteer Management on [MS Learn](https://learn.microsoft.com/en-us/
 
 ## Deploy
 
-[Deploy Volunteer Management](../Documents/DataverseBuildAndDeploy.md).
+[Deploy Volunteer Management](../Documents/dataverse-build-and-deploy.md).
 
 ## Use
 

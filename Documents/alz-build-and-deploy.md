@@ -24,7 +24,7 @@ Navigate to **Microsoft Entra ID > Properties**.
 
 Under Access management for Azure resources, set the toggle to Yes.
 
-![Elevate access](./elevate_access_img.png)
+![Elevate access](./img/elevate-access.png)
 
 ## 🛠 Grant explicit access at tenant root scope
 Use either Azure CLI or PowerShell to assign the necessary permissions to the user performing the deployment.
