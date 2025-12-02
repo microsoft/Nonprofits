@@ -10,7 +10,7 @@
     The name of the target Microsoft Fabric workspace where NDS will be installed.
     
 .PARAMETER Prefix
-    Optional prefix to add to all created resources. Default is 'DEV2_'.
+    Optional prefix to add to all created resources. Default is 'DEMO_'.
     Use 'PROD_' for production environments or leave empty for no prefix.
 
 .PARAMETER ImportSampleData
@@ -62,7 +62,7 @@ param (
         HelpMessage = "Enter a prefix for all resources (e.g., 'PROD_', 'TEST_')"
     )]
     [ValidatePattern('^[A-Za-z0-9_]*$')]
-    [string]$Prefix = 'DEV2_',
+    [string]$Prefix = 'DEMO_',
     
     [Parameter(
         Mandatory = $false,
