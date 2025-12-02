@@ -1590,8 +1590,7 @@
       <CanChangeHierarchicalRelationship>1</CanChangeHierarchicalRelationship>
       <EntityHelpUrlEnabled>0</EntityHelpUrlEnabled>
       <EntityHelpUrl></EntityHelpUrl>
-      <ChangeTrackingEnabled>0</ChangeTrackingEnabled>
-      <CanChangeTrackingBeEnabled>1</CanChangeTrackingBeEnabled>
+      <ChangeTrackingEnabled>1</ChangeTrackingEnabled>
       <IsEnabledForExternalChannels>0</IsEnabledForExternalChannels>
       <IsSolutionAware>0</IsSolutionAware>
       <HasRelatedNotes>True</HasRelatedNotes>
