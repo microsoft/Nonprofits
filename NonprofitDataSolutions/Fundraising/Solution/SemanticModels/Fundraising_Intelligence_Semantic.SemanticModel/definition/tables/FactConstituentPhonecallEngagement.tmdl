@@ -1,0 +1,124 @@
+table FactConstituentPhonecallEngagement
+	lineageTag: d3d15819-0645-4350-9ed1-b50426d9e1fe
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e889f531-f76d-4015-9a0b-b2fd0e2ec394
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7b2c0ace-0073-4af7-998b-a11774160428
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentPhonecallEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f1e53861-2e50-4d63-b059-1dbeeda4aa13
+		summarizeBy: none
+		sourceColumn: ConstituentPhonecallEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentPhonecallEngagementKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fbd2f72b-9413-43bd-b42e-6a4659ed8c92
+		summarizeBy: none
+		sourceColumn: ConstituentPhonecallEngagementKey
+
+		annotation SummarizationSetBy = User
+
+	column PhonecallDate
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 57f4cbcb-4ed9-4896-8dfe-e4731627ef97
+		summarizeBy: sum
+		sourceColumn: PhonecallDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhonecallKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7758098b-233f-4daa-bd2a-c0d279897bf1
+		summarizeBy: none
+		sourceColumn: PhonecallKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysConstituentPhonecallEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f454b156-342f-4642-8638-2dfb77752f7d
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentPhonecallEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9b0e00b3-cd8a-414a-a28a-196fd4242aa6
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 86d50aad-d120-4be2-a9d6-b76cbeba69c1
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d1b60869-29b0-4836-8d08-664f73b650fd
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 67eaca1b-5a2f-43d9-bfce-82874fb018a4
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	partition FactConstituentPhonecallEngagement = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactConstituentPhonecallEngagement = Source{[Schema="dbo",Item="FactConstituentPhonecallEngagement"]}[Data]
+				in
+				    dbo_FactConstituentPhonecallEngagement
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

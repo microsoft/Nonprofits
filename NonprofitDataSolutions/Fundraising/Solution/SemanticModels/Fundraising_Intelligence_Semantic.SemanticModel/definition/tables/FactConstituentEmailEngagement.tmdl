@@ -1,0 +1,180 @@
+table FactConstituentEmailEngagement
+	lineageTag: 430517c0-99d3-4ad2-adce-aa658cc099be
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cbdb22aa-f1b0-4363-bf54-32f3d18ee6c5
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ClickThrough
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 25044146-e125-413d-b9e7-30641284f794
+		summarizeBy: none
+		sourceColumn: ClickThrough
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClickThroughDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1b4001fe-0e2a-485d-a309-1dbacbd06883
+		summarizeBy: none
+		sourceColumn: ClickThroughDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentEmail
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 539d0d2d-6ed4-418f-85e5-c68c962ab4a9
+		summarizeBy: none
+		sourceColumn: ConstituentEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentEmailEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e3d01a3c-003b-49ae-823f-91a33e5febd1
+		summarizeBy: none
+		sourceColumn: ConstituentEmailEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentEmailEngagementKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: eabf6d43-1fe0-4363-8904-c838eccb83a8
+		summarizeBy: none
+		sourceColumn: ConstituentEmailEngagementKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: eaa966e1-327e-4eac-9c27-4999719316c4
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0cb17d45-cc78-4ad7-8080-79ce96ca2c38
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column EmailKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 58418d5f-dc43-4eb8-b89c-a39101fc0a4f
+		summarizeBy: none
+		sourceColumn: EmailKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a7d97ee1-1bb9-4fcf-8be9-49cb8edb05df
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column OpenedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b238df09-c59a-438d-b81c-4c5888756b77
+		summarizeBy: none
+		sourceColumn: OpenedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SentDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 405e4b30-a2f2-41e6-b9a4-71cd0e76055d
+		summarizeBy: none
+		sourceColumn: SentDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c15ac4ec-8b11-43af-8ee8-d3fb582fcdf3
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column EmailEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 56658dd2-a68e-454a-9ada-5a2d8173d3a5
+		summarizeBy: none
+		sourceColumn: EmailEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysConstituentEmailEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e5770d55-9fbd-4697-ab66-5ae9db3757e5
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentEmailEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1b73787b-3b1c-4966-8918-695eb07127f7
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	column WasOpened
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 3cb9714b-86f3-43e9-8a87-f920c61b3200
+		summarizeBy: none
+		sourceColumn: WasOpened
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactConstituentEmailEngagement = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactConstituentEmailEngagement = Source{[Schema="dbo",Item="FactConstituentEmailEngagement"]}[Data]
+				in
+				    dbo_FactConstituentEmailEngagement
+
+	annotation PBI_ResultType = Table
+

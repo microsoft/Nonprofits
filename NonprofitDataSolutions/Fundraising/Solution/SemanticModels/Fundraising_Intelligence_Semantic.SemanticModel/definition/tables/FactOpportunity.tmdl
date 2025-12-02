@@ -1,0 +1,204 @@
+table FactOpportunity
+	lineageTag: 66187e98-1265-4a80-980b-c84134ab604b
+
+	measure 'Real Revenue' = ```
+			
+			VAR ThisOpp = SELECTEDVALUE(FactDonation[OpportunityKey])
+			VAR TotalDon =
+			    CALCULATE(
+			      SUM( FactDonation[Amount] ),
+			      FILTER(
+			        FactDonation,
+			        FactDonation[OpportunityKey] = ThisOpp
+			      )
+			    )
+			RETURN
+			  COALESCE( TotalDon, 0 )
+			
+			```
+		lineageTag: ceef5308-4dd1-4fc6-bc09-1a54689f3db1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b46f2711-c419-41d9-8597-044f794622d9
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6e42eacf-88c5-4cea-a6b6-5e6d52b76591
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = User
+
+	column CloseDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 94cbd92d-6656-4a2b-991e-442d760f363f
+		summarizeBy: none
+		sourceColumn: CloseDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 35591cd0-b7dc-4fad-ac4c-f06b19a014f1
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 92e8845b-9987-42dd-80a5-59238830f256
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column CreationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9c25f947-f9fa-4d0c-88c6-048c602d676e
+		summarizeBy: none
+		sourceColumn: CreationDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ExpectedRevenue
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		sourceProviderType: decimal(18, 4)
+		lineageTag: e96dbc29-f787-4557-9d6f-756ce05d2450
+		summarizeBy: sum
+		sourceColumn: ExpectedRevenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column IsClosed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 426251f3-53f8-496f-80d8-f7672237b374
+		summarizeBy: none
+		sourceColumn: IsClosed
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 17a33aff-c875-4d38-98a2-77576cb4bb6a
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column OpportunityId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4c1fd0e2-4a8a-46d2-b9de-d0d8738c59f0
+		summarizeBy: none
+		sourceColumn: OpportunityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0c51d0ef-5ec7-4089-ad3a-979165a5f093
+		summarizeBy: none
+		sourceColumn: OpportunityKey
+
+		annotation SummarizationSetBy = User
+
+	column OpportunityName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: eba5ca9f-1375-48fe-9288-3d3669bef3f6
+		summarizeBy: none
+		sourceColumn: OpportunityName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityStageKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 65466db2-7eb5-4311-90ef-83f95d91e9ba
+		summarizeBy: none
+		sourceColumn: OpportunityStageKey
+
+		annotation SummarizationSetBy = User
+
+	column OpportunityTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7873bc4c-0317-4877-82f3-1b640bbf4e13
+		summarizeBy: none
+		sourceColumn: OpportunityTypeKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 22966016-278e-4661-b205-14ed2a558985
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysOpportunityId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b1c34043-c3b6-4b3d-8a25-8fa7810be069
+		summarizeBy: none
+		sourceColumn: SourceSysOpportunityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 14bc1d89-8eae-4598-af7e-18f37d84d076
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactOpportunity = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactOpportunity = Source{[Schema="dbo",Item="FactOpportunity"]}[Data]
+				in
+				    dbo_FactOpportunity
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

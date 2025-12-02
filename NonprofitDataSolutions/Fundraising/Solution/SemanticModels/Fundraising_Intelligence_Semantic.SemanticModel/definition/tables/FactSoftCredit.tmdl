@@ -1,0 +1,106 @@
+table FactSoftCredit
+	lineageTag: bc0dec0f-a790-4fdb-bf4b-0b4aeb99786a
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a350d9c2-4d99-452e-9f45-1b85b183cc44
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d40d9385-d54f-4547-9082-94c78e35be15
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a726d920-2d18-4c86-b658-1a5d6ac29c06
+		summarizeBy: none
+		sourceColumn: DonationKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f7063d1d-6042-4b9b-9f19-5ce1f75ed663
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SoftCreditAmount
+		dataType: double
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 67f875a8-cc61-4f0b-a4d3-c677b418af62
+		summarizeBy: sum
+		sourceColumn: SoftCreditAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SoftCreditId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d053f1fd-0946-45d2-a8d5-8f6f1e6bec29
+		summarizeBy: none
+		sourceColumn: SoftCreditId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SoftCreditKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6827d4d3-19bb-410f-8112-0b8a671cd37e
+		summarizeBy: none
+		sourceColumn: SoftCreditKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: da223c9a-1436-4bb0-9f0f-7081bca3a21f
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysSoftCreditId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b3889013-ff31-4121-af8e-51f8ffd58da9
+		summarizeBy: none
+		sourceColumn: SourceSysSoftCreditId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactSoftCredit = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactSoftCredit = Source{[Schema="dbo",Item="FactSoftCredit"]}[Data]
+				in
+				    dbo_FactSoftCredit
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

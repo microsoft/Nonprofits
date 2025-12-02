@@ -1,0 +1,374 @@
+table 'Measure Table'
+	lineageTag: 0e8c38ef-09d0-4f45-a77a-2688c420e534
+
+	measure 'Attended Events' = ```
+			
+			 VAR EN =CALCULATE( COUNT(FactEventAttendance[EventAttendanceKey]),
+			FactEventAttendance[AttendedEvent] = TRUE())
+			
+			RETURN IF(ISBLANK(EN),0, EN)
+			```
+		formatString: 0
+		lineageTag: c5f2efbc-1e44-49f9-a935-19ea972ad8a4
+
+	measure ConstituentMeasure =
+			SWITCH( TRUE(),
+			SELECTEDVALUE(DonorMeasure[Measure]) = "# of Constituents", DISTINCTCOUNT(DimConstituent[ConstituentKey]),
+			SELECTEDVALUE(DonorMeasure[Measure]) = "Donation Amount", SUM(FactDonation[Amount]),
+			BLANK())
+		lineageTag: d63b6c2f-70bd-4490-acdc-96b03da9877a
+
+	measure 'Direct Mail CR' =
+			
+			VAR division= DIVIDE(
+			    CALCULATE(COUNTROWS( FactDonation ), DimChannel[ChannelName] = "Direct Mail"),
+			    COUNTROWS( FactConstituentLetterEngagement )
+			)
+			
+			RETURN division
+		formatString: 0%;-0%;0%
+		lineageTag: 6a8fffca-3edf-4d99-bcfa-f1cbb28687ab
+
+	measure 'Email CR' = ```
+			
+			DIVIDE(
+			    CALCULATE(COUNTROWS( FactDonation ), DimChannel[ChannelName] = "Email"),
+			    COUNTROWS( FactConstituentEmailEngagement )
+			    
+			)
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: 7f9bcc98-cba1-408a-8006-f9b56e9d5113
+
+	measure 'Email CTR %' = ```
+			
+			VAR SentEmails =
+			    COUNTROWS( FactConstituentEmailEngagement )
+			VAR ClickedEmails =
+			    CALCULATE(
+			        COUNTROWS( FactConstituentEmailEngagement ),
+			        FactConstituentEmailEngagement[ClickThrough] = TRUE()
+			    )
+			RETURN
+			IF(
+			    OR(SentEmails = 0,ClickedEmails = 0),
+			    0,
+			    DIVIDE( ClickedEmails, SentEmails )
+			)
+			
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: f898322f-a5d6-400f-9cf0-f31e32b0f54a
+
+	measure 'Email Open Rate %' = ```
+			
+			VAR SentEmails =
+			    COUNTROWS( FactConstituentEmailEngagement )
+			VAR OpenedEmails =
+			    CALCULATE(
+			        COUNTROWS( FactConstituentEmailEngagement ),
+			        FactConstituentEmailEngagement[WasOpened] = TRUE()
+			    )
+			RETURN
+			IF(
+			    OR(SentEmails = 0, OpenedEmails = 0),
+			    0,                           // no emails sent → blank
+			    DIVIDE( OpenedEmails, SentEmails ) // otherwise, 0–1 range, as blank if denom=0 is impossible now
+			)
+			
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: 2d08ea17-ac9c-4c1f-966e-2cdd83551734
+
+	measure 'Giving Range' = ```
+			
+			VAR BucketSize = 5000
+			VAR total = [Total Donations]
+			VAR BucketStart = INT(total / BucketSize) * BucketSize
+			VAR BucketEnd = BucketStart + BucketSize - 1
+			RETURN 
+			"$" & FORMAT(BucketStart, "#,0") & " - $" & FORMAT(BucketEnd, "#,0")
+			
+			```
+		lineageTag: 22ec88e6-f3f3-4dcb-883f-9c62286f1583
+
+	measure MapTitle =
+			SWITCH( TRUE(),
+			SELECTEDVALUE(DonorMeasure[Measure]) = "# of Constituents", "Constituent Density Map",
+			SELECTEDVALUE(DonorMeasure[Measure]) = "Donation Amount","Donations Density Map",
+			BLANK())
+		lineageTag: f0ab8d59-28c8-4b74-a740-9be320dc7ba6
+
+	measure 'Phone Call CR' =
+			
+			VAR division= DIVIDE(
+			    CALCULATE(COUNTROWS( FactDonation ), DimChannel[ChannelName] = "Phone Call"),
+			    COUNTROWS( FactConstituentPhonecallEngagement )
+			)
+			
+			RETURN division
+		formatString: 0%;-0%;0%
+		lineageTag: 2032dfe9-237f-4a99-a684-13bcb20664c5
+
+	measure 'Social Media CR' =
+			
+			VAR division= DIVIDE(
+			    CALCULATE(COUNTROWS( FactDonation ), DimChannel[ChannelName] = "Social Media"),
+			    COUNTROWS( FactConstituentSocialEngagement )
+			)
+			
+			RETURN division
+		formatString: 0%;-0%;0%
+		lineageTag: fd7a9dbc-e1b5-4dd2-9e6e-ce3ba6448228
+
+	measure 'Total CR' = ([Email CR]+[Social Media CR]+[Phone Call CR]+[Direct Mail CR])/4
+		formatString: 0%;-0%;0%
+		lineageTag: 1e1b4f19-0358-4ff5-952b-03a5108c5468
+
+	measure 'Total Donations' = SUM(FactDonation[Amount])
+		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
+		lineageTag: bb869fed-966d-4460-aeaa-b41783580a9c
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY Growth %' = ```
+			
+			VAR CurrAmt = [Total Donations]
+			VAR PrevAmt =
+			    CALCULATE(
+			      [Total Donations],
+			      SAMEPERIODLASTYEAR( 'DimDate'[Date] )
+			    )
+			    
+			
+			RETURN
+			IF(
+			  ISBLANK( PrevAmt ),
+			  BLANK(),                             
+			  DIVIDE( CurrAmt - PrevAmt, PrevAmt )  
+			)
+			
+			```
+		lineageTag: 3de6d5a5-65d1-4c31-93c3-c7c3899545d4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure DonorTotal = ```
+			
+			CALCULATE(
+			    SUM(FactDonation[Amount]),
+			    FactDonation[ConstituentKey] = SELECTEDVALUE(DimConstituent[ConstituentKey])
+			)
+			
+			```
+		lineageTag: 341fe200-1e50-48ac-a8d6-e78f42378a84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure OpportunityKeyCount = CALCULATE(COUNTROWS(VALUES(FactOpportunity[OpportunityKey])))
+		formatString: 0
+		lineageTag: f8b705ec-02ac-43c2-8bdd-1d9958ddd024
+
+	measure OpportunityExpectedRevenue = CALCULATE(SUM(FactOpportunity[ExpectedRevenue]))
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: a73edbd0-34d5-4e25-a569-1995dda61285
+
+	measure FactDonationTotalAmount = CALCULATE(SUM(FactDonation[Amount]))
+		lineageTag: 3590331f-aa3e-446e-9fb0-c61c6d162faa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ConstituentKeyCount = CALCULATE(DISTINCTCOUNTNOBLANK('DimConstituentSegmentBridge Age'[ConstituentKey]))
+		formatString: 0
+		lineageTag: d7236840-c078-4bc1-be9b-510f15611dfc
+
+	measure CountryNameText = ```
+			
+			IF (
+			    HASONEVALUE(DimAddress[CountryName]),
+			    VALUES(DimAddress[CountryName]),
+			    "Multiple or No Country Selected"
+			)
+			
+			```
+		lineageTag: 6c2c81ad-def7-4525-8b38-f9c8260a6a4d
+
+	measure DonationCount = ```
+			
+			CALCULATE(
+			    COUNTROWS(FactDonation),
+			    ALLEXCEPT(DimConstituent, DimConstituent[ConstituentKey])
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 5e1ea0b7-b97d-4168-ab79-89a296cf0e21
+
+	measure AvgDaysBetween = ```
+			
+			VAR DonorID = SELECTEDVALUE(DimConstituent[ConstituentKey])
+			VAR DonorDates =
+			    CALCULATETABLE(
+			        VALUES(DimDate[Date]),
+			        FactDonation[ConstituentKey] = DonorID
+			    )
+			VAR SortedDates =
+			    ADDCOLUMNS(
+			        DonorDates,
+			        "PrevDate",
+			        VAR CurrentDate = DimDate[Date]
+			        RETURN
+			            CALCULATE(
+			                MAX(DimDate[Date]),
+			                FILTER(
+			                    DonorDates,
+			                    DimDate[Date] < CurrentDate
+			                )
+			            )
+			    )
+			VAR Intervals =
+			    ADDCOLUMNS(
+			        SortedDates,
+			        "Interval", DATEDIFF([PrevDate], DimDate[Date], DAY)
+			    )
+			RETURN
+			    AVERAGEX(
+			        FILTER(Intervals, NOT ISBLANK([Interval])),
+			        [Interval]
+			    )
+			
+			```
+		lineageTag: ba7a76b2-58a1-4fd9-9d76-07cb9fa3a13d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure GivingFrequency = ```
+			
+			VAR DonorID = SELECTEDVALUE(DimConstituent[ConstituentKey])
+			VAR DonorDates =
+			    CALCULATETABLE(
+			        VALUES(DimDate[Date]),
+			        FactDonation[ConstituentKey] = DonorID
+			    )
+			VAR SortedDates =
+			    ADDCOLUMNS(
+			        DonorDates,
+			        "PrevDate",
+			        VAR CurrentDate = DimDate[Date]
+			        RETURN
+			            CALCULATE(
+			                MAX(DimDate[Date]),
+			                FILTER(
+			                    DonorDates,
+			                    DimDate[Date] < CurrentDate
+			                )
+			            )
+			    )
+			VAR Intervals =
+			    ADDCOLUMNS(
+			        SortedDates,
+			        "Interval", DATEDIFF([PrevDate], DimDate[Date], DAY)
+			    )
+			VAR AvgInterval =
+			    AVERAGEX(
+			        FILTER(Intervals, NOT ISBLANK([Interval])),
+			        [Interval]
+			    )
+			VAR DonationCount =
+			    CALCULATE(
+			        COUNTROWS(FactDonation),
+			        ALLEXCEPT(DimConstituent, DimConstituent[ConstituentKey])
+			    )
+			RETURN
+			    IF(
+			        DonationCount <= 1,
+			        "One-time",
+			        SWITCH(
+			            TRUE(),
+			            AvgInterval <= 40, "Monthly",
+			            AvgInterval <= 130, "Quarterly",
+			            AvgInterval <= 370, "Annually",
+			            "Sporadically"
+			        )
+			    )
+			
+			```
+		lineageTag: d907dfd2-a7a7-4c05-9a19-a2611df36e7b
+
+	measure 'Constituent count' = COUNTROWS(DimConstituent)
+		formatString: 0
+		lineageTag: 82bce4f0-35c3-46a2-a411-30cb176f602c
+
+	measure 'Constituent Name' = Max(DimConstituent[ConstituentName])
+		lineageTag: 4a823e54-c289-41e7-a608-c69a32f846ed
+
+	measure LastDonationDate =
+			
+			VAR dateKey = SELECTEDVALUE(dm_Constituent[LastDonationDateKey])
+			RETURN
+			LOOKUPVALUE(DimDate[Date], DimDate[DateKey], dateKey)
+		formatString: mm/dd/yyyy
+		lineageTag: 5d261802-96e4-47d3-8cb9-563351cb6435
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'Conversion Rate' = ```
+			
+			VAR CurrentChannel = SELECTEDVALUE(DimChannel[ChannelKey])
+			
+			-- One row per constituent per channel
+			VAR Summary =
+			    ADDCOLUMNS(
+			        SUMMARIZE(
+			            FILTER(
+			                dm_EngagementTimeline,
+			                dm_EngagementTimeline[ChannelKey] = CurrentChannel
+			            ),
+			            dm_EngagementTimeline[ConstituentKey]
+			        ),
+			        "Converted", 
+			        CALCULATE(
+			            MAX(dm_EngagementTimeline[WasConverted])
+			        )
+			    )
+			
+			-- Count who converted at least once
+			VAR Converted =
+			    COUNTROWS(
+			        FILTER(Summary, [Converted] = 1)
+			    )
+			
+			-- Total engaged (deduplicated)
+			VAR Engaged = COUNTROWS(Summary)
+			
+			RETURN DIVIDE(Converted, Engaged)
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f5e74fab-df7e-46f9-84e0-f9c8f5a7f06b
+
+	measure FirstDonationDate =
+			
+			VAR dateKey = SELECTEDVALUE(dm_Constituent[FirstDonationDateKey])
+			RETURN
+			LOOKUPVALUE(DimDate[Date], DimDate[DateKey], dateKey)
+		formatString: mm/dd/yyyy
+		lineageTag: dcf3b5c7-54d2-4a93-b213-5d294319654a
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition 'Measure Table' = m
+		mode: import
+		queryGroup: Measures
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

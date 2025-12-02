@@ -1,0 +1,75 @@
+table DimVolunteeringType
+	lineageTag: 07147f52-d552-4aec-9335-0bd4df31eaf8
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 51644338-7597-4c5a-be5d-d9fc68e8ad56
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e4242760-9e24-4d12-8502-a55e4489c6b4
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d59ae3c7-b276-4512-8d97-61833a5d6b22
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column VolunteeringTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ee16c203-845c-4f7a-8bdd-f44bbf833b1d
+		summarizeBy: none
+		sourceColumn: VolunteeringTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column VolunteeringTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6e6b21c9-f3f6-430c-8a7e-f19be4a895ef
+		summarizeBy: none
+		sourceColumn: VolunteeringTypeKey
+
+		annotation SummarizationSetBy = User
+
+	column VolunteeringTypeName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 23a4ed65-bd95-4e17-8d37-52b2cf51ac0f
+		summarizeBy: none
+		sourceColumn: VolunteeringTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimVolunteeringType = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimVolunteeringType = Source{[Schema="dbo",Item="DimVolunteeringType"]}[Data]
+				in
+				    dbo_DimVolunteeringType
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,141 @@
+table dm_EngagementTimeline
+	lineageTag: e1a79681-aab8-43ed-b56a-6dc73b18290a
+
+	measure 'Interaction Count' = ```
+			
+			VAR SelectedConstituents =
+			    VALUES(DimConstituent[ConstituentKey])
+			
+			VAR SelectedCategory =
+			    SELECTEDVALUE(dm_EngagementTimeline[ActivityCategory])
+			
+			RETURN
+			IF(
+			    NOT ISBLANK(SelectedCategory),
+			    CALCULATE(
+			        COUNTROWS(dm_EngagementTimeline),
+			        dm_EngagementTimeline[ActivityCategory] = SelectedCategory,
+			        TREATAS(SelectedConstituents, dm_EngagementTimeline[ConstituentKey])
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 431ca261-1f9a-46bb-b4aa-0d5754664659
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ee0aaf3b-4ad7-4e24-96ae-7e48d5779710
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 75ac7ed9-ede1-4b2c-b534-1630fec0b3c7
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b23793bb-bd86-4137-99f7-6eef6c55daa0
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column EngagementDate
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a8249194-e734-4ce3-9c6b-e44e86bd8f43
+		summarizeBy: sum
+		sourceColumn: EngagementDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a2f569cb-79b2-4aa5-b27e-96aa533d47e3
+		summarizeBy: none
+		sourceColumn: EngagementStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 92742820-0b76-4c12-8662-dc6517b90567
+		summarizeBy: none
+		sourceColumn: EngagementType
+
+		annotation SummarizationSetBy = Automatic
+
+	column InteractionId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0e4f5513-618f-4389-a6ad-cf8c552c6a33
+		summarizeBy: none
+		sourceColumn: InteractionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WasConverted =
+			
+			VAR EngagementDate = dm_EngagementTimeline[EngagementDate]
+			VAR FirstDonationDate =
+			    RELATED(dm_Constituent[FirstDonationDateKey])
+			
+			RETURN IF(
+			    NOT ISBLANK(FirstDonationDate) && FirstDonationDate >= EngagementDate,
+			    1,
+			    0
+			)
+		formatString: 0
+		lineageTag: 34e8ecbb-6951-4aa3-b612-92066bd87c9d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActivityCategory = ```
+			
+			SWITCH(
+			    TRUE(),
+			    dm_EngagementTimeline[EngagementType] = "Email Open", "Email Open",
+			    dm_EngagementTimeline[EngagementType] = "Email Click", "Email ClickThrough",
+			    dm_EngagementTimeline[EngagementType] = "Phone Call", "Phone Call",
+			    dm_EngagementTimeline[EngagementType] = "Letter Sent", "Letter",
+			    dm_EngagementTimeline[EngagementType] IN { "Social Like", "Social Share", "Social Impression" }, "Social",
+			    BLANK()
+			)
+			
+			```
+		lineageTag: 3396fd98-e5c3-4ee4-8a3e-cae6c4457c96
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dm_EngagementTimeline = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_dm_EngagementTimeline = Source{[Schema="dbo",Item="dm_EngagementTimeline"]}[Data]
+				in
+				    dbo_dm_EngagementTimeline
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

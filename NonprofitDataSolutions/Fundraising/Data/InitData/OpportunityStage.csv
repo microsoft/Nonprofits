@@ -1,0 +1,10 @@
+Name,OpportunityStageId,OpportunityTypeId
+Identified,6c6e6e48-f4c7-4c98-a5fb-e942d3a0940e,1ba6b9cd-b215-4f57-8b04-226a433c4ce1
+Qualification,cd46dd46-71d2-46ff-b973-0dfb1900d54d,1ba6b9cd-b215-4f57-8b04-226a433c4ce1
+Proposal,0bbc7769-b03c-4aa6-9e53-61e0e5d0cb79,1ba6b9cd-b215-4f57-8b04-226a433c4ce1
+Closed Won,1c2de475-a349-42e0-ac50-352ca6b8bc9a,1ba6b9cd-b215-4f57-8b04-226a433c4ce1
+Closed Lost,3acd218e-62bd-4a27-9bfc-e9bcf82fe982,1ba6b9cd-b215-4f57-8b04-226a433c4ce1
+Application Received,7345e14a-2d2a-4ee4-9c00-41e5c3933989,39e9bda5-5fd8-4034-81ae-8a9aeeacfb51
+Review,a30dfaf6-3638-4f9f-8cc0-b1cd202842b3,39e9bda5-5fd8-4034-81ae-8a9aeeacfb51
+Approved,c5871f78-bb43-4046-8fd9-74eb107f1eb1,39e9bda5-5fd8-4034-81ae-8a9aeeacfb51
+Declined,107c2e9c-16b2-4ea5-be19-e9d2677f1257,39e9bda5-5fd8-4034-81ae-8a9aeeacfb51

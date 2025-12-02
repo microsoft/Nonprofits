@@ -1,0 +1,144 @@
+table dm_Constituent
+	lineageTag: c9b067d7-cf71-40f6-b227-1003e474cb96
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a6c3ff8e-31cc-463d-a2cb-f195177e6185
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d972a9cb-6b49-4724-a781-3d32bb9c53ca
+		summarizeBy: none
+		sourceColumn: ConstituentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: da5c78fe-598a-4c1e-a6d0-c50b6fa19292
+		summarizeBy: none
+		sourceColumn: ConstituentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fa33f7f0-0bc4-42d4-89f9-1664f5540ff5
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6a5324c8-be14-4b35-bf03-2bb788f5ec1b
+		summarizeBy: none
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1ec39b48-d61a-41c5-aed5-9d97564731b4
+		summarizeBy: none
+		sourceColumn: EngagementStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column AcquisitionChannel
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 54e37bbe-3fd3-404b-b69f-6c87091fa029
+		summarizeBy: none
+		sourceColumn: AcquisitionChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column LifetimeDonationAmount
+		dataType: double
+		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
+		sourceProviderType: decimal(18, 4)
+		lineageTag: ad3ea5b7-94b7-4ae8-979a-1d9809656bd8
+		summarizeBy: none
+		sourceColumn: LifetimeDonationAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column FirstDonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ea0750d3-1f30-4323-b133-4af1c4116ddd
+		summarizeBy: none
+		sourceColumn: FirstDonationDateKey
+
+		annotation SummarizationSetBy = User
+
+	column LastDonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: df2cbcf0-2a4c-411e-a600-89ac4a3fcb2f
+		summarizeBy: none
+		sourceColumn: LastDonationDateKey
+
+		annotation SummarizationSetBy = User
+
+	column AttendedEventsCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 51090250-feb1-48c2-b1f0-c8b97007ea60
+		summarizeBy: none
+		sourceColumn: AttendedEventsCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstEngagementDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5124a86d-641b-40dd-9f07-b86323e49ce7
+		summarizeBy: none
+		sourceColumn: FirstEngagementDateKey
+
+		annotation SummarizationSetBy = User
+
+	column IsNewDonor
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: a1bb6034-7197-4994-9037-49f3eec28850
+		summarizeBy: none
+		sourceColumn: IsNewDonor
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dm_Constituent = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_dm_Constituent = Source{[Schema="dbo",Item="dm_Constituent"]}[Data]
+				in
+				    dbo_dm_Constituent
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

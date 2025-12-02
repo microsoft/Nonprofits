@@ -1,0 +1,140 @@
+table DimConstituent
+	lineageTag: ca9cfd5b-7267-41c9-8082-50fe9e9eb2e0
+
+	column AddressKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c06912ed-770f-4e76-b2a2-2acce27ed26d
+		summarizeBy: none
+		sourceColumn: AddressKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fc5fe9ba-bcef-410a-aeab-72a9f61a7aac
+		summarizeBy: none
+		sourceColumn: ConstituentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9aa276dc-4386-4b03-ab68-6aa5d7dd2c09
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e17354a7-5c09-4b50-8d4d-3c0622e776e4
+		summarizeBy: none
+		sourceColumn: ConstituentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 72266ad7-b0db-4cfb-9420-3ed155a249f7
+		summarizeBy: none
+		sourceColumn: ConstituentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 77f51d7c-3620-49dc-aa30-c65adc484f01
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column Email
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a78693c5-7c0b-4e5f-82b1-bb34ce42aea2
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 80514629-b0f1-4e84-b238-b44a3e9104b4
+		summarizeBy: none
+		sourceColumn: EngagementStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6eb40763-879c-4820-a8f1-7bfa0ab79bab
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ca34fde8-7156-4ebd-b404-733d16ca4117
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column RegistrationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5d69389e-1937-40c8-881f-c95b44697034
+		summarizeBy: none
+		sourceColumn: RegistrationDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 71e55181-89e5-45d9-acdd-d8cd0764ff76
+		summarizeBy: count
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysConstituentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7d3333e9-83a7-4d1e-97ea-a8310fa9829d
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituent = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimConstituent = Source{[Schema="dbo",Item="DimConstituent"]}[Data]
+				in
+				    dbo_DimConstituent
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

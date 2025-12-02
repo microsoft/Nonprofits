@@ -1,0 +1,45 @@
+table DimSource
+	lineageTag: 6e1a18a9-9589-4263-813f-10eb07d0b148
+
+	column SourceId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5ac67277-6a02-46fe-8014-d5803cf72f1c
+		summarizeBy: none
+		sourceColumn: SourceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0b8d16ec-6318-4145-a2aa-c827ad36c945
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ef7a2b1b-4e26-4de9-9f70-6912b10fb344
+		summarizeBy: none
+		sourceColumn: SourceName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimSource = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimSource = Source{[Schema="dbo",Item="DimSource"]}[Data]
+				in
+				    dbo_DimSource
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

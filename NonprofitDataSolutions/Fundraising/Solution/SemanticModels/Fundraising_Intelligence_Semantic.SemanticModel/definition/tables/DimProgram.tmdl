@@ -1,0 +1,84 @@
+table DimProgram
+	lineageTag: 7dec1f5a-590e-41c6-b2ce-a0ce22aedc2f
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: af385fed-e247-4129-9b05-43e8c86a857d
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 4d7a8d5c-977a-485e-b789-e596f7bbebbb
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ProgramId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3028c0d5-5978-4394-b3ea-867fbb24779a
+		summarizeBy: none
+		sourceColumn: ProgramId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgramKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 826b968b-a37b-467b-a092-2fb03eda4348
+		summarizeBy: none
+		sourceColumn: ProgramKey
+
+		annotation SummarizationSetBy = User
+
+	column ProgramName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 58db8837-bb29-4367-89fa-88ae96f0118b
+		summarizeBy: none
+		sourceColumn: ProgramName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5d463731-46b1-4837-938d-7673a1dfb8fa
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysProgramId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3821335a-fbe1-41c5-899e-fe37892b256d
+		summarizeBy: none
+		sourceColumn: SourceSysProgramId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimProgram = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimProgram = Source{[Schema="dbo",Item="DimProgram"]}[Data]
+				in
+				    dbo_DimProgram
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

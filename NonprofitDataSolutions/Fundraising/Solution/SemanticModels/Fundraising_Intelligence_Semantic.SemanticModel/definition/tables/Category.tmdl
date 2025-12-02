@@ -1,0 +1,46 @@
+table Category
+	lineageTag: 55080d08-a78c-427b-8406-0ec24e145d0d
+
+	column Category
+		lineageTag: 9798bf85-a2fa-4907-8f27-2f98dab9f05b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Category]
+
+		annotation SummarizationSetBy = Automatic
+
+	column TableName
+		lineageTag: 292b8a12-408b-48de-bf0c-48a8693e585e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TableName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		formatString: 0
+		lineageTag: e18dcf10-32fc-4cc1-b280-3f1021738532
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Category = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "Category", STRING,
+				    "TableName", STRING,
+				    "Order", INTEGER,
+				    {
+				        {"Campaign", "DimCampaign", 0},
+				        {"Channel", "DimChannel", 1}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = aab7f8973b964f648daada7d9d3418c8
+

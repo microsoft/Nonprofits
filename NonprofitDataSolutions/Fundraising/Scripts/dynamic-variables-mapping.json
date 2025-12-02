@@ -1,0 +1,732 @@
+{
+  "metadata": {
+    "folders": 17,
+    "generated_at": "2025-11-11T22:37:02Z",
+    "definitions_path": "../Solution/",
+    "total_entries": 143,
+    "unique_variables": 28,
+    "unique_files": 17
+  },
+  "mappings": [
+    {
+      "folder_name": "Fundraising_BR_Ingestion.DataPipeline",
+      "files": [
+        {
+          "file": "DataPipelines/Fundraising_BR_Ingestion.DataPipeline/pipeline-content.json",
+          "dynamic_variables": [
+            {
+              "path": "$.properties.activities[?(@.name == 'Import SalesforceNPSP data to Bronze')].typeProperties.pipeline.referenceName",
+              "value": "{{Fundraising_SalesforceNPSP_BR_Load_DataPipeline}}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Transform SalesforceNPSP bronze data to silver')].typeProperties.notebookId",
+              "value": "{SALESFORCE_TRANSFORM_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Import sample data')].typeProperties.notebookId",
+              "value": "{SILVER_IMPORT_SAMPLE_DATA_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Import sample data')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Transform Dynamics 365 bronze data to silver')].typeProperties.notebookId",
+              "value": "{D365_TRANSFORM_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Transform Dynamics 365 bronze data to silver')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Transform SalesforceNPSP bronze data to silver')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_Config.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_Config.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "silver_lakehouse_name = \"{SILVER_LAKEHOUSE_NAME}\"\n"
+            },
+            {
+              "path": "$.cells[1].source[1]",
+              "value": "gold_lakehouse_name = \"{GOLD_LAKEHOUSE_NAME}\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_D365_Config.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_D365_Config.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.cells[2].source[1]",
+              "value": "bronze_lakehouse_name = \"{DYNAMICS_LAKEHOUSE_NAME}\"\n"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_D365_Transform.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_D365_Transform.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{DYNAMICS_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{DYNAMICS_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{DYNAMICS_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[0].source[0]",
+              "value": "%run <Fundraising_D365_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_GD_CreateSchema.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_GD_CreateSchema.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{GOLD_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{GOLD_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{GOLD_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_GD_CreateSegments.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_GD_CreateSegments.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{GOLD_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{GOLD_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{GOLD_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_Orchestration.DataPipeline",
+      "files": [
+        {
+          "file": "DataPipelines/Fundraising_Orchestration.DataPipeline/pipeline-content.json",
+          "dynamic_variables": [
+            {
+              "path": "$.properties.activities[?(@.name == 'Bronze ingestion')].typeProperties.pipeline.referenceName",
+              "value": "{BRONZE_INGESTION_PIPELINE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Create gold data model')].typeProperties.notebookId",
+              "value": "{GOLD_CREATE_SCHEMA_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Create silver data model')].typeProperties.notebookId",
+              "value": "{SILVER_CREATE_SCHEMA_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Silver to Gold enrichment')].typeProperties.pipeline.referenceName",
+              "value": "{SILVER_TO_GOLD_ENRICHMENT_PIPELINE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Configure silver data model')].typeProperties.notebookId",
+              "value": "{SILVER_CREATE_DEFAULT_CONFIGURATION_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Create gold data model')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Create silver data model')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Configure silver data model')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SalesforceNPSP_BR_Load.DataPipeline",
+      "files": [
+        {
+          "file": "DataPipelines/Fundraising_SalesforceNPSP_BR_Load.DataPipeline/pipeline-content.json",
+          "dynamic_variables": [
+            {
+              "path": "$.properties.activities[?(@.name == 'Create Watermark table')].typeProperties.notebookId",
+              "value": "{BRONZE_CONFIG_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Account_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Address_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Campaign_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'CampaignMember_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Contact_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Copy EmailMessageRelation')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'EmailMessage_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Event_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'GetLastWatermark')].typeProperties.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Opportunity_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityContactRole_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityStage_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'RecordType_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Task_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'VolunteerHours_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Account_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Address_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Campaign_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'CampaignMember_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Contact_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Copy EmailMessageRelation')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'EmailMessage_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Event_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'GetLastWatermark')].typeProperties.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Opportunity_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityContactRole_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityStage_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'RecordType_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Task_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'VolunteerHours_Copy')].typeProperties.sink.datasetSettings.linkedService.name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Delete Bronze tables')].typeProperties.notebookId",
+              "value": "{BRONZE_MERGE_STAGING_DATA_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Merge staging to main tables')].typeProperties.notebookId",
+              "value": "{BRONZE_MERGE_STAGING_DATA_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Account_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Address_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Campaign_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'CampaignMember_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Contact_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Copy EmailMessageRelation')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'EmailMessage_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Event_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Opportunity_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityContactRole_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityStage_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'RecordType_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Task_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'VolunteerHours_Copy')].typeProperties.source.datasetSettings.externalReferences.connection",
+              "value": "{SALESFORCE_CONNECTION_NAME}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Account_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Address_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Campaign_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'CampaignMember_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Contact_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Copy EmailMessageRelation')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Create Watermark table')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Delete Bronze tables')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'EmailMessage_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Event_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'GetLastWatermark')].typeProperties.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Merge staging to main tables')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Opportunity_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityContactRole_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'OpportunityStage_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'RecordType_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Task_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'VolunteerHours_Copy')].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SalesforceNPSP_BR_Merge.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SalesforceNPSP_BR_Merge.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[0].source[0]",
+              "value": "%run <Fundraising_SalesforceNPSP_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SalesforceNPSP_Config.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SalesforceNPSP_Config.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.cells[2].source[1]",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_Config>"
+            },
+            {
+              "path": "$.cells[2].source[1]",
+              "value": "bronze_lakehouse_name = \"{BRONZE_LAKEHOUSE_NAME}\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SalesforceNPSP_Transform.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SalesforceNPSP_Transform.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{BRONZE_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{BRONZE_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_SalesforceNPSP_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SL_CreateSchema.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SL_CreateSchema.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{SILVER_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SL_DefaultConfig.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SL_DefaultConfig.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{SILVER_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[0].source[0]",
+              "value": "%run <Fundraising_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SL_GD_Enrichment.DataPipeline",
+      "files": [
+        {
+          "file": "DataPipelines/Fundraising_SL_GD_Enrichment.DataPipeline/pipeline-content.json",
+          "dynamic_variables": [
+            {
+              "path": "$.properties.activities[?(@.name == 'Segmentation')].typeProperties.notebookId",
+              "value": "{GOLD_CREATE_SEGMENTS_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Enrich silver to gold data')].typeProperties.notebookId",
+              "value": "{SILVER_TO_GOLD_ENRICHMENT_NOTEBOOK_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Enrich silver to gold data')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.properties.activities[?(@.name == 'Segmentation')].typeProperties.workspaceId",
+              "value": "{WORKSPACE_ID}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SL_GD_Enrichment.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SL_GD_Enrichment.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{SILVER_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_Config>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "folder_name": "Fundraising_SL_SampleData.Notebook",
+      "files": [
+        {
+          "file": "Notebooks/Fundraising_SL_SampleData.Notebook/notebook-content.ipynb",
+          "dynamic_variables": [
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.known_lakehouses[0].id",
+              "value": "{SILVER_LAKEHOUSE_ID}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_name",
+              "value": "{SILVER_LAKEHOUSE_NAME}"
+            },
+            {
+              "path": "$.metadata.dependencies.lakehouse.default_lakehouse_workspace_id",
+              "value": "{WORKSPACE_ID}"
+            },
+            {
+              "path": "$.cells[1].source[0]",
+              "value": "%run <Fundraising_SL_CreateSchema> { \"enable_create_tables\": false }"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

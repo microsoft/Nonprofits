@@ -1,0 +1,103 @@
+table 'DimConstituentSegmentBridge Lifetime Giving Range'
+	lineageTag: fd93e826-35ad-431d-827c-c582cd06d6b8
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5363e935-14b9-44e2-895d-cf5db8b53105
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cd6bfadb-0efc-466a-ad49-0467149a8dfd
+		summarizeBy: count
+		sourceColumn: ConstituentSegmentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentMappingId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 57d5cd42-3931-473c-980d-cd3cb3d18ba3
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentMappingId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentBridgeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 70442190-41db-4605-8af1-e83efdd4ded4
+		summarizeBy: count
+		sourceColumn: ConstituentSegmentBridgeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DimConstituentSegment.ConstituentSegmentName'
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e1d4c9a5-03dc-4860-a87c-0e6ced593fea
+		summarizeBy: none
+		sourceColumn: DimConstituentSegment.ConstituentSegmentName
+		sortByColumn: 'DimConstituentSegment.Order'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DimConstituentSegment.TypeKey'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a0e04f86-fdeb-4e9c-848e-71e80b8a80df
+		summarizeBy: count
+		sourceColumn: DimConstituentSegment.TypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DimConstituentSegmentType.ConstituentSegmentType'
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a5f8230c-41b5-4433-80b6-b161082467bf
+		summarizeBy: none
+		sourceColumn: DimConstituentSegmentType.ConstituentSegmentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DimConstituentSegment.Order'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4cec9d6d-7398-45c4-aa80-487f6e762e3e
+		summarizeBy: sum
+		sourceColumn: DimConstituentSegment.Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'DimConstituentSegmentBridge Lifetime Giving Range' = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimConstituentSegmentBridge = Source{[Schema="dbo",Item="DimConstituentSegmentBridge"]}[Data],
+				    #"Merged Queries" = Table.NestedJoin(dbo_DimConstituentSegmentBridge, {"ConstituentSegmentKey"}, DimConstituentSegment, {"ConstituentSegmentKey"}, "DimConstituentSegment", JoinKind.LeftOuter),
+				    #"Expanded DimConstituentSegment" = Table.ExpandTableColumn(#"Merged Queries", "DimConstituentSegment", {"ConstituentSegmentName", "Order", "TypeKey"}, {"DimConstituentSegment.ConstituentSegmentName", "DimConstituentSegment.Order", "DimConstituentSegment.TypeKey"}),
+				    #"Sorted Rows" = Table.Sort(#"Expanded DimConstituentSegment",{{"ConstituentKey", Order.Ascending}}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Sorted Rows", {"DimConstituentSegment.TypeKey"}, DimConstituentSegmentType, {"ConstituentSegmentTypeKey"}, "DimConstituentSegmentType", JoinKind.LeftOuter),
+				    #"Expanded DimConstituentSegmentType" = Table.ExpandTableColumn(#"Merged Queries1", "DimConstituentSegmentType", {"ConstituentSegmentType"}, {"DimConstituentSegmentType.ConstituentSegmentType"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Expanded DimConstituentSegmentType", each ([DimConstituentSegmentType.ConstituentSegmentType] = "Lifetime Giving Range"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

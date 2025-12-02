@@ -1,0 +1,14 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/1.0.0/schema.json",
+    "version": "4.0",
+    "datasetReference": {
+        "byConnection": {
+            "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/{WORKSPACE_NAME};initial catalog={WORKSPACE_NAME}_Fundraising_Intelligence_Semantic;integrated security=ClaimsToken;semanticmodelid={SEMANTICMODEL_ID}",
+            "pbiServiceModelId": null,
+            "pbiModelVirtualServerName": "sobe_wowvirtualserver",
+            "pbiModelDatabaseName": "{SEMANTICMODEL_ID}",
+            "name": "EntityDataSource",
+            "connectionType": "pbiServiceXmlaStyleLive"
+        }
+    }
+}

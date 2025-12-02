@@ -1,0 +1,84 @@
+table DimEngagementPlatform
+	lineageTag: 888e77de-53d3-48fd-ac04-c271e71ac5e3
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 51766843-e77b-48a3-bb7d-7522602e0234
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column EngagementPlatformId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 700c6a35-b3d8-4925-9f17-f63025277aef
+		summarizeBy: none
+		sourceColumn: EngagementPlatformId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementPlatformKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 108f7dc1-6e6e-4e68-a72b-b69e4777e5cb
+		summarizeBy: none
+		sourceColumn: EngagementPlatformKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fd7fc476-ce2e-4f1d-bdec-d5e17ad38c1c
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column Name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2b781682-6f71-4585-8b30-a64621d39212
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 4041a40c-524f-40f2-b9c6-98809aed2953
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysEngagementPlatformId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f9030131-3508-4e41-93f0-80d201620069
+		summarizeBy: none
+		sourceColumn: SourceSysEngagementPlatformId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEngagementPlatform = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimEngagementPlatform = Source{[Schema="dbo",Item="DimEngagementPlatform"]}[Data]
+				in
+				    dbo_DimEngagementPlatform
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

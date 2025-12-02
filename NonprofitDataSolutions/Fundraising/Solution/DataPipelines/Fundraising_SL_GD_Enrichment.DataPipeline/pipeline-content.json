@@ -1,0 +1,46 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Enrich silver to gold data",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{SILVER_TO_GOLD_ENRICHMENT_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      },
+      {
+        "name": "Segmentation",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Enrich silver to gold data",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{GOLD_CREATE_SEGMENTS_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      }
+    ],
+    "concurrency": 1
+  }
+}

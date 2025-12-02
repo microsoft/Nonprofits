@@ -1,0 +1,149 @@
+table DimAddress
+	lineageTag: 5b2246af-5d8a-4f20-a325-45ad43292f9b
+
+	column AddressId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3660e4ec-c811-45d1-b746-1125a66bf684
+		summarizeBy: none
+		sourceColumn: AddressId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0d392542-8e64-4b80-8ed7-1da636b254f4
+		summarizeBy: none
+		sourceColumn: AddressKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 98ab1938-849a-448e-9133-0bc2701aa934
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e3c9798c-9eb4-49bf-8923-50ca8f8b67e9
+		summarizeBy: none
+		sourceColumn: CountryCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5391bea7-31da-4c92-b1e6-45c6faee8815
+		summarizeBy: none
+		sourceColumn: CountryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 66627aa5-6be7-4c93-9942-22c61d729958
+		summarizeBy: none
+		sourceColumn: CountryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 880f5532-196a-495c-b229-1122a4950cb1
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 6093bdf9-97c1-48a2-a757-60eb86edd683
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Region
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6135e31a-664c-4714-ba07-3db9dd28e84a
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 37c53919-c820-4263-abde-0484d8ba09a8
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysAddressId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d0c1a44f-fd72-4046-a0d9-35c02f423600
+		summarizeBy: none
+		sourceColumn: SourceSysAddressId
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: be2733be-816a-4c1c-b38e-fe86cf249e7b
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e55e1920-a623-42ab-9076-72607343dd4c
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZipCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a3deb0c1-98b3-4d74-8b55-c60a5ba45183
+		summarizeBy: none
+		sourceColumn: ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimAddress = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimAddress = Source{[Schema="dbo",Item="DimAddress"]}[Data]
+				in
+				    dbo_DimAddress
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

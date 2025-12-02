@@ -1,0 +1,144 @@
+relationship ab7a8e55-93ed-8f9c-59c6-62fbd4b08328
+	crossFilteringBehavior: bothDirections
+	fromColumn: FactDonation.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship 7080e16b-22d1-e43f-c9f6-193919884d1b
+	crossFilteringBehavior: bothDirections
+	fromColumn: FactDonation.DonationDateKey
+	toColumn: DimDate.DateKey
+
+relationship b6f70679-8153-c0c7-3cca-da509e9fd6ae
+	fromColumn: FactDonation.ChannelKey
+	toColumn: DimChannel.ChannelKey
+
+relationship ce39f45b-3eb2-399d-9f32-80a15149ec27
+	fromColumn: FactOpportunity.OpportunityStageKey
+	toColumn: DimOpportunityStage.OpportunityStageKey
+
+relationship 05345c19-b1ad-13fc-2f71-b0b5ed2b0e2c
+	isActive: false
+	fromColumn: DimOpportunityStage.OpportunityTypeId
+	toColumn: DimOpportunityType.OpportunityTypeId
+
+relationship 52c5f1ce-a2a4-9abf-b12e-167adde9e350
+	fromColumn: FactEventAttendance.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship ed070101-c776-2b49-82fe-c651c4d62ecd
+	fromColumn: FactEventAttendance.EventKey
+	toColumn: DimEvent.EventKey
+
+relationship 5aaeddc6-1e6f-06c1-1f7d-2bf1c2ca4808
+	fromColumn: FactOpportunity.ChannelKey
+	toColumn: DimChannel.ChannelKey
+
+relationship 872a63b1-0308-9716-f33b-add7fb1951cf
+	fromColumn: FactDonation.CampaignKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship 94d39aa3-d1fe-a106-dd9d-7372c244ffe1
+	fromColumn: FactOpportunity.OpportunityTypeKey
+	toColumn: DimOpportunityType.OpportunityTypeKey
+
+relationship 408d70ee-26e8-d21d-d50e-5dc3e4efc1f5
+	fromColumn: FactOpportunity.CampaignKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship 0da2d17d-5309-8034-3411-bee3a07cd3d2
+	fromColumn: dm_CampaignAttribution.ChannelKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship f61f4c2c-8414-096d-a06e-e07f85fe5c16
+	fromColumn: dm_CampaignAttribution.ChannelKey
+	toColumn: DimChannel.ChannelKey
+
+relationship a6c1175a-fd0e-523b-0065-0db3fea81556
+	fromColumn: DimCampaign.CampaignTypeKey
+	toColumn: DimCampaignType.CampaignTypeKey
+
+relationship 48141fd5-3401-1121-edc2-a0526d76323a
+	fromColumn: FactOpportunity.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship cb9018ec-7ba2-fe39-fe24-21fbb05fbe69
+	fromColumn: DimConstituentSegment.TypeKey
+	toColumn: DimConstituentSegmentType.ConstituentSegmentTypeKey
+
+relationship f19fa7d6-6f2d-4080-1ef1-f1fab2a7633c
+	fromColumn: 'DimConstituentSegmentBridge Age'.ConstituentSegmentKey
+	toColumn: DimConstituentSegment.ConstituentSegmentKey
+
+relationship 6ac1b9d6-65ea-f5d6-ff22-e8a7b51908a9
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'DimConstituentSegmentBridge Age'.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship 39e06220-662b-204f-b3c5-7e497e88ce08
+	crossFilteringBehavior: bothDirections
+	fromColumn: DimConstituent.AddressKey
+	toColumn: DimAddress.AddressKey
+
+relationship b657ffb0-64c1-0962-715d-78851075a97e
+	fromColumn: FactSocialEngagement.CampaignKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship 7156b6f6-d41e-5609-e1dc-a07968c7a4b0
+	fromColumn: FactConstituentEmailEngagement.EmailKey
+	toColumn: DimEmail.EmailKey
+
+relationship 36778f26-9aaf-440c-8088-174935f58237
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: FactConstituentPhonecallEngagement.PhonecallKey
+	toColumn: DimPhonecall.PhonecallKey
+
+relationship 09106ddb-aa86-0760-e925-251f9f80d3bf
+	fromColumn: FactConstituentPhonecallEngagement.SourceKey
+	toColumn: DimSource.SourceKey
+
+relationship fafcd951-fdfb-c8fd-9365-6825f38165b2
+	fromColumn: FactConstituentLetterEngagement.CampaignKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship 52bedd47-181b-f2f0-3542-13f5271e2ccc
+	fromColumn: FactConstituentEmailEngagement.CampaignKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship d7ae8599-1fa9-6da0-6344-aafa28ec95e9
+	fromColumn: FactConstituentPhonecallEngagement.CampaignKey
+	toColumn: DimCampaign.CampaignKey
+
+relationship 9e80f497-56c4-d5f1-7bea-382916d57c56
+	fromColumn: FactSocialEngagement.EngagementPlatformKey
+	toColumn: DimEngagementPlatform.EngagementPlatformKey
+
+relationship 894f4064-7e2e-c70d-d854-e0a2ae59a471
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'DimConstituentSegmentBridge Gift Recurrence'.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship 60e181f0-fb60-5f85-75cc-f4088ef6a58e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'DimConstituentSegmentBridge Lifetime Giving Range'.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship a73fbddc-a8f4-9352-7cdb-b762f85c43a4
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: DimConstituent.ConstituentKey
+	toColumn: dm_Constituent.ConstituentKey
+
+relationship 3b96beb9-c19f-5d77-32aa-0ac70a3c760d
+	fromColumn: dm_EngagementTimeline.ChannelKey
+	toColumn: DimChannel.ChannelKey
+
+relationship 90cc3ef8-6049-d5ef-f190-19fec2bad297
+	fromColumn: FactConstituentSocialEngagement.ConstituentKey
+	toColumn: DimConstituent.ConstituentKey
+
+relationship 5cd13801-20a0-56bd-b96d-aa54fd4d17fb
+	fromColumn: dm_EngagementTimeline.ConstituentKey
+	toColumn: dm_Constituent.ConstituentKey
+

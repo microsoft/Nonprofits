@@ -1,0 +1,14 @@
+expression SQL_Endpoint = "{GOLD_LAKEHOUSE_SQL_ENDPOINT}" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: d4520ffa-b8f7-419d-93b8-c2eb16fdedf6
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression Lakehouse_Name = "{GOLD_LAKEHOUSE_NAME}" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 18ff18fa-65ec-4105-8e1c-c4132a42879b
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

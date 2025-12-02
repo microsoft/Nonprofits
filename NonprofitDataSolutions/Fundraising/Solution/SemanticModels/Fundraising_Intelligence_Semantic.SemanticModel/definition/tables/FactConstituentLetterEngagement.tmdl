@@ -1,0 +1,104 @@
+table FactConstituentLetterEngagement
+	lineageTag: 703bfc76-a30c-4851-a591-815046461af7
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 12c5d3d1-0343-4330-a281-cacb56e5206d
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9a86388f-f17e-445a-9d66-a532ed07da41
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentLetterEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 12dd2c6a-aff1-44ed-8c34-b3e504d8b3a7
+		summarizeBy: none
+		sourceColumn: ConstituentLetterEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentLetterEngagementKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d9d190f6-ad99-47e3-9624-57243fcf4a47
+		summarizeBy: none
+		sourceColumn: ConstituentLetterEngagementKey
+
+		annotation SummarizationSetBy = User
+
+	column DateSentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5eb0d623-b62e-47e1-b90a-7dd92fc4e7ed
+		summarizeBy: none
+		sourceColumn: DateSentKey
+
+		annotation SummarizationSetBy = User
+
+	column LetterKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b4d9709b-b7cc-452d-bebb-69c6dd96a439
+		summarizeBy: none
+		sourceColumn: LetterKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysConstituentLetterEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8d9b4a8e-bfec-433e-a581-adb916d27ecd
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentLetterEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7b7413ed-3809-4283-8359-d9adb6606198
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateSent
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 882fa4c9-58df-4a94-8a67-974a510afe1b
+		summarizeBy: sum
+		sourceColumn: DateSent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactConstituentLetterEngagement = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactConstituentLetterEngagement = Source{[Schema="dbo",Item="FactConstituentLetterEngagement"]}[Data]
+				in
+				    dbo_FactConstituentLetterEngagement
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
