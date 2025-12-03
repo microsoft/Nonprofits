@@ -299,17 +299,6 @@ Write-Log "Prefix: $Prefix" -Level "INFO"
 Write-Log "Skip Sample Data: $SkipSampleData" -Level "INFO"
 Write-Log "Log file: $Script:LogFile" -Level "INFO"
 
-# Import the Setup-WorkspaceItems module
-# try {
-#     Import-Module ./Setup-WorkspaceItems.ps1 -ErrorAction Stop
-#     Write-Log "Successfully imported Setup-WorkspaceItems module" -Level "SUCCESS"
-# }
-# catch {
-#     Write-Log "Failed to import Setup-WorkspaceItems module: $($_.Exception.Message)" -Level "ERROR"
-#     throw
-# }
-#endregion
-
 #region Utility Functions
 $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 
