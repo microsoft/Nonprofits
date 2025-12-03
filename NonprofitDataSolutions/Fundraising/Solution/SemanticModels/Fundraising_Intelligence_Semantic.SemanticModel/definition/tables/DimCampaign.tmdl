@@ -1,0 +1,121 @@
+table DimCampaign
+	lineageTag: d5c85d21-28e6-4781-aad7-0c045789f02c
+
+	column CampaignId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4aacc5d0-a90d-41af-aee4-b489b16551d8
+		summarizeBy: none
+		sourceColumn: CampaignId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cfc0bba6-92d3-4d18-a41e-b8ff01a72ec3
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column CampaignName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a3a97af9-3409-4232-8c58-e5b7ca67781c
+		summarizeBy: none
+		sourceColumn: CampaignName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 68aeb12d-d4d9-423d-b6d2-15268b89cae9
+		summarizeBy: none
+		sourceColumn: CampaignTypeKey
+
+		annotation SummarizationSetBy = User
+
+	column Cost
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 523fd62c-5376-4d55-8aa6-54ea60394e9b
+		summarizeBy: sum
+		sourceColumn: Cost
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2a2b4a12-d9e5-4aa9-8f1b-58076ee17912
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column EndDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fd750472-806b-4bf5-a2b4-53c4c3d4e9f7
+		summarizeBy: none
+		sourceColumn: EndDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 268b534f-6db0-4155-8e2a-6d9d150729d0
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysCampaignId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 17b04383-d5b9-4dab-8c53-2ff2ddd7757d
+		summarizeBy: none
+		sourceColumn: SourceSysCampaignId
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b48c8335-0f62-4015-9741-e1c25f5f6097
+		summarizeBy: none
+		sourceColumn: StartDateKey
+
+		annotation SummarizationSetBy = User
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 335b2db0-8635-44e3-b130-6f23cb6b4265
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCampaign = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimCampaign = Source{[Schema="dbo",Item="DimCampaign"]}[Data]
+				in
+				    dbo_DimCampaign
+
+	annotation PBI_ResultType = Exception
+

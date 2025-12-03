@@ -1,25 +1,26 @@
-# Nonprofit data solutions in Microsoft Fabric
+# Nonprofit sata solutions in Microsoft Fabric
 
-Nonprofit data solutions in Microsoft Fabric consist of a preconfigured, scalable data architecture and analytics framework designed to help nonprofit organizations unify, transform, and analyze their data. It enables nonprofits to streamline data management processes and arms fundraisers and marketers with the data they need to better connect with constituents.
+Nonprofit data solutions in Microsoft Fabric is a preconfigured, scalable data architecture and analytics framework designed to help nonprofit organizations unify, transform, and analyze their data. It enables nonprofits to streamline data management processes and provides actionable insights to better connect with constituents and demonstrate impact.
 
-Nonprofit data solutions are configured with:
+## Overview
 
-- Data pipelines and notebooks that ingest, standardize, and prepare your data for analytics.
-- Medallion lakehouse architecture to clean and store the data.
-- A nonprofit data model that applies business logic to the data for reporting.
-- Fundraising reports then provide a holistic picture of constituents, helping to focus marketing spend, align fundraising strategy, and prove return-on-investment (ROI).
+This solution provides:
 
-Learn More:
-- Read about Nonprofit data solutions on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/nonprofit-data-solutions)
-- Review the [Gold Data Model - ERD](./Documents/gold-data-model-erd.pdf)
-- Review the [Gold Data Model](./Documents/gold-data-model.csv)
-- Review the [Silver Data Model - ERD](./Documents/silver-data-model-erd.pdf)
-- Review the [Silver Data Model](./Documents/silver-data-model.csv)
+- **Medallion lakehouse architecture** for data quality and storage optimization
+- **Data pipelines and notebooks** for automated data ingestion and transformation
+- **Nonprofit-specific data models** with built-in business logic
+- **Pre-built analytics** tailored to nonprofit operations
 
-## Deploy
+## Capabilities
 
-[Deploy Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/deploy-nonprofit-data-solutions).
+The solution is organized by capability, with each folder containing specific implementations:
 
-## Use
+- **[Fundraising](./Fundraising/)** - Analytics and insights for fundraisers and marketers to optimize constituent engagement
 
-[Use Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/nonprofit-data-solutions-overview).
+Additional capabilities will be added in the future to support other nonprofit operations.
+
+## Getting Started
+
+- [Learn more about Nonprofit data solutions](https://learn.microsoft.com/industry/nonprofit/nonprofit-data-solutions)
+- [Deployment guide](https://learn.microsoft.com/industry/nonprofit/deploy-nonprofit-data-solutions)
+- [Usage documentation](https://learn.microsoft.com/industry/nonprofit/nonprofit-data-solutions-overview)

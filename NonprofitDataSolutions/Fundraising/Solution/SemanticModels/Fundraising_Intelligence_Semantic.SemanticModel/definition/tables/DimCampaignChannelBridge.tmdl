@@ -1,0 +1,56 @@
+table DimCampaignChannelBridge
+	lineageTag: 9cb786e2-805d-4458-b8e0-0c2aaff39e97
+
+	column CampaignChannelBridgeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 18b0964f-871c-412f-bbcd-82a5154428bf
+		summarizeBy: none
+		sourceColumn: CampaignChannelBridgeKey
+
+		annotation SummarizationSetBy = User
+
+	column CampaignChannelId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ef78c306-e7ed-4954-b593-6f7cfff33e1f
+		summarizeBy: none
+		sourceColumn: CampaignChannelId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 57f4d49f-2845-47fe-b3b5-c4b89f681aa9
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fd198147-a09f-49d4-b978-c2ba6b7b0933
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = User
+
+	partition DimCampaignChannelBridge = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimCampaignChannelBridge = Source{[Schema="dbo",Item="DimCampaignChannelBridge"]}[Data]
+				in
+				    dbo_DimCampaignChannelBridge
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

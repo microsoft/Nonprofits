@@ -1,0 +1,64 @@
+table DimOpportunityStage
+	lineageTag: a2c8cfdf-e906-4573-acf3-b33173d512ce
+
+	column OpportunityStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8d17603c-878a-4205-8ed7-810f9786ef45
+		summarizeBy: none
+		sourceColumn: OpportunityStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityStageId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2931b294-8499-4f07-bd53-5a82b60f9c1f
+		summarizeBy: none
+		sourceColumn: OpportunityStageId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityStageKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8fec78cd-b16a-4d0d-a72e-6666b79821da
+		summarizeBy: none
+		sourceColumn: OpportunityStageKey
+
+		annotation SummarizationSetBy = User
+
+	column OpportunityTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b36ddbe1-9306-4eb2-a23e-e36e91a21eaf
+		summarizeBy: none
+		sourceColumn: OpportunityTypeKey
+
+		annotation SummarizationSetBy = User
+
+	column OpportunityTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a1a2c8c4-55fe-4ce5-9fdd-f89920d65531
+		summarizeBy: none
+		sourceColumn: OpportunityTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimOpportunityStage = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimOpportunityStage = Source{[Schema="dbo",Item="DimOpportunityStage"]}[Data]
+				in
+				    dbo_DimOpportunityStage
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

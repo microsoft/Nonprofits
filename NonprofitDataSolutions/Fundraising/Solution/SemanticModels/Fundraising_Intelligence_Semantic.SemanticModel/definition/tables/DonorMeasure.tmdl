@@ -1,0 +1,27 @@
+table DonorMeasure
+	lineageTag: bbd51767-a3b4-4173-a0b9-e7c692b2cd62
+
+	column Measure
+		lineageTag: 684e962c-40b7-4e4f-a593-568a13a43ae8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Measure]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DonorMeasure = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "Measure", STRING,
+				    {
+				        {"# of Constituents"},
+				        {"Donation Amount"}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 4ef6c0ad9f964774a46b6d14e048b380
+

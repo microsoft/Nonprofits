@@ -1,0 +1,104 @@
+table FactWealthScreening
+	lineageTag: cec87e81-d374-4471-aa4f-e00584a4658a
+
+	column CapacityRange
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4b50f280-0581-4d43-8e67-bf439a5e3edb
+		summarizeBy: none
+		sourceColumn: CapacityRange
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d3394e4a-1b4e-4860-9179-9d0b7e589485
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentRating
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 75ceea03-b480-4af5-92a4-d1d4e4e462b5
+		summarizeBy: none
+		sourceColumn: ConstituentRating
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1a02586d-47ed-4e2d-be60-119136142863
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column LastScreeningDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9febead1-07e7-4d65-9841-eff0984754f0
+		summarizeBy: none
+		sourceColumn: LastScreeningDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: eab71638-ccee-424c-be32-0836633c6cac
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 65879cb2-183a-4b93-986f-e5c3c169c0da
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column WealthScreeningKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8c32b552-93aa-4304-b04d-c77fbaafa809
+		summarizeBy: none
+		sourceColumn: WealthScreeningKey
+
+		annotation SummarizationSetBy = User
+
+	column WealthScreeningId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3ca624f7-ce8e-4b46-a7b9-02c79e8f42ad
+		summarizeBy: none
+		sourceColumn: WealthScreeningId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactWealthScreening = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactWealthScreening = Source{[Schema="dbo",Item="FactWealthScreening"]}[Data]
+				in
+				    dbo_FactWealthScreening
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

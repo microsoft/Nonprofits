@@ -1,0 +1,76 @@
+table DimChannel
+	lineageTag: 2ed0cc37-159c-4b31-9114-0b007b1ad246
+
+	column ChannelId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9179fd82-14ee-48f3-b35a-95a0fb2b65d2
+		summarizeBy: none
+		sourceColumn: ChannelId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c923b5ea-da5b-40e7-b544-8e47e334e248
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5188f44a-fab3-46df-be7e-fb038e742819
+		summarizeBy: none
+		sourceColumn: ChannelName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a0b2876b-d0b6-4376-843c-ca2efbdd1672
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 007221ab-c307-4818-a466-edbfa55e4019
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column Weight
+		dataType: double
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 1fea9ae8-ce29-442b-8da1-8eb1ac9cc05b
+		summarizeBy: sum
+		sourceColumn: Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimChannel = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimChannel = Source{[Schema="dbo",Item="DimChannel"]}[Data]
+				in
+				    dbo_DimChannel
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

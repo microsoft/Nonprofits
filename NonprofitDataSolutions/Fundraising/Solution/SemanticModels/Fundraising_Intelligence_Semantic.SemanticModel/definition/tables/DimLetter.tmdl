@@ -1,0 +1,94 @@
+table DimLetter
+	lineageTag: 900e2c16-d51b-4b79-a9d0-25da68fffdfd
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a96b1f79-2288-4e10-b743-9141ef728aea
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column LetterId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 65ef9c68-4138-48f3-96f3-1d79b0bb5039
+		summarizeBy: none
+		sourceColumn: LetterId
+
+		annotation SummarizationSetBy = Automatic
+
+	column LetterKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a92f0c63-4937-4344-943f-9c7fb6366187
+		summarizeBy: none
+		sourceColumn: LetterKey
+
+		annotation SummarizationSetBy = User
+
+	column LetterSubject
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1f197bc2-c094-4c9f-b397-0ea221e95dd6
+		summarizeBy: none
+		sourceColumn: LetterSubject
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3e6bdf67-da1a-4b61-9d13-f80fb5113fc1
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 17d4f5b8-0ef9-4b48-b197-e70631cbf561
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysLetterId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c93550f8-59b2-4e66-a1f3-ec2a4fe99165
+		summarizeBy: none
+		sourceColumn: SourceSysLetterId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SentDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2d2f2cc3-abda-4836-b1e8-de7a20501cfe
+		summarizeBy: none
+		sourceColumn: SentDateKey
+
+		annotation SummarizationSetBy = User
+
+	partition DimLetter = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimLetter = Source{[Schema="dbo",Item="DimLetter"]}[Data]
+				in
+				    dbo_DimLetter
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

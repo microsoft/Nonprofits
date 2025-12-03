@@ -1,0 +1,45 @@
+table DimConstituentSegmentType
+	lineageTag: 978234dc-0838-4d65-a69b-35579641763f
+
+	column ConstituentSegmentType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3d3cfb9f-c793-477a-8898-1af6771453f5
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1f89d767-1233-4fb7-afb2-52849bc8ff13
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e33b1d62-8881-4b52-8668-c40fcdbdc779
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentTypeKey
+
+		annotation SummarizationSetBy = User
+
+	partition DimConstituentSegmentType = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimConstituentSegmentType = Source{[Schema="dbo",Item="DimConstituentSegmentType"]}[Data]
+				in
+				    dbo_DimConstituentSegmentType
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

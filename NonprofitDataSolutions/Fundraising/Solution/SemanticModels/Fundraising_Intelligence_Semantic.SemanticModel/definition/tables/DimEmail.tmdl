@@ -1,0 +1,93 @@
+table DimEmail
+	lineageTag: fe498ed5-792d-4ce8-adb9-d3d9e29feaa6
+
+	column EmailId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a0997cbf-ee8e-4047-985e-c9a1179ad555
+		summarizeBy: none
+		sourceColumn: EmailId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmailKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 44237c5f-54b9-4c70-b1f0-3a489f355636
+		summarizeBy: none
+		sourceColumn: EmailKey
+
+		annotation SummarizationSetBy = User
+
+	column EmailSubject
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 668ee9c4-dd3c-4eda-bc9a-7fcc158cc320
+		summarizeBy: none
+		sourceColumn: EmailSubject
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSystemEmailId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7334ca5a-6fe2-41b6-b89e-c51f45925143
+		summarizeBy: none
+		sourceColumn: SourceSystemEmailId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2a528cd5-cc6d-4037-99ea-724f682ffe63
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 95da2cd8-5cf6-4ac4-ad93-2ee57be2546e
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 66928592-d19e-4d7e-bcd9-b2c07181946f
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column VariantType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9efe4687-6832-457d-9baf-3c4749096b11
+		summarizeBy: none
+		sourceColumn: VariantType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEmail = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimEmail = Source{[Schema="dbo",Item="DimEmail"]}[Data]
+				in
+				    dbo_DimEmail
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,73 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup Dimensions
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup Facts
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup Measures
+
+	annotation PBI_QueryGroupOrder = 2
+
+annotation PBI_QueryOrder = ["SQL_Endpoint","Lakehouse_Name","DimCampaignType","DimEngagementPlatform","DimEvent","DimProgram","DimSource","DimVolunteeringType","DimCampaignChannelBridge","DimChannel","DimConstituent","DimConstituentProgramBridge","DimConstituentSegment","DimDate","DimAddress","DimConstituentSegmentBridge Age","DimConstituentSegmentType","DimEmail","DimLetter","DimOpportunityStage","DimConstituentSegmentBridge Gift Recurrence","DimConstituentSegmentBridge Lifetime Giving Range","DimOpportunityType","DimPhonecall","DimDonationSource","dm_CampaignAttribution","dm_Constituent","dm_EngagementTimeline","DimCampaign","FactConstituentEmailEngagement","FactConstituentLetterEngagement","FactConstituentPhonecallEngagement","FactConstituentSocialEngagement","FactDonation","FactEventAttendance","FactOpportunity","FactSocialEngagement","FactSoftCredit","FactVolunteerHours","FactWealthScreening","Measure Table"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.145.1107.0 (25.07)+decbc46fce458c5b8d5109d6f32a743f2ac949c8
+
+annotation PBI_ProTooling = ["DevMode","CalcGroup","DaxQueryView_Desktop"]
+
+ref table DimAddress
+ref table DimCampaign
+ref table DimCampaignChannelBridge
+ref table DimCampaignType
+ref table DimChannel
+ref table DimConstituent
+ref table DimConstituentProgramBridge
+ref table DimConstituentSegment
+ref table 'DimConstituentSegmentBridge Age'
+ref table DimConstituentSegmentType
+ref table DimDate
+ref table DimDonationSource
+ref table DimEmail
+ref table DimEngagementPlatform
+ref table DimEvent
+ref table DimLetter
+ref table DimOpportunityStage
+ref table DimOpportunityType
+ref table DimPhonecall
+ref table DimProgram
+ref table DimSource
+ref table DimVolunteeringType
+ref table dm_CampaignAttribution
+ref table dm_Constituent
+ref table dm_EngagementTimeline
+ref table FactConstituentEmailEngagement
+ref table FactConstituentLetterEngagement
+ref table FactConstituentPhonecallEngagement
+ref table FactConstituentSocialEngagement
+ref table FactDonation
+ref table FactEventAttendance
+ref table FactOpportunity
+ref table FactSocialEngagement
+ref table FactSoftCredit
+ref table FactVolunteerHours
+ref table FactWealthScreening
+ref table 'Measure Table'
+ref table DonorMeasure
+ref table Category
+ref table 'DimConstituentSegmentBridge Gift Recurrence'
+ref table 'DimConstituentSegmentBridge Lifetime Giving Range'
+
+ref cultureInfo en-US
+

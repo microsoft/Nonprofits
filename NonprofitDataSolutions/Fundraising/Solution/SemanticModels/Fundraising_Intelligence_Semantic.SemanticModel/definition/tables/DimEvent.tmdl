@@ -1,0 +1,115 @@
+table DimEvent
+	lineageTag: ce390875-ad45-4215-911e-a3e03fc0ecb4
+
+	column AddressKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5a84905e-4baa-4a97-a326-dc2a497fbc0d
+		summarizeBy: none
+		sourceColumn: AddressKey
+
+		annotation SummarizationSetBy = User
+
+	column Cost
+		dataType: double
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 0e8aad36-6e7c-4201-8945-2c2dee96f842
+		summarizeBy: none
+		sourceColumn: Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: dce2ccf3-9fcf-416a-bca0-3a3ad86e6bfb
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column EventDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7a7b37bd-f968-45ed-a2e7-3b1f023af670
+		summarizeBy: none
+		sourceColumn: EventDateKey
+
+		annotation SummarizationSetBy = User
+
+	column EventId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: da483e71-7d88-496e-831c-abf07239ea3f
+		summarizeBy: none
+		sourceColumn: EventId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c96f5e36-d744-4d05-902c-f69ad0abe429
+		summarizeBy: none
+		sourceColumn: EventKey
+
+		annotation SummarizationSetBy = User
+
+	column EventName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4f4c7927-3240-4f7d-a37f-2533de38255f
+		summarizeBy: none
+		sourceColumn: EventName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 359a910e-b492-4ed6-9b65-80f3d780b50c
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e2490971-cc96-4ce3-9473-2494105fddd9
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysEventId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f96a912d-c40b-4b90-b9ec-70e0d2e4f001
+		summarizeBy: none
+		sourceColumn: SourceSysEventId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEvent = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimEvent = Source{[Schema="dbo",Item="DimEvent"]}[Data]
+				in
+				    dbo_DimEvent
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,45 @@
+table DimOpportunityType
+	lineageTag: 12aa6f4c-f902-47d9-8f5d-9a1ba470c3c1
+
+	column OpportunityTypeName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e735daeb-805d-4953-8548-7480b8e7717a
+		summarizeBy: none
+		sourceColumn: OpportunityTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 275744ec-4afe-4653-b9aa-14fcab13b0ce
+		summarizeBy: none
+		sourceColumn: OpportunityTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fe8379b0-03c2-45c9-96c4-82cae33b9959
+		summarizeBy: none
+		sourceColumn: OpportunityTypeKey
+
+		annotation SummarizationSetBy = User
+
+	partition DimOpportunityType = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimOpportunityType = Source{[Schema="dbo",Item="DimOpportunityType"]}[Data]
+				in
+				    dbo_DimOpportunityType
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

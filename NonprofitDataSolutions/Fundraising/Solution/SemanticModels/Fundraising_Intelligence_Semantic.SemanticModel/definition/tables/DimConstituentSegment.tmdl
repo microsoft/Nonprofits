@@ -1,0 +1,107 @@
+table DimConstituentSegment
+	lineageTag: 064853ef-df9f-4df7-8f54-ac2494c98932
+
+	column ConstituentSegmentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 34b78c64-57b8-49f3-8743-71660915bf22
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b1dd0b06-e5f5-426b-9f5c-ffb649ea4007
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 49e5fa44-38b6-4a74-8387-eb868d3fbab6
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentName
+		sortByColumn: Order
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column TypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b862ffb5-de44-4204-9c01-b458050fac3e
+		summarizeBy: none
+		sourceColumn: TypeKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysConstituentSegmentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0639a80c-f612-40ee-8854-3a05f564f10f
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentSegmentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8cbcbf99-4807-48b9-afd7-da736a3a0ff6
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3b9cb9b3-194a-4890-8aa6-c94103253545
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6a9388af-a4a4-456e-a948-a2c5591e2047
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column Order
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6158b054-62f5-4995-981d-1833a5b0fc89
+		summarizeBy: sum
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituentSegment = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimConstituentSegment = Source{[Schema="dbo",Item="DimConstituentSegment"]}[Data]
+				in
+				    dbo_DimConstituentSegment
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

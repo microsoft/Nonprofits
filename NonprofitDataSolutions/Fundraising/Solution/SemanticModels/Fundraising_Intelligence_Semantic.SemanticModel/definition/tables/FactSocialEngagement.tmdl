@@ -1,0 +1,194 @@
+table FactSocialEngagement
+	lineageTag: f765cfdf-414c-4749-8867-864dd884f279
+
+	column FactSocialEngagementKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d63f8e1f-f74e-437a-830d-e6070042fe7f
+		summarizeBy: none
+		sourceColumn: FactSocialEngagementKey
+
+		annotation SummarizationSetBy = User
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e4bfd011-3c2d-403d-a123-15a29f8b9e39
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column Clicks
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cc4c2149-d9c3-4f24-a80d-2a7ac1b4969a
+		summarizeBy: sum
+		sourceColumn: Clicks
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comments
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 60882c75-b8d5-4bb0-8aa1-6a7a32bab32e
+		summarizeBy: sum
+		sourceColumn: Comments
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementPlatformKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 73708363-31eb-4486-ba01-1e291209c73c
+		summarizeBy: none
+		sourceColumn: EngagementPlatformKey
+
+		annotation SummarizationSetBy = User
+
+	column SocialEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5b27eb1b-649c-426e-93aa-4f93a5ad197f
+		summarizeBy: none
+		sourceColumn: SocialEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSocialEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9d968b1b-2448-4453-9b2a-bad595035027
+		summarizeBy: none
+		sourceColumn: SourceSocialEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Engagements
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 40867f4e-9086-4e75-abd7-90050e935d7f
+		summarizeBy: sum
+		sourceColumn: Engagements
+
+		annotation SummarizationSetBy = Automatic
+
+	column Impressions
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 24adbb58-ccd6-4b74-909a-f91875747dff
+		summarizeBy: sum
+		sourceColumn: Impressions
+
+		annotation SummarizationSetBy = Automatic
+
+	column InteractionDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7a40e462-48b7-4d88-9b26-4fa1891e39f2
+		summarizeBy: none
+		sourceColumn: InteractionDateKey
+
+		annotation SummarizationSetBy = User
+
+	column Likes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 32230cf6-b0f3-4dff-bced-f813084dde1f
+		summarizeBy: sum
+		sourceColumn: Likes
+
+		annotation SummarizationSetBy = Automatic
+
+	column PostId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 271adde3-0dd1-49f7-9b3b-e6d9e4d0c002
+		summarizeBy: none
+		sourceColumn: PostId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reach
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 36decfed-2e9a-41da-98de-94a48948edcd
+		summarizeBy: sum
+		sourceColumn: Reach
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 701d5443-31c5-4484-94bb-14ae9cce89ff
+		summarizeBy: none
+		sourceColumn: ReportDateKey
+
+		annotation SummarizationSetBy = User
+
+	column Shares
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 56972791-76ab-4ee1-b55f-dbb333dfc15d
+		summarizeBy: sum
+		sourceColumn: Shares
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 545f86ce-828a-43d8-8dae-58223714a43d
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 42fcf822-911d-4e1c-8258-68615bc9f13c
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8ad720af-1541-4ffb-9381-c11d6a0f3572
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	partition FactSocialEngagement = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactSocialEngagement = Source{[Schema="dbo",Item="FactSocialEngagement"]}[Data]
+				in
+				    dbo_FactSocialEngagement
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

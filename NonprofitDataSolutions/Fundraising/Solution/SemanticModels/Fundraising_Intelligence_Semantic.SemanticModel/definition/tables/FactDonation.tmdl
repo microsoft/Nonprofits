@@ -1,0 +1,252 @@
+table FactDonation
+	lineageTag: b87e00ac-4349-48d0-9421-cbf16998225e
+
+	measure TotalAmount = SUM(FactDonation[Amount])
+		lineageTag: 69a1b2b9-cd90-4726-b05f-d07e0a753c7f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Count of Donations' = COUNTROWS(FactDonation)
+		formatString: 0
+		lineageTag: 6ab1d0b3-5b01-4708-bd9b-cde8d1b1f61b
+
+	column Amount
+		dataType: double
+		formatString: \$#,0;(\$#,0);\$#,0
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 02d139f0-e22a-4a38-8cb4-2d55146d3607
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c4cf6c62-8ab2-4f92-abf7-ad43f15ef6f6
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3ce155bd-0feb-4d95-bb27-1ab85e37d8e8
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 11cd5a71-9004-4266-b352-4e958c417345
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fcfdc4a2-5011-4256-aac2-874d933131d2
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3f171aca-a168-454c-a22b-f4ab7bd259a5
+		summarizeBy: none
+		sourceColumn: DonationDateKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2cfc4100-7808-4acb-95ce-a7751e9f75c7
+		summarizeBy: none
+		sourceColumn: DonationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 4b72f812-c334-46ca-b2a5-8a45ed16f96c
+		summarizeBy: none
+		sourceColumn: DonationKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 824b24fb-843b-4311-9d37-89763aa426db
+		summarizeBy: none
+		sourceColumn: DonationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1d837f0a-fc08-4d33-976f-58c0558e6384
+		summarizeBy: none
+		sourceColumn: DonationSourceKey
+
+		annotation SummarizationSetBy = User
+
+	column IsNewConstituent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 658fd30c-3d97-424d-a3a7-1ffe4d0a41a9
+		summarizeBy: none
+		sourceColumn: IsNewConstituent
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsReccuring
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 04e12089-04dc-4d35-9c75-070d739986aa
+		summarizeBy: none
+		sourceColumn: IsReccuring
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bfaae959-6ae9-4f5b-a641-70e6fea1d305
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column OpportunityKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bc229f4c-3c2e-4044-8d09-79f77b050f00
+		summarizeBy: none
+		sourceColumn: OpportunityKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c7ed8b4f-4f95-4efc-a6f6-08d4919320b9
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceSysDonationId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 573d490e-ca41-4e9c-ad16-fbb02e6d2b45
+		summarizeBy: none
+		sourceColumn: SourceSysDonationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 83044586-db7b-4752-849d-e31d1fbf1e85
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationDate = ```
+			RELATED(DimDate[Date])
+			
+			```
+		formatString: mm/dd/yyyy
+		lineageTag: 6c48ec51-2307-4aa6-8589-e41f92b6c808
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column LastDonationDate = ```
+			MAX(FactDonation[DonationDate])
+			
+			```
+		formatString: mm/dd/yyyy
+		lineageTag: 52a1fc4d-ac73-4184-9014-917a885f0c8c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column FirstDonationDate = ```
+			MIN(FactDonation[DonationDate])
+			
+			```
+		formatString: mm/dd/yyyy
+		lineageTag: a5066229-9d69-4081-a517-1a891ea24d96
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'DimChannel.ChannelName'
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a96a5daf-6c42-44a6-8a95-d41aa335c387
+		summarizeBy: none
+		sourceColumn: DimChannel.ChannelName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DimCampaign.CampaignName'
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fa1e9676-95d4-4c74-a1ec-197cb24e7701
+		summarizeBy: none
+		sourceColumn: DimCampaign.CampaignName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactDonation = m
+		mode: directQuery
+		queryGroup: Facts
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_FactDonation = Source{[Schema="dbo",Item="FactDonation"]}[Data],
+				    #"Merged Queries1" = Table.NestedJoin(dbo_FactDonation, {"ChannelKey"}, DimChannel, {"ChannelKey"}, "DimChannel", JoinKind.LeftOuter),
+				    #"Expanded DimChannel" = Table.ExpandTableColumn(#"Merged Queries1", "DimChannel", {"ChannelName"}, {"DimChannel.ChannelName"}),
+				    #"Merged Queries2" = Table.NestedJoin(#"Expanded DimChannel", {"CampaignKey"}, DimCampaign, {"CampaignKey"}, "DimCampaign", JoinKind.LeftOuter),
+				    #"Expanded DimCampaign" = Table.ExpandTableColumn(#"Merged Queries2", "DimCampaign", {"CampaignName"}, {"DimCampaign.CampaignName"})
+				in
+				    #"Expanded DimCampaign"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

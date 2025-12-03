@@ -1,0 +1,86 @@
+table dm_CampaignAttribution
+	lineageTag: 7cb1bdac-40a0-47d5-827b-f6861acaa40f
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ea77dec6-ed2e-4526-92a7-2cecc4076510
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = User
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 85b308c6-b249-4767-ac8c-5e8dfedf2189
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = User
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 742298ad-2f19-457a-8791-2a87950ddd3f
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0c4567c5-ca1f-4fdb-a8c8-35235c59c452
+		summarizeBy: none
+		sourceColumn: DonationDateKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: eaa6355c-d420-483a-9b2b-c7b223af916b
+		summarizeBy: none
+		sourceColumn: DonationKey
+
+		annotation SummarizationSetBy = User
+
+	column EngagementDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 858c53c4-d06d-4796-8291-5d6122f08c22
+		summarizeBy: none
+		sourceColumn: EngagementDateKey
+
+		annotation SummarizationSetBy = User
+
+	column EngagementType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 30ad750f-51fc-4e85-824c-057da893f763
+		summarizeBy: none
+		sourceColumn: EngagementType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dm_CampaignAttribution = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_dm_CampaignAttribution = Source{[Schema="dbo",Item="dm_CampaignAttribution"]}[Data]
+				in
+				    dbo_dm_CampaignAttribution
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

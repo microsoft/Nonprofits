@@ -1,0 +1,92 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Import sample data",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{SILVER_IMPORT_SAMPLE_DATA_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      },
+      {
+        "name": "Transform Dynamics 365 bronze data to silver",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Import sample data",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{D365_TRANSFORM_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      },
+      {
+        "name": "Import SalesforceNPSP data to Bronze",
+        "type": "ExecutePipeline",
+        "dependsOn": [
+          {
+            "activity": "Transform Dynamics 365 bronze data to silver",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureInput": false
+        },
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "{{Fundraising_SalesforceNPSP_BR_Load_DataPipeline}}",
+            "type": "PipelineReference"
+          },
+          "waitOnCompletion": true,
+          "parameters": {}
+        }
+      },
+      {
+        "name": "Transform SalesforceNPSP bronze data to silver",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Import SalesforceNPSP data to Bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{SALESFORCE_TRANSFORM_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      }
+    ],
+    "concurrency": 1
+  }
+}

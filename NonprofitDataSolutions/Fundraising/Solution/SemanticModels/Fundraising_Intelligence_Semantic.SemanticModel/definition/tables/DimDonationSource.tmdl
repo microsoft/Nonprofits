@@ -1,0 +1,85 @@
+table DimDonationSource
+	lineageTag: f95f157e-2192-425f-876c-ed1dc454248a
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1b35a1d1-7950-4013-804f-5632e2e49491
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationSourceId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 471e3794-c18d-44b3-80a4-e8aed7e3f123
+		summarizeBy: none
+		sourceColumn: DonationSourceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 00b40f54-b495-486e-bcac-0298aa8bb882
+		summarizeBy: none
+		sourceColumn: DonationSourceKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationSourceRecordKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 84f5722e-2a7a-4742-adb1-581e4c85f8e2
+		summarizeBy: none
+		sourceColumn: DonationSourceRecordKey
+
+		annotation SummarizationSetBy = User
+
+	column DonationSourceTypeName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 71fe1611-27c9-48ac-bad4-8fb850e1f304
+		summarizeBy: none
+		sourceColumn: DonationSourceTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 19eb738d-17af-499f-b86c-e6474fafe723
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = User
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a07db3c1-a6c0-4564-b63d-b88143aba949
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = User
+
+	partition DimDonationSource = m
+		mode: directQuery
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
+				    dbo_DimDonationSource = Source{[Schema="dbo",Item="DimDonationSource"]}[Data]
+				in
+				    dbo_DimDonationSource
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
