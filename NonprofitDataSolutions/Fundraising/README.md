@@ -22,11 +22,15 @@ Learn More:
 
 ## How to Deploy
 
-There are two ways to deploy the Fundraising solution:
+There are two ways to deploy the Fundraising solution. We recommend deploying via Workload as it is faster, clearer, and easier to manage.
 
-### Method 1: Deploy via Installation Script
+### Method 1: Deploy via Workload (Preferred)
 
-Use this method to quickly deploy the solution using PowerShell automation.
+For step-by-step guidance on deploying through the Fabric workload interface, see [Deploy Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/deploy-nonprofit-data-solutions).
+
+### Method 2: Deploy via Installation Script (Alternative)
+
+Use this method to quickly deploy the solution using PowerShell automation if you prefer a scripted approach.
 
 **Prerequisites**
 
@@ -52,8 +56,4 @@ Execute the installation script with your workspace name and a unique prefix:
 ```
 
 The script deploys all solution assets—lakehouses, notebooks, pipelines, triggers, reports, and semantic models—into your Fabric workspace.
-
-### Method 2: Deploy via Workload
-
-For step-by-step guidance on deploying through the Fabric workload interface, see [Deploy Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/deploy-nonprofit-data-solutions).
 
