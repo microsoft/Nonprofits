@@ -20,10 +20,40 @@ Learn More:
 - Review the [Silver Data Model - ERD](./Documents/silver-data-model-erd.pdf)
 - Review the [Silver Data Model](./Documents/silver-data-model.csv)
 
-## Deploy
+## How to Deploy
 
-[Deploy Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/deploy-nonprofit-data-solutions).
+There are two ways to deploy the Fundraising solution:
 
-## Use
+### Method 1: Deploy via Installation Script
 
-[Use Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/nonprofit-data-solutions-overview).
+Use this method to quickly deploy the solution using PowerShell automation.
+
+**Prerequisites**
+
+Before deployment, ensure you have:
+- PowerShell 7+
+- Python 3.10+
+- [Microsoft Fabric CLI (fab)](https://learn.microsoft.com/fabric/cicd/deployment-pipelines/cli)
+- Active Fabric capacity with an accessible workspace
+- Authenticate into your environment by running in the terminal `fab auth login` and then `quit` to exit the interactive mode 
+
+**Data Options**
+
+- **Sample Data** (Default): Deploy with included sample data for quick setup. The installation script imports sample data automatically.
+- **Salesforce NPSP Data**: Connect your Salesforce Nonprofit Success Pack data before running the installation script. Create a Salesforce connection in your workspace following the [data source management guidelines](https://learn.microsoft.com/fabric/data-factory/connector-salesforce-copy-activity). The script will detect and use this connection automatically.
+- **Dynamics 365 Sales Enterprise with Common Data Model for Nonprofits Data**: Link your Dataverse environment to your Fabric workspace. For comprehensive guidance to set up the link, see [Link to Microsoft](https://review.learn.microsoft.com/power-apps/maker/data-platform/fabric-link-to-data-platform) Fabric. The script will detect and use this connection automatically.
+
+**Run Installation**
+
+Execute the installation script with your workspace name and a unique prefix:
+
+```powershell
+.\Install-IntoWorkspace.ps1 -WorkspaceName YOURWORKSPACE -Prefix YOURPREFIX_
+```
+
+The script deploys all solution assets—lakehouses, notebooks, pipelines, triggers, reports, and semantic models—into your Fabric workspace.
+
+### Method 2: Deploy via Workload
+
+For step-by-step guidance on deploying through the Fabric workload interface, see [Deploy Nonprofit data solutions](https://learn.microsoft.com/en-us/industry/nonprofit/deploy-nonprofit-data-solutions).
+
