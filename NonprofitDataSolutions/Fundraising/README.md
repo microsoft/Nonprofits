@@ -41,7 +41,7 @@ Before deployment, ensure you have:
 
 - **Sample Data** (Default): Deploy with included sample data for quick setup. The installation script imports sample data automatically.
 - **Salesforce NPSP Data**: Connect your Salesforce Nonprofit Success Pack data before running the installation script. Create a Salesforce connection in your workspace following the [data source management guidelines](https://learn.microsoft.com/fabric/data-factory/connector-salesforce-copy-activity). The script will detect and use this connection automatically.
-- **Dynamics 365 Sales Enterprise with Common Data Model for Nonprofits Data**: Link your Dataverse environment to your Fabric workspace. For comprehensive guidance to set up the link, see [Link to Microsoft](https://review.learn.microsoft.com/power-apps/maker/data-platform/fabric-link-to-data-platform) Fabric. The script will detect and use this connection automatically.
+- **Dynamics 365 Sales Enterprise with Common Data Model for Nonprofits Data**: Link your Dataverse environment to your Fabric workspace. For comprehensive guidance to set up the link, see [Link to Microsoft](https://review.learn.microsoft.com/power-apps/maker/data-platform/fabric-link-to-data-platform) Fabric. The script will detect and use this connection automatically. Ensure Link Dataverse to Microsoft Fabric is configured and the lakehouse is synchronized. All required tables must have the Change tracking feature enabled in Dynamics 365. Make sure that you're using Common Data Model for Nonprofits version 3.1.3.4 or later.
 
 **Run Installation**
 
