@@ -1,6 +1,6 @@
-# Nonprofit Data Solutions in Microsoft Fabric
+# Nonprofit sata solutions in Microsoft Fabric
 
-Nonprofit Data Solutions in Microsoft Fabric is a preconfigured, scalable data architecture and analytics framework designed to help nonprofit organizations unify, transform, and analyze their data. It enables nonprofits to streamline data management processes and provides actionable insights to better connect with constituents and demonstrate impact.
+Nonprofit data solutions in Microsoft Fabric is a preconfigured, scalable data architecture and analytics framework designed to help nonprofit organizations unify, transform, and analyze their data. It enables nonprofits to streamline data management processes and provides actionable insights to better connect with constituents and demonstrate impact.
 
 ## Overview
 
@@ -21,6 +21,6 @@ Additional capabilities will be added in the future to support other nonprofit o
 
 ## Getting Started
 
-- [Learn more about Nonprofit Data Solutions](https://learn.microsoft.com/industry/nonprofit/nonprofit-data-solutions)
+- [Learn more about Nonprofit data solutions](https://learn.microsoft.com/industry/nonprofit/nonprofit-data-solutions)
 - [Deployment guide](https://learn.microsoft.com/industry/nonprofit/deploy-nonprofit-data-solutions)
 - [Usage documentation](https://learn.microsoft.com/industry/nonprofit/nonprofit-data-solutions-overview)

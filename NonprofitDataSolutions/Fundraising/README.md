@@ -1,4 +1,4 @@
-# Fundraising Capability
+# Fundraising
 
 The Fundraising capability provides data analytics and insights specifically designed for fundraisers and marketers in nonprofit organizations. This capability helps organizations better understand their constituents, optimize marketing spend, align fundraising strategies, and demonstrate return-on-investment (ROI).
 

@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Nonprofit Data Solutions (NDS) - Workspace Installation Script
+    Nonprofit data solutions (NDS) - Workspace Installation Script
 
 .DESCRIPTION
-    This script installs the complete Nonprofit Data Solutions framework into a Microsoft Fabric workspace.
+    This script installs the complete Nonprofit data solutions framework into a Microsoft Fabric workspace.
     It creates lakehouses, imports notebooks, configures data pipelines, and sets up semantic models and reports.
 
 .PARAMETER WorkspaceName
@@ -287,13 +287,13 @@ function Show-Progress {
     $Script:CurrentStep++
     $percentComplete = [math]::Round(($Script:CurrentStep / $Script:TotalSteps) * 100)
     
-    Write-Progress -Activity "Installing Nonprofit Data Solutions" -Status "$Activity - $Status" -PercentComplete $percentComplete
+    Write-Progress -Activity "Installing Nonprofit data solutions" -Status "$Activity - $Status" -PercentComplete $percentComplete
     Write-Log "[$Script:CurrentStep/$Script:TotalSteps] $Activity" -Level "PROGRESS"
 }
 
 Show-Header
 
-Write-Log "Starting Nonprofit Data Solutions installation" -Level "INFO"
+Write-Log "Starting Nonprofit data solutions installation" -Level "INFO"
 Write-Log "Workspace: $WorkspaceName" -Level "INFO"
 Write-Log "Prefix: $Prefix" -Level "INFO"
 Write-Log "Skip Sample Data: $SkipSampleData" -Level "INFO"
@@ -2220,7 +2220,7 @@ function Show-InstallationSummary {
     
     if ($Success) {
         Write-Host "🎉 " -NoNewline -ForegroundColor Green
-        Write-Host "Nonprofit Data Solutions installation completed successfully!" -ForegroundColor Green
+        Write-Host "Nonprofit data solutions installation completed successfully!" -ForegroundColor Green
         Write-Host ""
         Write-Host "📊 " -NoNewline -ForegroundColor Cyan
         Write-Host "Installation Summary:" -ForegroundColor White
@@ -2345,7 +2345,7 @@ try {
     # Step 2: Confirmation
     if (-not $SkipConfirmation) {
         $confirmMessage = @"
-This will install Nonprofit Data Solutions into workspace '$WorkspaceName' with prefix '$Prefix'.
+This will install Nonprofit data solutions into workspace '$WorkspaceName' with prefix '$Prefix'.
 
 The following resources will be created:
 • 3 Lakehouses (Bronze, Silver, Gold)
@@ -2358,7 +2358,7 @@ $(if(-not $SkipSampleData) { "`n• Sample data will be imported" } else { "" })
 This process may take 10-15 minutes to complete.
 "@
         
-        if (-not (Confirm-Action -Message $confirmMessage -Title "Install Nonprofit Data Solutions")) {
+        if (-not (Confirm-Action -Message $confirmMessage -Title "Install Nonprofit data solutions")) {
             Write-Log "Installation cancelled by user" -Level "INFO"
             return
         }
@@ -2439,7 +2439,7 @@ This process may take 10-15 minutes to complete.
     # Step 12: Completion
     Show-Progress "Finalizing installation" "Completing setup and validation"
     
-    Write-Progress -Activity "Installing Nonprofit Data Solutions" -Completed
+    Write-Progress -Activity "Installing Nonprofit data solutions" -Completed
     
     Write-Log "Installation completed successfully" -Level "SUCCESS"
     Show-InstallationSummary -Success $true
@@ -2447,7 +2447,7 @@ This process may take 10-15 minutes to complete.
 catch {
     $errorMsg = $_.Exception.Message
     Write-Log "Installation failed: $errorMsg" -Level "ERROR"
-    Write-Progress -Activity "Installing Nonprofit Data Solutions" -Completed
+    Write-Progress -Activity "Installing Nonprofit data solutions" -Completed
     Show-InstallationSummary -Success $false -ErrorMessage $errorMsg
     
     # Re-throw the exception to maintain original behavior
