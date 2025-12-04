@@ -57,3 +57,4 @@ Execute the installation script with your workspace name and a unique prefix:
 
 The script deploys all solution assets—lakehouses, notebooks, pipelines, triggers, reports, and semantic models—into your Fabric workspace.
 
+![Installation process](./Documents/InstallationScript.gif)
