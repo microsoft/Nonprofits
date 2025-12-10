@@ -57,18 +57,30 @@ DimConstituentProgramBridge,ConstituentKey,Long,No,Reference to the constituent.
 DimConstituentProgramBridge,ConstituentProgramBridgeId,String,No,Constituent program bridge identifier.,No,No,
 DimConstituentProgramBridge,ConstituentProgramBridgeKey,Long,Yes,Gold surrogate key for constituent program bridge.,Yes,No,
 DimConstituentProgramBridge,ProgramKey,Long,No,Reference to the program.,No,Yes,DimProgram
-DimConstituentSegment,ConstituentSegmentId,String,No,Constituent segment identifier.,No,No,
-DimConstituentSegment,ConstituentSegmentKey,Long,Yes,Gold surrogate key for constituent segment.,Yes,No,
-DimConstituentSegment,ConstituentSegmentName,String,No,Name of the constituent segment.,No,No,
-DimConstituentSegment,Order,Integer,No,Order of the constituent segment.,No,No,
-DimConstituentSegment,TypeKey,Long,No,Reference to constituent segment type.,No,Yes,DimConstituentSegmentType
-DimConstituentSegmentBridge,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
-DimConstituentSegmentBridge,ConstituentSegmentKey,Long,No,Reference to the constituent segment.,No,Yes,DimConstituentSegment
-DimConstituentSegmentBridge,ConstituentSegmentMappingId,String,No,Constituent segment mapping identifier.,No,No,
-DimConstituentSegmentBridge,ConstituentSegmentBridgeKey,Long,Yes,Gold surrogate key for constituent segment bridge.,Yes,No,
-DimConstituentSegmentType,ConstituentSegmentType,String,Yes,Name of the constituent segment type.,No,No,
-DimConstituentSegmentType,ConstituentSegmentTypeId,String,No,Constituent segment type identifier.,No,No,
-DimConstituentSegmentType,ConstituentSegmentTypeKey,Long,Yes,Gold surrogate key for constituent segment type.,Yes,No,
+DimConstituentSegment_AgeRange,ConstituentSegmentId,String,No,Constituent segment identifier for age range.,No,No,
+DimConstituentSegment_AgeRange,ConstituentSegmentKey,Long,Yes,Gold surrogate key for constituent age range segment.,Yes,No,
+DimConstituentSegment_AgeRange,ConstituentSegmentName,String,No,Name of the constituent age range segment.,No,No,
+DimConstituentSegment_AgeRange,Order,Integer,No,Order of the constituent age range segment.,No,No,
+DimConstituentSegmentBridge_AgeRange,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+DimConstituentSegmentBridge_AgeRange,ConstituentSegmentKey,Long,No,Reference to the constituent age range segment.,No,Yes,DimConstituentSegment_AgeRange
+DimConstituentSegmentBridge_AgeRange,ConstituentSegmentMappingId,String,No,Constituent segment mapping identifier for age range.,No,No,
+DimConstituentSegmentBridge_AgeRange,ConstituentSegmentBridgeKey,Long,Yes,Gold surrogate key for constituent age range segment bridge.,Yes,No,
+DimConstituentSegment_LifetimeGivingRange,ConstituentSegmentId,String,No,Constituent segment identifier for lifetime giving range.,No,No,
+DimConstituentSegment_LifetimeGivingRange,ConstituentSegmentKey,Long,Yes,Gold surrogate key for constituent lifetime giving range segment.,Yes,No,
+DimConstituentSegment_LifetimeGivingRange,ConstituentSegmentName,String,No,Name of the constituent lifetime giving range segment.,No,No,
+DimConstituentSegment_LifetimeGivingRange,Order,Integer,No,Order of the constituent lifetime giving range segment.,No,No,
+DimConstituentSegmentBridge_LifetimeGivingRange,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+DimConstituentSegmentBridge_LifetimeGivingRange,ConstituentSegmentKey,Long,No,Reference to the constituent lifetime giving range segment.,No,Yes,DimConstituentSegment_LifetimeGivingRange
+DimConstituentSegmentBridge_LifetimeGivingRange,ConstituentSegmentMappingId,String,No,Constituent segment mapping identifier for lifetime giving range.,No,No,
+DimConstituentSegmentBridge_LifetimeGivingRange,ConstituentSegmentBridgeKey,Long,Yes,Gold surrogate key for constituent lifetime giving range segment bridge.,Yes,No,
+DimConstituentSegment_GiftRecurrence,ConstituentSegmentId,String,No,Constituent segment identifier for gift recurrence.,No,No,
+DimConstituentSegment_GiftRecurrence,ConstituentSegmentKey,Long,Yes,Gold surrogate key for constituent gift recurrence segment.,Yes,No,
+DimConstituentSegment_GiftRecurrence,ConstituentSegmentName,String,No,Name of the constituent gift recurrence segment.,No,No,
+DimConstituentSegment_GiftRecurrence,Order,Integer,No,Order of the constituent gift recurrence segment.,No,No,
+DimConstituentSegmentBridge_GiftRecurrence,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+DimConstituentSegmentBridge_GiftRecurrence,ConstituentSegmentKey,Long,No,Reference to the constituent gift recurrence segment.,No,Yes,DimConstituentSegment_GiftRecurrence
+DimConstituentSegmentBridge_GiftRecurrence,ConstituentSegmentMappingId,String,No,Constituent segment mapping identifier for gift recurrence.,No,No,
+DimConstituentSegmentBridge_GiftRecurrence,ConstituentSegmentBridgeKey,Long,Yes,Gold surrogate key for constituent gift recurrence segment bridge.,Yes,No,
 DimDate,Date,Date,No,Full date (natural key).,No,No,
 DimDate,DateKey,Long,Yes,Surrogate key in YYYYMMDD format.,Yes,No,
 DimDate,Day,Integer,No,Day of month (1-31).,No,No,
