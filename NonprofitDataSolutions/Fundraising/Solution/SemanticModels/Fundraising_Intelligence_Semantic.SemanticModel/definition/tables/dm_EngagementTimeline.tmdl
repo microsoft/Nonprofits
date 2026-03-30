@@ -1,64 +1,47 @@
 table dm_EngagementTimeline
-	lineageTag: e1a79681-aab8-43ed-b56a-6dc73b18290a
-
-	measure 'Interaction Count' = ```
-			
-			VAR SelectedConstituents =
-			    VALUES(DimConstituent[ConstituentKey])
-			
-			VAR SelectedCategory =
-			    SELECTEDVALUE(dm_EngagementTimeline[ActivityCategory])
-			
-			RETURN
-			IF(
-			    NOT ISBLANK(SelectedCategory),
-			    CALCULATE(
-			        COUNTROWS(dm_EngagementTimeline),
-			        dm_EngagementTimeline[ActivityCategory] = SelectedCategory,
-			        TREATAS(SelectedConstituents, dm_EngagementTimeline[ConstituentKey])
-			    )
-			)
-			
-			```
-		formatString: 0
-		lineageTag: 431ca261-1f9a-46bb-b4aa-0d5754664659
+	lineageTag: d9ee4d8e-d4ba-413c-8c63-8e472ffac28e
+	sourceLineageTag: [dbo].[dm_EngagementTimeline]
 
 	column CampaignKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: ee0aaf3b-4ad7-4e24-96ae-7e48d5779710
+		lineageTag: 7761aef3-386d-41e6-82f7-551c1dc38cd2
+		sourceLineageTag: CampaignKey
 		summarizeBy: none
 		sourceColumn: CampaignKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ChannelKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 75ac7ed9-ede1-4b2c-b534-1630fec0b3c7
+		lineageTag: 717fc5d6-0327-47da-b9c3-2993ef260420
+		sourceLineageTag: ChannelKey
 		summarizeBy: none
 		sourceColumn: ChannelKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ConstituentKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: b23793bb-bd86-4137-99f7-6eef6c55daa0
+		lineageTag: 3c550c3b-c869-447a-97f6-9678120a14a6
+		sourceLineageTag: ConstituentKey
 		summarizeBy: none
 		sourceColumn: ConstituentKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EngagementDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: a8249194-e734-4ce3-9c6b-e44e86bd8f43
-		summarizeBy: sum
+		lineageTag: 4d555ada-2bfc-4d43-a06e-f18935f6dff8
+		sourceLineageTag: EngagementDate
+		summarizeBy: none
 		sourceColumn: EngagementDate
 
 		annotation SummarizationSetBy = Automatic
@@ -66,7 +49,8 @@ table dm_EngagementTimeline
 	column EngagementStage
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: a2f569cb-79b2-4aa5-b27e-96aa533d47e3
+		lineageTag: ff5c3418-6ff8-46be-8055-9d887ca15fe3
+		sourceLineageTag: EngagementStage
 		summarizeBy: none
 		sourceColumn: EngagementStage
 
@@ -75,7 +59,8 @@ table dm_EngagementTimeline
 	column EngagementType
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 92742820-0b76-4c12-8662-dc6517b90567
+		lineageTag: 3e75023e-7f77-4251-82d7-5a37611f3de0
+		sourceLineageTag: EngagementType
 		summarizeBy: none
 		sourceColumn: EngagementType
 
@@ -84,58 +69,41 @@ table dm_EngagementTimeline
 	column InteractionId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 0e4f5513-618f-4389-a6ad-cf8c552c6a33
+		lineageTag: 2e839a74-246c-4b56-9975-f4991e264207
+		sourceLineageTag: InteractionId
 		summarizeBy: none
 		sourceColumn: InteractionId
 
 		annotation SummarizationSetBy = Automatic
 
-	column WasConverted =
-			
-			VAR EngagementDate = dm_EngagementTimeline[EngagementDate]
-			VAR FirstDonationDate =
-			    RELATED(dm_Constituent[FirstDonationDateKey])
-			
-			RETURN IF(
-			    NOT ISBLANK(FirstDonationDate) && FirstDonationDate >= EngagementDate,
-			    1,
-			    0
-			)
-		formatString: 0
-		lineageTag: 34e8ecbb-6951-4aa3-b612-92066bd87c9d
-		summarizeBy: sum
-
-		annotation SummarizationSetBy = Automatic
-
-	column ActivityCategory = ```
-			
-			SWITCH(
-			    TRUE(),
-			    dm_EngagementTimeline[EngagementType] = "Email Open", "Email Open",
-			    dm_EngagementTimeline[EngagementType] = "Email Click", "Email ClickThrough",
-			    dm_EngagementTimeline[EngagementType] = "Phone Call", "Phone Call",
-			    dm_EngagementTimeline[EngagementType] = "Letter Sent", "Letter",
-			    dm_EngagementTimeline[EngagementType] IN { "Social Like", "Social Share", "Social Impression" }, "Social",
-			    BLANK()
-			)
-			
-			```
-		lineageTag: 3396fd98-e5c3-4ee4-8a3e-cae6c4457c96
+	column WasConverted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: fcbc7ff4-3c3e-4aa9-952b-42c712ae80df
+		sourceLineageTag: WasConverted
 		summarizeBy: none
+		sourceColumn: WasConverted
 
 		annotation SummarizationSetBy = Automatic
 
-	partition dm_EngagementTimeline = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_dm_EngagementTimeline = Source{[Schema="dbo",Item="dm_EngagementTimeline"]}[Data]
-				in
-				    dbo_dm_EngagementTimeline
+	column EngagementsBeforeDonation
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 08c2159d-0235-4d5a-9402-399f03cd4cc1
+		sourceLineageTag: EngagementsBeforeDonation
+		summarizeBy: sum
+		sourceColumn: EngagementsBeforeDonation
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dm_EngagementTimeline = entity
+		mode: directLake
+		source
+			entityName: dm_EngagementTimeline
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

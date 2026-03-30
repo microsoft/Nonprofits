@@ -1,14 +1,9 @@
-expression SQL_Endpoint = "{GOLD_LAKEHOUSE_SQL_ENDPOINT}" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
-	lineageTag: d4520ffa-b8f7-419d-93b8-c2eb16fdedf6
+expression DatabaseQuery =
+		let
+		    database = Sql.Database("{GOLD_LAKEHOUSE_SQL_SERVER}", "{GOLD_LAKEHOUSE_SQL_ENDPOINT}")
+		in
+		    database
+	lineageTag: 6b42f9b2-ae31-4ada-97bc-afd4a62c5a7e
 
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Text
-
-expression Lakehouse_Name = "{GOLD_LAKEHOUSE_NAME}" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
-	lineageTag: 18ff18fa-65ec-4105-8e1c-c4132a42879b
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Text
+	annotation PBI_IncludeFutureArtifacts = False
 

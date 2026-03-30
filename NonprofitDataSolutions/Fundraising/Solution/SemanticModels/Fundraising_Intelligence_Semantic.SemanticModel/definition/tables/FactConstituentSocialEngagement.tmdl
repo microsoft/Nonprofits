@@ -1,11 +1,13 @@
 table FactConstituentSocialEngagement
-	lineageTag: 15d14d8e-99a2-484c-9e2f-171238638198
+	lineageTag: 36f81372-5c19-431d-b43a-14578dc76c40
+	sourceLineageTag: [dbo].[FactConstituentSocialEngagement]
 
 	column Comment
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 3a142edd-1ce0-40c7-9e5d-b563b37b80bf
+		lineageTag: 34cc954c-2bac-4cfb-819d-3d26643e3c6a
+		sourceLineageTag: Comment
 		summarizeBy: none
 		sourceColumn: Comment
 
@@ -15,16 +17,18 @@ table FactConstituentSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 7f42ea1e-ac63-4715-8dd8-0a61c838811d
+		lineageTag: 7685b9ad-5194-47f0-97b6-7b1353a3e5d3
+		sourceLineageTag: ConstituentKey
 		summarizeBy: none
 		sourceColumn: ConstituentKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ConstituentSocialEngagementId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 8cc41a0c-4818-48fd-9365-686039caa6bb
+		lineageTag: 1122ed4a-a38c-4557-9bf6-835d6e7f9e1e
+		sourceLineageTag: ConstituentSocialEngagementId
 		summarizeBy: none
 		sourceColumn: ConstituentSocialEngagementId
 
@@ -34,16 +38,18 @@ table FactConstituentSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 0c4b2f5c-b2e0-4c44-912f-98dea095a0f3
+		lineageTag: 58ef5253-8acc-4c18-a912-fb5518ee1114
+		sourceLineageTag: ConstituentSocialEngagementKey
 		summarizeBy: none
 		sourceColumn: ConstituentSocialEngagementKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SocialEngagementId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 5f023ab5-60a5-44e8-ba12-dfb52c746285
+		lineageTag: 2dc34758-a8d5-49b2-b70b-dfa429747a96
+		sourceLineageTag: SocialEngagementId
 		summarizeBy: none
 		sourceColumn: SocialEngagementId
 
@@ -53,17 +59,19 @@ table FactConstituentSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: da66ed27-ed5a-4faf-9ac7-17f7877534ba
+		lineageTag: 1c1d4d72-a5cc-4c0a-9cb1-04f14a0da324
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Impression
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 4dca1f38-f18b-43d8-89bb-9480541502fe
+		lineageTag: 037d8660-3d01-4092-81d5-0e5d65e2f3f9
+		sourceLineageTag: Impression
 		summarizeBy: none
 		sourceColumn: Impression
 
@@ -73,17 +81,19 @@ table FactConstituentSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 2ec948ca-7fac-4e36-ba76-90d7d3355c3b
+		lineageTag: a51e1141-35bf-492c-a063-e42b00cb3be4
+		sourceLineageTag: DateKey
 		summarizeBy: none
 		sourceColumn: DateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Like
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 7eb1e57a-a48f-4455-9822-8270d501d7c5
+		lineageTag: 39932162-eb46-4152-ace6-ba37e2e8ff75
+		sourceLineageTag: Like
 		summarizeBy: none
 		sourceColumn: Like
 
@@ -93,17 +103,19 @@ table FactConstituentSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 654e088a-6e33-435b-93e7-bf07675ced94
+		lineageTag: b1b9e3f0-3159-44ae-9423-e8eee2adb9d1
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Share
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: fcd8b4b8-b09d-4982-a6d7-c44b9dd106ac
+		lineageTag: 0e3ab7ca-d10f-4171-a28f-1075ee4c17e8
+		sourceLineageTag: Share
 		summarizeBy: none
 		sourceColumn: Share
 
@@ -113,16 +125,18 @@ table FactConstituentSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 74b2f887-623b-407a-9fc1-8a9adefafd50
+		lineageTag: 287ecc9c-2481-48de-baed-debe05597f64
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysConstituentSocialEngagementId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 96c23d28-5850-40d7-a387-865ae47814eb
+		lineageTag: 8489a16e-d6b1-4fb4-a819-e16c9199b9df
+		sourceLineageTag: SourceSysConstituentSocialEngagementId
 		summarizeBy: none
 		sourceColumn: SourceSysConstituentSocialEngagementId
 
@@ -131,23 +145,30 @@ table FactConstituentSocialEngagement
 	column Timezone
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: cb74f336-1d1b-45f6-8d32-4dc67466161e
+		lineageTag: 0d6a5821-f5ef-49e0-b58d-0240b61939cb
+		sourceLineageTag: Timezone
 		summarizeBy: none
 		sourceColumn: Timezone
 
 		annotation SummarizationSetBy = Automatic
 
-	partition FactConstituentSocialEngagement = m
-		mode: directQuery
-		queryGroup: Facts
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_FactConstituentSocialEngagement = Source{[Schema="dbo",Item="FactConstituentSocialEngagement"]}[Data]
-				in
-				    dbo_FactConstituentSocialEngagement
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ed1b2230-bf13-408e-adb9-bc19938dac61
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactConstituentSocialEngagement = entity
+		mode: directLake
+		source
+			entityName: FactConstituentSocialEngagement
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

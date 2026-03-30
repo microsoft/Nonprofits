@@ -1,10 +1,12 @@
 table DimCampaignType
-	lineageTag: 3be5e491-c9c7-46c8-ae5c-c0850796daa4
+	lineageTag: 700bcb63-b24a-4aa3-b7a3-e2f9a3e854b6
+	sourceLineageTag: [dbo].[DimCampaignType]
 
 	column CampaignType
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 67810dba-b0ee-4374-b070-ee10ed9f5732
+		lineageTag: 71db5ee3-a450-4b78-8a8c-cd5cb5f2d78e
+		sourceLineageTag: CampaignType
 		summarizeBy: none
 		sourceColumn: CampaignType
 
@@ -14,7 +16,8 @@ table DimCampaignType
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: fba07c71-ba63-41ea-a28d-664afee49855
+		lineageTag: a05bd679-4767-42c1-a84c-d6aa96901bf6
+		sourceLineageTag: CampaignTypeKey
 		summarizeBy: none
 		sourceColumn: CampaignTypeKey
 
@@ -23,23 +26,19 @@ table DimCampaignType
 	column CampaignTypeId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 87bb9439-b819-483b-bad9-53371df6d085
+		lineageTag: 7cb1f5d7-e71d-4f63-b940-55b955838c82
+		sourceLineageTag: CampaignTypeId
 		summarizeBy: none
 		sourceColumn: CampaignTypeId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimCampaignType = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimCampaignType = Source{[Schema="dbo",Item="DimCampaignType"]}[Data]
-				in
-				    dbo_DimCampaignType
+	partition DimCampaignType = entity
+		mode: directLake
+		source
+			entityName: DimCampaignType
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

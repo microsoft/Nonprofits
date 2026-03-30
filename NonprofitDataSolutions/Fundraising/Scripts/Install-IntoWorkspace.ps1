@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Nonprofit data solutions (NDS) - Workspace Installation Script
+    Nonprofit Data Solutions (NDS) - Workspace Installation Script
 
 .DESCRIPTION
-    This script installs the complete Nonprofit data solutions framework into a Microsoft Fabric workspace.
+    This script installs the complete Nonprofit Data Solutions framework into a Microsoft Fabric workspace.
     It creates lakehouses, imports notebooks, configures data pipelines, and sets up semantic models and reports.
 
 .PARAMETER WorkspaceName
@@ -41,7 +41,7 @@
     Resume installation using previously saved runtime variables.
 
 .NOTES
-    Version: 1.0
+    Version: 1.1
     Author: Microsoft Nonprofit Solutions Team
     Requires: Microsoft Fabric CLI (fab), PowerShell 7+
     
@@ -91,7 +91,7 @@ param (
 
 #region Script Header and Initialization
 $Script:StartTime = Get-Date
-$Script:Version = "1.0"
+$Script:Version = "1.1"
 
 # Runtime variables collection - stores IDs, names, and configuration for all artifacts
 # Names are initialized early with the Prefix applied
@@ -148,6 +148,9 @@ $Script:RuntimeVariables = @{
     "ORCHESTRATION_PIPELINE_ID" = $null                             # Populated by Import-OrchestrationPipeline
     "SILVER_TO_GOLD_ENRICHMENT_PIPELINE_ID" = $null                 # Populated by Import-SilverToGoldOrchestrationPipeline
     
+    # ===== Folders =====
+    "FOLDER_ID" = $null                                             # Populated by Create-Folder
+    
     # ===== Semantic Models & Reports - Names initialized by Initialize-ArtifactNames =====
     "SEMANTIC_MODEL_NAME" = $null                                   # Initialized by Initialize-ArtifactNames
     "REPORT_NAME" = $null                                           # Initialized by Initialize-ArtifactNames
@@ -199,6 +202,22 @@ function Initialize-RuntimeVariables {
     
     Write-Log "Initializing artifact names with prefix: $Prefix" -Level "INFO"
     
+    # Initialize Folder Name based on Prefix
+    if (-not [string]::IsNullOrWhiteSpace($Prefix)) {
+        $Script:FolderName = $Prefix
+        
+        # Ensure prefix ends with underscore for resources, but keep folder name without it (if it was added)
+        if (-not $Prefix.EndsWith('_')) {
+            $Prefix = "${Prefix}_"
+            $Script:Prefix = $Prefix
+            Write-Log "Added trailing underscore to prefix. New Prefix: '$Prefix'" -Level "INFO"
+        }
+        
+        Write-Log "Using folder name: $Script:FolderName" -Level "INFO"
+    } else {
+        $Script:FolderName = $null
+    }
+
     # Lakehouses (except D365 which is user-selected)
     $Script:RuntimeVariables["BRONZE_LAKEHOUSE_NAME"] = "${Prefix}Fundraising_SalesforceNPSP_BR"
     $Script:RuntimeVariables["SILVER_LAKEHOUSE_NAME"] = "${Prefix}Fundraising_SL"
@@ -287,13 +306,13 @@ function Show-Progress {
     $Script:CurrentStep++
     $percentComplete = [math]::Round(($Script:CurrentStep / $Script:TotalSteps) * 100)
     
-    Write-Progress -Activity "Installing Nonprofit data solutions" -Status "$Activity - $Status" -PercentComplete $percentComplete
+    Write-Progress -Activity "Installing Nonprofit Data Solutions" -Status "$Activity - $Status" -PercentComplete $percentComplete
     Write-Log "[$Script:CurrentStep/$Script:TotalSteps] $Activity" -Level "PROGRESS"
 }
 
 Show-Header
 
-Write-Log "Starting Nonprofit data solutions installation" -Level "INFO"
+Write-Log "Starting Nonprofit Data Solutions installation" -Level "INFO"
 Write-Log "Workspace: $WorkspaceName" -Level "INFO"
 Write-Log "Prefix: $Prefix" -Level "INFO"
 Write-Log "Skip Sample Data: $SkipSampleData" -Level "INFO"
@@ -1305,6 +1324,15 @@ function Invoke-FabCommand {
     )
     
     try {
+        # Strip unsupported .Folder/ segments from fab CLI paths.
+        # The fab CLI does not support .Folder as an item type, so paths like
+        # "workspace.Workspace/folder.Folder/item.Notebook" must be reduced to
+        # "workspace.Workspace/item.Notebook". Folder management is handled
+        # separately via the Fabric REST API.
+        $Arguments = @($Arguments | ForEach-Object {
+            $_ -replace '/[^/\s]+\.Folder/', '/'
+        })
+
         $argumentString = $Arguments -join " "
         $fullCommand = if ($argumentString) { "$Command $argumentString" } else { $Command }
         Write-Verbose "Executing: fab $fullCommand"
@@ -1355,6 +1383,48 @@ function Invoke-FabCommand {
         Write-Log "Failed to execute fab command: $($_.Exception.Message)" -Level "ERROR"
         throw
     }
+}
+
+function Invoke-FabApi {
+    <#
+    .SYNOPSIS
+    Calls the Fabric REST API via the fab CLI and handles response parsing.
+
+    .DESCRIPTION
+    Wraps Invoke-FabCommand for 'fab api' calls. The fab CLI wraps all API responses
+    in {"status_code": ..., "text": ...} and returns exit code 0 even for HTTP errors.
+    This function unwraps the response, checks the HTTP status code, and throws on errors.
+
+    .RETURNS
+    The unwrapped response body (the content of the "text" field).
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Endpoint,
+
+        [Parameter(Mandatory = $false)]
+        [string]$Method = "get",
+
+        [Parameter(Mandatory = $false)]
+        [string]$BodyFile = $null
+    )
+
+    $apiArgs = @($Endpoint, "-X", $Method)
+    if ($BodyFile) { $apiArgs += @("-i", $BodyFile) }
+
+    $raw = Invoke-FabCommand -Command "api" -Arguments $apiArgs
+    $parsed = $raw | ConvertFrom-Json
+
+    # fab api wraps every response: {"status_code": <int>, "text": <object>}
+    $statusCode = if ($null -ne $parsed.status_code) { [int]$parsed.status_code } else { 200 }
+    $responseBody = if ($null -ne $parsed.text) { $parsed.text } else { $parsed }
+
+    if ($statusCode -ge 400) {
+        $errorMsg = if ($responseBody.message) { $responseBody.message } else { "HTTP $statusCode" }
+        throw "Fabric API error ($statusCode): $errorMsg"
+    }
+
+    return $responseBody
 }
 
 function Get-FabItemId {
@@ -1529,6 +1599,59 @@ function Get-FabItem ($fabricPath, $property, $silent = $false) {
     }
 }
 
+function Move-ItemToFolder {
+    <#
+    .SYNOPSIS
+    Moves a Fabric item into a folder using the Fabric REST API.
+    
+    .DESCRIPTION
+    Since the fab CLI does not support .Folder as an item type, folder management
+    is handled via the Fabric REST API. This function moves an item into a folder
+    after it has been created/imported at the workspace root, using the dedicated
+    POST /items/{itemId}/move endpoint.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ItemId,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$FolderId = $Script:RuntimeVariables["FOLDER_ID"],
+        
+        [Parameter(Mandatory = $false)]
+        [string]$ItemName = ""
+    )
+    
+    if (-not $FolderId -or -not $ItemId) { return }
+    
+    try {
+        $workspaceId = $Script:RuntimeVariables["WORKSPACE_ID"]
+        
+        # Use the dedicated /move endpoint to assign item to folder
+        $body = @{
+            targetFolderId = $FolderId
+        } | ConvertTo-Json -Compress
+        
+        $tempFile = Join-Path ([System.IO.Path]::GetTempPath()) "fab-move-$([guid]::NewGuid().ToString('N')).json"
+        Set-Content -Path $tempFile -Value $body -Encoding UTF8 -NoNewline
+        
+        try {
+            Invoke-FabApi -Endpoint "workspaces/$workspaceId/items/$ItemId/move" -Method "post" -BodyFile $tempFile | Out-Null
+            
+            if ($ItemName) {
+                Write-Host "   📂 Moved to folder '$Script:FolderName'" -ForegroundColor Gray
+                Write-Log "Moved '$ItemName' to folder '$Script:FolderName' (FolderId: $FolderId)" -Level "SUCCESS"
+            }
+        }
+        finally {
+            Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+        }
+    }
+    catch {
+        Write-Host "   ⚠️ Failed to move '$ItemName' to folder: $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Log "Could not move item '$ItemName' ($ItemId) to folder '${FolderId}': $($_.Exception.Message)" -Level "WARNING"
+    }
+}
+
 function New-FabricResource {
     param(
         [string]$ResourceType,
@@ -1567,6 +1690,11 @@ function New-FabricResource {
         $resourceId = Get-FabItemId -FabricPath $FabricPath -WithRetry
         Write-Host "   🆔 ID: " -NoNewline -ForegroundColor Gray
         Write-Host "$resourceId" -ForegroundColor White
+        
+        # Move to folder if one was created
+        if ($Script:RuntimeVariables["FOLDER_ID"]) {
+            Move-ItemToFolder -ItemId $resourceId -ItemName $ResourceName
+        }
         
         Write-Log "$ResourceType '$ResourceName' created successfully (ID: $resourceId)" -Level "SUCCESS"
         return $resourceId
@@ -1640,6 +1768,11 @@ function Import-FabricResource {
             Write-Host "   ✅ " -NoNewline -ForegroundColor Green
             Write-Host "${ResourceType} imported successfully (ID: $resourceId)" -ForegroundColor Green
             Write-Log "$ResourceType '$ResourceName' imported successfully (ID: $resourceId)" -Level "SUCCESS"
+            
+            # Move to folder if one was created (only for new imports, not updates)
+            if ($Script:RuntimeVariables["FOLDER_ID"]) {
+                Move-ItemToFolder -ItemId $resourceId -ItemName $ResourceName
+            }
         }
         
         #Write-Host "   🆔 ID: " -NoNewline -ForegroundColor Gray
@@ -1687,7 +1820,67 @@ function Use-Workspace {
     }
 }
 
+function Create-Folder {
+    if (-not $Script:FolderName) {
+        return
+    }
 
+    $workspaceId = $Script:RuntimeVariables["WORKSPACE_ID"]
+    Write-Host ""
+    Write-Host "📁 " -NoNewline -ForegroundColor Cyan
+    Write-Host "Creating folder: " -NoNewline -ForegroundColor White
+    Write-Host "$Script:FolderName" -ForegroundColor Cyan
+    Write-Host "   💡 Folder for $Prefix resources" -ForegroundColor Gray
+    Write-Log "Creating folder '$Script:FolderName' via Fabric REST API..." -Level "INFO"
+
+    try {
+        # Check if folder already exists using the dedicated /folders endpoint
+        $foldersResponse = Invoke-FabApi -Endpoint "workspaces/$workspaceId/folders" -Method "get"
+
+        $folderList = if ($foldersResponse.value) { $foldersResponse.value } else { @() }
+        $existingFolder = $folderList | Where-Object { $_.displayName -eq $Script:FolderName }
+
+        if ($existingFolder) {
+            $Script:RuntimeVariables["FOLDER_ID"] = $existingFolder.id
+            Write-Host "   ⚠️ " -NoNewline -ForegroundColor Yellow
+            Write-Host "Folder already exists - using existing folder" -ForegroundColor Yellow
+            Write-Host "   🆔 ID: " -NoNewline -ForegroundColor Gray
+            Write-Host "$($existingFolder.id)" -ForegroundColor White
+            Write-Log "Folder '$Script:FolderName' already exists (ID: $($existingFolder.id))" -Level "WARNING"
+            return
+        }
+
+        # Create folder via the dedicated /folders endpoint
+        Write-Host "   🔨 Creating..." -ForegroundColor Gray
+        $body = @{
+            displayName = $Script:FolderName
+        } | ConvertTo-Json -Compress
+
+        $tempFile = Join-Path ([System.IO.Path]::GetTempPath()) "fab-folder-$([guid]::NewGuid().ToString('N')).json"
+        Set-Content -Path $tempFile -Value $body -Encoding UTF8 -NoNewline
+
+        try {
+            $folderInfo = Invoke-FabApi -Endpoint "workspaces/$workspaceId/folders" -Method "post" -BodyFile $tempFile
+
+            $Script:RuntimeVariables["FOLDER_ID"] = $folderInfo.id
+            Write-Host "   ✅ " -NoNewline -ForegroundColor Green
+            Write-Host "Folder created successfully" -ForegroundColor Green
+            Write-Host "   🆔 ID: " -NoNewline -ForegroundColor Gray
+            Write-Host "$($folderInfo.id)" -ForegroundColor White
+            Write-Log "Folder '$Script:FolderName' created (ID: $($folderInfo.id))" -Level "SUCCESS"
+        }
+        finally {
+            Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+        }
+    }
+    catch {
+        Write-Host "   ⚠️ " -NoNewline -ForegroundColor Yellow
+        Write-Host "Could not create folder - items will be created in workspace root" -ForegroundColor Yellow
+        Write-Log "Failed to create folder '$Script:FolderName': $($_.Exception.Message). Items will be in workspace root." -Level "WARNING"
+        $Script:FolderName = $null
+        $Script:RuntimeVariables["FOLDER_ID"] = $null
+    }
+}
 
 function Create-Sfnpsp_BronzeLakehouse {
     # Skip if already created
@@ -1697,7 +1890,11 @@ function Create-Sfnpsp_BronzeLakehouse {
     }
     
     $lakehouseName = $Script:RuntimeVariables["BRONZE_LAKEHOUSE_NAME"]
-    $fabricPath = "$WorkspaceName.Workspace/${lakehouseName}.Lakehouse"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${lakehouseName}.Lakehouse"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${lakehouseName}.Lakehouse"
+    }
     
     $Script:RuntimeVariables["BRONZE_LAKEHOUSE_ID"] = New-FabricResource `
         -ResourceType "Lakehouse" `
@@ -1714,7 +1911,11 @@ function Create-SilverLakehouse {
     }
     
     $lakehouseName = $Script:RuntimeVariables["SILVER_LAKEHOUSE_NAME"]
-    $fabricPath = "$WorkspaceName.Workspace/${lakehouseName}.Lakehouse"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${lakehouseName}.Lakehouse"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${lakehouseName}.Lakehouse"
+    }
     
     $Script:RuntimeVariables["SILVER_LAKEHOUSE_ID"] = New-FabricResource `
         -ResourceType "Lakehouse" `
@@ -1731,7 +1932,11 @@ function Create-GoldLakehouse {
     }
     
     $lakehouseName = $Script:RuntimeVariables["GOLD_LAKEHOUSE_NAME"]
-    $fabricPath = "$WorkspaceName.Workspace/${lakehouseName}.Lakehouse"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${lakehouseName}.Lakehouse"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${lakehouseName}.Lakehouse"
+    }
     
     $Script:RuntimeVariables["GOLD_LAKEHOUSE_ID"] = New-FabricResource `
         -ResourceType "Lakehouse" `
@@ -1780,7 +1985,11 @@ function Import-ConfigNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_Config.Notebook")
     $notebookName = $Script:RuntimeVariables["Fundraising_Config"]
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
 
     $Script:RuntimeVariables["CONFIG_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1799,7 +2008,11 @@ function Import-Fundraising_SalesforceNPSP_ConfigNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SalesforceNPSP_Config.Notebook")
     $notebookName = $Script:RuntimeVariables["Fundraising_SalesforceNPSP_Config"]
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["BRONZE_CONFIG_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1818,7 +2031,11 @@ function Import-Fundraising_SalesforceNPSP_BR_MergeNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SalesforceNPSP_BR_Merge.Notebook")
     $notebookName = "${Prefix}Fundraising_SalesforceNPSP_BR_Merge"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["BRONZE_MERGE_STAGING_DATA_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1837,7 +2054,11 @@ function Import-SilverCreateSchemaNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SL_CreateSchema.Notebook")
     $notebookName = $Script:RuntimeVariables["Fundraising_SL_CreateSchema"]
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["SILVER_CREATE_SCHEMA_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1856,7 +2077,11 @@ function Import-SilverCreateDefaultConfigurationNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SL_DefaultConfig.Notebook")
     $notebookName = $Script:RuntimeVariables["Fundraising_SL_DefaultConfig"]
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
 
     $Script:RuntimeVariables["SILVER_CREATE_DEFAULT_CONFIGURATION_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1875,7 +2100,11 @@ function Import-Fundraising_SalesforceNPSP_TransformNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SalesforceNPSP_Transform.Notebook")
     $notebookName = "${Prefix}Fundraising_SalesforceNPSP_Transform"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $notebookId = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1897,7 +2126,11 @@ function Import-Fundraising_D365_ConfigNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_D365_Config.Notebook")
     $notebookName = "${Prefix}Fundraising_D365_Config"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
 
     # Store notebook name in runtime variables (for %run references)
     $Script:RuntimeVariables["Fundraising_D365_Config"] = $notebookName
@@ -1919,7 +2152,11 @@ function Import-Fundraising_D365_TransformNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_D365_Transform.Notebook")
     $notebookName = "${Prefix}Fundraising_D365_Transform"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     # Store notebook name in runtime variables (for %run references)
     $Script:RuntimeVariables["Fundraising_D365_Transform"] = $notebookName
@@ -1944,7 +2181,11 @@ function Import-SilverImportSampleDataNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SL_SampleData.Notebook")
     $notebookName = "${Prefix}Fundraising_SL_SampleData"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["SILVER_IMPORT_SAMPLE_DATA_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1963,7 +2204,11 @@ function Import-GoldCreateSchemaNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_GD_CreateSchema.Notebook")
     $notebookName = "${Prefix}Fundraising_GD_CreateSchema"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["GOLD_CREATE_SCHEMA_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -1982,7 +2227,11 @@ function Import-GoldCreateSegmentsNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_GD_CreateSegments.Notebook")
     $notebookName = "${Prefix}Fundraising_GD_CreateSegments"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["GOLD_CREATE_SEGMENTS_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -2001,7 +2250,11 @@ function Import-SilverToGoldEnrichmentNotebook {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Notebooks/Fundraising_SL_GD_Enrichment.Notebook")
     $notebookName = "${Prefix}Fundraising_SL_GD_Enrichment"
-    $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${notebookName}.Notebook"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${notebookName}.Notebook"
+    }
     
     $Script:RuntimeVariables["SILVER_TO_GOLD_ENRICHMENT_NOTEBOOK_ID"] = Import-FabricResource `
         -ResourceType "Notebook" `
@@ -2020,7 +2273,11 @@ function Import-SFNPSP_BronzeIngestionPipeline {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "DataPipelines/Fundraising_SalesforceNPSP_BR_Load.DataPipeline")
     $pipelineName = $Script:RuntimeVariables["Fundraising_SalesforceNPSP_BR_Load"]
-    $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${pipelineName}.DataPipeline"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    }
     
     $Script:RuntimeVariables["Fundraising_SalesforceNPSP_BR_Load_DataPipeline"] = Import-FabricResource `
         -ResourceType "Data Pipeline" `
@@ -2039,7 +2296,11 @@ function Import-BronzeIngestionOrchestrationPipeline {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "DataPipelines/Fundraising_BR_Ingestion.DataPipeline")
     $pipelineName = $Script:RuntimeVariables["Fundraising_BR_Ingestion"]
-    $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${pipelineName}.DataPipeline"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    }
 
     $Script:RuntimeVariables["BRONZE_INGESTION_PIPELINE_ID"] = Import-FabricResource `
         -ResourceType "Data Pipeline" `
@@ -2058,7 +2319,11 @@ function Import-SilverToGoldOrchestrationPipeline {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "DataPipelines/Fundraising_SL_GD_Enrichment.DataPipeline")
     $pipelineName = "${Prefix}Fundraising_SL_GD_Enrichment"
-    $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${pipelineName}.DataPipeline"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    }
     
     $Script:RuntimeVariables["SILVER_TO_GOLD_ENRICHMENT_PIPELINE_ID"] = Import-FabricResource `
         -ResourceType "Data Pipeline" `
@@ -2077,7 +2342,11 @@ function Import-OrchestrationPipeline {
     
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "DataPipelines/Fundraising_Orchestration.DataPipeline")
     $pipelineName = "${Prefix}Fundraising_Orchestration"
-    $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${pipelineName}.DataPipeline"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
+    }
     
     $Script:RuntimeVariables["ORCHESTRATION_PIPELINE_ID"] = Import-FabricResource `
         -ResourceType "Data Pipeline" `
@@ -2150,14 +2419,19 @@ function Import-DataPipelines {
 function Import-SemanticModels {
     $script:semanticModelName = "${Prefix}Fundraising_Intelligence_Semantic"
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel")
-    $fabricPath = "$WorkspaceName.Workspace/${semanticModelName}.SemanticModel"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${semanticModelName}.SemanticModel"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${semanticModelName}.SemanticModel"
+    }
 
-    # Update semantic model configuration
+    # Update semantic model configuration for Direct Lake
     Write-Host "   🔧 Configuring semantic model connections..." -ForegroundColor Gray
     $expressionsPath = Join-Path $localPath 'definition\expressions.tmdl'
     $content = Get-Content $expressionsPath -Raw -Encoding UTF8
-    $content = $content -replace '(?<=SQL_Endpoint\s*=\s*")[^"]*', $Script:RuntimeVariables["GOLD_LAKEHOUSE_SQL_ENDPOINT"]
-    $content = $content -replace '(?<=Lakehouse_Name\s*=\s*")[^"]*', $Script:RuntimeVariables["GOLD_LAKEHOUSE_NAME"]
+    # Replace placeholders in Sql.Database() function for Direct Lake connection
+    $content = $content -replace '\{GOLD_LAKEHOUSE_SQL_SERVER\}', $Script:RuntimeVariables["GOLD_LAKEHOUSE_SQL_ENDPOINT"]
+    $content = $content -replace '\{GOLD_LAKEHOUSE_SQL_ENDPOINT\}', $Script:RuntimeVariables["GOLD_LAKEHOUSE_NAME"]
     Set-Content -Path $expressionsPath -Value $content -Encoding UTF8 -NoNewline
 
     $script:semanticModelId = Import-FabricResource `
@@ -2171,7 +2445,11 @@ function Import-SemanticModels {
 function Import-Reports {
     $script:reportName = "${Prefix}Fundraising_Intelligence"
     $localPath = Resolve-Path (Join-Path $workspaceItemsTempPath "Reports/Fundraising_Intelligence.Report")
-    $fabricPath = "$WorkspaceName.Workspace/${reportName}.Report"
+    if ($Script:FolderName) {
+        $fabricPath = "$WorkspaceName.Workspace/$Script:FolderName.Folder/${reportName}.Report"
+    } else {
+        $fabricPath = "$WorkspaceName.Workspace/${reportName}.Report"
+    }
 
     # Update report configuration
     Write-Host "   🔧 Configuring report connections..." -ForegroundColor Gray
@@ -2179,7 +2457,6 @@ function Import-Reports {
     $reportDef = Read-JsonFile $jsonPath
     $byConnection = $reportDef.datasetReference.byConnection
     $byConnection.connectionString = "Data Source=powerbi://api.powerbi.com/v1.0/myorg/${WorkspaceName};initial catalog=${semanticModelName};integrated security=ClaimsToken;semanticmodelid=${semanticModelId}"
-    $byConnection.pbiModelDatabaseName = $semanticModelId
     Write-ToFileSystem $jsonPath $reportDef
 
     $script:reportId = Import-FabricResource `
@@ -2208,8 +2485,16 @@ function Show-InstallationSummary {
     Write-Host ""
     
     if ($Success) {
+        # Read names from RuntimeVariables where they were stored during installation
+        $sfnpspBronzeLakehouseName = $Script:RuntimeVariables["BRONZE_LAKEHOUSE_NAME"]
+        $silverLakehouseName = $Script:RuntimeVariables["SILVER_LAKEHOUSE_NAME"]
+        $goldLakehouseName = $Script:RuntimeVariables["GOLD_LAKEHOUSE_NAME"]
+        $semanticModelName = $Script:RuntimeVariables["SEMANTIC_MODEL_NAME"]
+        $reportName = $Script:RuntimeVariables["REPORT_NAME"]
+        $orchestrationPipelineName = $Script:RuntimeVariables["Fundraising_SalesforceNPSP_BR_Load"]
+
         Write-Host "🎉 " -NoNewline -ForegroundColor Green
-        Write-Host "Nonprofit data solutions installation completed successfully!" -ForegroundColor Green
+        Write-Host "Nonprofit Data Solutions installation completed successfully!" -ForegroundColor Green
         Write-Host ""
         Write-Host "📊 " -NoNewline -ForegroundColor Cyan
         Write-Host "Installation Summary:" -ForegroundColor White
@@ -2334,7 +2619,7 @@ try {
     # Step 2: Confirmation
     if (-not $SkipConfirmation) {
         $confirmMessage = @"
-This will install Nonprofit data solutions into workspace '$WorkspaceName' with prefix '$Prefix'.
+This will install Nonprofit Data Solutions into workspace '$WorkspaceName' with prefix '$Prefix'.
 
 The following resources will be created:
 • 3 Lakehouses (Bronze, Silver, Gold)
@@ -2347,7 +2632,7 @@ $(if(-not $SkipSampleData) { "`n• Sample data will be imported" } else { "" })
 This process may take 10-15 minutes to complete.
 "@
         
-        if (-not (Confirm-Action -Message $confirmMessage -Title "Install Nonprofit data solutions")) {
+        if (-not (Confirm-Action -Message $confirmMessage -Title "Install Nonprofit Data Solutions")) {
             Write-Log "Installation cancelled by user" -Level "INFO"
             return
         }
@@ -2388,6 +2673,9 @@ This process may take 10-15 minutes to complete.
     # Step 5: Workspace validation
     Show-Progress "Validating workspace" "Connecting to Microsoft Fabric workspace"
     Use-Workspace
+    
+    # Create folder if needed
+    Create-Folder
 
     # Show runtime variables state before applying
     if ($PSBoundParameters.ContainsKey('Verbose')) {
@@ -2428,7 +2716,7 @@ This process may take 10-15 minutes to complete.
     # Step 12: Completion
     Show-Progress "Finalizing installation" "Completing setup and validation"
     
-    Write-Progress -Activity "Installing Nonprofit data solutions" -Completed
+    Write-Progress -Activity "Installing Nonprofit Data Solutions" -Completed
     
     Write-Log "Installation completed successfully" -Level "SUCCESS"
     Show-InstallationSummary -Success $true
@@ -2436,7 +2724,7 @@ This process may take 10-15 minutes to complete.
 catch {
     $errorMsg = $_.Exception.Message
     Write-Log "Installation failed: $errorMsg" -Level "ERROR"
-    Write-Progress -Activity "Installing Nonprofit data solutions" -Completed
+    Write-Progress -Activity "Installing Nonprofit Data Solutions" -Completed
     Show-InstallationSummary -Success $false -ErrorMessage $errorMsg
     
     # Re-throw the exception to maintain original behavior

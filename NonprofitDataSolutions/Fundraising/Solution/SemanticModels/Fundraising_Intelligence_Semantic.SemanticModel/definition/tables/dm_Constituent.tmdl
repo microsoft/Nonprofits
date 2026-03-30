@@ -1,20 +1,23 @@
 table dm_Constituent
-	lineageTag: c9b067d7-cf71-40f6-b227-1003e474cb96
+	lineageTag: 9516eab4-373a-46f3-b876-43283800fd2e
+	sourceLineageTag: [dbo].[dm_Constituent]
 
 	column ConstituentKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: a6c3ff8e-31cc-463d-a2cb-f195177e6185
+		lineageTag: 47f475c3-a7dd-4314-970a-a237b9885f10
+		sourceLineageTag: ConstituentKey
 		summarizeBy: none
 		sourceColumn: ConstituentKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ConstituentId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: d972a9cb-6b49-4724-a781-3d32bb9c53ca
+		lineageTag: 0343d151-6b16-4cb3-bd2c-d0b41a6ff5cc
+		sourceLineageTag: ConstituentId
 		summarizeBy: none
 		sourceColumn: ConstituentId
 
@@ -23,7 +26,8 @@ table dm_Constituent
 	column ConstituentName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: da5c78fe-598a-4c1e-a6d0-c50b6fa19292
+		lineageTag: 8ac372a1-7962-4446-bb28-37cee6cd6815
+		sourceLineageTag: ConstituentName
 		summarizeBy: none
 		sourceColumn: ConstituentName
 
@@ -32,7 +36,8 @@ table dm_Constituent
 	column Email
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: fa33f7f0-0bc4-42d4-89f9-1664f5540ff5
+		lineageTag: f9cd3017-132c-4928-9fff-f972c8299f4e
+		sourceLineageTag: Email
 		summarizeBy: none
 		sourceColumn: Email
 
@@ -42,7 +47,8 @@ table dm_Constituent
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 6a5324c8-be14-4b35-bf03-2bb788f5ec1b
+		lineageTag: 9aa82545-fe30-48b8-ad93-576d1f6b825e
+		sourceLineageTag: Age
 		summarizeBy: none
 		sourceColumn: Age
 
@@ -51,7 +57,8 @@ table dm_Constituent
 	column EngagementStage
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 1ec39b48-d61a-41c5-aed5-9d97564731b4
+		lineageTag: 2861175e-ac5a-4451-9cf6-7bc13d5e695a
+		sourceLineageTag: EngagementStage
 		summarizeBy: none
 		sourceColumn: EngagementStage
 
@@ -60,17 +67,19 @@ table dm_Constituent
 	column AcquisitionChannel
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 54e37bbe-3fd3-404b-b69f-6c87091fa029
+		lineageTag: d188b5fc-d001-43ec-a530-f66dddbd6dd9
+		sourceLineageTag: AcquisitionChannel
 		summarizeBy: none
 		sourceColumn: AcquisitionChannel
 
 		annotation SummarizationSetBy = Automatic
 
 	column LifetimeDonationAmount
-		dataType: double
-		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
 		sourceProviderType: decimal(18, 4)
-		lineageTag: ad3ea5b7-94b7-4ae8-979a-1d9809656bd8
+		lineageTag: 90b360a2-7191-49ed-910d-f1304ea0ac97
+		sourceLineageTag: LifetimeDonationAmount
 		summarizeBy: none
 		sourceColumn: LifetimeDonationAmount
 
@@ -82,27 +91,30 @@ table dm_Constituent
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: ea0750d3-1f30-4323-b133-4af1c4116ddd
+		lineageTag: cb2cd037-431b-4722-aee1-7b76ec7b533a
+		sourceLineageTag: FirstDonationDateKey
 		summarizeBy: none
 		sourceColumn: FirstDonationDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column LastDonationDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: df2cbcf0-2a4c-411e-a600-89ac4a3fcb2f
+		lineageTag: 24cf6260-6ac8-45cf-b279-7f152c31feb7
+		sourceLineageTag: LastDonationDateKey
 		summarizeBy: none
 		sourceColumn: LastDonationDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column AttendedEventsCount
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 51090250-feb1-48c2-b1f0-c8b97007ea60
+		lineageTag: d8c3c293-40e5-46a1-ab70-9eddf1e5e77a
+		sourceLineageTag: AttendedEventsCount
 		summarizeBy: none
 		sourceColumn: AttendedEventsCount
 
@@ -112,33 +124,30 @@ table dm_Constituent
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 5124a86d-641b-40dd-9f07-b86323e49ce7
+		lineageTag: 3d0a75df-aebc-42a8-b21c-3d50c2539dca
+		sourceLineageTag: FirstEngagementDateKey
 		summarizeBy: none
 		sourceColumn: FirstEngagementDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column IsNewDonor
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: a1bb6034-7197-4994-9037-49f3eec28850
+		lineageTag: d91bd881-028f-4a50-9a57-268530ec79b6
+		sourceLineageTag: IsNewDonor
 		summarizeBy: none
 		sourceColumn: IsNewDonor
 
 		annotation SummarizationSetBy = Automatic
 
-	partition dm_Constituent = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_dm_Constituent = Source{[Schema="dbo",Item="dm_Constituent"]}[Data]
-				in
-				    dbo_dm_Constituent
+	partition dm_Constituent = entity
+		mode: directLake
+		source
+			entityName: dm_Constituent
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

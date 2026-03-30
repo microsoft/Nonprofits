@@ -1,12 +1,14 @@
 table DimConstituentProgramBridge
-	lineageTag: 7a96e9e5-1b97-41b0-9e9e-fe5f22853b2d
+	lineageTag: c526e368-41fa-47f8-94bd-69b3f79a9da3
+	sourceLineageTag: [dbo].[DimConstituentProgramBridge]
 
 	column ConstituentKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 2406fe0d-9a13-4615-909e-d19b65cd061b
-		summarizeBy: count
+		lineageTag: 636e3937-071f-43e2-b1ad-1f5a3438e10e
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
 		sourceColumn: ConstituentKey
 
 		annotation SummarizationSetBy = Automatic
@@ -14,7 +16,8 @@ table DimConstituentProgramBridge
 	column ConstituentProgramBridgeId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 250baeef-4c0d-4ddf-8678-bb84f1225c25
+		lineageTag: 7da99315-6a32-490f-9ba9-74efcd367a03
+		sourceLineageTag: ConstituentProgramBridgeId
 		summarizeBy: none
 		sourceColumn: ConstituentProgramBridgeId
 
@@ -24,8 +27,9 @@ table DimConstituentProgramBridge
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 889bd00e-47a1-4ead-b755-3cf4e0cadf2f
-		summarizeBy: count
+		lineageTag: efc1bc84-393b-497e-bbfe-a494cf84b597
+		sourceLineageTag: ConstituentProgramBridgeKey
+		summarizeBy: none
 		sourceColumn: ConstituentProgramBridgeKey
 
 		annotation SummarizationSetBy = Automatic
@@ -34,23 +38,19 @@ table DimConstituentProgramBridge
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: a9414018-e314-4045-b6c8-e15d17366cf8
+		lineageTag: c31efda5-9585-4dca-b8c7-f23013a0fde9
+		sourceLineageTag: ProgramKey
 		summarizeBy: none
 		sourceColumn: ProgramKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
-	partition DimConstituentProgramBridge = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimConstituentProgramBridge = Source{[Schema="dbo",Item="DimConstituentProgramBridge"]}[Data]
-				in
-				    dbo_DimConstituentProgramBridge
+	partition DimConstituentProgramBridge = entity
+		mode: directLake
+		source
+			entityName: DimConstituentProgramBridge
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 
