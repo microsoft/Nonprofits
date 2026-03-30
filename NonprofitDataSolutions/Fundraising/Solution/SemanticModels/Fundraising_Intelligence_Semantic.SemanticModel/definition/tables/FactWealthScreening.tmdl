@@ -1,10 +1,12 @@
 table FactWealthScreening
-	lineageTag: cec87e81-d374-4471-aa4f-e00584a4658a
+	lineageTag: 46a1822f-9362-4ec9-80ae-3053d4e3a75f
+	sourceLineageTag: [dbo].[FactWealthScreening]
 
 	column CapacityRange
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 4b50f280-0581-4d43-8e67-bf439a5e3edb
+		lineageTag: 43696122-b079-42ff-bebc-af7cea0661c0
+		sourceLineageTag: CapacityRange
 		summarizeBy: none
 		sourceColumn: CapacityRange
 
@@ -14,16 +16,18 @@ table FactWealthScreening
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: d3394e4a-1b4e-4860-9179-9d0b7e589485
+		lineageTag: d0f3b877-1ac3-4f56-acff-496edb957edc
+		sourceLineageTag: ConstituentKey
 		summarizeBy: none
 		sourceColumn: ConstituentKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ConstituentRating
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 75ceea03-b480-4af5-92a4-d1d4e4e462b5
+		lineageTag: 2066b2fc-6737-4597-a0ae-1cbf8dffb8e0
+		sourceLineageTag: ConstituentRating
 		summarizeBy: none
 		sourceColumn: ConstituentRating
 
@@ -33,72 +37,73 @@ table FactWealthScreening
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 1a02586d-47ed-4e2d-be60-119136142863
+		lineageTag: 49253ed0-05fa-4571-8a97-34b22d647ada
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column LastScreeningDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 9febead1-07e7-4d65-9841-eff0984754f0
+		lineageTag: be8b9bd6-7231-4cfa-ab78-abce6374320e
+		sourceLineageTag: LastScreeningDateKey
 		summarizeBy: none
 		sourceColumn: LastScreeningDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: eab71638-ccee-424c-be32-0836633c6cac
+		lineageTag: 1afc1221-17d7-41d4-9651-966578df26c2
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 65879cb2-183a-4b93-986f-e5c3c169c0da
+		lineageTag: 1d49e071-b2a5-4c0d-8893-9394595cacd4
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column WealthScreeningKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 8c32b552-93aa-4304-b04d-c77fbaafa809
+		lineageTag: ddc8742c-8a2a-46ea-8c4e-e941fd6386be
+		sourceLineageTag: WealthScreeningKey
 		summarizeBy: none
 		sourceColumn: WealthScreeningKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column WealthScreeningId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 3ca624f7-ce8e-4b46-a7b9-02c79e8f42ad
+		lineageTag: 141dcb41-2c2a-4d39-9ef4-748ddf02e097
+		sourceLineageTag: WealthScreeningId
 		summarizeBy: none
 		sourceColumn: WealthScreeningId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition FactWealthScreening = m
-		mode: directQuery
-		queryGroup: Facts
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_FactWealthScreening = Source{[Schema="dbo",Item="FactWealthScreening"]}[Data]
-				in
-				    dbo_FactWealthScreening
+	partition FactWealthScreening = entity
+		mode: directLake
+		source
+			entityName: FactWealthScreening
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

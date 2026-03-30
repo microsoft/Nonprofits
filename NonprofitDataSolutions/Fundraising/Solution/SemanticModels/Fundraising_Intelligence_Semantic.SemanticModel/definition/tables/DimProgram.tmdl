@@ -1,30 +1,34 @@
 table DimProgram
-	lineageTag: 7dec1f5a-590e-41c6-b2ce-a0ce22aedc2f
+	lineageTag: da442d1e-a7ec-40a6-aa5a-9365f7a3fe30
+	sourceLineageTag: [dbo].[DimProgram]
 
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: af385fed-e247-4129-9b05-43e8c86a857d
+		lineageTag: c34c2733-0a79-413e-8a01-c07e95de276e
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 4d7a8d5c-977a-485e-b789-e596f7bbebbb
+		lineageTag: 2bf2b9d6-27cb-4658-95aa-04c617023009
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ProgramId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 3028c0d5-5978-4394-b3ea-867fbb24779a
+		lineageTag: ebc30c07-5698-44d1-bfb9-a0fabffec125
+		sourceLineageTag: ProgramId
 		summarizeBy: none
 		sourceColumn: ProgramId
 
@@ -34,16 +38,18 @@ table DimProgram
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 826b968b-a37b-467b-a092-2fb03eda4348
+		lineageTag: 22ab0cda-cd2c-4006-b6c6-7938f0cd988d
+		sourceLineageTag: ProgramKey
 		summarizeBy: none
 		sourceColumn: ProgramKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ProgramName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 58db8837-bb29-4367-89fa-88ae96f0118b
+		lineageTag: 081c05cb-14ab-4eed-9732-b017ecab1290
+		sourceLineageTag: ProgramName
 		summarizeBy: none
 		sourceColumn: ProgramName
 
@@ -53,32 +59,29 @@ table DimProgram
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 5d463731-46b1-4837-938d-7673a1dfb8fa
+		lineageTag: 349cf4a2-9f98-4939-99d7-46d34d1ff8ff
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysProgramId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 3821335a-fbe1-41c5-899e-fe37892b256d
+		lineageTag: 59e002d0-da71-43af-908b-bf024361507d
+		sourceLineageTag: SourceSysProgramId
 		summarizeBy: none
 		sourceColumn: SourceSysProgramId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimProgram = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimProgram = Source{[Schema="dbo",Item="DimProgram"]}[Data]
-				in
-				    dbo_DimProgram
+	partition DimProgram = entity
+		mode: directLake
+		source
+			entityName: DimProgram
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

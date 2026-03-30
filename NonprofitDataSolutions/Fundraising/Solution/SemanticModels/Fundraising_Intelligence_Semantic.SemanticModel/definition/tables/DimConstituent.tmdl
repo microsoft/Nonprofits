@@ -1,11 +1,13 @@
 table DimConstituent
-	lineageTag: ca9cfd5b-7267-41c9-8082-50fe9e9eb2e0
+	lineageTag: ce9a9468-e4ff-4790-83bf-2a23946e1e7a
+	sourceLineageTag: [dbo].[DimConstituent]
 
 	column AddressKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: c06912ed-770f-4e76-b2a2-2acce27ed26d
+		lineageTag: 8f364474-3b3c-4e8e-b9ba-70b0a3f4f81c
+		sourceLineageTag: AddressKey
 		summarizeBy: none
 		sourceColumn: AddressKey
 
@@ -14,7 +16,8 @@ table DimConstituent
 	column ConstituentId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: fc5fe9ba-bcef-410a-aeab-72a9f61a7aac
+		lineageTag: 797b72ad-a3ac-4288-9480-ce1a4d2e684a
+		sourceLineageTag: ConstituentId
 		summarizeBy: none
 		sourceColumn: ConstituentId
 
@@ -24,7 +27,8 @@ table DimConstituent
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 9aa276dc-4386-4b03-ab68-6aa5d7dd2c09
+		lineageTag: a20a0a70-9166-4a70-995a-044cdc19701a
+		sourceLineageTag: ConstituentKey
 		summarizeBy: none
 		sourceColumn: ConstituentKey
 
@@ -33,7 +37,8 @@ table DimConstituent
 	column ConstituentName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: e17354a7-5c09-4b50-8d4d-3c0622e776e4
+		lineageTag: e801b975-5172-4e07-b75b-df657b24ad0e
+		sourceLineageTag: ConstituentName
 		summarizeBy: none
 		sourceColumn: ConstituentName
 
@@ -42,7 +47,8 @@ table DimConstituent
 	column ConstituentType
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 72266ad7-b0db-4cfb-9420-3ed155a249f7
+		lineageTag: 8d2472b1-22ca-472d-939c-e37a6cb57c95
+		sourceLineageTag: ConstituentType
 		summarizeBy: none
 		sourceColumn: ConstituentType
 
@@ -52,16 +58,18 @@ table DimConstituent
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 77f51d7c-3620-49dc-aa30-c65adc484f01
+		lineageTag: 29c213ad-9810-441a-899a-f4da54c9c9be
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Email
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: a78693c5-7c0b-4e5f-82b1-bb34ce42aea2
+		lineageTag: 40f96fa8-cd90-43cf-a2e5-2f92e2077ded
+		sourceLineageTag: Email
 		summarizeBy: none
 		sourceColumn: Email
 
@@ -70,7 +78,8 @@ table DimConstituent
 	column EngagementStage
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 80514629-b0f1-4e84-b238-b44a3e9104b4
+		lineageTag: b8a1c2b2-6dfc-4b64-aeea-f1d8d9d6da9c
+		sourceLineageTag: EngagementStage
 		summarizeBy: none
 		sourceColumn: EngagementStage
 
@@ -79,7 +88,8 @@ table DimConstituent
 	column Gender
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 6eb40763-879c-4820-a8f1-7bfa0ab79bab
+		lineageTag: 98aadc52-2314-49e4-ae6d-47b1b62be873
+		sourceLineageTag: Gender
 		summarizeBy: none
 		sourceColumn: Gender
 
@@ -89,28 +99,31 @@ table DimConstituent
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: ca34fde8-7156-4ebd-b404-733d16ca4117
+		lineageTag: 5eeb7897-3236-455e-9a4a-20932e109540
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column RegistrationDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 5d69389e-1937-40c8-881f-c95b44697034
+		lineageTag: 1f956680-8073-4fb9-89f3-74c70ef9fc42
+		sourceLineageTag: RegistrationDateKey
 		summarizeBy: none
 		sourceColumn: RegistrationDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 71e55181-89e5-45d9-acdd-d8cd0764ff76
-		summarizeBy: count
+		lineageTag: 471eee3b-654a-4afe-aa86-e3a0abec9be1
+		sourceLineageTag: SourceKey
+		summarizeBy: none
 		sourceColumn: SourceKey
 
 		annotation SummarizationSetBy = Automatic
@@ -118,23 +131,19 @@ table DimConstituent
 	column SourceSysConstituentId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 7d3333e9-83a7-4d1e-97ea-a8310fa9829d
+		lineageTag: 8be4f2ad-778d-47d4-a475-cfe4c86fd104
+		sourceLineageTag: SourceSysConstituentId
 		summarizeBy: none
 		sourceColumn: SourceSysConstituentId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimConstituent = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimConstituent = Source{[Schema="dbo",Item="DimConstituent"]}[Data]
-				in
-				    dbo_DimConstituent
+	partition DimConstituent = entity
+		mode: directLake
+		source
+			entityName: DimConstituent
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

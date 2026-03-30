@@ -1,10 +1,12 @@
 table DimChannel
-	lineageTag: 2ed0cc37-159c-4b31-9114-0b007b1ad246
+	lineageTag: 42f61777-5995-435a-b924-d80912159f83
+	sourceLineageTag: [dbo].[DimChannel]
 
 	column ChannelId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 9179fd82-14ee-48f3-b35a-95a0fb2b65d2
+		lineageTag: ee45ec05-7f49-4ffa-9bcb-63a981848ef7
+		sourceLineageTag: ChannelId
 		summarizeBy: none
 		sourceColumn: ChannelId
 
@@ -14,7 +16,8 @@ table DimChannel
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: c923b5ea-da5b-40e7-b544-8e47e334e248
+		lineageTag: 0facdb3e-6ca7-4022-8e2a-e4ff7ae1da72
+		sourceLineageTag: ChannelKey
 		summarizeBy: none
 		sourceColumn: ChannelKey
 
@@ -23,7 +26,8 @@ table DimChannel
 	column ChannelName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 5188f44a-fab3-46df-be7e-fb038e742819
+		lineageTag: 1629f11f-ab7d-4527-af82-86f454de214a
+		sourceLineageTag: ChannelName
 		summarizeBy: none
 		sourceColumn: ChannelName
 
@@ -33,44 +37,43 @@ table DimChannel
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: a0b2876b-d0b6-4376-843c-ca2efbdd1672
+		lineageTag: 88b9e485-51c4-401f-b748-4bf6c80a85d5
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 007221ab-c307-4818-a466-edbfa55e4019
+		lineageTag: 06e5af99-351c-4f65-b16f-ba3bf46ecc69
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Weight
-		dataType: double
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		sourceProviderType: decimal(18, 4)
-		lineageTag: 1fea9ae8-ce29-442b-8da1-8eb1ac9cc05b
+		lineageTag: 462ebf26-eff7-4f5d-9953-ec1706da9e4c
+		sourceLineageTag: Weight
 		summarizeBy: sum
 		sourceColumn: Weight
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
-	partition DimChannel = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimChannel = Source{[Schema="dbo",Item="DimChannel"]}[Data]
-				in
-				    dbo_DimChannel
+	partition DimChannel = entity
+		mode: directLake
+		source
+			entityName: DimChannel
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
-	annotation PBI_ResultType = Exception
-
-	annotation PBI_NavigationStepName = Navigation
+	annotation PBI_ResultType = Table
 

@@ -1,30 +1,34 @@
 table DimPhonecall
-	lineageTag: 2a275635-1636-4673-95a6-274ca4a37dcf
+	lineageTag: 3cfc328e-54d0-48b0-b8bc-eb8e80522ccb
+	sourceLineageTag: [dbo].[DimPhonecall]
 
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 75924124-d7cc-449a-bc81-807a77040dd9
+		lineageTag: 8e59747f-27e6-4711-87e5-8c38589dc7df
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 30c730ac-8d5e-4cb3-a296-e80efcccc51a
+		lineageTag: e60ab0d3-4a88-4b58-be5d-c301b3fab50f
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column PhonecallDescription
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: ecdd9b88-a480-44e9-a545-25620faca1f5
+		lineageTag: 1b2398d1-3d37-4957-bd04-e2e032af29fd
+		sourceLineageTag: PhonecallDescription
 		summarizeBy: none
 		sourceColumn: PhonecallDescription
 
@@ -33,7 +37,8 @@ table DimPhonecall
 	column PhonecallId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: ec83da4d-17b4-4d9c-b531-a8fae253eb34
+		lineageTag: c0697c0f-c220-4dee-a87b-87b17535dd9d
+		sourceLineageTag: PhonecallId
 		summarizeBy: none
 		sourceColumn: PhonecallId
 
@@ -43,42 +48,51 @@ table DimPhonecall
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 0550b822-c8c8-4fb4-8b69-54737f70aa21
+		lineageTag: 2522fa67-474f-49ea-afb5-d587bd1beda9
+		sourceLineageTag: PhonecallKey
 		summarizeBy: none
 		sourceColumn: PhonecallKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: a551c7a5-baae-443e-b9bd-77e50b351f68
+		lineageTag: 9ee1009a-d174-4135-a659-c9d28edd2451
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysPhonecallId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 5f619e96-0154-4195-bbf1-e8c681a080a7
+		lineageTag: c80d1be0-742a-46a4-9460-e9294ca13e4c
+		sourceLineageTag: SourceSysPhonecallId
 		summarizeBy: none
 		sourceColumn: SourceSysPhonecallId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimPhonecall = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimPhonecall = Source{[Schema="dbo",Item="DimPhonecall"]}[Data]
-				in
-				    dbo_DimPhonecall
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b746d0cc-ede2-4f44-a6e2-9c52326caa9e
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPhonecall = entity
+		mode: directLake
+		source
+			entityName: DimPhonecall
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

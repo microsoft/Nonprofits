@@ -1,31 +1,35 @@
 table FactSocialEngagement
-	lineageTag: f765cfdf-414c-4749-8867-864dd884f279
+	lineageTag: d38383ea-754c-48a8-a6ef-749c1719460b
+	sourceLineageTag: [dbo].[FactSocialEngagement]
 
 	column FactSocialEngagementKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: d63f8e1f-f74e-437a-830d-e6070042fe7f
+		lineageTag: f8c2d5f4-78e5-4cd5-846d-42f7030711de
+		sourceLineageTag: FactSocialEngagementKey
 		summarizeBy: none
 		sourceColumn: FactSocialEngagementKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column CampaignKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: e4bfd011-3c2d-403d-a123-15a29f8b9e39
+		lineageTag: ecf991d2-a7c9-47de-aee4-d00eae463216
+		sourceLineageTag: CampaignKey
 		summarizeBy: none
 		sourceColumn: CampaignKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Clicks
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: cc4c2149-d9c3-4f24-a80d-2a7ac1b4969a
+		lineageTag: 54dfa9b5-4165-45f0-807c-13fc91e686de
+		sourceLineageTag: Clicks
 		summarizeBy: sum
 		sourceColumn: Clicks
 
@@ -35,7 +39,8 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 60882c75-b8d5-4bb0-8aa1-6a7a32bab32e
+		lineageTag: 529e3da4-9b49-4646-8d9f-596af4405fc0
+		sourceLineageTag: Comments
 		summarizeBy: sum
 		sourceColumn: Comments
 
@@ -45,16 +50,29 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 73708363-31eb-4486-ba01-1e291209c73c
+		lineageTag: 727c6ee4-f2cb-41a9-9884-99a71e1c665f
+		sourceLineageTag: EngagementPlatformKey
 		summarizeBy: none
 		sourceColumn: EngagementPlatformKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6522c389-df43-4f71-ba12-9d6ead675d02
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
 
 	column SocialEngagementId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 5b27eb1b-649c-426e-93aa-4f93a5ad197f
+		lineageTag: 3fa09505-f116-48b0-86c0-af0d181e057c
+		sourceLineageTag: SocialEngagementId
 		summarizeBy: none
 		sourceColumn: SocialEngagementId
 
@@ -63,7 +81,8 @@ table FactSocialEngagement
 	column SourceSocialEngagementId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 9d968b1b-2448-4453-9b2a-bad595035027
+		lineageTag: 65fb1433-e711-43dd-acc1-5c656a2edd81
+		sourceLineageTag: SourceSocialEngagementId
 		summarizeBy: none
 		sourceColumn: SourceSocialEngagementId
 
@@ -73,7 +92,8 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 40867f4e-9086-4e75-abd7-90050e935d7f
+		lineageTag: b057e73a-0a21-40cb-a76f-b63c684eaff4
+		sourceLineageTag: Engagements
 		summarizeBy: sum
 		sourceColumn: Engagements
 
@@ -83,7 +103,8 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 24adbb58-ccd6-4b74-909a-f91875747dff
+		lineageTag: 592cf2da-fcde-4433-98d6-6e7033ae091c
+		sourceLineageTag: Impressions
 		summarizeBy: sum
 		sourceColumn: Impressions
 
@@ -93,17 +114,19 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 7a40e462-48b7-4d88-9b26-4fa1891e39f2
+		lineageTag: 5f79ea65-1966-4d7f-a7a4-7ea9d1794ecc
+		sourceLineageTag: InteractionDateKey
 		summarizeBy: none
 		sourceColumn: InteractionDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Likes
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 32230cf6-b0f3-4dff-bced-f813084dde1f
+		lineageTag: bf1ef9f5-59be-4299-b6a4-66adb7fedcd6
+		sourceLineageTag: Likes
 		summarizeBy: sum
 		sourceColumn: Likes
 
@@ -112,7 +135,8 @@ table FactSocialEngagement
 	column PostId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 271adde3-0dd1-49f7-9b3b-e6d9e4d0c002
+		lineageTag: 65b5b5c0-042c-4a07-937b-ead9d14cd57c
+		sourceLineageTag: PostId
 		summarizeBy: none
 		sourceColumn: PostId
 
@@ -122,7 +146,8 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 36decfed-2e9a-41da-98de-94a48948edcd
+		lineageTag: 43f32802-69cf-4888-ba85-0bd94a74fadc
+		sourceLineageTag: Reach
 		summarizeBy: sum
 		sourceColumn: Reach
 
@@ -132,17 +157,19 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 701d5443-31c5-4484-94bb-14ae9cce89ff
+		lineageTag: 975fac37-94b9-42f9-af14-dc3afeb5d3e4
+		sourceLineageTag: ReportDateKey
 		summarizeBy: none
 		sourceColumn: ReportDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Shares
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 56972791-76ab-4ee1-b55f-dbb333dfc15d
+		lineageTag: 75f11e78-e0a6-4ac8-a4dd-b5ff370ea1d9
+		sourceLineageTag: Shares
 		summarizeBy: sum
 		sourceColumn: Shares
 
@@ -152,43 +179,41 @@ table FactSocialEngagement
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 545f86ce-828a-43d8-8dae-58223714a43d
+		lineageTag: 1e416b6a-e716-4e15-9c61-dd810de6db38
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 42fcf822-911d-4e1c-8258-68615bc9f13c
+		lineageTag: 934e5623-5fbc-416f-91f8-d32ee0f5bd57
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 8ad720af-1541-4ffb-9381-c11d6a0f3572
+		lineageTag: 40437b66-2387-418d-b1ed-c4f610b496fc
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
-	partition FactSocialEngagement = m
-		mode: directQuery
-		queryGroup: Facts
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_FactSocialEngagement = Source{[Schema="dbo",Item="FactSocialEngagement"]}[Data]
-				in
-				    dbo_FactSocialEngagement
+	partition FactSocialEngagement = entity
+		mode: directLake
+		source
+			entityName: FactSocialEngagement
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

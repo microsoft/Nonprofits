@@ -1,61 +1,69 @@
 table FactVolunteerHours
-	lineageTag: 8d34a7c3-93f4-4f07-9613-f1ebba2d1f50
+	lineageTag: 95fe712c-e14c-4b8f-9d48-f9ae8f7d68a1
+	sourceLineageTag: [dbo].[FactVolunteerHours]
 
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 64140ad6-1767-4902-a9b5-d0d6e1c64007
+		lineageTag: 99485ff7-727f-4d39-925b-28aa07e875a4
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EventKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 6d2357df-19cd-4d76-a3de-6168273b45e2
+		lineageTag: e64518a5-74dc-45a0-848f-e049d84832d7
+		sourceLineageTag: EventKey
 		summarizeBy: none
 		sourceColumn: EventKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column HoursVolunteered
-		dataType: double
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		sourceProviderType: decimal(18, 4)
-		lineageTag: 0d4c6535-b272-4719-9789-fd32c6a28a36
+		lineageTag: 1ef491c0-a7aa-4a60-9fb2-eb1075b2ee5b
+		sourceLineageTag: HoursVolunteered
 		summarizeBy: sum
 		sourceColumn: HoursVolunteered
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: f5503f1e-5ff5-4ad5-bd1d-5dcebb6e2e97
+		lineageTag: 62ddda05-13c7-4e0b-9e0c-1372b31ff7a3
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: e9112c3d-c089-4440-b7f5-9cd55496de68
+		lineageTag: 1c0de3fa-15c4-408b-9320-c9b270e56f0e
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysVolunteerHoursId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 02bda875-764c-4175-9774-b5917b839246
+		lineageTag: 56dee3db-af7c-447f-8da9-e51a0c4869d8
+		sourceLineageTag: SourceSysVolunteerHoursId
 		summarizeBy: none
 		sourceColumn: SourceSysVolunteerHoursId
 
@@ -64,7 +72,8 @@ table FactVolunteerHours
 	column Timezone
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 34d74f42-2c6c-483f-8511-eff5678ce0b8
+		lineageTag: 41ead3a5-a78d-4902-8e26-c2fe535edbd1
+		sourceLineageTag: Timezone
 		summarizeBy: none
 		sourceColumn: Timezone
 
@@ -74,16 +83,18 @@ table FactVolunteerHours
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 75351f2b-a9c3-49c5-901a-9e6ebed6a25d
+		lineageTag: 2312de3c-d6e1-4083-93fd-43f9a96630a6
+		sourceLineageTag: VolunteeredDateKey
 		summarizeBy: none
 		sourceColumn: VolunteeredDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column VolunteerHoursId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: d6f73f49-fd97-4b9c-a717-56cb0470f57f
+		lineageTag: 6994dbc1-7726-4edf-aabd-3819c84c6274
+		sourceLineageTag: VolunteerHoursId
 		summarizeBy: none
 		sourceColumn: VolunteerHoursId
 
@@ -93,43 +104,41 @@ table FactVolunteerHours
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 5137f031-77c0-4e5c-bd2e-e48173b30cf1
+		lineageTag: 001360c2-e9a8-4785-9a00-91c09743b604
+		sourceLineageTag: VolunteerHoursKey
 		summarizeBy: none
 		sourceColumn: VolunteerHoursKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column VolunteeringTypeKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: a4cac73e-d2aa-4743-97a6-d4b600cee3d7
+		lineageTag: 4bb145fe-a8d9-475e-8b8e-71420ebf45f6
+		sourceLineageTag: VolunteeringTypeKey
 		summarizeBy: none
 		sourceColumn: VolunteeringTypeKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column VolunteerKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: d86009a0-3632-4c37-aa3d-c375ad4a5b23
+		lineageTag: 84d0deee-7003-4b76-9a4a-027e33079ce6
+		sourceLineageTag: VolunteerKey
 		summarizeBy: none
 		sourceColumn: VolunteerKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
-	partition FactVolunteerHours = m
-		mode: directQuery
-		queryGroup: Facts
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_FactVolunteerHours = Source{[Schema="dbo",Item="FactVolunteerHours"]}[Data]
-				in
-				    dbo_FactVolunteerHours
+	partition FactVolunteerHours = entity
+		mode: directLake
+		source
+			entityName: FactVolunteerHours
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

@@ -1,20 +1,23 @@
 table DimCampaignChannelBridge
-	lineageTag: 9cb786e2-805d-4458-b8e0-0c2aaff39e97
+	lineageTag: 7cda1b3d-d092-4931-92dc-d186ff800438
+	sourceLineageTag: [dbo].[DimCampaignChannelBridge]
 
 	column CampaignChannelBridgeKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 18b0964f-871c-412f-bbcd-82a5154428bf
+		lineageTag: 8031d62f-4e40-440a-b8d4-3109cf42d052
+		sourceLineageTag: CampaignChannelBridgeKey
 		summarizeBy: none
 		sourceColumn: CampaignChannelBridgeKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column CampaignChannelId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: ef78c306-e7ed-4954-b593-6f7cfff33e1f
+		lineageTag: 6fd18717-1444-484f-b987-2c17c371af8b
+		sourceLineageTag: CampaignChannelId
 		summarizeBy: none
 		sourceColumn: CampaignChannelId
 
@@ -24,33 +27,30 @@ table DimCampaignChannelBridge
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 57f4d49f-2845-47fe-b3b5-c4b89f681aa9
+		lineageTag: 86f44f74-0ed3-4593-b3ba-962f7c4766c7
+		sourceLineageTag: CampaignKey
 		summarizeBy: none
 		sourceColumn: CampaignKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ChannelKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: fd198147-a09f-49d4-b978-c2ba6b7b0933
+		lineageTag: de76cc3e-5108-4928-828a-861f8710c229
+		sourceLineageTag: ChannelKey
 		summarizeBy: none
 		sourceColumn: ChannelKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
-	partition DimCampaignChannelBridge = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimCampaignChannelBridge = Source{[Schema="dbo",Item="DimCampaignChannelBridge"]}[Data]
-				in
-				    dbo_DimCampaignChannelBridge
+	partition DimCampaignChannelBridge = entity
+		mode: directLake
+		source
+			entityName: DimCampaignChannelBridge
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

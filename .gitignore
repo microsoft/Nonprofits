@@ -8,6 +8,8 @@
 
 # output directory
 **/out
+**/Build
+**/Logs
 
 # msbuild output directories
 **/bin

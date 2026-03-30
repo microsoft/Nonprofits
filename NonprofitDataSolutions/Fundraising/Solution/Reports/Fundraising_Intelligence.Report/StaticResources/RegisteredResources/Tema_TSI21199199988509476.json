@@ -589,7 +589,7 @@
                             }
                         },
                         "textSize": 9,
-                        "bold": false
+                        "bold": true
                     }
                 ],
                 "background": [

@@ -1,27 +1,26 @@
 table DimDate
-	lineageTag: 4f087ea0-c9a8-4a7a-b81a-6b7130b71bba
-	dataCategory: Time
+	lineageTag: f0e5713a-825f-4369-954e-3eec4cde04cc
+	sourceLineageTag: [dbo].[DimDate]
 
 	column Date
 		dataType: dateTime
-		isKey
-		formatString: m/d/yyyy
+		formatString: Short Date
 		sourceProviderType: date
-		lineageTag: 1bb20418-758e-4460-92f5-d9f136a052d0
+		lineageTag: ea86dccf-b310-40c0-8966-b5d21c634d9e
+		sourceLineageTag: Date
 		summarizeBy: none
 		sourceColumn: Date
 
+		changedProperty = FormatString
+
 		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	column DateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 8538ad2f-3571-42db-8ecb-657a9bf29868
+		lineageTag: d7ca80f0-bf63-4d27-97db-eb0e73e77db4
+		sourceLineageTag: DateKey
 		summarizeBy: none
 		sourceColumn: DateKey
 
@@ -31,7 +30,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: b7bb2696-812a-45ae-8f53-c344059aef30
+		lineageTag: 0596a23d-be7a-4477-9708-04bf0cfc93ab
+		sourceLineageTag: Day
 		summarizeBy: none
 		sourceColumn: Day
 
@@ -40,7 +40,8 @@ table DimDate
 	column DayName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 9f377d92-c8ac-42c1-b7cb-5d92918a7eeb
+		lineageTag: 7d487f46-168d-4102-a06a-6bfe4b5f12c8
+		sourceLineageTag: DayName
 		summarizeBy: none
 		sourceColumn: DayName
 
@@ -50,7 +51,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 557c5dbc-e300-4ba8-9656-7a67fa59087a
+		lineageTag: 43151f80-3a6a-4f34-a3a1-7af058d938db
+		sourceLineageTag: DayOfWeek
 		summarizeBy: none
 		sourceColumn: DayOfWeek
 
@@ -60,7 +62,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 5781f5d2-cd3f-44fc-86f9-e9abfa5f6754
+		lineageTag: d66dc5fc-4dc1-43c0-8b2a-c518e7afe32c
+		sourceLineageTag: FiscalQuarter
 		summarizeBy: none
 		sourceColumn: FiscalQuarter
 
@@ -70,7 +73,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 6220bbb8-e98d-4807-b9ae-0260e6787f11
+		lineageTag: 647e280b-90ad-4935-89ce-b9345a7f20b2
+		sourceLineageTag: FiscalYear
 		summarizeBy: none
 		sourceColumn: FiscalYear
 
@@ -80,7 +84,8 @@ table DimDate
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 1bb25c84-961f-4f16-a306-15a8cf52bb63
+		lineageTag: 9466e849-4c06-4209-b7d7-f0041e32bf50
+		sourceLineageTag: IsHoliday
 		summarizeBy: none
 		sourceColumn: IsHoliday
 
@@ -90,7 +95,8 @@ table DimDate
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 61f09bd4-9cb2-48e2-9c18-6ac03dfa344c
+		lineageTag: 0575ea20-e37a-4b06-b4f9-286985b58423
+		sourceLineageTag: IsWeekend
 		summarizeBy: none
 		sourceColumn: IsWeekend
 
@@ -100,7 +106,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 603d7ad5-8236-49a0-95c3-4f9c47c87fc5
+		lineageTag: 5798db9e-b098-49bb-b7de-fdedeaadf858
+		sourceLineageTag: Month
 		summarizeBy: none
 		sourceColumn: Month
 
@@ -109,19 +116,18 @@ table DimDate
 	column MonthName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 8e6710ad-488e-4418-8f75-40aa02bc50e8
+		lineageTag: 2bebb20d-b79b-4309-bfd9-4d7a2ed1baaa
+		sourceLineageTag: MonthName
 		summarizeBy: none
 		sourceColumn: MonthName
-		sortByColumn: Month
-
-		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
 	column MonthNameShort
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 2811a757-21c4-44b5-9a1d-13a89d46ecca
+		lineageTag: 49f7066a-4145-4b88-ad89-db8ea050ab44
+		sourceLineageTag: MonthNameShort
 		summarizeBy: none
 		sourceColumn: MonthNameShort
 
@@ -131,7 +137,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 397eb5b5-12e7-4c06-9224-bd63b2afc354
+		lineageTag: daf61c9a-6ca0-4d88-bd7f-cee9a6fd9f53
+		sourceLineageTag: Quarter
 		summarizeBy: none
 		sourceColumn: Quarter
 
@@ -141,7 +148,8 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: faa35aab-af2f-49bb-b47d-5608d2f51b15
+		lineageTag: 0b9ca979-c3e3-49d5-8e2d-cc70e7671733
+		sourceLineageTag: WeekOfYear
 		summarizeBy: none
 		sourceColumn: WeekOfYear
 
@@ -151,25 +159,19 @@ table DimDate
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 3ca479a1-e78b-4827-806c-8c0669b25734
+		lineageTag: 32769785-792a-43cb-af72-5352f76f834f
+		sourceLineageTag: Year
 		summarizeBy: none
 		sourceColumn: Year
 
-		changedProperty = SortByColumn
-
 		annotation SummarizationSetBy = Automatic
 
-	partition DimDate = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimDate = Source{[Schema="dbo",Item="DimDate"]}[Data]
-				in
-				    dbo_DimDate
+	partition DimDate = entity
+		mode: directLake
+		source
+			entityName: DimDate
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

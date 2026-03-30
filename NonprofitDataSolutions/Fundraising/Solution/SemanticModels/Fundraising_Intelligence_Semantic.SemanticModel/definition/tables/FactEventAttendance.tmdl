@@ -1,21 +1,24 @@
 table FactEventAttendance
-	lineageTag: 84a40f71-1b86-4b77-a0be-c10029b513af
+	lineageTag: ce3c7a5b-16a3-4206-b6ef-6e3126d3a474
+	sourceLineageTag: [dbo].[FactEventAttendance]
 
 	column AcceptedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 58b697a6-8a77-4c37-aeb9-79e4692944f6
+		lineageTag: 95910e9c-e891-420a-848b-f24060346187
+		sourceLineageTag: AcceptedDateKey
 		summarizeBy: none
 		sourceColumn: AcceptedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column AttendedEvent
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: b1580473-71a6-47f9-a518-920680c974cc
+		lineageTag: 105819b5-00e3-4e5d-93ce-6c3f468f964d
+		sourceLineageTag: AttendedEvent
 		summarizeBy: none
 		sourceColumn: AttendedEvent
 
@@ -25,26 +28,29 @@ table FactEventAttendance
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 7bd22efc-7fb8-4dd8-9980-28173afb9a80
+		lineageTag: 09369b54-5465-4483-bef3-34780d78d9c7
+		sourceLineageTag: ConstituentKey
 		summarizeBy: none
 		sourceColumn: ConstituentKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: bd181306-9610-4dfb-88ce-c8f265f02fe1
+		lineageTag: 35f86824-4d7c-4eed-b7f1-22959c38608d
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EventAttendanceId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 871f981b-ad51-4f21-adcd-87cdf3011764
+		lineageTag: 9cf349b3-ef97-46b5-8f1e-4977b2853ce4
+		sourceLineageTag: EventAttendanceId
 		summarizeBy: none
 		sourceColumn: EventAttendanceId
 
@@ -54,72 +60,84 @@ table FactEventAttendance
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: f35c5733-a8f8-4b24-a2d6-94b6fb99d37a
+		lineageTag: b88dadb6-7683-4eef-9b59-924a46f54a50
+		sourceLineageTag: EventAttendanceKey
 		summarizeBy: none
 		sourceColumn: EventAttendanceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EventKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 832adeff-db53-4230-8ef4-dda2311862bb
+		lineageTag: cbb23a77-270c-472e-a107-d43b712d4258
+		sourceLineageTag: EventKey
 		summarizeBy: none
 		sourceColumn: EventKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column InvitationDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: d9660bf6-b1ab-47bc-a30d-b8154254446c
+		lineageTag: db17d8de-ed67-4d9e-896b-8dde16dfd749
+		sourceLineageTag: InvitationDateKey
 		summarizeBy: none
 		sourceColumn: InvitationDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 8f3b018d-8cc4-46e7-82fd-e21de894a578
+		lineageTag: 3924972c-3b72-46bd-ae7c-e13a4ad9c260
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 6b773a21-940b-4843-abcb-45a73d660ffe
+		lineageTag: 92d5decb-c4fb-4dfc-b94a-204b6ef358f3
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysEventAttendanceId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 48ef2509-321d-431c-b593-672f28adbc7a
+		lineageTag: 198a069b-64c2-4bef-95eb-4d2e9e5700a4
+		sourceLineageTag: SourceSysEventAttendanceId
 		summarizeBy: none
 		sourceColumn: SourceSysEventAttendanceId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition FactEventAttendance = m
-		mode: directQuery
-		queryGroup: Facts
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_FactEventAttendance = Source{[Schema="dbo",Item="FactEventAttendance"]}[Data]
-				in
-				    dbo_FactEventAttendance
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 176e8992-2a7d-4a6e-b1a5-e5c4e51deb74
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactEventAttendance = entity
+		mode: directLake
+		source
+			entityName: FactEventAttendance
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 
