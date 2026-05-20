@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "packageName": "azure-landing-zone-cli",
+  "publicSurface": "cli-package",
+  "generatedAtUtc": "2026-05-20T07:38:11.8913138Z",
+  "includedItems": [
+    {
+      "sourcePath": "cli/Install-AzureLandingZone.ps1",
+      "packagePath": "Install-AzureLandingZone.ps1"
+    },
+    {
+      "sourcePath": "infra/entrypoints/direct/",
+      "packagePath": "infra/entrypoints/direct"
+    },
+    {
+      "sourcePath": "infra/modules/",
+      "packagePath": "infra/modules"
+    },
+    {
+      "sourcePath": "cli/examples/parameters/",
+      "packagePath": "examples/parameters"
+    },
+    {
+      "sourcePath": "cli/examples/commands/",
+      "packagePath": "examples/commands"
+    },
+    {
+      "sourcePath": "cli/scenarios.json",
+      "packagePath": "scenarios.json",
+      "transform": "package-layout"
+    },
+    {
+      "sourcePath": "tools/package/Build-CliPackage.ps1",
+      "packagePath": "README.md",
+      "transform": "generated-package-readme"
+    }
+  ]
+}

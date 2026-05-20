@@ -1,0 +1,17 @@
+{
+  "scenario": "foundation",
+  "deploymentName": "alz-foundation-dev",
+  "deploymentLocation": "eastus",
+  "parametersFile": "../parameters/foundation/foundation.subscription-only.parameters.json",
+  "scope": {
+    "subscription": "<subscription-id-or-name>"
+  },
+  "validationLevel": "Provider",
+  "outputFolder": "artifacts/generated/cli/foundation",
+  "nonInteractive": false,
+  "autoApprove": false,
+  "parameterOverrides": {
+    "deploymentPrefix": "alznp",
+    "primaryLocation": "eastus"
+  }
+}

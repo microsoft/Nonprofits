@@ -1,13 +1,39 @@
-# Azure Landing Zone
+# Azure Landing Zone CLI Installer
 
-Azure Landing Zone for Nonprofits is a preconfigured cloud environment that uses best practices to help smaller nonprofits get set up on Azure efficiently and securely. This guided setup provides nonprofits with a blueprint for cloud adoption, setting up core Azure services for networking, management, identity, and security. This simplified process enables organizations to quickly deploy cloud environments built on best practices for scalability, security, and compliance, making it easier to migrate, modernize, and build a foundation for AI innovation.
+Use this package to deploy Azure Landing Zone Foundation or Expanded Platform scenarios from a command line. The package is self-contained; keep the folder structure intact when copying or extracting it.
 
-Learn More About:
-- [Azure Landing Zone for Nonprofits](https://learn.microsoft.com/en-us/industry/nonprofit/azure-landing-zone)
-- [Azure Landing Zones](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/)
+## What's Included
 
-## Deploy
-[Deploy Azure Landing Zone for Nonprofits](../Documents/alz-build-and-deploy.md).
+- `Install-AzureLandingZone.ps1`: PowerShell installer that runs Azure CLI deployment commands.
+- `examples/commands/`: starter configuration files for each supported scenario.
+- `examples/parameters/`: example deployment parameter files referenced by the starter configs.
+- `infra/`: deployment templates used by the installer.
+- `scenarios.json`: supported scenario catalog used by the installer.
 
-## Use
-Get your staff and organization ready for Azure Landing Zones with [readiness and skilling](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/suggested-skills).
+## Prerequisites
+
+- PowerShell 7 or later.
+- Azure CLI 2.76.0 or later.
+- Azure CLI Bicep support (`az bicep version` must work).
+- An authenticated Azure CLI session with access to the target tenant and subscriptions.
+- Sufficient Azure permissions for the selected scenario and deployment scope.
+
+## Validate A Deployment
+
+Run the following command from the package root:
+
+```powershell
+pwsh ./Install-AzureLandingZone.ps1 `
+  -ConfigFile ./examples/commands/foundation.install-config.json `
+  -Action validate
+```
+
+## Deployment Flow
+
+1. Copy one of the starter config files from `examples/commands/`.
+2. Fill in the target subscription IDs, deployment prefix, locations, notification values, and scenario-specific settings.
+3. Run `validate` to check the configuration and prerequisites.
+4. Run `what-if` to preview the Azure changes.
+5. Run `create` when the preview is acceptable.
+
+Generated logs and deployment outputs are written under the `outputFolder` configured in the selected install config.
