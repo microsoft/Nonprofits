@@ -138,6 +138,27 @@ function Resolve-PathAgainstRoot {
   return [System.IO.Path]::GetFullPath((Join-Path $script:AlzRoot $PathValue))
 }
 
+function Resolve-OutputFolderPath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PathValue,
+
+    [Parameter(Mandatory = $true)]
+    [string]$ConfigDirectory
+  )
+
+  if ([System.IO.Path]::IsPathRooted($PathValue)) {
+    return [System.IO.Path]::GetFullPath($PathValue)
+  }
+
+  $normalizedPath = $PathValue.Replace('\', '/')
+  if ($normalizedPath.StartsWith('./', [System.StringComparison]::Ordinal) -or $normalizedPath.StartsWith('../', [System.StringComparison]::Ordinal)) {
+    return [System.IO.Path]::GetFullPath((Join-Path $ConfigDirectory $PathValue))
+  }
+
+  return [System.IO.Path]::GetFullPath((Join-Path $script:AlzRoot $PathValue))
+}
+
 function Format-CommandLine {
   param(
     [Parameter(Mandatory = $true)]
@@ -1379,7 +1400,7 @@ if (-not (Test-Path $resolvedParametersFile -PathType Leaf)) {
 }
 
 $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$defaultOutputFolder = Join-Path $script:AlzRoot ("artifacts\generated\cli\{0}-{1}" -f $scenarioDefinition.id, $timestamp)
+$defaultOutputFolder = "outputs/{0}-{1}" -f $scenarioDefinition.id, $timestamp
 $outputFolderSetting = if (-not [string]::IsNullOrWhiteSpace($OutputFolder)) {
   $OutputFolder
 }
@@ -1390,7 +1411,7 @@ else {
   $defaultOutputFolder
 }
 
-$resolvedOutputFolder = Resolve-PathAgainstRoot -PathValue $outputFolderSetting -ConfigDirectory $configDirectory
+$resolvedOutputFolder = Resolve-OutputFolderPath -PathValue $outputFolderSetting -ConfigDirectory $configDirectory
 New-Item -Path $resolvedOutputFolder -ItemType Directory -Force | Out-Null
 
 $script:LogFile = Join-Path $resolvedOutputFolder 'installer.log'

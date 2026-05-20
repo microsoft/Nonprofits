@@ -4,7 +4,7 @@
   "deploymentLocation": "eastus",
   "parametersFile": "../parameters/expanded-platform/expanded-platform.parameters.json",
   "validationLevel": "Provider",
-  "outputFolder": "artifacts/generated/cli/expanded-platform",
+  "outputFolder": "outputs/expanded-platform",
   "nonInteractive": false,
   "autoApprove": false,
   "parameterOverrides": {

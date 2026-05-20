@@ -7,7 +7,7 @@
     "subscription": "<subscription-id-or-name>"
   },
   "validationLevel": "Provider",
-  "outputFolder": "artifacts/generated/cli/foundation",
+  "outputFolder": "outputs/foundation",
   "nonInteractive": false,
   "autoApprove": false,
   "parameterOverrides": {
