@@ -1,0 +1,19 @@
+{
+  "scenario": "expanded-platform",
+  "deploymentName": "alz-expanded-dev",
+  "deploymentLocation": "eastus",
+  "parametersFile": "../parameters/expanded-platform/expanded-platform.parameters.json",
+  "validationLevel": "Provider",
+  "outputFolder": "outputs/expanded-platform",
+  "nonInteractive": false,
+  "autoApprove": false,
+  "parameterOverrides": {
+    "deploymentPrefix": "alznp",
+    "primaryLocation": "eastus",
+    "allowedLocations": [
+      "eastus"
+    ],
+    "managementSubscriptionId": "<management-subscription-id-or-name>",
+    "connectivitySubscriptionId": "<connectivity-subscription-id-or-name>"
+  }
+}
