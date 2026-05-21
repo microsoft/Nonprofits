@@ -1,10 +1,12 @@
 table DimEmail
-	lineageTag: fe498ed5-792d-4ce8-adb9-d3d9e29feaa6
+	lineageTag: b484d72e-85d9-408b-bc07-9947693b68c9
+	sourceLineageTag: [dbo].[DimEmail]
 
 	column EmailId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: a0997cbf-ee8e-4047-985e-c9a1179ad555
+		lineageTag: 02343408-a966-44c3-a7b7-768d47fed9c1
+		sourceLineageTag: EmailId
 		summarizeBy: none
 		sourceColumn: EmailId
 
@@ -14,16 +16,18 @@ table DimEmail
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 44237c5f-54b9-4c70-b1f0-3a489f355636
+		lineageTag: 8c411b91-6cfc-4687-9baf-f2c2dc5a7d77
+		sourceLineageTag: EmailKey
 		summarizeBy: none
 		sourceColumn: EmailKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EmailSubject
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 668ee9c4-dd3c-4eda-bc9a-7fcc158cc320
+		lineageTag: a1f11e59-3e7b-47d3-a1b7-c4ab4a25030a
+		sourceLineageTag: EmailSubject
 		summarizeBy: none
 		sourceColumn: EmailSubject
 
@@ -32,9 +36,31 @@ table DimEmail
 	column SourceSystemEmailId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 7334ca5a-6fe2-41b6-b89e-c51f45925143
+		lineageTag: 8c7fe427-1524-4df2-90e0-71c45202ce43
+		sourceLineageTag: SourceSystemEmailId
 		summarizeBy: none
 		sourceColumn: SourceSystemEmailId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c5510538-5b34-4d2b-8e35-d8f8ca27fb6b
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmailEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d5f03d58-64e5-45a7-85fe-467ccf15f68c
+		sourceLineageTag: EmailEngagementId
+		summarizeBy: none
+		sourceColumn: EmailEngagementId
 
 		annotation SummarizationSetBy = Automatic
 
@@ -42,52 +68,51 @@ table DimEmail
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 2a528cd5-cc6d-4037-99ea-724f682ffe63
+		lineageTag: 34c8e6e1-0b64-4262-93f5-dca77c195ad2
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 95da2cd8-5cf6-4ac4-ad93-2ee57be2546e
+		lineageTag: 57d465f5-dda2-4bfc-bd7d-8439264be3a9
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 66928592-d19e-4d7e-bcd9-b2c07181946f
+		lineageTag: 87cefc3b-78de-4ef5-beff-f5461bff5384
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column VariantType
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 9efe4687-6832-457d-9baf-3c4749096b11
+		lineageTag: 2cc71df8-991d-4408-9dfe-cd584303fe47
+		sourceLineageTag: VariantType
 		summarizeBy: none
 		sourceColumn: VariantType
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimEmail = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimEmail = Source{[Schema="dbo",Item="DimEmail"]}[Data]
-				in
-				    dbo_DimEmail
+	partition DimEmail = entity
+		mode: directLake
+		source
+			entityName: DimEmail
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 

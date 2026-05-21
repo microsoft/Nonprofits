@@ -1,0 +1,55 @@
+table DimConstituentSegment_GiftRecurrence
+	lineageTag: 3357641d-8321-48f7-ae49-7d58def76d97
+	sourceLineageTag: [dbo].[DimConstituentSegment_GiftRecurrence]
+
+	column ConstituentSegmentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: df477e2e-c8ff-4f3d-9b84-23a717d9a6bd
+		sourceLineageTag: ConstituentSegmentId
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 94b498c2-497d-4407-b540-31633559f59f
+		sourceLineageTag: ConstituentSegmentKey
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bb7dc14e-3d9e-4428-bd84-1f5399b038bd
+		sourceLineageTag: ConstituentSegmentName
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: efaa0ac9-56ed-41fe-9a73-f69ac305f287
+		sourceLineageTag: Order
+		summarizeBy: none
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituentSegment_GiftRecurrence = entity
+		mode: directLake
+		source
+			entityName: DimConstituentSegment_GiftRecurrence
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

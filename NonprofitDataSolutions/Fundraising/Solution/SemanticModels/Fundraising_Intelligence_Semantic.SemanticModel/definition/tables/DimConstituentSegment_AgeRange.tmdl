@@ -1,0 +1,55 @@
+table DimConstituentSegment_AgeRange
+	lineageTag: 00715fe2-b302-4886-8e08-e8d905ce2097
+	sourceLineageTag: [dbo].[DimConstituentSegment_AgeRange]
+
+	column ConstituentSegmentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 690fa0a3-1133-48af-b6cd-5f30fcfba7f1
+		sourceLineageTag: ConstituentSegmentId
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f0844612-9149-4ec1-bef1-91a305a40978
+		sourceLineageTag: ConstituentSegmentKey
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b9752c16-0476-4e47-a65f-8c9dd56b04f2
+		sourceLineageTag: ConstituentSegmentName
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5e327b91-383b-4360-baa4-34dd971ebb49
+		sourceLineageTag: Order
+		summarizeBy: none
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituentSegment_AgeRange = entity
+		mode: directLake
+		source
+			entityName: DimConstituentSegment_AgeRange
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

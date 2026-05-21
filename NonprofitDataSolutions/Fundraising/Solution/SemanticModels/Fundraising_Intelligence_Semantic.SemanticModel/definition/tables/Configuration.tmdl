@@ -1,0 +1,44 @@
+table Configuration
+	isHidden
+	lineageTag: 9f947ff3-951e-4907-8875-616475e79654
+	sourceLineageTag: [dbo].[Configuration]
+
+	column ConfigurationId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a54f057c-18e7-4079-a37f-388793024792
+		sourceLineageTag: ConfigurationId
+		summarizeBy: none
+		sourceColumn: ConfigurationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4154a833-71d3-4aa1-8585-d71ddd0f270c
+		sourceLineageTag: Name
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 49287fe5-8b93-490e-b938-894e46222c81
+		sourceLineageTag: Value
+		summarizeBy: none
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Configuration = entity
+		mode: directLake
+		source
+			entityName: Configuration
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,56 @@
+table DimConstituentSegmentBridge_AgeRange
+	lineageTag: 038f82a5-ce65-4ab1-8ef1-bcc7d89e8718
+	sourceLineageTag: [dbo].[DimConstituentSegmentBridge_AgeRange]
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 862b2840-3d56-4fc8-bf26-3040fbbba9a6
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2dbe9b00-9cef-4555-9dae-3bbf6589a83f
+		sourceLineageTag: ConstituentSegmentKey
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentMappingId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: be9a4c9d-f5c8-4fd0-ae7f-c433e275e338
+		sourceLineageTag: ConstituentSegmentMappingId
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentMappingId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentBridgeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 4e09ba7c-0caf-4a12-8062-ee2cace7430b
+		sourceLineageTag: ConstituentSegmentBridgeKey
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentBridgeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituentSegmentBridge_AgeRange = entity
+		mode: directLake
+		source
+			entityName: DimConstituentSegmentBridge_AgeRange
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

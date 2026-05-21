@@ -1,10 +1,12 @@
 table DimCampaign
-	lineageTag: d5c85d21-28e6-4781-aad7-0c045789f02c
+	lineageTag: 07f31aa5-b8f6-4251-8aee-1f63dada084d
+	sourceLineageTag: [dbo].[DimCampaign]
 
 	column CampaignId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 4aacc5d0-a90d-41af-aee4-b489b16551d8
+		lineageTag: d3f75762-7589-4b55-a4c4-3f88cacfa223
+		sourceLineageTag: CampaignId
 		summarizeBy: none
 		sourceColumn: CampaignId
 
@@ -14,16 +16,18 @@ table DimCampaign
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: cfc0bba6-92d3-4d18-a41e-b8ff01a72ec3
+		lineageTag: 533d79f2-6ca6-4a6b-ade7-296f963f26c2
+		sourceLineageTag: CampaignKey
 		summarizeBy: none
 		sourceColumn: CampaignKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column CampaignName
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: a3a97af9-3409-4232-8c58-e5b7ca67781c
+		lineageTag: d8d0b033-5a8b-42e1-bd81-ebf0187e8edd
+		sourceLineageTag: CampaignName
 		summarizeBy: none
 		sourceColumn: CampaignName
 
@@ -33,56 +37,64 @@ table DimCampaign
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 68aeb12d-d4d9-423d-b6d2-15268b89cae9
+		lineageTag: 5c67903e-d1d9-4e58-99c0-c5de3f47db17
+		sourceLineageTag: CampaignTypeKey
 		summarizeBy: none
 		sourceColumn: CampaignTypeKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Cost
-		dataType: double
-		formatString: \$#,0;(\$#,0);\$#,0
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
 		sourceProviderType: decimal(18, 4)
-		lineageTag: 523fd62c-5376-4d55-8aa6-54ea60394e9b
+		lineageTag: a7d7f707-fb53-4d87-a9d9-00ac17232a86
+		sourceLineageTag: Cost
 		summarizeBy: sum
 		sourceColumn: Cost
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 2a2b4a12-d9e5-4aa9-8f1b-58076ee17912
+		lineageTag: ead66ca7-4515-48e8-9c49-1d7a6edb7f24
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EndDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: fd750472-806b-4bf5-a2b4-53c4c3d4e9f7
+		lineageTag: b1fc5da7-cb69-4c02-b610-3ecbe3819ff8
+		sourceLineageTag: EndDateKey
 		summarizeBy: none
 		sourceColumn: EndDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 268b534f-6db0-4155-8e2a-6d9d150729d0
+		lineageTag: c4661a23-0fce-45ae-be42-5e4b5bb12597
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysCampaignId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 17b04383-d5b9-4dab-8c53-2ff2ddd7757d
+		lineageTag: fb06daea-2c07-4fc4-9560-3d7168c1a5f8
+		sourceLineageTag: SourceSysCampaignId
 		summarizeBy: none
 		sourceColumn: SourceSysCampaignId
 
@@ -92,30 +104,29 @@ table DimCampaign
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: b48c8335-0f62-4015-9741-e1c25f5f6097
+		lineageTag: 168066b2-c33a-458e-83f9-99f1c8c79db3
+		sourceLineageTag: StartDateKey
 		summarizeBy: none
 		sourceColumn: StartDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Timezone
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 335b2db0-8635-44e3-b130-6f23cb6b4265
+		lineageTag: 486a0588-8732-4134-bbf4-9e8d6124526b
+		sourceLineageTag: Timezone
 		summarizeBy: none
 		sourceColumn: Timezone
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimCampaign = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimCampaign = Source{[Schema="dbo",Item="DimCampaign"]}[Data]
-				in
-				    dbo_DimCampaign
+	partition DimCampaign = entity
+		mode: directLake
+		source
+			entityName: DimCampaign
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
-	annotation PBI_ResultType = Exception
+	annotation PBI_ResultType = Table
 

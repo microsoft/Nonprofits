@@ -1,0 +1,55 @@
+table DimConstituentSegment_LifetimeGivingRange
+	lineageTag: 7b3b4090-afa8-485d-b5ec-8a80f5e4f06b
+	sourceLineageTag: [dbo].[DimConstituentSegment_LifetimeGivingRange]
+
+	column ConstituentSegmentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bc8ba4dd-f61b-4e88-893a-e6eaaa8de728
+		sourceLineageTag: ConstituentSegmentId
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d39e3702-4601-4313-b735-56eee1854726
+		sourceLineageTag: ConstituentSegmentKey
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSegmentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bbe5a5b6-ef76-41f2-9bd0-2315856d5e90
+		sourceLineageTag: ConstituentSegmentName
+		summarizeBy: none
+		sourceColumn: ConstituentSegmentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 84787428-3356-4cc8-8b85-000f3b3add7f
+		sourceLineageTag: Order
+		summarizeBy: none
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituentSegment_LifetimeGivingRange = entity
+		mode: directLake
+		source
+			entityName: DimConstituentSegment_LifetimeGivingRange
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,20 +1,23 @@
 table DimEngagementPlatform
-	lineageTag: 888e77de-53d3-48fd-ac04-c271e71ac5e3
+	lineageTag: 7c07394b-ad7f-4b80-aad6-48160f5a9033
+	sourceLineageTag: [dbo].[DimEngagementPlatform]
 
 	column CreatedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 51766843-e77b-48a3-bb7d-7522602e0234
+		lineageTag: a0f3510f-4074-4580-ad06-cbfdacf6c31c
+		sourceLineageTag: CreatedDateKey
 		summarizeBy: none
 		sourceColumn: CreatedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column EngagementPlatformId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 700c6a35-b3d8-4925-9f17-f63025277aef
+		lineageTag: 1d9a4955-dad5-43db-a3af-b479fc21c6ef
+		sourceLineageTag: EngagementPlatformId
 		summarizeBy: none
 		sourceColumn: EngagementPlatformId
 
@@ -24,26 +27,29 @@ table DimEngagementPlatform
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 108f7dc1-6e6e-4e68-a72b-b69e4777e5cb
+		lineageTag: 357c5d66-dd05-45f0-a473-a503cd1113cf
+		sourceLineageTag: EngagementPlatformKey
 		summarizeBy: none
 		sourceColumn: EngagementPlatformKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column ModifiedDateKey
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: fd7fc476-ce2e-4f1d-bdec-d5e17ad38c1c
+		lineageTag: 1d16d57d-adab-4221-b5c2-3b62840f0f8e
+		sourceLineageTag: ModifiedDateKey
 		summarizeBy: none
 		sourceColumn: ModifiedDateKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column Name
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: 2b781682-6f71-4585-8b30-a64621d39212
+		lineageTag: 939e8ea0-6dad-4fe8-addd-bef24517679e
+		sourceLineageTag: Name
 		summarizeBy: none
 		sourceColumn: Name
 
@@ -53,32 +59,29 @@ table DimEngagementPlatform
 		dataType: int64
 		formatString: 0
 		sourceProviderType: bigint
-		lineageTag: 4041a40c-524f-40f2-b9c6-98809aed2953
+		lineageTag: 1bd41787-331f-461b-8332-d0851c9af9f2
+		sourceLineageTag: SourceKey
 		summarizeBy: none
 		sourceColumn: SourceKey
 
-		annotation SummarizationSetBy = User
+		annotation SummarizationSetBy = Automatic
 
 	column SourceSysEngagementPlatformId
 		dataType: string
 		sourceProviderType: varchar(8000)
-		lineageTag: f9030131-3508-4e41-93f0-80d201620069
+		lineageTag: ff789c94-1717-4b07-a91b-96aab1d0b228
+		sourceLineageTag: SourceSysEngagementPlatformId
 		summarizeBy: none
 		sourceColumn: SourceSysEngagementPlatformId
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimEngagementPlatform = m
-		mode: directQuery
-		queryGroup: Dimensions
-		source =
-				let
-				    Source = Sql.Database(SQL_Endpoint, Lakehouse_Name),
-				    dbo_DimEngagementPlatform = Source{[Schema="dbo",Item="DimEngagementPlatform"]}[Data]
-				in
-				    dbo_DimEngagementPlatform
+	partition DimEngagementPlatform = entity
+		mode: directLake
+		source
+			entityName: DimEngagementPlatform
+			schemaName: dbo
+			expressionSource: DatabaseQuery
 
 	annotation PBI_ResultType = Table
-
-	annotation PBI_NavigationStepName = Navigation
 
