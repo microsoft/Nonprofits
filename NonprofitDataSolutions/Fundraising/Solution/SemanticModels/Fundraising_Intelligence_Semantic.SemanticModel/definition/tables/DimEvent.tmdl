@@ -1,0 +1,133 @@
+table DimEvent
+	lineageTag: f88bedb2-6da4-409e-9892-9798281fdd1b
+	sourceLineageTag: [dbo].[DimEvent]
+
+	column AddressKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 106b1d4b-a00d-44fa-8fac-45151dc7d033
+		sourceLineageTag: AddressKey
+		summarizeBy: none
+		sourceColumn: AddressKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cost
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 599f18c8-d893-4671-ade6-4439e080d5dc
+		sourceLineageTag: Cost
+		summarizeBy: none
+		sourceColumn: Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3bb2f42f-700c-4ad9-8334-9920474916c4
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ece3b719-c2b6-46d6-871d-9f7690638aea
+		sourceLineageTag: EventDateKey
+		summarizeBy: none
+		sourceColumn: EventDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 691d0a36-bbee-4eb1-8723-0d37cf237abf
+		sourceLineageTag: EventId
+		summarizeBy: none
+		sourceColumn: EventId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d2d45b4b-4dce-4eed-8627-4dd45078ebbc
+		sourceLineageTag: EventKey
+		summarizeBy: none
+		sourceColumn: EventKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7c65c8ce-b3b2-48ea-a272-d5f4d48ac090
+		sourceLineageTag: EventName
+		summarizeBy: none
+		sourceColumn: EventName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2f739516-3a3c-48ec-9dd0-7b6daf998e1e
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: acb8f9da-84b8-4390-9b2e-30d1b2edeaf2
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysEventId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 05e27ac4-ece1-46ad-be86-81ca3b907ea2
+		sourceLineageTag: SourceSysEventId
+		summarizeBy: none
+		sourceColumn: SourceSysEventId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3a60f598-7d4f-41c7-bde4-d4b5894e1fb5
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEvent = entity
+		mode: directLake
+		source
+			entityName: DimEvent
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

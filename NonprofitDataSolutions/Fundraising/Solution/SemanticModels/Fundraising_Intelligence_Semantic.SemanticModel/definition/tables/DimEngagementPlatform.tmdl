@@ -1,0 +1,87 @@
+table DimEngagementPlatform
+	lineageTag: 7c07394b-ad7f-4b80-aad6-48160f5a9033
+	sourceLineageTag: [dbo].[DimEngagementPlatform]
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a0f3510f-4074-4580-ad06-cbfdacf6c31c
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementPlatformId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1d9a4955-dad5-43db-a3af-b479fc21c6ef
+		sourceLineageTag: EngagementPlatformId
+		summarizeBy: none
+		sourceColumn: EngagementPlatformId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementPlatformKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 357c5d66-dd05-45f0-a473-a503cd1113cf
+		sourceLineageTag: EngagementPlatformKey
+		summarizeBy: none
+		sourceColumn: EngagementPlatformKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1d16d57d-adab-4221-b5c2-3b62840f0f8e
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 939e8ea0-6dad-4fe8-addd-bef24517679e
+		sourceLineageTag: Name
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1bd41787-331f-461b-8332-d0851c9af9f2
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysEngagementPlatformId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ff789c94-1717-4b07-a91b-96aab1d0b228
+		sourceLineageTag: SourceSysEngagementPlatformId
+		summarizeBy: none
+		sourceColumn: SourceSysEngagementPlatformId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEngagementPlatform = entity
+		mode: directLake
+		source
+			entityName: DimEngagementPlatform
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,56 @@
+table DimConstituentProgramBridge
+	lineageTag: c526e368-41fa-47f8-94bd-69b3f79a9da3
+	sourceLineageTag: [dbo].[DimConstituentProgramBridge]
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 636e3937-071f-43e2-b1ad-1f5a3438e10e
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentProgramBridgeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7da99315-6a32-490f-9ba9-74efcd367a03
+		sourceLineageTag: ConstituentProgramBridgeId
+		summarizeBy: none
+		sourceColumn: ConstituentProgramBridgeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentProgramBridgeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: efc1bc84-393b-497e-bbfe-a494cf84b597
+		sourceLineageTag: ConstituentProgramBridgeKey
+		summarizeBy: none
+		sourceColumn: ConstituentProgramBridgeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgramKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c31efda5-9585-4dca-b8c7-f23013a0fde9
+		sourceLineageTag: ProgramKey
+		summarizeBy: none
+		sourceColumn: ProgramKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituentProgramBridge = entity
+		mode: directLake
+		source
+			entityName: DimConstituentProgramBridge
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

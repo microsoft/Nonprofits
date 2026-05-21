@@ -1,0 +1,132 @@
+table DimCampaign
+	lineageTag: 07f31aa5-b8f6-4251-8aee-1f63dada084d
+	sourceLineageTag: [dbo].[DimCampaign]
+
+	column CampaignId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d3f75762-7589-4b55-a4c4-3f88cacfa223
+		sourceLineageTag: CampaignId
+		summarizeBy: none
+		sourceColumn: CampaignId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 533d79f2-6ca6-4a6b-ade7-296f963f26c2
+		sourceLineageTag: CampaignKey
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d8d0b033-5a8b-42e1-bd81-ebf0187e8edd
+		sourceLineageTag: CampaignName
+		summarizeBy: none
+		sourceColumn: CampaignName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5c67903e-d1d9-4e58-99c0-c5de3f47db17
+		sourceLineageTag: CampaignTypeKey
+		summarizeBy: none
+		sourceColumn: CampaignTypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cost
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: a7d7f707-fb53-4d87-a9d9-00ac17232a86
+		sourceLineageTag: Cost
+		summarizeBy: sum
+		sourceColumn: Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ead66ca7-4515-48e8-9c49-1d7a6edb7f24
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b1fc5da7-cb69-4c02-b610-3ecbe3819ff8
+		sourceLineageTag: EndDateKey
+		summarizeBy: none
+		sourceColumn: EndDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c4661a23-0fce-45ae-be42-5e4b5bb12597
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysCampaignId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fb06daea-2c07-4fc4-9560-3d7168c1a5f8
+		sourceLineageTag: SourceSysCampaignId
+		summarizeBy: none
+		sourceColumn: SourceSysCampaignId
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 168066b2-c33a-458e-83f9-99f1c8c79db3
+		sourceLineageTag: StartDateKey
+		summarizeBy: none
+		sourceColumn: StartDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 486a0588-8732-4134-bbf4-9e8d6124526b
+		sourceLineageTag: Timezone
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCampaign = entity
+		mode: directLake
+		source
+			entityName: DimCampaign
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,56 @@
+table ChangeDataFeedState
+	isHidden
+	lineageTag: 7030f0e6-4ce0-4511-8101-43b80825c258
+	sourceLineageTag: [dbo].[ChangeDataFeedState]
+
+	column source_table_name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 51fae1db-7d84-41e1-97ac-6f86f6b9abc9
+		sourceLineageTag: source_table_name
+		summarizeBy: none
+		sourceColumn: source_table_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_table_name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b81809ff-e234-439c-add0-b043b0122cc0
+		sourceLineageTag: target_table_name
+		summarizeBy: none
+		sourceColumn: target_table_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_processed_commit_version
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 62fe0038-1846-4991-8609-6bbf38c2a646
+		sourceLineageTag: last_processed_commit_version
+		summarizeBy: sum
+		sourceColumn: last_processed_commit_version
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_processed_timestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 6fd5be57-048d-4fc6-a2a1-e0454b00acde
+		sourceLineageTag: last_processed_timestamp
+		summarizeBy: none
+		sourceColumn: last_processed_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ChangeDataFeedState = entity
+		mode: directLake
+		source
+			entityName: ChangeDataFeedState
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

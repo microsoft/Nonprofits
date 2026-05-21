@@ -1,0 +1,77 @@
+table DimVolunteeringType
+	lineageTag: c196aa7c-a5b3-46c5-b2b9-84f84fc9bdcb
+	sourceLineageTag: [dbo].[DimVolunteeringType]
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1467e31d-bd0f-4151-ba25-885e0eefb5ed
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2d2918f3-5cb6-44b2-8f03-7b650c66ec0f
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a33ddae0-5860-43c8-9728-ffed2ac93f8e
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column VolunteeringTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8b0b1ff3-08c0-4ad1-be4f-2fe36f909f80
+		sourceLineageTag: VolunteeringTypeId
+		summarizeBy: none
+		sourceColumn: VolunteeringTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column VolunteeringTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 613d77ab-a3b4-4d42-9bd8-6bda1a67031d
+		sourceLineageTag: VolunteeringTypeKey
+		summarizeBy: none
+		sourceColumn: VolunteeringTypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column VolunteeringTypeName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f80efc20-2c66-4a11-b84a-c98ffce8271a
+		sourceLineageTag: VolunteeringTypeName
+		summarizeBy: none
+		sourceColumn: VolunteeringTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimVolunteeringType = entity
+		mode: directLake
+		source
+			entityName: DimVolunteeringType
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

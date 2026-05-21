@@ -15,7 +15,7 @@ Learn More:
 
 ## Deploy
 
-[Deploy Volunteer Engagement](../Documents/PortalBuildAndDeploy.md).
+[Deploy Volunteer Engagement](../Documents/portal-build-and-deploy.md).
 
 ## Use
 

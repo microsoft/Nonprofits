@@ -1,0 +1,334 @@
+Table,Column,Data Type,Required,Description,Unique Identifier,Reference Field,References
+Configuration,ConfigurationId,String,Yes,Unique identifier (GUID) for the configuration.,Yes,No,
+Configuration,Name,String,No,Name of the configuration.,No,No,
+Configuration,Value,String,No,Value of the configuration.,No,No,
+DimAddress,AddressId,String,No,Unique identifier (GUID) for the address.,No,No,
+DimAddress,AddressKey,Long,Yes,Gold surrogate key for the address.,Yes,No,
+DimAddress,City,String,No,City of the address.,No,No,
+DimAddress,CountryCode,String,Yes,ISO 3166-1 alpha-3 country code.,No,No,
+DimAddress,CountryId,String,No,Reference to the country.,No,Yes,Country
+DimAddress,CountryName,String,No,Name of the country.,No,No,
+DimAddress,Latitude,Decimal (18/4),No,Latitude of the address location.,No,No,
+DimAddress,Longitude,Decimal (18/4),No,Longitude of the address location.,No,No,
+DimAddress,Region,String,No,Region or state of the address.,No,No,
+DimAddress,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimAddress,SourceSysAddressId,String,No,Source system address identifier.,No,No,
+DimAddress,State,String,No,State of the address.,No,No,
+DimAddress,StateCode,String,No,State code of the address.,No,No,
+DimAddress,ZipCode,String,No,Postal code of the address.,No,No,
+DimCampaign,CampaignId,String,No,Unique identifier (GUID) for the campaign.,No,No,
+DimCampaign,CampaignKey,Long,Yes,Gold surrogate key for the campaign.,Yes,No,
+DimCampaign,CampaignName,String,No,Name of the campaign.,No,No,
+DimCampaign,CampaignTypeKey,Long,No,Reference to campaign type.,No,Yes,DimCampaignType
+DimCampaign,Cost,Decimal (18/4),No,Total cost of the campaign.,No,No,
+DimCampaign,CreatedDateKey,Long,No,Date when the campaign was created.,No,Yes,DimDate
+DimCampaign,EndDateKey,Long,Yes,Date the campaign ends.,No,Yes,DimDate
+DimCampaign,ModifiedDateKey,Long,No,Date when the campaign was last modified.,No,Yes,DimDate
+DimCampaign,SourceSysCampaignId,String,No,Source system campaign identifier.,No,No,
+DimCampaign,StartDateKey,Long,No,Date the campaign starts.,No,Yes,DimDate
+DimCampaign,Timezone,String,No,Timezone associated with the campaign.,No,No,
+DimCampaignChannelBridge,CampaignChannelBridgeKey,Long,Yes,Gold surrogate key for campaign channel bridge.,Yes,No,
+DimCampaignChannelBridge,CampaignChannelId,String,No,Campaign channel identifier.,No,No,
+DimCampaignChannelBridge,CampaignKey,Long,Yes,Reference to the campaign.,No,Yes,DimCampaign
+DimCampaignChannelBridge,ChannelKey,Long,No,Reference to the channel.,No,Yes,DimChannel
+DimCampaignType,CampaignType,String,Yes,Name of the campaign type.,No,No,
+DimCampaignType,CampaignTypeKey,Long,Yes,Gold surrogate key for campaign type.,Yes,No,
+DimCampaignType,CampaignTypeId,String,Yes,Campaign type identifier.,No,No,
+DimChannel,ChannelId,String,No,Channel identifier.,No,No,
+DimChannel,ChannelKey,Long,Yes,Gold surrogate key for the channel.,Yes,No,
+DimChannel,ChannelName,String,No,"Name of the channel (e.g., email, social media).",No,No,
+DimChannel,CreatedDateKey,Long,No,Date when the channel was created.,No,Yes,DimDate
+DimChannel,ModifiedDateKey,Long,No,Date when the channel was last modified.,No,Yes,DimDate
+DimChannel,Weight,Decimal (18/4),No,Weight or priority of the channel.,No,No,
+DimConstituent,AddressKey,Long,No,Reference to the constituent's address.,No,Yes,DimAddress
+DimConstituent,ConstituentId,String,No,Unique identifier (GUID) for the constituent.,No,No,
+DimConstituent,ConstituentKey,Long,Yes,Gold surrogate key for the constituent.,Yes,No,
+DimConstituent,ConstituentName,String,No,Name of the constituent.,No,No,
+DimConstituent,ConstituentType,String,No,"Type of constituent (Individual, Organization, Household).",No,No,
+DimConstituent,CreatedDateKey,Long,No,Date when the constituent was created.,No,Yes,DimDate
+DimConstituent,Email,String,No,Email address of the constituent.,No,No,
+DimConstituent,EngagementStage,String,No,Current engagement stage of the constituent.,No,No,
+DimConstituent,Gender,String,Yes,Gender of the constituent.,No,No,
+DimConstituent,ModifiedDateKey,Long,No,Date when the constituent was last modified.,No,Yes,DimDate
+DimConstituent,RegistrationDateKey,Long,No,Date the constituent was registered.,No,Yes,DimDate
+DimConstituent,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimConstituent,SourceSysConstituentId,String,No,Source system constituent identifier.,No,No,
+DimConstituentProgramBridge,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+DimConstituentProgramBridge,ConstituentProgramBridgeId,String,No,Constituent program bridge identifier.,No,No,
+DimConstituentProgramBridge,ConstituentProgramBridgeKey,Long,Yes,Gold surrogate key for constituent program bridge.,Yes,No,
+DimConstituentProgramBridge,ProgramKey,Long,No,Reference to the program.,No,Yes,DimProgram
+DimConstituentSegment,ConstituentSegmentId,String,No,Constituent segment identifier.,No,No,
+DimConstituentSegment,ConstituentSegmentKey,Long,Yes,Gold surrogate key for constituent segment.,Yes,No,
+DimConstituentSegment,ConstituentSegmentName,String,No,Name of the constituent segment.,No,No,
+DimConstituentSegment,Order,Integer,No,Order of the constituent segment.,No,No,
+DimConstituentSegment,TypeKey,Long,No,Reference to constituent segment type.,No,Yes,DimConstituentSegmentType
+DimConstituentSegmentBridge,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+DimConstituentSegmentBridge,ConstituentSegmentKey,Long,No,Reference to the constituent segment.,No,Yes,DimConstituentSegment
+DimConstituentSegmentBridge,ConstituentSegmentMappingId,String,No,Constituent segment mapping identifier.,No,No,
+DimConstituentSegmentBridge,ConstituentSegmentBridgeKey,Long,Yes,Gold surrogate key for constituent segment bridge.,Yes,No,
+DimConstituentSegmentType,ConstituentSegmentType,String,Yes,Name of the constituent segment type.,No,No,
+DimConstituentSegmentType,ConstituentSegmentTypeId,String,No,Constituent segment type identifier.,No,No,
+DimConstituentSegmentType,ConstituentSegmentTypeKey,Long,Yes,Gold surrogate key for constituent segment type.,Yes,No,
+DimDate,Date,Date,No,Full date (natural key).,No,No,
+DimDate,DateKey,Long,Yes,Surrogate key in YYYYMMDD format.,Yes,No,
+DimDate,Day,Integer,No,Day of month (1-31).,No,No,
+DimDate,DayName,String,No,"Full day name (e.g., Monday).",No,No,
+DimDate,DayOfWeek,Integer,No,"Day of week (1=Monday, 7=Sunday).",No,No,
+DimDate,FiscalQuarter,Integer,No,Fiscal quarter (1-4).,No,No,
+DimDate,FiscalYear,Integer,No,Fiscal year.,No,No,
+DimDate,IsHoliday,Boolean,No,"True if holiday, else false.",No,No,
+DimDate,IsWeekend,Boolean,No,"True if Saturday or Sunday, else false.",No,No,
+DimDate,Month,Integer,No,Month number (1-12).,No,No,
+DimDate,MonthName,String,No,"Full month name (e.g., January).",No,No,
+DimDate,MonthNameShort,String,No,"Abbreviated month name (e.g., Jan).",No,No,
+DimDate,Quarter,Integer,No,Calendar quarter (1-4).,No,No,
+DimDate,WeekOfYear,Integer,No,ISO week number (1-53).,No,No,
+DimDate,Year,Integer,No,Calendar year.,No,No,
+DimDonationSource,CreatedDateKey,Long,No,Date when the donation source was created.,No,Yes,DimDate
+DimDonationSource,DonationSourceId,String,No,Donation source identifier.,No,No,
+DimDonationSource,DonationSourceKey,Long,Yes,Gold surrogate key for donation source.,Yes,No,
+DimDonationSource,DonationSourceRecordKey,Long,No,Reference to the source record.,No,No,
+DimDonationSource,DonationSourceTypeName,String,No,Type name of the donation source.,No,No,
+DimDonationSource,ModifiedDateKey,Long,No,Date when the donation source was last modified.,No,Yes,DimDate
+DimDonationSource,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimEmail,EmailId,String,No,Email identifier.,No,No,
+DimEmail,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+DimEmail,EmailEngagementId,String,No,Source system email engageement identifier.,No,No,
+DimEmail,EmailKey,Long,Yes,Gold surrogate key for email.,Yes,No,
+DimEmail,EmailSubject,String,No,Subject of the email.,No,No,
+DimEmail,SourceSystemEmailId,String,No,Source system email identifier.,No,No,
+DimEmail,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimEmail,ModifiedDateKey,Long,No,Date when the email was last modified.,No,Yes,DimDate
+DimEmail,CreatedDateKey,Long,No,Date when the email was created.,No,Yes,DimDate
+DimEmail,VariantType,String,No,Variant type for A/B testing.,No,No,
+DimEngagementPlatform,CreatedDateKey,Long,No,Date when the engagement platform was created.,No,Yes,DimDate
+DimEngagementPlatform,EngagementPlatformId,String,No,Engagement platform identifier.,No,No,
+DimEngagementPlatform,EngagementPlatformKey,Long,Yes,Gold surrogate key for engagement platform.,Yes,No,
+DimEngagementPlatform,ModifiedDateKey,Long,No,Date when the engagement platform was last modified.,No,Yes,DimDate
+DimEngagementPlatform,Name,String,No,Name of the social media platform.,No,No,
+DimEngagementPlatform,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimEngagementPlatform,SourceSysEngagementPlatformId,String,Yes,Source system engagement platform identifier.,No,No,
+DimEvent,AddressKey,Long,No,Reference to the event location.,No,Yes,DimAddress
+DimEvent,Cost,Decimal (18/4),No,Cost of the event.,No,No,
+DimEvent,CreatedDateKey,Long,No,Date when the event was created.,No,Yes,DimDate
+DimEvent,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+DimEvent,EventDateKey,Long,No,Date of the event.,No,Yes,DimDate
+DimEvent,EventId,String,No,Event identifier.,No,No,
+DimEvent,EventKey,Long,Yes,Gold surrogate key for event.,Yes,No,
+DimEvent,EventName,String,No,Name of the event.,No,No,
+DimEvent,ModifiedDateKey,Long,No,Date when the event was last modified.,No,Yes,DimDate
+DimEvent,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimEvent,SourceSysEventId,String,Yes,Source system event identifier.,No,No,
+DimLetter,CreatedDateKey,Long,No,Date when the letter was created.,No,Yes,DimDate
+DimLetter,LetterId,String,Yes,Letter identifier.,No,No,
+DimLetter,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+DimLetter,LetterKey,Long,Yes,Gold surrogate key for letter.,Yes,No,
+DimLetter,LetterSubject,String,No,Subject of the letter.,No,No,
+DimLetter,ModifiedDateKey,Long,No,Date when the letter was last modified.,No,Yes,DimDate
+DimLetter,SentDateKey,Long,No,Date the letter was sent.,No,Yes,DimDate
+DimLetter,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimLetter,SourceSysLetterId,String,No,Source system letter identifier.,No,No,
+DimOpportunityStage,OpportunityStage,String,Yes,Name of the opportunity stage.,No,No,
+DimOpportunityStage,OpportunityStageId,String,Yes,Opportunity stage identifier.,No,No,
+DimOpportunityStage,OpportunityStageKey,Long,Yes,Gold surrogate key for opportunity stage.,Yes,No,
+DimOpportunityStage,OpportunityTypeKey,Long,No,Reference to opportunity type.,No,Yes,DimOpportunityType
+DimOpportunityType,OpportunityTypeName,String,No,Name of the opportunity type.,No,No,
+DimOpportunityType,OpportunityTypeId,String,No,Opportunity type identifier.,No,No,
+DimOpportunityType,OpportunityTypeKey,Long,Yes,Gold surrogate key for opportunity type.,Yes,No,
+DimPhonecall,CreatedDateKey,Long,No,Date when the phone call was created.,No,Yes,DimDate
+DimPhonecall,ModifiedDateKey,Long,No,Date when the phone call was last modified.,No,Yes,DimDate
+DimPhonecall,PhonecallDescription,String,No,Description of the phone call.,No,No,
+DimPhonecall,PhonecallId,String,Yes,Phone call identifier.,No,No,
+DimPhonecall,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+DimPhonecall,PhonecallKey,Long,Yes,Gold surrogate key for phone call.,Yes,No,
+DimPhonecall,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimPhonecall,SourceSysPhonecallId,String,No,Source system phone call identifier.,No,No,
+DimProgram,CreatedDateKey,Long,No,Date when the program was created.,No,Yes,DimDate
+DimProgram,ModifiedDateKey,Long,No,Date when the program was last modified.,No,Yes,DimDate
+DimProgram,ProgramId,String,No,Program identifier.,No,No,
+DimProgram,ProgramKey,Long,Yes,Gold surrogate key for program.,Yes,No,
+DimProgram,ProgramName,String,No,Name of the program.,No,No,
+DimProgram,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+DimProgram,SourceSysProgramId,String,No,Source system program identifier.,No,No,
+DimSource,SourceId,String,No,Source identifier.,No,No,
+DimSource,SourceKey,Long,Yes,Gold surrogate key for source.,Yes,No,
+DimSource,SourceName,String,No,"Name of the source system (e.g., Salesforce).",No,No,
+DimVolunteeringType,CreatedDateKey,Long,No,Date when the volunteering type was created.,No,Yes,DimDate
+DimVolunteeringType,ModifiedDateKey,Long,No,Date when the volunteering type was last modified.,No,Yes,DimDate
+DimVolunteeringType,SourceKey,Long,Yes,Reference to the source system.,No,No,
+DimVolunteeringType,VolunteeringTypeId,String,No,Volunteering type identifier.,No,No,
+DimVolunteeringType,VolunteeringTypeKey,Long,Yes,Gold surrogate key for volunteering type.,Yes,No,
+DimVolunteeringType,VolunteeringTypeName,String,No,Name of the volunteering type.,No,No,
+FactConstituentEmailEngagement,CampaignKey,Long,No,Reference to the campaign.,No,Yes,DimCampaign
+FactConstituentEmailEngagement,ClickThrough,Boolean,No,Indicates whether the constituent clicked on the link.,No,No,
+FactConstituentEmailEngagement,ClickThroughDateKey,Long,No,Date the link was clicked by the constituent.,No,Yes,DimDate
+FactConstituentEmailEngagement,ConstituentEmail,String,No,Email address of the constituent.,No,No,
+FactConstituentEmailEngagement,ConstituentEmailEngagementId,String,No,Constituent email engagement identifier.,No,No,
+FactConstituentEmailEngagement,ConstituentEmailEngagementKey,Long,Yes,Gold surrogate key for constituent email engagement.,Yes,No,
+FactConstituentEmailEngagement,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactConstituentEmailEngagement,CreatedDateKey,Long,No,Date when the engagement was created.,No,Yes,DimDate
+FactConstituentEmailEngagement,EmailKey,Long,No,Reference to the email.,No,Yes,DimEmail
+FactConstituentEmailEngagement,ModifiedDateKey,Long,Yes,Date when the engagement was last modified.,No,Yes,DimDate
+FactConstituentEmailEngagement,OpenedDateKey,Long,No,Date the email was opened.,No,Yes,DimDate
+FactConstituentEmailEngagement,SentDateKey,Long,No,Date the email was sent.,No,Yes,DimDate
+FactConstituentEmailEngagement,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactConstituentEmailEngagement,EmailEngagementId,String,No,Email engagement identifier.,No,No,
+FactConstituentEmailEngagement,SourceSysConstituentEmailEngagementId,String,No,Source system constituent email engagement identifier.,No,No,
+FactConstituentEmailEngagement,Timezone,String,No,Timezone associated with the engagement.,No,No,
+FactConstituentEmailEngagement,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+FactConstituentEmailEngagement,WasOpened,Boolean,No,Indicates if the email was opened by the constituent.,No,No,
+FactConstituentLetterEngagement,CampaignKey,Long,No,Reference to the campaign.,No,Yes,DimCampaign
+FactConstituentLetterEngagement,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactConstituentLetterEngagement,ConstituentLetterEngagementId,String,No,Constituent letter engagement identifier.,No,No,
+FactConstituentLetterEngagement,ConstituentLetterEngagementKey,Long,Yes,Gold surrogate key for constituent letter engagement.,Yes,No,
+FactConstituentLetterEngagement,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+FactConstituentLetterEngagement,DateSentKey,Long,No,Date the letter was sent.,No,Yes,DimDate
+FactConstituentLetterEngagement,LetterKey,Long,No,Reference to the letter.,No,Yes,DimLetter
+FactConstituentLetterEngagement,SourceSysConstituentLetterEngagementId,String,No,Source system constituent letter engagement identifier.,No,No,
+FactConstituentLetterEngagement,Timezone,String,No,Timezone associated with the engagement.,No,No,
+FactConstituentPhonecallEngagement,CampaignKey,Long,No,Reference to the campaign.,No,Yes,DimCampaign
+FactConstituentPhonecallEngagement,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactConstituentPhonecallEngagement,ConstituentPhonecallEngagementId,String,No,Constituent phone call engagement identifier.,No,No,
+FactConstituentPhonecallEngagement,ConstituentPhonecallEngagementKey,Long,Yes,Gold surrogate key for constituent phone call engagement.,Yes,No,
+FactConstituentPhonecallEngagement,PhonecallDate,Long,No,Date of the phone call.,No,Yes,DimDate
+FactConstituentPhonecallEngagement,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+FactConstituentPhonecallEngagement,PhonecallKey,Long,No,Reference to the phone call.,No,Yes,DimPhonecall
+FactConstituentPhonecallEngagement,SourceSysConstituentPhonecallEngagementId,String,No,Source system constituent phone call engagement identifier.,No,No,
+FactConstituentPhonecallEngagement,Timezone,String,No,Timezone associated with the engagement.,No,No,
+FactConstituentSocialEngagement,Comment,Boolean,No,Indicates if the constituent commented on the social engagement.,No,No,
+FactConstituentSocialEngagement,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactConstituentSocialEngagement,ConstituentSocialEngagementId,String,No,Constituent social engagement identifier.,No,No,
+FactConstituentSocialEngagement,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+FactConstituentSocialEngagement,ConstituentSocialEngagementKey,Long,Yes,Gold surrogate key for constituent social engagement.,Yes,No,
+FactConstituentSocialEngagement,SocialEngagementId,String,No,Social engagement identifier.,No,No,
+FactConstituentSocialEngagement,CreatedDateKey,Long,No,Date when the engagement was created.,No,Yes,DimDate
+FactConstituentSocialEngagement,Impression,Boolean,No,Indicates if the constituent viewed the social engagement.,No,No,
+FactConstituentSocialEngagement,DateKey,Long,No,Date of the social engagement.,No,Yes,DimDate
+FactConstituentSocialEngagement,Like,Boolean,No,Indicates if the constituent liked the social engagement.,No,No,
+FactConstituentSocialEngagement,ModifiedDateKey,Long,No,Date when the engagement was last modified.,No,Yes,DimDate
+FactConstituentSocialEngagement,Share,Boolean,No,Indicates if the constituent shared the social engagement.,No,No,
+FactConstituentSocialEngagement,SourceKey,Long,Yes,Reference to the source system.,No,No,
+FactConstituentSocialEngagement,SourceSysConstituentSocialEngagementId,String,No,Source system constituent social engagement identifier.,No,No,
+FactConstituentSocialEngagement,Timezone,String,Yes,Timezone associated with the engagement.,No,No,
+FactDonation,Amount,Decimal (18/4),No,Amount of the donation.,No,No,
+FactDonation,CampaignKey,Long,No,Reference to the campaign.,No,Yes,DimCampaign
+FactDonation,ChannelKey,Long,No,Reference to the attribution channel for the donation.,No,Yes,DimChannel
+FactDonation,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactDonation,CreatedDateKey,Long,No,Date when the donation was created.,No,Yes,DimDate
+FactDonation,DonationDateKey,Long,No,Date the donation was made.,No,Yes,DimDate
+FactDonation,DonationId,String,No,Donation identifier.,No,No,
+FactDonation,DonationKey,Long,Yes,Gold surrogate key for donation.,Yes,No,
+FactDonation,DonationName,String,No,Name of the donation.,No,No,
+FactDonation,DonationSourceKey,Long,No,Reference to the donation source.,No,Yes,DimDonationSource
+FactDonation,IsNewConstituent,Boolean,No,Indicates whether the donor is new or returning.,No,No,
+FactDonation,IsReccuring,Boolean,No,Indicates if the donation is recurring.,No,No,
+FactDonation,ModifiedDateKey,Long,No,Date when the donation was last modified.,No,Yes,DimDate
+FactDonation,OpportunityKey,Long,Yes,Reference to the associated opportunity.,No,Yes,DimOpportunity
+FactDonation,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactDonation,SourceSysDonationId,String,No,Source system donation identifier.,No,No,
+FactDonation,Timezone,String,No,Timezone associated with the donation.,No,No,
+FactEventAttendance,AcceptedDateKey,Long,No,Date when the constituent accepted the invitation.,No,Yes,DimDate
+FactEventAttendance,AttendedEvent,Boolean,No,Indicates if the constituent attended the event.,No,No,
+FactEventAttendance,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactEventAttendance,CreatedDateKey,Long,Yes,Date when the event attendance was created.,No,Yes,DimDate
+FactEventAttendance,ChannelKey,Long,No,References to the associated channel.,No,Yes,DimChannel
+FactEventAttendance,EventAttendanceId,String,No,Event attendance identifier.,No,No,
+FactEventAttendance,EventAttendanceKey,Long,Yes,Gold surrogate key for event attendance.,Yes,No,
+FactEventAttendance,EventKey,Long,No,Reference to the event.,No,Yes,DimEvent
+FactEventAttendance,InvitationDateKey,Long,No,Date when the constituent was invited to the event.,No,Yes,DimDate
+FactEventAttendance,ModifiedDateKey,Long,No,Date when the event attendance was last modified.,No,Yes,DimDate
+FactEventAttendance,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactEventAttendance,SourceSysEventAttendanceId,String,No,Source system event attendance identifier.,No,No,
+FactOpportunity,CampaignKey,Long,Yes,Reference to the campaign.,No,Yes,DimCampaign
+FactOpportunity,ChannelKey,Long,No,Reference to the channel.,No,Yes,DimChannel
+FactOpportunity,CloseDateKey,Long,No,Expected close date of the opportunity.,No,Yes,DimDate
+FactOpportunity,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactOpportunity,CreatedDateKey,Long,No,Date when the opportunity was created.,No,Yes,DimDate
+FactOpportunity,ExpectedRevenue,Decimal (18/4),No,Expected revenue from this opportunity.,No,No,
+FactOpportunity,IsClosed,Boolean,No,Indicates if the opportunity is closed.,No,No,
+FactOpportunity,ModifiedDateKey,Long,Yes,Date when the opportunity was last modified.,No,Yes,DimDate
+FactOpportunity,OpportunityId,String,No,Opportunity identifier.,No,No,
+FactOpportunity,OpportunityKey,Long,Yes,Gold surrogate key for opportunity.,Yes,No,
+FactOpportunity,OpportunityName,String,No,Name of the opportunity.,No,No,
+FactOpportunity,OpportunityStageKey,Long,No,Reference to the opportunity stage.,No,Yes,DimOpportunityStage
+FactOpportunity,OpportunityTypeKey,Long,No,Reference to the opportunity type.,No,Yes,DimOpportunityType
+FactOpportunity,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactOpportunity,SourceSysOpportunityId,String,No,Source system opportunity identifier.,No,No,
+FactOpportunity,Timezone,String,No,Timezone associated with the opportunity.,No,No,
+FactSocialEngagement,FactSocialEngagementKey,Long,Yes,Gold surrogate key for social engagement.,Yes,No,
+FactSocialEngagement,CampaignKey,Long,No,Reference to the campaign.,No,Yes,DimCampaign
+FactSocialEngagement,ChannelKey,Long,No,Reference to the channel.,No,Yes,DimChannel
+FactSocialEngagement,Clicks,Long,No,Number of clicks.,No,No,
+FactSocialEngagement,Comments,Long,No,Number of comments.,No,No,
+FactSocialEngagement,EngagementPlatformKey,Long,No,Reference to the social media platform.,No,Yes,DimEngagementPlatform
+FactSocialEngagement,SocialEngagementId,String,No,Social engagement identifier.,No,No,
+FactSocialEngagement,SourceSocialEngagementId,String,No,Source system social engagement identifier.,No,No,
+FactSocialEngagement,Engagements,Long,No,"Sum of clicks, shares, comments and likes.",No,No,
+FactSocialEngagement,Impressions,Long,No,Number of impressions.,No,No,
+FactSocialEngagement,InteractionDateKey,Long,Yes,Date of the interaction.,No,Yes,DimDate
+FactSocialEngagement,Likes,Long,No,Number of likes.,No,No,
+FactSocialEngagement,PostId,String,No,Unique identifier (GUID) for the post.,No,No,
+FactSocialEngagement,Reach,Long,No,Number of people who viewed the post.,No,No,
+FactSocialEngagement,ReportDateKey,Long,No,Date of the report.,No,No,
+FactSocialEngagement,Shares,Long,No,Number of shares.,No,No,
+FactSocialEngagement,CreatedDateKey,Long,No,Date when the social engagement was created.,No,Yes,DimDate
+FactSocialEngagement,ModifiedDateKey,Long,No,Date when the social engagement was last modified.,No,Yes,DimDate
+FactSocialEngagement,SourceKey,Long,Yes,Reference to the source system.,No,No,
+FactSoftCredit,ConstituentKey,Long,No,Reference to the constituent who will get the soft credit.,No,Yes,DimConstituent
+FactSoftCredit,CreatedDateKey,Long,No,Date when the soft credit was created.,No,Yes,DimDate
+FactSoftCredit,DonationKey,Long,No,Reference to the donation related to this soft credit.,No,Yes,DimDonation
+FactSoftCredit,ModifiedDateKey,Long,No,Date when the soft credit was last modified.,No,Yes,DimDate
+FactSoftCredit,SoftCreditAmount,Decimal (18/4),No,Amount of the soft credit.,No,No,
+FactSoftCredit,SoftCreditId,String,No,Soft credit identifier.,No,No,
+FactSoftCredit,SoftCreditKey,Long,Yes,Gold surrogate key for soft credit.,Yes,No,
+FactSoftCredit,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactSoftCredit,SourceSysSoftCreditId,String,No,Source system soft credit identifier.,No,No,
+FactVolunteerHours,CreatedDateKey,Long,No,Date when the volunteer hours were created.,No,Yes,DimDate
+FactVolunteerHours,EventKey,Long,No,Reference to the event when the hours were donated.,No,Yes,DimEvent
+FactVolunteerHours,HoursVolunteered,Decimal (18/4),No,Number of hours volunteered.,No,No,
+FactVolunteerHours,ModifiedDateKey,Long,No,Date when the volunteer hours were last modified.,No,Yes,DimDate
+FactVolunteerHours,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactVolunteerHours,SourceSysVolunteerHoursId,String,No,Source system volunteer hours identifier.,No,No,
+FactVolunteerHours,Timezone,String,No,Timezone associated with the volunteer hours.,No,No,
+FactVolunteerHours,VolunteeredDateKey,Long,No,Date the hours were volunteered.,No,Yes,DimDate
+FactVolunteerHours,VolunteerHoursId,String,No,Volunteer hours identifier.,No,No,
+FactVolunteerHours,VolunteerHoursKey,Long,Yes,Gold surrogate key for volunteer hours.,Yes,No,
+FactVolunteerHours,VolunteeringTypeKey,Long,No,Reference to the volunteering type.,No,Yes,DimVolunteeringType
+FactVolunteerHours,VolunteerKey,Long,No,Reference to the constituent who volunteered.,No,Yes,DimConstituent
+FactWealthScreening,CapacityRange,String,No,Estimated gift capacity range.,No,No,
+FactWealthScreening,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+FactWealthScreening,ConstituentRating,String,No,"Constituent rating (high, medium, low).",No,No,
+FactWealthScreening,CreatedDateKey,Long,No,Date when the wealth screening was created.,No,Yes,DimDate
+FactWealthScreening,LastScreeningDateKey,Long,Yes,Last date screening was done.,No,Yes,DimDate
+FactWealthScreening,ModifiedDateKey,Long,No,Date when the wealth screening was last modified.,No,Yes,DimDate
+FactWealthScreening,SourceKey,Long,No,Reference to the source system.,No,Yes,DimSource
+FactWealthScreening,WealthScreeningKey,Long,Yes,Gold surrogate key for wealth screening.,Yes,No,
+FactWealthScreening,WealthScreeningId,String,Yes,Wealth screening identifier.,No,No,
+dm_CampaignAttribution,CampaignKey,Long,Yes,Reference to the campaign.,No,Yes,DimCampaign
+dm_CampaignAttribution,ChannelKey,Long,No,Reference to the channel.,No,Yes,DimChannel
+dm_CampaignAttribution,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+dm_CampaignAttribution,DonationDateKey,Long,No,Date of the donation.,No,Yes,DimDate
+dm_CampaignAttribution,DonationKey,Long,No,Reference to the donation.,No,Yes,DimDonation
+dm_CampaignAttribution,EngagementDateKey,Long,No,Date of the engagement (must be <= donation date).,No,Yes,DimDate
+dm_CampaignAttribution,EngagementType,String,No,"Type of engagement (Email Open, Email Click, Social Like, etc.).",No,No,
+dm_Constituent,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+dm_Constituent,ConstituentId,String,No,Constituent identifier.,No,No,
+dm_Constituent,ConstituentName,String,No,Name of the constituent.,No,No,
+dm_Constituent,Email,String,No,Email address of the constituent.,No,No,
+dm_Constituent,Age,Long,No,Age of the constituent.,No,No,
+dm_Constituent,EngagementStage,String,No,Current engagement stage of the constituent.,No,No,
+dm_Constituent,AcquisitionChannel,String,No,Channel through which the constituent was acquired.,No,No,
+dm_Constituent,LifetimeDonationAmount,Decimal (18/4),No,Total lifetime donation amount.,No,No,
+dm_Constituent,FirstDonationDateKey,Long,No,Date of the first donation.,No,Yes,DimDate
+dm_Constituent,LastDonationDateKey,Long,No,Date of the most recent donation.,No,Yes,DimDate
+dm_Constituent,AttendedEventsCount,Long,No,Number of events attended.,No,No,
+dm_Constituent,FirstEngagementDateKey,Long,No,Date of the first engagement.,No,Yes,DimDate
+dm_Constituent,IsNewDonor,Boolean,No,Indicates if the constituent is a new donor.,No,No,
+dm_EngagementTimeline,CampaignKey,Long,No,Reference to the campaign.,No,Yes,DimCampaign
+dm_EngagementTimeline,ChannelKey,Long,No,"Reference to the channel (email, social media, etc.).",No,Yes,DimChannel
+dm_EngagementTimeline,ConstituentKey,Long,No,Reference to the constituent.,No,Yes,DimConstituent
+dm_EngagementTimeline,EngagementDate,Long,No,Date of the engagement.,No,Yes,DimDate
+dm_EngagementTimeline,EngagementStage,String,Yes,"Engagement stage (Conversion, Engagement, Awareness).",No,No,
+dm_EngagementTimeline,EngagementType,String,No,"Type of engagement (Open, Clicked, Liked, etc.).",No,No,
+dm_EngagementTimeline,InteractionId,String,No,"Interaction identifier (EmailId, EventId, PostId, etc.).",No,No,
+dm_EngagementTimeline,WasConverted,Boolean,No,Flag 0/1 wheter the constituent donated after an engagement,No,No,

@@ -1,0 +1,98 @@
+table DimPhonecall
+	lineageTag: 3cfc328e-54d0-48b0-b8bc-eb8e80522ccb
+	sourceLineageTag: [dbo].[DimPhonecall]
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8e59747f-27e6-4711-87e5-8c38589dc7df
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e60ab0d3-4a88-4b58-be5d-c301b3fab50f
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhonecallDescription
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1b2398d1-3d37-4957-bd04-e2e032af29fd
+		sourceLineageTag: PhonecallDescription
+		summarizeBy: none
+		sourceColumn: PhonecallDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhonecallId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c0697c0f-c220-4dee-a87b-87b17535dd9d
+		sourceLineageTag: PhonecallId
+		summarizeBy: none
+		sourceColumn: PhonecallId
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhonecallKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2522fa67-474f-49ea-afb5-d587bd1beda9
+		sourceLineageTag: PhonecallKey
+		summarizeBy: none
+		sourceColumn: PhonecallKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9ee1009a-d174-4135-a659-c9d28edd2451
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysPhonecallId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c80d1be0-742a-46a4-9460-e9294ca13e4c
+		sourceLineageTag: SourceSysPhonecallId
+		summarizeBy: none
+		sourceColumn: SourceSysPhonecallId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b746d0cc-ede2-4f44-a6e2-9c52326caa9e
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPhonecall = entity
+		mode: directLake
+		source
+			entityName: DimPhonecall
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

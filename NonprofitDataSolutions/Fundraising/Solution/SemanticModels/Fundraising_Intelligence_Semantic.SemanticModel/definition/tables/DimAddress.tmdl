@@ -1,0 +1,161 @@
+table DimAddress
+	lineageTag: d09b87f6-bd40-4a79-b195-571901ca075a
+	sourceLineageTag: [dbo].[DimAddress]
+
+	column AddressId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bb8b91f9-477a-43c8-93a2-82cb2b5585f0
+		sourceLineageTag: AddressId
+		summarizeBy: none
+		sourceColumn: AddressId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AddressKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 575ea1e3-eb60-4ab7-9526-1ca3b619bac1
+		sourceLineageTag: AddressKey
+		summarizeBy: none
+		sourceColumn: AddressKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a21feb1a-e31c-468f-b84b-fac465cce780
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 18a71cd6-d5b2-4af9-b706-b9baff97bc48
+		sourceLineageTag: CountryCode
+		summarizeBy: none
+		sourceColumn: CountryCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ed782c11-e675-4792-a8f5-eae0ab6fc397
+		sourceLineageTag: CountryId
+		summarizeBy: none
+		sourceColumn: CountryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1102ee11-6b8f-4cff-85ed-4f4923e7c9ad
+		sourceLineageTag: CountryName
+		summarizeBy: none
+		sourceColumn: CountryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 743091a2-5cc5-4740-aa56-0d43fcca69fa
+		sourceLineageTag: Latitude
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Longitude
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: c2831e6f-0855-472b-933f-6891293f9f48
+		sourceLineageTag: Longitude
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Region
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0ddbc9a6-e825-4129-ae65-8439e4a32bc7
+		sourceLineageTag: Region
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a866b698-6472-4c71-9f16-648a4cb633eb
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysAddressId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 561a1932-275f-4a40-ace6-ef2ce9ecd9ad
+		sourceLineageTag: SourceSysAddressId
+		summarizeBy: none
+		sourceColumn: SourceSysAddressId
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 951ad419-21eb-4828-b484-287572ac2c3c
+		sourceLineageTag: State
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ff6e3061-224c-439e-a977-b9ade85c6dda
+		sourceLineageTag: StateCode
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZipCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a7a3afc3-6642-4cb1-a77e-552aaa004ca3
+		sourceLineageTag: ZipCode
+		summarizeBy: none
+		sourceColumn: ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimAddress = entity
+		mode: directLake
+		source
+			entityName: DimAddress
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

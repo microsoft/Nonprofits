@@ -1,0 +1,198 @@
+table FactDonation
+	lineageTag: 27264111-cd3b-43bb-8053-da60c3f0c6f5
+	sourceLineageTag: [dbo].[FactDonation]
+
+	column Amount
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 655f976f-720d-43ab-ac32-29e104d3764c
+		sourceLineageTag: Amount
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 47b47611-4b3f-42aa-afc3-e7cf8d8e3ee2
+		sourceLineageTag: CampaignKey
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 77e50168-1189-4f87-8281-51a12b51b48f
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 91fcd83f-e71d-4fe3-b967-bb44b4c98da4
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 18a2941a-0b56-4258-a59a-bc2fe4481114
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ea780234-6eab-4979-8647-845a0c61038a
+		sourceLineageTag: DonationDateKey
+		summarizeBy: none
+		sourceColumn: DonationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: aa8374f4-8ff9-45f7-846f-75fe1ae2b18e
+		sourceLineageTag: DonationId
+		summarizeBy: none
+		sourceColumn: DonationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f44c6797-32fd-49c0-b446-cec68dbd7cb0
+		sourceLineageTag: DonationKey
+		summarizeBy: none
+		sourceColumn: DonationKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8e8330f2-b24e-42bc-bf31-0998834acfc9
+		sourceLineageTag: DonationName
+		summarizeBy: none
+		sourceColumn: DonationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e3452d79-59cc-4a59-a3de-89b3e0111209
+		sourceLineageTag: DonationSourceKey
+		summarizeBy: none
+		sourceColumn: DonationSourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsNewConstituent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 41775d5e-75b3-457f-8a8c-7322eee72d87
+		sourceLineageTag: IsNewConstituent
+		summarizeBy: none
+		sourceColumn: IsNewConstituent
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsRecurring
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: fb66f124-2fa6-4da0-aa94-e3ab1e479097
+		sourceLineageTag: IsRecurring
+		summarizeBy: none
+		sourceColumn: IsRecurring
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: df00f4ae-62fc-4e64-90e9-210be8414c79
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 88cf3b29-64cf-4217-a850-c088e98fc019
+		sourceLineageTag: OpportunityKey
+		summarizeBy: none
+		sourceColumn: OpportunityKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e420fb40-3d37-4bbf-af28-5a06aa022130
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysDonationId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 07a73b3c-c15e-4c75-931c-b139a88e620c
+		sourceLineageTag: SourceSysDonationId
+		summarizeBy: none
+		sourceColumn: SourceSysDonationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 88248aba-e258-4380-9240-036b1f099200
+		sourceLineageTag: Timezone
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactDonation = entity
+		mode: directLake
+		source
+			entityName: FactDonation
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

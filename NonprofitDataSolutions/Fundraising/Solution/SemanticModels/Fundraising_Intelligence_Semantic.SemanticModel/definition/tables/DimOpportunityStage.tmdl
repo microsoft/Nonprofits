@@ -1,0 +1,65 @@
+table DimOpportunityStage
+	lineageTag: 2ba68aea-c510-4edf-94bd-8efae3363977
+	sourceLineageTag: [dbo].[DimOpportunityStage]
+
+	column OpportunityStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 161acf62-c13a-4efa-8338-f3c731b88fac
+		sourceLineageTag: OpportunityStage
+		summarizeBy: none
+		sourceColumn: OpportunityStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityStageId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f1a8b6e5-6001-4d7b-98d6-64e94d764889
+		sourceLineageTag: OpportunityStageId
+		summarizeBy: none
+		sourceColumn: OpportunityStageId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityStageKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 088ab877-2d01-469a-b49a-6cbb87b276fe
+		sourceLineageTag: OpportunityStageKey
+		summarizeBy: none
+		sourceColumn: OpportunityStageKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 90a83868-a878-45f2-8c28-060f0daf6280
+		sourceLineageTag: OpportunityTypeKey
+		summarizeBy: none
+		sourceColumn: OpportunityTypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c94a5a03-2309-4532-a694-dee71dbcb816
+		sourceLineageTag: OpportunityTypeId
+		summarizeBy: none
+		sourceColumn: OpportunityTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimOpportunityStage = entity
+		mode: directLake
+		source
+			entityName: DimOpportunityStage
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

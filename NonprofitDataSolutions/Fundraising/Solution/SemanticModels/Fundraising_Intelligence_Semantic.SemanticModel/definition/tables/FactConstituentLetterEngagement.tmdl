@@ -1,0 +1,120 @@
+table FactConstituentLetterEngagement
+	lineageTag: 7289b910-899e-4460-8035-c3bed0b05d31
+	sourceLineageTag: [dbo].[FactConstituentLetterEngagement]
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f48007d4-ed26-4547-a082-5d7460f3c87f
+		sourceLineageTag: CampaignKey
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bec5b9b3-b576-4f79-93ab-ac9da09a21f6
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentLetterEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 550f88d1-5d29-41ab-b232-247e14ddfa86
+		sourceLineageTag: ConstituentLetterEngagementId
+		summarizeBy: none
+		sourceColumn: ConstituentLetterEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentLetterEngagementKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2798cd8f-002d-4d08-b872-b2246dd7c903
+		sourceLineageTag: ConstituentLetterEngagementKey
+		summarizeBy: none
+		sourceColumn: ConstituentLetterEngagementKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateSentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 05084c30-7cfd-48c2-9a20-fb8ca5239940
+		sourceLineageTag: DateSentKey
+		summarizeBy: none
+		sourceColumn: DateSentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column LetterKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b131f5f6-3998-4585-9cd4-74245db15e86
+		sourceLineageTag: LetterKey
+		summarizeBy: none
+		sourceColumn: LetterKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysConstituentLetterEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4a8c526a-7f03-4e4c-a5a7-248bb2884106
+		sourceLineageTag: SourceSysConstituentLetterEngagementId
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentLetterEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8bad04b7-4bd0-4654-a6e0-2794f158bc3f
+		sourceLineageTag: Timezone
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7a0c280e-05b5-44cb-9a19-e0bb42dd99fc
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateSent
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fcf45f4d-4721-4418-a428-fc6eae163fd8
+		sourceLineageTag: DateSent
+		summarizeBy: none
+		sourceColumn: DateSent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactConstituentLetterEngagement = entity
+		mode: directLake
+		source
+			entityName: FactConstituentLetterEngagement
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

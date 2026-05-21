@@ -1,0 +1,44 @@
+table DimOpportunityType
+	lineageTag: 012059e8-cede-430f-b617-ed503186399c
+	sourceLineageTag: [dbo].[DimOpportunityType]
+
+	column OpportunityTypeName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 67516897-5003-4c11-9219-b51d0942810a
+		sourceLineageTag: OpportunityTypeName
+		summarizeBy: none
+		sourceColumn: OpportunityTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 484ef321-e352-47c0-a38f-8e15a8891a3c
+		sourceLineageTag: OpportunityTypeId
+		summarizeBy: none
+		sourceColumn: OpportunityTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpportunityTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2e599b5b-fcfa-40c0-84f4-4e4731f7e25f
+		sourceLineageTag: OpportunityTypeKey
+		summarizeBy: none
+		sourceColumn: OpportunityTypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimOpportunityType = entity
+		mode: directLake
+		source
+			entityName: DimOpportunityType
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

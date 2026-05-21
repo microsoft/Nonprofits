@@ -1,0 +1,88 @@
+table DimDonationSource
+	lineageTag: 28d0ffde-f342-4fac-81b5-8029822c4d91
+	sourceLineageTag: [dbo].[DimDonationSource]
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aae2e7a6-26fa-4a23-9016-ebc67d7f9af6
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0e7fd666-f60a-4b65-9abb-40c03cdeb36d
+		sourceLineageTag: DonationSourceId
+		summarizeBy: none
+		sourceColumn: DonationSourceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0a9c35c4-bb91-426f-9da2-b841f302e1fc
+		sourceLineageTag: DonationSourceKey
+		summarizeBy: none
+		sourceColumn: DonationSourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceRecordKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 22b16ace-21c6-47ff-b981-14c9dedd80ac
+		sourceLineageTag: DonationSourceRecordKey
+		summarizeBy: none
+		sourceColumn: DonationSourceRecordKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationSourceTypeName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 80c5b4c9-6a62-4e11-8ab8-1239ae34e6c5
+		sourceLineageTag: DonationSourceTypeName
+		summarizeBy: none
+		sourceColumn: DonationSourceTypeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b981ad93-12ed-4e9e-b9d8-c3a91ad014e4
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2608f70c-ebce-4b55-8206-ce6a2cf99c76
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDonationSource = entity
+		mode: directLake
+		source
+			entityName: DimDonationSource
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

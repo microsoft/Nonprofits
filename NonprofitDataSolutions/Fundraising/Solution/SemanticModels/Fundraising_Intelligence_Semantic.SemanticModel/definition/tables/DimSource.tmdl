@@ -1,0 +1,44 @@
+table DimSource
+	lineageTag: e8d1c09b-c450-4569-b437-a617df02f8c5
+	sourceLineageTag: [dbo].[DimSource]
+
+	column SourceId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 27e04373-f6f9-433a-b896-4a43cda2cee5
+		sourceLineageTag: SourceId
+		summarizeBy: none
+		sourceColumn: SourceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c8f613b9-ceff-458d-a8db-14c4e792548f
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0df2356d-de97-4c3e-b42d-748c4ab954a3
+		sourceLineageTag: SourceName
+		summarizeBy: none
+		sourceColumn: SourceName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimSource = entity
+		mode: directLake
+		source
+			entityName: DimSource
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -6,7 +6,7 @@
       <LocalizedName description="Common Data Model for Nonprofits" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>3.1.3.0</Version>
+    <Version>3.1.3.4</Version>
     <Managed>2</Managed>
     <Publisher>
       <UniqueName>microsoftdynamics365nonprofitaccelerator</UniqueName>

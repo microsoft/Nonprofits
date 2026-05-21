@@ -1,0 +1,56 @@
+table DimCampaignChannelBridge
+	lineageTag: 7cda1b3d-d092-4931-92dc-d186ff800438
+	sourceLineageTag: [dbo].[DimCampaignChannelBridge]
+
+	column CampaignChannelBridgeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8031d62f-4e40-440a-b8d4-3109cf42d052
+		sourceLineageTag: CampaignChannelBridgeKey
+		summarizeBy: none
+		sourceColumn: CampaignChannelBridgeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignChannelId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 6fd18717-1444-484f-b987-2c17c371af8b
+		sourceLineageTag: CampaignChannelId
+		summarizeBy: none
+		sourceColumn: CampaignChannelId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 86f44f74-0ed3-4593-b3ba-962f7c4766c7
+		sourceLineageTag: CampaignKey
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: de76cc3e-5108-4928-828a-861f8710c229
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCampaignChannelBridge = entity
+		mode: directLake
+		source
+			entityName: DimCampaignChannelBridge
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

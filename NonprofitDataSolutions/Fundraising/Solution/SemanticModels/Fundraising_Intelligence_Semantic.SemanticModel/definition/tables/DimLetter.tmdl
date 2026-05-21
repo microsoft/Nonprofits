@@ -1,0 +1,109 @@
+table DimLetter
+	lineageTag: 0d08c6c3-9a12-4c00-9ed3-7b9c4bb0950d
+	sourceLineageTag: [dbo].[DimLetter]
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5f36bc2d-e453-4852-909c-b52a848701b1
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column LetterId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1d4eb1b9-c013-452d-bc07-ba47cc5f3af7
+		sourceLineageTag: LetterId
+		summarizeBy: none
+		sourceColumn: LetterId
+
+		annotation SummarizationSetBy = Automatic
+
+	column LetterKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 77507f61-0547-4758-a8bf-9eb8e802cc20
+		sourceLineageTag: LetterKey
+		summarizeBy: none
+		sourceColumn: LetterKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column LetterSubject
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9c9e7620-870e-4bbd-b17a-817e6f3d3eb9
+		sourceLineageTag: LetterSubject
+		summarizeBy: none
+		sourceColumn: LetterSubject
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 415c3e09-4490-4d84-89a4-7e39e0d6ec4f
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SentDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e399b12c-8d72-411e-8920-71670fe9b577
+		sourceLineageTag: SentDateKey
+		summarizeBy: none
+		sourceColumn: SentDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 76a600aa-61b5-4822-b5ef-f3dc9c0244ae
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysLetterId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5ca491f2-ad6f-4630-8eb4-26dc28a1821b
+		sourceLineageTag: SourceSysLetterId
+		summarizeBy: none
+		sourceColumn: SourceSysLetterId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7e407fbf-a53f-4ad7-acb9-4fb77c241b7b
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimLetter = entity
+		mode: directLake
+		source
+			entityName: DimLetter
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

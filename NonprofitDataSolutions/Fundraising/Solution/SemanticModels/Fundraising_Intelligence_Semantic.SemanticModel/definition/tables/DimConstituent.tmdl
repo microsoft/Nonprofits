@@ -1,0 +1,149 @@
+table DimConstituent
+	lineageTag: ce9a9468-e4ff-4790-83bf-2a23946e1e7a
+	sourceLineageTag: [dbo].[DimConstituent]
+
+	column AddressKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8f364474-3b3c-4e8e-b9ba-70b0a3f4f81c
+		sourceLineageTag: AddressKey
+		summarizeBy: none
+		sourceColumn: AddressKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 797b72ad-a3ac-4288-9480-ce1a4d2e684a
+		sourceLineageTag: ConstituentId
+		summarizeBy: none
+		sourceColumn: ConstituentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a20a0a70-9166-4a70-995a-044cdc19701a
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e801b975-5172-4e07-b75b-df657b24ad0e
+		sourceLineageTag: ConstituentName
+		summarizeBy: none
+		sourceColumn: ConstituentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8d2472b1-22ca-472d-939c-e37a6cb57c95
+		sourceLineageTag: ConstituentType
+		summarizeBy: none
+		sourceColumn: ConstituentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 29c213ad-9810-441a-899a-f4da54c9c9be
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 40f96fa8-cd90-43cf-a2e5-2f92e2077ded
+		sourceLineageTag: Email
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b8a1c2b2-6dfc-4b64-aeea-f1d8d9d6da9c
+		sourceLineageTag: EngagementStage
+		summarizeBy: none
+		sourceColumn: EngagementStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 98aadc52-2314-49e4-ae6d-47b1b62be873
+		sourceLineageTag: Gender
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5eeb7897-3236-455e-9a4a-20932e109540
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegistrationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1f956680-8073-4fb9-89f3-74c70ef9fc42
+		sourceLineageTag: RegistrationDateKey
+		summarizeBy: none
+		sourceColumn: RegistrationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 471eee3b-654a-4afe-aa86-e3a0abec9be1
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysConstituentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8be4f2ad-778d-47d4-a475-cfe4c86fd104
+		sourceLineageTag: SourceSysConstituentId
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimConstituent = entity
+		mode: directLake
+		source
+			entityName: DimConstituent
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

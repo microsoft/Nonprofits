@@ -1,0 +1,112 @@
+table FactSoftCredit
+	lineageTag: ba2c9862-9d0a-4b7d-9a44-bb0e32a8526d
+	sourceLineageTag: [dbo].[FactSoftCredit]
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0db75fc7-aed7-4004-b009-d0b3acbb62b2
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: efc2caa3-0b4d-473f-abd6-dc1129b36a43
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DonationKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5043afcb-ad50-4eff-bbbc-78b4e7cd6883
+		sourceLineageTag: DonationKey
+		summarizeBy: none
+		sourceColumn: DonationKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 19e1b1a8-989d-469f-b8f0-4955b098f9c5
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SoftCreditAmount
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 0455a37e-5ec7-4809-82f8-7772fda026b8
+		sourceLineageTag: SoftCreditAmount
+		summarizeBy: sum
+		sourceColumn: SoftCreditAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column SoftCreditId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 98714cc6-3359-41a1-b7f3-1c8dfb2111ca
+		sourceLineageTag: SoftCreditId
+		summarizeBy: none
+		sourceColumn: SoftCreditId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SoftCreditKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aca04c1b-4c5b-4870-8765-520c61502b04
+		sourceLineageTag: SoftCreditKey
+		summarizeBy: none
+		sourceColumn: SoftCreditKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ad7b8266-daf1-45cb-b797-6274317928bd
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysSoftCreditId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7073b3b5-6d74-41b6-b6f1-956dc21421a3
+		sourceLineageTag: SourceSysSoftCreditId
+		summarizeBy: none
+		sourceColumn: SourceSysSoftCreditId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactSoftCredit = entity
+		mode: directLake
+		source
+			entityName: FactSoftCredit
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

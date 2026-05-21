@@ -1,0 +1,153 @@
+table dm_Constituent
+	lineageTag: 9516eab4-373a-46f3-b876-43283800fd2e
+	sourceLineageTag: [dbo].[dm_Constituent]
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 47f475c3-a7dd-4314-970a-a237b9885f10
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0343d151-6b16-4cb3-bd2c-d0b41a6ff5cc
+		sourceLineageTag: ConstituentId
+		summarizeBy: none
+		sourceColumn: ConstituentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8ac372a1-7962-4446-bb28-37cee6cd6815
+		sourceLineageTag: ConstituentName
+		summarizeBy: none
+		sourceColumn: ConstituentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f9cd3017-132c-4928-9fff-f972c8299f4e
+		sourceLineageTag: Email
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9aa82545-fe30-48b8-ad93-576d1f6b825e
+		sourceLineageTag: Age
+		summarizeBy: none
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2861175e-ac5a-4451-9cf6-7bc13d5e695a
+		sourceLineageTag: EngagementStage
+		summarizeBy: none
+		sourceColumn: EngagementStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column AcquisitionChannel
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d188b5fc-d001-43ec-a530-f66dddbd6dd9
+		sourceLineageTag: AcquisitionChannel
+		summarizeBy: none
+		sourceColumn: AcquisitionChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column LifetimeDonationAmount
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 90b360a2-7191-49ed-910d-f1304ea0ac97
+		sourceLineageTag: LifetimeDonationAmount
+		summarizeBy: none
+		sourceColumn: LifetimeDonationAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column FirstDonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cb2cd037-431b-4722-aee1-7b76ec7b533a
+		sourceLineageTag: FirstDonationDateKey
+		summarizeBy: none
+		sourceColumn: FirstDonationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastDonationDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 24cf6260-6ac8-45cf-b279-7f152c31feb7
+		sourceLineageTag: LastDonationDateKey
+		summarizeBy: none
+		sourceColumn: LastDonationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AttendedEventsCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d8c3c293-40e5-46a1-ab70-9eddf1e5e77a
+		sourceLineageTag: AttendedEventsCount
+		summarizeBy: none
+		sourceColumn: AttendedEventsCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstEngagementDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3d0a75df-aebc-42a8-b21c-3d50c2539dca
+		sourceLineageTag: FirstEngagementDateKey
+		summarizeBy: none
+		sourceColumn: FirstEngagementDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsNewDonor
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: d91bd881-028f-4a50-9a57-268530ec79b6
+		sourceLineageTag: IsNewDonor
+		summarizeBy: none
+		sourceColumn: IsNewDonor
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dm_Constituent = entity
+		mode: directLake
+		source
+			entityName: dm_Constituent
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

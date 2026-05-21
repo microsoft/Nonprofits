@@ -1,0 +1,174 @@
+table FactConstituentSocialEngagement
+	lineageTag: 36f81372-5c19-431d-b43a-14578dc76c40
+	sourceLineageTag: [dbo].[FactConstituentSocialEngagement]
+
+	column Comment
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 34cc954c-2bac-4cfb-819d-3d26643e3c6a
+		sourceLineageTag: Comment
+		summarizeBy: none
+		sourceColumn: Comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7685b9ad-5194-47f0-97b6-7b1353a3e5d3
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSocialEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1122ed4a-a38c-4557-9bf6-835d6e7f9e1e
+		sourceLineageTag: ConstituentSocialEngagementId
+		summarizeBy: none
+		sourceColumn: ConstituentSocialEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentSocialEngagementKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 58ef5253-8acc-4c18-a912-fb5518ee1114
+		sourceLineageTag: ConstituentSocialEngagementKey
+		summarizeBy: none
+		sourceColumn: ConstituentSocialEngagementKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SocialEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2dc34758-a8d5-49b2-b70b-dfa429747a96
+		sourceLineageTag: SocialEngagementId
+		summarizeBy: none
+		sourceColumn: SocialEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1c1d4d72-a5cc-4c0a-9cb1-04f14a0da324
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Impression
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 037d8660-3d01-4092-81d5-0e5d65e2f3f9
+		sourceLineageTag: Impression
+		summarizeBy: none
+		sourceColumn: Impression
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a51e1141-35bf-492c-a063-e42b00cb3be4
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Like
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 39932162-eb46-4152-ace6-ba37e2e8ff75
+		sourceLineageTag: Like
+		summarizeBy: none
+		sourceColumn: Like
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b1b9e3f0-3159-44ae-9423-e8eee2adb9d1
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Share
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 0e3ab7ca-d10f-4171-a28f-1075ee4c17e8
+		sourceLineageTag: Share
+		summarizeBy: none
+		sourceColumn: Share
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 287ecc9c-2481-48de-baed-debe05597f64
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysConstituentSocialEngagementId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 8489a16e-d6b1-4fb4-a819-e16c9199b9df
+		sourceLineageTag: SourceSysConstituentSocialEngagementId
+		summarizeBy: none
+		sourceColumn: SourceSysConstituentSocialEngagementId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timezone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0d6a5821-f5ef-49e0-b58d-0240b61939cb
+		sourceLineageTag: Timezone
+		summarizeBy: none
+		sourceColumn: Timezone
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ed1b2230-bf13-408e-adb9-bc19938dac61
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactConstituentSocialEngagement = entity
+		mode: directLake
+		source
+			entityName: FactConstituentSocialEngagement
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,87 @@
+table DimProgram
+	lineageTag: da442d1e-a7ec-40a6-aa5a-9365f7a3fe30
+	sourceLineageTag: [dbo].[DimProgram]
+
+	column CreatedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c34c2733-0a79-413e-8a01-c07e95de276e
+		sourceLineageTag: CreatedDateKey
+		summarizeBy: none
+		sourceColumn: CreatedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModifiedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2bf2b9d6-27cb-4658-95aa-04c617023009
+		sourceLineageTag: ModifiedDateKey
+		summarizeBy: none
+		sourceColumn: ModifiedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgramId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ebc30c07-5698-44d1-bfb9-a0fabffec125
+		sourceLineageTag: ProgramId
+		summarizeBy: none
+		sourceColumn: ProgramId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgramKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 22ab0cda-cd2c-4006-b6c6-7938f0cd988d
+		sourceLineageTag: ProgramKey
+		summarizeBy: none
+		sourceColumn: ProgramKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgramName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 081c05cb-14ab-4eed-9732-b017ecab1290
+		sourceLineageTag: ProgramName
+		summarizeBy: none
+		sourceColumn: ProgramName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 349cf4a2-9f98-4939-99d7-46d34d1ff8ff
+		sourceLineageTag: SourceKey
+		summarizeBy: none
+		sourceColumn: SourceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSysProgramId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 59e002d0-da71-43af-908b-bf024361507d
+		sourceLineageTag: SourceSysProgramId
+		summarizeBy: none
+		sourceColumn: SourceSysProgramId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimProgram = entity
+		mode: directLake
+		source
+			entityName: DimProgram
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

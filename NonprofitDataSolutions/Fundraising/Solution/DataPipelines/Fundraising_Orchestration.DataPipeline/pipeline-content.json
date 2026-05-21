@@ -1,0 +1,115 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Silver to Gold enrichment",
+        "type": "ExecutePipeline",
+        "dependsOn": [
+          {
+            "activity": "Bronze ingestion",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureInput": false
+        },
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "{SILVER_TO_GOLD_ENRICHMENT_PIPELINE_ID}",
+            "type": "PipelineReference"
+          },
+          "waitOnCompletion": true,
+          "parameters": {}
+        }
+      },
+      {
+        "name": "Bronze ingestion",
+        "type": "ExecutePipeline",
+        "dependsOn": [
+          {
+            "activity": "Create gold data model",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureInput": false
+        },
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "{BRONZE_INGESTION_PIPELINE_ID}",
+            "type": "PipelineReference"
+          },
+          "waitOnCompletion": true,
+          "parameters": {}
+        }
+      },
+      {
+        "name": "Create silver data model",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{SILVER_CREATE_SCHEMA_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      },
+      {
+        "name": "Configure silver data model",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Create silver data model",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{SILVER_CREATE_DEFAULT_CONFIGURATION_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      },
+      {
+        "name": "Create gold data model",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Configure silver data model",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "{GOLD_CREATE_SCHEMA_NOTEBOOK_ID}",
+          "workspaceId": "{WORKSPACE_ID}"
+        }
+      }
+    ],
+    "concurrency": 1
+  }
+}

@@ -1,0 +1,109 @@
+table dm_EngagementTimeline
+	lineageTag: d9ee4d8e-d4ba-413c-8c63-8e472ffac28e
+	sourceLineageTag: [dbo].[dm_EngagementTimeline]
+
+	column CampaignKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7761aef3-386d-41e6-82f7-551c1dc38cd2
+		sourceLineageTag: CampaignKey
+		summarizeBy: none
+		sourceColumn: CampaignKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 717fc5d6-0327-47da-b9c3-2993ef260420
+		sourceLineageTag: ChannelKey
+		summarizeBy: none
+		sourceColumn: ChannelKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConstituentKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3c550c3b-c869-447a-97f6-9678120a14a6
+		sourceLineageTag: ConstituentKey
+		summarizeBy: none
+		sourceColumn: ConstituentKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementDate
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 4d555ada-2bfc-4d43-a06e-f18935f6dff8
+		sourceLineageTag: EngagementDate
+		summarizeBy: none
+		sourceColumn: EngagementDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementStage
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: ff5c3418-6ff8-46be-8055-9d887ca15fe3
+		sourceLineageTag: EngagementStage
+		summarizeBy: none
+		sourceColumn: EngagementStage
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3e75023e-7f77-4251-82d7-5a37611f3de0
+		sourceLineageTag: EngagementType
+		summarizeBy: none
+		sourceColumn: EngagementType
+
+		annotation SummarizationSetBy = Automatic
+
+	column InteractionId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2e839a74-246c-4b56-9975-f4991e264207
+		sourceLineageTag: InteractionId
+		summarizeBy: none
+		sourceColumn: InteractionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WasConverted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: fcbc7ff4-3c3e-4aa9-952b-42c712ae80df
+		sourceLineageTag: WasConverted
+		summarizeBy: none
+		sourceColumn: WasConverted
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngagementsBeforeDonation
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 08c2159d-0235-4d5a-9402-399f03cd4cc1
+		sourceLineageTag: EngagementsBeforeDonation
+		summarizeBy: sum
+		sourceColumn: EngagementsBeforeDonation
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dm_EngagementTimeline = entity
+		mode: directLake
+		source
+			entityName: dm_EngagementTimeline
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

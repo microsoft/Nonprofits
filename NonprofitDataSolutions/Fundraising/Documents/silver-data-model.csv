@@ -1,0 +1,346 @@
+Table,Column,Data Type,Required,Description,Unique Identifier,Reference Field,References
+Account,AccountId,String,Yes,Unique identifier (GUID) for the account.,Yes,No,
+Account,AddressId,String,No,Reference to the associated address.,No,Yes,Address
+Account,CreatedDate,Timestamp,No,Timestamp when the account was created.,No,No,
+Account,Email,String,Yes,Email address of the account.,No,No,
+Account,EngagementStageId,String,No,Reference to the engagement stage.,No,Yes,EngagementStage
+Account,ModifiedDate,Timestamp,No,Timestamp when the account was last modified.,No,No,
+Account,Name,String,Yes,Name of the account.,No,No,
+Account,RegistrationDate,Timestamp,No,Date the account was registered.,No,No,
+Account,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Account,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Account,Timezone,String,No,Timezone associated with the account.,No,No,
+Address,AddressId,String,Yes,Unique identifier (GUID) for the address.,Yes,No,
+Address,City,String,No,City of the address.,No,No,
+Address,CountryId,String,No,Reference to the associated country.,No,Yes,Country
+Address,CreatedDate,Timestamp,No,Timestamp when the address was created.,No,No,
+Address,Latitude,Decimal (16/8),No,Latitude of the address location.,No,No,
+Address,Longitude,Decimal (16/8),No,Longitude of the address location.,No,No,
+Address,ModifiedDate,Timestamp,No,Timestamp when the address was last modified.,No,No,
+Address,Region,String,No,Region or state of the address.,No,No,
+Address,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Address,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Address,State,String,No,State of the address.,No,No,
+Address,StateCode,String,No,State code of the address.,No,No,
+Address,ZipCode,String,No,Postal code of the address.,No,No,
+Campaign,CampaignId,String,Yes,Unique identifier (GUID) for the campaign.,Yes,No,
+Campaign,Cost,Decimal (16/8),No,Total cost of the campaign.,No,No,
+Campaign,CreatedDate,Timestamp,No,Timestamp when the campaign was created.,No,No,
+Campaign,EndDate,Timestamp,No,Date the campaign ends.,No,No,
+Campaign,ModifiedDate,Timestamp,No,Timestamp when the campaign was last modified.,No,No,
+Campaign,Name,String,No,Name of the campaign.,No,No,
+Campaign,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Campaign,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Campaign,StartDate,Timestamp,No,Date the campaign starts.,No,No,
+Campaign,Timezone,String,No,Timezone associated with the campaign.,No,No,
+Campaign,CampaignTypeId,String,No,Reference to the campaign type.,No,Yes,CampaignType
+CampaignChannel,CampaignChannelId,String,Yes,Unique identifier (GUID) for the campaign channel.,Yes,No,
+CampaignChannel,CampaignId,String,No,Reference to the associated campaign.,No,Yes,Campaign
+CampaignChannel,ChannelId,String,No,Reference to the associated channel.,No,Yes,Channel
+CampaignType,CampaignTypeId,String,Yes,Unique identifier (GUID) for the campaign type.,Yes,No,
+CampaignType,CreatedDate,Timestamp,No,Timestamp when the campaign type was created.,No,No,
+CampaignType,ModifiedDate,Timestamp,No,Timestamp when the campaign type was last modified.,No,No,
+CampaignType,Name,String,Yes,Name of the campaign type.,No,No,
+CampaignType,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+CampaignType,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Channel,ChannelId,String,Yes,Unique identifier (GUID) for the channel.,Yes,No,
+Channel,CreatedDate,Timestamp,No,Timestamp when the channel was created.,No,No,
+Channel,ModifiedDate,Timestamp,No,Timestamp when the channel was last modified.,No,No,
+Channel,Name,String,No,"Name of the channel (e.g., email, social media).",No,No,
+Channel,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Channel,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Channel,Weight,Decimal,No,Weight or priority of the channel.,No,No,
+Configuration,ConfigurationId,String,Yes,Unique identifier (GUID) for the configuration.,Yes,No,
+Configuration,CreatedDate,Timestamp,No,Timestamp when the configuration was created.,No,No,
+Configuration,ModifiedDate,Timestamp,No,Timestamp when the configuration was last modified.,No,No,
+Configuration,Name,String,No,Name of the configuration.,No,No,
+Configuration,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Configuration,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Configuration,Value,String,No,Value of the configuration.,No,No,
+Constituent,AccountId,String,No,Reference to the associated account.,No,Yes,Account
+Constituent,ConstituentId,String,Yes,Unique identifier (GUID) for the constituent.,Yes,No,
+Constituent,ContactId,String,Yes,Reference to the associated contact.,No,Yes,Contact
+Constituent,ConstituentTypeId,String,No,Reference to the constituent type.,No,Yes,ConstituentType
+ConstituentEmailEngagement,ClickThrough,Boolean,No,Indicates whether the donor clicked on the link provided.,No,No,
+ConstituentEmailEngagement,ClickThroughDate,Timestamp,No,Indicates most recent date the link was clicked by the donor.,No,No,
+ConstituentEmailEngagement,ConstituentEmail,String,No,The donors email to which the message was sent.,No,No,
+ConstituentEmailEngagement,ConstituentEmailEngagementId,String,Yes,Unique identifier (GUID) for the row.,Yes,No,
+ConstituentEmailEngagement,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+ConstituentEmailEngagement,CreatedDate,Timestamp,No,Timestamp when the email engagement was created.,No,No,
+ConstituentEmailEngagement,EmailEngagementId,String,No,Reference to the associated email engagement.,No,Yes,EmailEngagement
+ConstituentEmailEngagement,EmailId,String,No,Unique identifier (GUID) for the email message in the source system.,No,No,
+ConstituentEmailEngagement,EmailSubject,String,No,Subject of the email sent.,No,No,
+ConstituentEmailEngagement,ModifiedDate,Timestamp,No,Timestamp when the email engagement was last modified.,No,No,
+ConstituentEmailEngagement,OpenedDate,Timestamp,No,Indicates the most recent date the email was opened.,No,No,
+ConstituentEmailEngagement,SendDate,Timestamp,Yes,Date the message was sent.,No,No,
+ConstituentEmailEngagement,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ConstituentEmailEngagement,SourceSystemId,String,No,Identifier in the source system.,No,No,
+ConstituentEmailEngagement,Timezone,String,No,Timezone associated with the email engagement.,No,No,
+ConstituentEmailEngagement,WasOpened,Boolean,No,Indicates the email was opened by the donor.,No,No,
+ConstituentOpportunityStage,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+ConstituentOpportunityStage,ConstituentOpportunityStageId,String,Yes,Unique identifier (GUID) for the constituent opportunity stage.,Yes,No,
+ConstituentOpportunityStage,OpportunityStageId,String,No,Reference to the associated opportunity stage.,No,Yes,OpportunityStage
+ConstituentProgram,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+ConstituentProgram,ConstituentProgramId,String,Yes,Unique identifier (GUID) for the constituent program.,Yes,No,
+ConstituentProgram,CreatedDate,Timestamp,No,Timestamp when the constituent program was created.,No,No,
+ConstituentProgram,ModifiedDate,Timestamp,No,Timestamp when the constituent program was last modified.,No,No,
+ConstituentProgram,ProgramId,String,No,Reference to the program.,No,Yes,Program
+ConstituentProgram,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ConstituentProgram,SourceSystemId,String,No,Identifier in the source system.,No,No,
+ConstituentSegment,ConstituentSegmentId,String,Yes,Unique identifier (GUID) for the constituent segment.,Yes,No,
+ConstituentSegment,ConstituentSegmentTypeId,String,No,Reference to the constituent segment type.,No,Yes,ConstituentSegmentType
+ConstituentSegment,CreatedDate,Timestamp,No,Timestamp when the constituent segment was created.,No,No,
+ConstituentSegment,ModifiedDate,Timestamp,No,Timestamp when the constituent segment was last modified.,No,No,
+ConstituentSegment,Name,String,No,Name of the constituent segment.,No,No,
+ConstituentSegment,Order,Integer,No,Order of the constituent segment.,No,No,
+ConstituentSegment,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ConstituentSegment,SourceSystemId,String,No,Identifier in the source system.,No,No,
+ConstituentSegmentMapping,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+ConstituentSegmentMapping,ConstituentSegmentId,String,Yes,Reference to the associated constituent segment.,No,Yes,ConstituentSegment
+ConstituentSegmentMapping,ConstituentSegmentMappingId,String,Yes,Unique identifier (GUID) for the constituent segment mapping.,Yes,No,
+ConstituentSegmentType,ConstituentSegmentTypeId,String,Yes,Unique identifier (GUID) for the constituent segment type.,Yes,No,
+ConstituentSegmentType,CreatedDate,Timestamp,No,Timestamp when the constituent segment type was created.,No,No,
+ConstituentSegmentType,ModifiedDate,Timestamp,No,Timestamp when the constituent segment type was last modified.,No,No,
+ConstituentSegmentType,Name,String,No,Name of the constituent segment type.,No,No,
+ConstituentSegmentType,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ConstituentSegmentType,SourceSystemId,String,No,Identifier in the source system.,No,No,
+ConstituentSocialEngagement,Comment,Boolean,No,Indicates if the constituent commented on the social engagement.,No,No,
+ConstituentSocialEngagement,ConstituentId,String,Yes,Reference to the associated constituent.,No,Yes,Constituent
+ConstituentSocialEngagement,ConstituentSocialEngagementId,String,Yes,Unique identifier (GUID) for the constituent social engagement.,Yes,No,
+ConstituentSocialEngagement,CreatedDate,Timestamp,No,Timestamp when the constituent social engagement was created.,No,No,
+ConstituentSocialEngagement,Date,Timestamp,No,Date of the social engagement.,No,No,
+ConstituentSocialEngagement,Impression,Boolean,No,Indicates if the constituent viewed the social engagement.,No,No,
+ConstituentSocialEngagement,Like,Boolean,No,Indicates if the constituent liked the social engagement.,No,No,
+ConstituentSocialEngagement,ModifiedDate,Timestamp,No,Timestamp when the constituent social engagement was last modified.,No,No,
+ConstituentSocialEngagement,Share,Boolean,No,Indicates if the constituent shared the social engagement.,No,No,
+ConstituentSocialEngagement,SocialEngagementId,String,Yes,Reference to the associated social engagement.,No,Yes,SocialEngagement
+ConstituentSocialEngagement,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ConstituentSocialEngagement,SourceSystemId,String,No,Identifier in the source system.,No,No,
+ConstituentSocialEngagement,Timezone,String,No,Timezone associated with the social engagement.,No,No,
+ConstituentType,ConstituentTypeId,String,Yes,Unique identifier (GUID) for the constituent type.,Yes,No,
+ConstituentType,CreatedDate,Timestamp,No,Timestamp when the constituent type was created.,No,No,
+ConstituentType,ModifiedDate,Timestamp,No,Timestamp when the constituent type was last modified.,No,No,
+ConstituentType,Name,String,No,Name of the constituent type.,No,No,
+ConstituentType,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ConstituentType,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Contact,AddressId,String,No,Reference to the associated address.,No,Yes,Address
+Contact,BirthDate,Date,No,Birth date of the contact.,No,No,
+Contact,ContactId,String,Yes,Unique identifier (GUID) for the contact.,Yes,No,
+Contact,CreatedDate,Timestamp,No,Timestamp when the contact was created.,No,No,
+Contact,Email,String,No,Email address of the contact.,No,No,
+Contact,EngagementStageId,String,No,Reference to the engagement stage.,No,Yes,EngagementStage
+Contact,FirstName,String,Yes,First name of the contact.,No,No,
+Contact,GenderId,String,No,Reference to the gender.,No,Yes,Gender
+Contact,LastName,String,No,Last name of the contact.,No,No,
+Contact,ModifiedDate,Timestamp,No,Timestamp when the contact was last modified.,No,No,
+Contact,RegistrationDate,Timestamp,No,Date the contact was registered.,No,No,
+Contact,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Contact,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Contact,Timezone,String,No,Timezone associated with the contact.,No,No,
+Country,CountryCode,String,Yes,ISO 3166-1 alpha-3.,No,No,
+Country,CountryId,String,Yes,Unique identifier (GUID) for the country.,Yes,No,
+Country,CreatedDate,Timestamp,No,Timestamp when the country was created.,No,No,
+Country,ModifiedDate,Timestamp,No,Timestamp when the country was last modified.,No,No,
+Country,Name,String,No,Name of the country.,No,No,
+Country,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Country,SourceSystemId,String,No,Identifier in the source system.,No,No,
+EmailEngagement,CampaignId,String,No,Reference to the associated campaign.,No,Yes,Campaign
+EmailEngagement,CreatedDate,Timestamp,No,Timestamp when the email engagement was created.,No,No,
+EmailEngagement,EmailEngagementId,String,Yes,Unique identifier (GUID) for the email engagement.,Yes,No,
+EmailEngagement,EmailId,String,No,Unique identifier (GUID) for the email sent.,No,No,
+EmailEngagement,ModifiedDate,Timestamp,No,Timestamp when the email engagement was last modified.,No,No,
+EmailEngagement,SendDate,Timestamp,No,Date email was sent.,No,No,
+EmailEngagement,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+EmailEngagement,SourceSystemId,String,No,Identifier in the source system.,No,No,
+EmailEngagement,Subject,String,No,Subject of the email.,No,No,
+EmailEngagement,Timezone,String,No,Timezone associated with the email engagement.,No,No,
+EmailEngagement,ChannelId,String,No,References to the associated channel.,No,Yes,Channel
+EmailEngagement,VariantType,String,No,Variant type for A/B testing.,No,No,
+EngagementPlatform,CreatedDate,Timestamp,No,Timestamp when the engagement platform was created.,No,No,
+EngagementPlatform,EngagementPlatformId,String,Yes,Unique identifier (GUID) for the engagement platform.,Yes,No,
+EngagementPlatform,ModifiedDate,Timestamp,No,Timestamp when the engagement platform was last modified.,No,No,
+EngagementPlatform,Name,String,No,Social media platform name.,No,No,
+EngagementPlatform,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+EngagementPlatform,SourceSystemId,String,No,Identifier in the source system.,No,No,
+EngagementStage,CreatedDate,Timestamp,No,Timestamp when the engagement stage was created.,No,No,
+EngagementStage,EngagementStageId,String,Yes,Unique identifier (GUID) for the engagement stage.,Yes,No,
+EngagementStage,ModifiedDate,Timestamp,No,Timestamp when the engagement stage was last modified.,No,No,
+EngagementStage,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+EngagementStage,SourceSystemId,String,No,Identifier in the source system.,No,No,
+EngagementStage,Name,String,No,Name of the engagement stage.,No,No,
+Event,AddressId,String,No,Reference to the associated address.,No,Yes,Address
+Event,Cost,Decimal (16/8),No,Cost of the event.,No,No,
+Event,CreatedDate,Timestamp,No,Timestamp when the event was created.,No,No,
+Event,EventId,String,Yes,Unique identifier (GUID) for the event.,Yes,No,
+Event,EventTypeId,String,No,Reference to the associated event type.,No,Yes,EventType
+Event,ModifiedDate,Timestamp,No,Timestamp when the event was last modified.,No,No,
+Event,Name,String,No,Name of the event.,No,No,
+Event,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Event,ChannelId,String,No,Reference to the attribution channel.,No,Yes,Channel
+Event,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Event,StartDate,Timestamp,No,Date of the event.,No,No,
+EventType,CreatedDate,Timestamp,No,Timestamp when the event type was created.,No,No,
+EventType,EventTypeId,String,Yes,Unique identifier (GUID) for the event type.,Yes,No,
+EventType,ModifiedDate,Timestamp,No,Timestamp when the event type was last modified.,No,No,
+EventType,Name,String,No,Name of the event type.,No,No,
+EventType,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+EventType,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Gender,CreatedDate,Timestamp,No,Timestamp when the gender was created.,No,No,
+Gender,GenderId,String,Yes,Unique identifier (GUID) for the gender.,Yes,No,
+Gender,ModifiedDate,Timestamp,No,Timestamp when the gender was last modified.,No,No,
+Gender,Name,String,No,Name of the gender.,No,No,
+Gender,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Gender,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Letter,CampaignId,String,No,Reference to the associated campaign.,No,Yes,Campaign
+Letter,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+Letter,CreatedDate,Timestamp,No,Timestamp when the letter was created.,No,No,
+Letter,LetterId,String,Yes,Unique identifier (GUID) for the letter.,Yes,No,
+Letter,ModifiedDate,Timestamp,No,Timestamp when the letter was last modified.,No,No,
+Letter,ChannelId,String,No,References to the associated channel.,No,Yes,Channel
+Letter,SentDate,Timestamp,No,Date the letter was sent.,No,No,
+Letter,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Letter,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Letter,Subject,String,No,Subject of the letter.,No,No,
+Letter,Timezone,String,No,Timezone associated with the letter.,No,No,
+Opportunity,CampaignId,String,No,Reference to the associated campaign.,No,Yes,Campaign
+Opportunity,ChannelId,String,No,Reference to the attribution channel.,No,Yes,Channel
+Opportunity,CloseDate,Timestamp,No,Expected close date of the opportunity.,No,No,
+Opportunity,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+Opportunity,CreatedDate,Timestamp,No,Timestamp when the opportunity was created.,No,No,
+Opportunity,ExpectedRevenue,Decimal (16/8),No,Expected revenue from this opportunity.,No,No,
+Opportunity,ModifiedDate,Timestamp,No,Timestamp when the opportunity was last modified.,No,No,
+Opportunity,OpportunityId,String,Yes,Unique identifier (GUID) for the opportunity.,Yes,No,
+Opportunity,OpportunityStageId,String,No,Reference to the associated opportunity stage.,No,Yes,OpportunityStage
+Opportunity,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Opportunity,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Opportunity,Timezone,String,No,Timezone associated with the opportunity.,No,No,
+Opportunity,OpportunityTypeId,String,No,Reference to the opportunity type.,No,Yes,OpportunityType
+Opportunity,OpportunityName,String,No,Name of the opportunity.,No,No,
+OpportunityStage,CreatedDate,Timestamp,No,Timestamp when the opportunity stage was created.,No,No,
+OpportunityStage,ModifiedDate,Timestamp,No,Timestamp when the opportunity stage was last modified.,No,No,
+OpportunityStage,Name,String,No,Name of the opportunity stage.,No,No,
+OpportunityStage,OpportunityStageId,String,Yes,Unique identifier (GUID) for the opportunity stage.,Yes,No,
+OpportunityStage,OpportunityTypeId,String,No,Reference to the associated opportunity type.,No,Yes,OpportunityType
+OpportunityStage,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+OpportunityStage,SourceSystemId,String,No,Identifier in the source system.,No,No,
+OpportunityType,CreatedDate,Timestamp,No,Timestamp when the opportunity type was created.,No,No,
+OpportunityType,ModifiedDate,Timestamp,No,Timestamp when the opportunity type was last modified.,No,No,
+OpportunityType,OpportunityTypeId,String,Yes,Unique identifier (GUID) for the opportunity type.,Yes,No,
+OpportunityType,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+OpportunityType,SourceSystemId,String,No,Identifier in the source system.,No,No,
+OpportunityType,Name,String,No,Type of opportunity (Planned Giving or Constituent Commitment).,No,No,
+Participation,AcceptedDate,Timestamp,No,Date when the participation was accepted.,No,No,
+Participation,AttendedEvent,Boolean,No,Indicates if the participant attended the event.,No,No,
+Participation,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+Participation,CreatedDate,Timestamp,No,Timestamp when the participation was created.,No,No,
+Participation,EndDate,Timestamp,No,Date and time when the participation ends.,No,No,
+Participation,EventId,String,No,Reference to the associated event.,No,Yes,Event
+Participation,Hours,Decimal,No,Hours of participation.,No,No,
+Participation,InvitationDate,Timestamp,No,Date when the invitation was sent.,No,No,
+Participation,ModifiedDate,Timestamp,No,Timestamp when the participation was last modified.,No,No,
+Participation,ParticipationId,String,Yes,Unique identifier (GUID) for the participation.,Yes,No,
+Participation,ParticipationTypeId,String,No,Reference to the participation type.,No,Yes,ParticipationType
+Participation,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Participation,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Participation,StartDate,Timestamp,No,Date and time when the participation starts.,No,No,
+Participation,Timezone,String,No,Timezone associated with the participation.,No,No,
+ParticipationType,CreatedDate,Timestamp,No,Timestamp when the participation type was created.,No,No,
+ParticipationType,ModifiedDate,Timestamp,No,Timestamp when the participation type was last modified.,No,No,
+ParticipationType,Name,String,No,Name of the participation type.,No,No,
+ParticipationType,ParticipationTypeId,String,Yes,Unique identifier (GUID) for the participation type.,Yes,No,
+ParticipationType,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+ParticipationType,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Phonecall,CallDate,Timestamp,No,Date the call was made.,No,No,
+Phonecall,ChannelId,String,No,References to the associated channel.,No,Yes,Channel
+Phonecall,CampaignId,String,No,Reference to the associated campaign.,No,Yes,Campaign
+Phonecall,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+Phonecall,CreatedDate,Timestamp,No,Timestamp when the phone call was created.,No,No,
+Phonecall,Description,String,No,Description or subject of the call.,No,No,
+Phonecall,ModifiedDate,Timestamp,No,Timestamp when the phone call was last modified.,No,No,
+Phonecall,PhonecallId,String,Yes,Unique identifier (GUID) for the phone call.,Yes,No,
+Phonecall,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Phonecall,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Phonecall,Timezone,String,No,Timezone associated with the phone call.,No,No,
+Program,CreatedDate,Timestamp,No,Timestamp when the program was created.,No,No,
+Program,ModifiedDate,Timestamp,No,Timestamp when the program was last modified.,No,No,
+Program,Name,String,No,Name of the program.,No,No,
+Program,ProgramId,String,Yes,Unique identifier (GUID) for the program.,Yes,No,
+Program,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Program,SourceSystemId,String,No,Identifier in the source system.,No,No,
+SocialEngagement,CampaignId,String,No,Reference to the associated campaign.,No,Yes,Campaign
+SocialEngagement,Clicks,Long,No,Number of clicks.,No,No,
+SocialEngagement,Comments,Long,No,Number of comments.,No,No,
+SocialEngagement,ChannelId,String,No,References to the associated channel.,No,Yes,Channel
+SocialEngagement,CreatedDate,Timestamp,No,Timestamp when the social engagement was created.,No,No,
+SocialEngagement,Engagements,Long,No,"Sum of clicks, shares, comments and likes.",No,No,
+SocialEngagement,Impressions,Long,No,Number of impressions.,No,No,
+SocialEngagement,InteractionDate,Timestamp,No,Date of the interaction.,No,No,
+SocialEngagement,Likes,Long,No,Number of likes.,No,No,
+SocialEngagement,ModifiedDate,Timestamp,No,Timestamp when the social engagement was last modified.,No,No,
+SocialEngagement,Platform,String,No,Reference to the associated engagement platform.,No,Yes,EngagementPlatform
+SocialEngagement,PostId,String,No,Unique identifier (GUID) for the post.,No,No,
+SocialEngagement,Reach,Long,No,Number of people who view the post.,No,No,
+SocialEngagement,ReportDate,Timestamp,No,Date of the report.,No,No,
+SocialEngagement,Shares,Long,No,Number of shares.,No,No,
+SocialEngagement,SocialEngagementId,String,Yes,Unique identifier (GUID) for the social engagement.,Yes,No,
+SocialEngagement,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+SocialEngagement,SourceSystemId,String,No,Identifier in the source system.,No,No,
+SoftCredit,Amount,Decimal (19/9),No,Amount of the soft credit.,No,No,
+SoftCredit,ConstituentId,String,No,Reference to the constituent who will get the soft credit.,No,Yes,Constituent
+SoftCredit,CreatedDate,Timestamp,No,Timestamp when the soft credit was created.,No,No,
+SoftCredit,ModifiedDate,Timestamp,No,Timestamp when the soft credit was last modified.,No,No,
+SoftCredit,SoftCreditId,String,Yes,Unique identifier (GUID) for the soft credit.,Yes,No,
+SoftCredit,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+SoftCredit,SourceSystemId,String,No,Identifier in the source system.,No,No,
+SoftCredit,TransactionId,String,No,Reference to the transaction related to this soft credit.,No,Yes,Transaction
+Source,CreatedDate,Timestamp,No,Timestamp when the source was created.,No,No,
+Source,ModifiedDate,Timestamp,No,Timestamp when the source was last modified.,No,No,
+Source,Name,String,No,Name of the source.,No,No,
+Source,SourceId,String,Yes,Unique identifier (GUID) for the source.,Yes,No,
+SourceSystemIdMapping,SilverRecordId,String,Yes,Unique identifier (GUID) for the silver record mapping.,Yes,No,
+SourceSystemIdMapping,SourceId,String,No,Reference to the source system.,No,Yes,Source
+SourceSystemIdMapping,SourceSystemId,String,No,Source system identifier for the record.,No,No,
+SourceSystemIdMapping,SourceTable,String,No,Name of the source table.,No,No,
+Transaction,Amount,Decimal (16/8),No,Amount of the transaction.,No,No,
+Transaction,CampaignId,String,Yes,Reference to the associated campaign.,No,No,
+Transaction,ChannelId,String,Yes,Reference to the attribution channel for the transaction.,No,Yes,Channel
+Transaction,ConstituentId,String,No,Reference to the associated constituent.,No,Yes,Constituent
+Transaction,CreatedDate,Timestamp,No,Timestamp when the transaction was created.,No,No,
+Transaction,IsRecurring,Boolean,Yes,Indicates if the transaction is recurring.,No,No,
+Transaction,ModifiedDate,Timestamp,No,Timestamp when the transaction was last modified.,No,No,
+Transaction,Name,String,No,Name of the transaction.,No,No,
+Transaction,OpportunityId,String,Yes,Reference to the associated opportunity.,No,Yes,Opportunity
+Transaction,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+Transaction,SourceSystemId,String,No,Identifier in the source system.,No,No,
+Transaction,Timezone,String,No,Timezone associated with the transaction.,No,No,
+Transaction,TransactionDate,Timestamp,No,Date the transaction was made.,No,No,
+Transaction,TransactionId,String,Yes,Unique identifier (GUID) for the transaction.,Yes,No,
+Transaction,TransactionSourceId,String,Yes,"Source of the transaction (SocialMedia, Event, Email, etc.).",No,Yes,TransactionSource
+TransactionSource,CreatedDate,Timestamp,No,Timestamp when the transaction source was created.,No,No,
+TransactionSource,ModifiedDate,Timestamp,No,Timestamp when the transaction source was last modified.,No,No,
+TransactionSource,RecordId,String,No,"Reference to the source record (Event, EmailEngagement, SocialEngagement).",No,Yes,"Event,EmailEngagement,SocialEngagement"
+TransactionSource,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+TransactionSource,SourceSystemId,String,No,Identifier in the source system.,No,No,
+TransactionSource,TransactionSourceId,String,Yes,Unique identifier (GUID) for the transaction source.,Yes,No,
+TransactionSource,TypeName,String,No,"Name of the source type (Event, Campaign, etc.).",No,No,
+WealthScreening,CapacityRangeId,String,No,Reference to the estimated gift capacity range.,No,Yes,WealthScreeningCapacityRange
+WealthScreening,ConstituentId,String,Yes,Reference to the associated constituent.,No,Yes,Constituent
+WealthScreening,ConstituentRatingId,String,No,Reference to the constituent rating for giving potential.,No,Yes,WealthScreeningConstituentRating
+WealthScreening,CreatedDate,Timestamp,No,Timestamp when the screening was created.,No,No,
+WealthScreening,LastScreeningDate,Date,No,Last date screening was done (timezone independent).,No,No,
+WealthScreening,ModifiedDate,Timestamp,No,Timestamp when the screening was last modified.,No,No,
+WealthScreening,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+WealthScreening,SourceSystemId,String,No,Identifier in the source system.,No,No,
+WealthScreening,WealthScreeningId,String,Yes,Unique identifier (GUID) for the wealth screening.,Yes,No,
+WealthScreeningCapacityRange,CreatedDate,Timestamp,No,Timestamp when the capacity range was created.,No,No,
+WealthScreeningCapacityRange,ModifiedDate,Timestamp,No,Timestamp when the capacity range was last modified.,No,No,
+WealthScreeningCapacityRange,Name,String,No,Name of the wealth screening capacity range.,No,No,
+WealthScreeningCapacityRange,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+WealthScreeningCapacityRange,SourceSystemId,String,No,Identifier in the source system.,No,No,
+WealthScreeningCapacityRange,WealthScreeningCapacityRangeId,String,Yes,Unique identifier (GUID) for the wealth screening capacity range.,Yes,No,
+WealthScreeningConstituentRating,CreatedDate,Timestamp,No,Timestamp when the constituent rating was created.,No,No,
+WealthScreeningConstituentRating,ModifiedDate,Timestamp,No,Timestamp when the constituent rating was last modified.,No,No,
+WealthScreeningConstituentRating,Name,String,No,Name of the wealth screening constituent rating.,No,No,
+WealthScreeningConstituentRating,SourceId,String,Yes,Reference to the source system.,No,Yes,Source
+WealthScreeningConstituentRating,SourceSystemId,String,No,Identifier in the source system.,No,No,
+WealthScreeningConstituentRating,WealthScreeningConstituentRatingId,String,Yes,Unique identifier (GUID) for the wealth screening constituent rating.,Yes,No,

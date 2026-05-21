@@ -1,0 +1,3507 @@
+{
+	"properties": {
+		"activities": [
+			{
+				"name": "Campaign_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Campaign_LastWatermark",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, Name, ParentId, Type, RecordTypeId, StartDate, EndDate, ActualCost, ',\n  'CreatedDate, LastModifiedDate, SystemModstamp FROM Campaign ', if(and(greater(length(activity('Campaign_LastWatermark').output.value), 0), not(empty(activity('Campaign_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Campaign_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "Campaign"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Campaign_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Name",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "ParentId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "ParentId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "Type",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "RecordTypeId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "RecordTypeId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "StartDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "StartDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EndDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "EndDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "ActualCost",
+									"type": "Decimal",
+									"physicalType": "currency"
+								},
+								"sink": {
+									"name": "ActualCost",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "Address_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Address_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, npsp__Formula_MailingAddress__c, npsp__MailingCity__c, npsp__MailingStreet__c, npsp__MailingState__c, npsp__Household_Account__c, ',\n  'npsp__MailingCountry__c, npsp__MailingPostalCode__c, npsp__Geolocation__c, CreatedDate, ',\n  'LastModifiedDate, SystemModstamp, IsDeleted FROM npsp__Address__c ', if(and(greater(length(activity('Address_LastWatermark').output.value), 0), not(empty(activity('Address_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Address_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "npsp__Address__c"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Address_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__Formula_MailingAddress__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npsp__Formula_MailingAddress__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__MailingCity__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npsp__MailingCity__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__MailingStreet__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npsp__MailingStreet__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__MailingState__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npsp__MailingState__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__Household_Account__c",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "npsp__Household_Account__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__MailingCountry__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npsp__MailingCountry__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__MailingPostalCode__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npsp__MailingPostalCode__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "CampaignMember_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CampaignMember_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, LeadId, ContactId, CampaignId, CreatedDate, LastModifiedDate, SystemModstamp, IsDeleted ',\n  'FROM CampaignMember ', if(and(greater(length(activity('CampaignMember_LastWatermark').output.value), 0), not(empty(activity('CampaignMember_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('CampaignMember_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "CampaignMember"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "CampaignMember_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "LeadId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "ContactId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "ContactId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CampaignId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "CampaignId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "OpportunityContactRole_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "OpportunityContactRole_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, OpportunityId, ContactId, CreatedDate, LastModifiedDate, SystemModstamp, IsDeleted, Role ',\n  'FROM OpportunityContactRole ', if(and(greater(length(activity('OpportunityContactRole_LastWatermark').output.value), 0), not(empty(activity('OpportunityContactRole_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('OpportunityContactRole_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "OpportunityContactRole"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "OpportunityContactRole_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "OpportunityId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "OpportunityId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "ContactId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "ContactId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Role",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "Role",
+									"physicalType": "string"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "VolunteerHours_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "VolunteerHours_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, GW_Volunteers__Contact__c, GW_Volunteers__Start_Date__c, GW_Volunteers__End_Date__c, ',\n  'GW_Volunteers__Hours_Worked__c, GW_Volunteers__Total_Hours_Worked__c, GW_Volunteers__Volunteer_Campaign__c, ',\n  'CreatedDate, LastModifiedDate, SystemModstamp ',\n  'FROM GW_Volunteers__Volunteer_Hours__c ', if(and(greater(length(activity('VolunteerHours_LastWatermark').output.value), 0), not(empty(activity('VolunteerHours_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('VolunteerHours_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "GW_Volunteers__Volunteer_Hours__c"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "VolunteerHours_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+              {
+                "source": {
+                  "name": "IsDeleted",
+                  "type": "Boolean",
+                  "physicalType": "boolean"
+                },
+                "sink": {
+                  "name": "IsDeleted",
+                  "physicalType": "boolean"
+                }
+              },
+							{
+								"source": {
+									"name": "GW_Volunteers__Contact__c",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "GW_Volunteers__Contact__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "GW_Volunteers__Start_Date__c",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "GW_Volunteers__Start_Date__c",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "GW_Volunteers__End_Date__c",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "GW_Volunteers__End_Date__c",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "GW_Volunteers__Hours_Worked__c",
+									"type": "Decimal",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "GW_Volunteers__Hours_Worked__c",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "GW_Volunteers__Total_Hours_Worked__c",
+									"type": "Decimal",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "GW_Volunteers__Total_Hours_Worked__c",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "GW_Volunteers__Volunteer_Campaign__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "GW_Volunteers__Volunteer_Campaign__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "OpportunityStage_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "OpportunityStage_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, MasterLabel, CreatedDate, LastModifiedDate, SystemModstamp ',\n  'FROM OpportunityStage ', if(and(greater(length(activity('OpportunityStage_LastWatermark').output.value), 0), not(empty(activity('OpportunityStage_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('OpportunityStage_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "OpportunityStage"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "OpportunityStage_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MasterLabel",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "MasterLabel",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "GetLastWatermark",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Create Watermark table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "LakehouseTableSource"
+					},
+					"firstRowOnly": false,
+					"datasetSettings": {
+						"annotations": [],
+						"linkedService": {
+							"name": "{BRONZE_LAKEHOUSE_NAME}",
+							"properties": {
+								"annotations": [],
+								"type": "Lakehouse",
+								"typeProperties": {
+									"workspaceId": "{WORKSPACE_ID}",
+									"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+									"rootFolder": "Tables"
+								}
+							}
+						},
+						"type": "LakehouseTable",
+						"schema": [],
+						"typeProperties": {
+							"table": "Metadata_Watermark"
+						}
+					}
+				}
+			},
+			{
+				"name": "Account_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "GetLastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Account')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Account_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Account_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, Name, Type, npe01__SYSTEM_AccountType__c, npsp__Matching_Gift_Email__c, ',\n  'BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, BillingStateCode, ',\n  'BillingCountryCode, BillingLatitude, BillingLongitude, CreatedDate, LastModifiedDate, SystemModstamp ',\n  'FROM Account ', if(and(greater(length(activity('Account_LastWatermark').output.value), 0), not(empty(activity('Account_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Account_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "Account"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Account_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Name",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "Type",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npe01__SYSTEM_AccountType__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npe01__SYSTEM_AccountType__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__Matching_Gift_Email__c",
+									"type": "String",
+									"physicalType": "email"
+								},
+								"sink": {
+									"name": "npsp__Matching_Gift_Email__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingStreet",
+									"type": "String",
+									"physicalType": "textarea"
+								},
+								"sink": {
+									"name": "BillingStreet",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingCity",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "BillingCity",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingState",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "BillingState",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingPostalCode",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "BillingPostalCode",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingCountry",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "BillingCountry",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingStateCode",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "BillingStateCode",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingCountryCode",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "BillingCountryCode",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingLatitude",
+									"type": "Decimal",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "BillingLatitude",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "BillingLongitude",
+									"type": "Decimal",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "BillingLongitude",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "Opportunity_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Opportunity_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, AccountId, Name, RecordTypeId, StageName, Amount, ExpectedRevenue, ',\n  'CloseDate, Type, CampaignId, CreatedDate, LastModifiedDate, SystemModstamp, ContactId, ',\n  'npe03__Recurring_Donation__c FROM Opportunity ', if(and(greater(length(activity('Opportunity_LastWatermark').output.value), 0), not(empty(activity('Opportunity_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Opportunity_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "Opportunity"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Opportunity_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "AccountId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Name",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "RecordTypeId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "RecordTypeId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "StageName",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "StageName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Amount",
+									"type": "Decimal",
+									"physicalType": "currency"
+								},
+								"sink": {
+									"name": "Amount",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "ExpectedRevenue",
+									"type": "Decimal",
+									"physicalType": "currency"
+								},
+								"sink": {
+									"name": "ExpectedRevenue",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "CloseDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "CloseDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "Type",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CampaignId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "CampaignId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "ContactId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "ContactId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npe03__Recurring_Donation__c",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "npe03__Recurring_Donation__c",
+									"physicalType": "string"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "Opportunity_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Account_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Opportunity')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Campaign_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Opportunity_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Campaign')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Address_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Campaign_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Address')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "CampaignMember_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Address_Copy",
+            "dependencyConditions": [
+              "Succeeded",
+              "Failed"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'CampaignMember')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "OpportunityContactRole_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "CampaignMember_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'OpportunityContactRole')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "VolunteerHours_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "OpportunityContactRole_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'VolunteerHours')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "OpportunityStage_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "VolunteerHours_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'OpportunityStage')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Contact_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Contact_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, AccountId, FirstName, LastName, Name, MailingStreet, MailingCity, MailingState, MailingPostalCode, ',\n  'npsp__Current_Address__c, MailingCountry, MailingStateCode, MailingCountryCode, MailingLatitude, MailingLongitude, ',\n  'MailingGeocodeAccuracy, Email, Birthdate, CreatedDate, LastModifiedDate, SystemModstamp, ',\n  'npe01__Type_of_Account__c FROM Contact ',if(and(greater(length(activity('Contact_LastWatermark').output.value), 0), not(empty(activity('Contact_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Contact_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "Contact"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Contact_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "AccountId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "FirstName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "LastName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Name",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingStreet",
+									"type": "String",
+									"physicalType": "textarea"
+								},
+								"sink": {
+									"name": "MailingStreet",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingCity",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "MailingCity",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingState",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "MailingState",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingPostalCode",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "MailingPostalCode",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "npsp__Current_Address__c",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "npsp__Current_Address__c",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingCountry",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "MailingCountry",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingStateCode",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "MailingStateCode",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingCountryCode",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "MailingCountryCode",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingLatitude",
+									"type": "Decimal",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "MailingLatitude",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingLongitude",
+									"type": "Decimal",
+									"physicalType": "double"
+								},
+								"sink": {
+									"name": "MailingLongitude",
+									"physicalType": "decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "MailingGeocodeAccuracy",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "MailingGeocodeAccuracy",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Email",
+									"type": "String",
+									"physicalType": "email"
+								},
+								"sink": {
+									"name": "Email",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Birthdate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "Birthdate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "npe01__Type_of_Account__c",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "npe01__Type_of_Account__c",
+									"physicalType": "string"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "Contact_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "OpportunityStage_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Contact')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Wait 1 min",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Task_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"waitTimeInSeconds": 60
+				}
+			},
+			{
+				"name": "Merge staging to main tables",
+				"type": "TridentNotebook",
+				"dependsOn": [
+					{
+						"activity": "Wait 1 min",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"notebookId": "{BRONZE_MERGE_STAGING_DATA_NOTEBOOK_ID}",
+					"workspaceId": "{WORKSPACE_ID}",
+					"parameters": {
+						"enable_delete_watermark_table": {
+							"value": false,
+							"type": "bool"
+						},
+						"enable_delete_data_tables": {
+							"value": false,
+							"type": "bool"
+						},
+						"enable_merge_data": {
+							"value": true,
+							"type": "bool"
+						}
+					}
+				}
+			},
+			{
+				"name": "Event_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Event_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, Location, ActivityDateTime, ActivityDate, StartDateTime, EndDateTime, EndDate, ',\n  'Description, AccountId, CreatedDate, EventSubtype, WhatId, WhoId, Subject, LastModifiedDate, DurationInMinutes, SystemModstamp ',\n  'FROM Event ', if(and(greater(length(activity('Event_LastWatermark').output.value), 0), not(empty(activity('Event_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Event_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "Event"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Event_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Location",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Location",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "ActivityDateTime",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "ActivityDateTime",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "ActivityDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "ActivityDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "StartDateTime",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "StartDateTime",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EndDateTime",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "EndDateTime",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EndDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "EndDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "Description",
+									"type": "String",
+									"physicalType": "textarea"
+								},
+								"sink": {
+									"name": "Description",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "AccountId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EventSubtype",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "EventSubtype",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "WhatId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "WhatId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "WhoId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "WhoId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Subject",
+									"type": "String",
+									"physicalType": "combobox"
+								},
+								"sink": {
+									"name": "Subject",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "DurationInMinutes",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "DurationInMinutes",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "Event_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Contact_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Event')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "EmailMessage_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "EmailMessage_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT EmailMessage.Id, EmailMessage.IsDeleted, EmailMessage.CreatedDate, EmailMessage.LastModifiedDate, EmailMessage.SystemModstamp, EmailMessage.Subject, EmailMessage.RelatedToId, EmailMessage.FromName, EmailMessage.FromAddress, EmailMessage.ToAddress, EmailMessage.Status, EmailMessage.MessageDate ',\n  'FROM EmailMessageRelation ',\n  'WHERE (RelationObjectType = ''Contact'' OR RelationObjectType = ''Account'')',\n  if(\n    and(\n      greater(length(activity('EmailMessage_LastWatermark').output.value), 0),\n      not(empty(activity('EmailMessage_LastWatermark').output.value[0].LastWatermark))\n    ),\n    concat(\n      ' AND EmailMessage.SystemModstamp > ',\n      formatDateTime(\n        string(activity('EmailMessage_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)\n",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "EmailMessage"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "EmailMessage_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "EmailMessage.Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.IsDeleted",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.Subject",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Subject",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.RelatedToId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "RelatedToId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.FromName",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "FromName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.FromAddress",
+									"type": "String",
+									"physicalType": "email"
+								},
+								"sink": {
+									"name": "FromAddress",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.ToAddress",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "ToAddress",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.Status",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "Status",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessage.MessageDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "MessageDate",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "EmailMessage_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Event_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'EmailMessage')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "RecordType_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "RecordType_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, Name, DeveloperName, NamespacePrefix, Description, BusinessProcessId, SobjectType, ',\n  'IsActive, CreatedById, CreatedDate, LastModifiedById, LastModifiedDate, SystemModstamp ',\n  'FROM RecordType ', if(and(greater(length(activity('RecordType_LastWatermark').output.value), 0), not(empty(activity('RecordType_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('RecordType_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "RecordType"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "RecordType_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Name",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "DeveloperName",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "DeveloperName",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "NamespacePrefix",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "NamespacePrefix",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Description",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "Description",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "BusinessProcessId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "BusinessProcessId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "SobjectType",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "SobjectType",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "IsActive",
+									"type": "Boolean",
+									"physicalType": "boolean"
+								},
+								"sink": {
+									"name": "IsActive",
+									"physicalType": "boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedById",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "CreatedById",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedById",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "LastModifiedById",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "LastModifiedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "RecordType_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Copy EmailMessageRelation",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'RecordType')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Task_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "RecordType_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'Task')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Task_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Task_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, CallDurationInSeconds, CallObject,',\n  'CallDisposition, CallType, Description, \n   Status, Subject, TaskSubtype, WhatId, WhoId, CompletedDateTime, SystemModstamp ',\n  'FROM Task ', if(and(greater(length(activity('Task_LastWatermark').output.value), 0), not(empty(activity('Task_LastWatermark').output.value[0].LastWatermark))),\n    concat(\n      ' WHERE SystemModstamp > ',\n      formatDateTime(\n        string(activity('Task_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ''\n  )\n)",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "Task"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "Task_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+              {
+                "source": {
+                  "name": "IsDeleted",
+                  "type": "Boolean",
+                  "physicalType": "boolean"
+                },
+                "sink": {
+                  "name": "IsDeleted",
+                  "physicalType": "boolean"
+                }
+              },
+							{
+								"source": {
+									"name": "CallDurationInSeconds",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "CallDurationInSeconds",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "CallObject",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "CallObject",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CallDisposition",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "CallDisposition",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CallType",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "CallType",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Description",
+									"type": "String",
+									"physicalType": "textarea"
+								},
+								"sink": {
+									"name": "Description",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Status",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "Status",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Subject",
+									"type": "String",
+									"physicalType": "combobox"
+								},
+								"sink": {
+									"name": "Subject",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "TaskSubtype",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "TaskSubtype",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "WhatId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "WhatId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "WhoId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "WhoId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CompletedDateTime",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CompletedDateTime",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "Create Watermark table",
+				"type": "TridentNotebook",
+				"dependsOn": [
+					{
+						"activity": "Delete Bronze tables",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"notebookId": "{BRONZE_CONFIG_NOTEBOOK_ID}",
+					"workspaceId": "{WORKSPACE_ID}",
+					"parameters": {
+						"enable_create_tables": {
+							"value": true,
+							"type": "bool"
+						}
+					}
+				}
+			},
+			{
+				"name": "Delete Bronze tables",
+				"type": "TridentNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"notebookId": "{BRONZE_MERGE_STAGING_DATA_NOTEBOOK_ID}",
+					"workspaceId": "{WORKSPACE_ID}",
+					"parameters": {
+						"enable_delete_watermark_table": {
+							"value": true,
+							"type": "bool"
+						},
+						"enable_delete_data_tables": {
+							"value": true,
+							"type": "bool"
+						},
+						"enable_merge_data": {
+							"value": false,
+							"type": "bool"
+						}
+					}
+				}
+			},
+			{
+				"name": "Copy EmailMessageRelation",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "EmailMessageRelation_LastWatermark",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat(\n  'SELECT Id, IsDeleted, RelationId, RelationType, RelationObjectType, RelationAddress, EmailMessageId, CreatedDate, SystemModstamp ',\n  'FROM EmailMessageRelation',\n  if(\n    and(\n      greater(length(activity('EmailMessageRelation_LastWatermark').output.value), 0),\n      not(empty(activity('EmailMessageRelation_LastWatermark').output.value[0].LastWatermark))\n    ),\n    concat(\n      ' WHERE (RelationObjectType = ''Contact'' OR RelationObjectType = ''Account'')',\n      ' AND SystemModstamp > ',\n      formatDateTime(\n        string(activity('EmailMessageRelation_LastWatermark').output.value[0].LastWatermark),\n        'yyyy-MM-ddTHH:mm:ssZ'\n      )\n    ),\n    ' WHERE (RelationObjectType = ''Contact'' OR RelationObjectType = ''Account'')'\n  )\n)\n",
+							"type": "Expression"
+						},
+						"includeDeletedObjects": true,
+						"datasetSettings": {
+							"annotations": [],
+							"type": "SalesforceObject",
+							"schema": [],
+							"typeProperties": {
+								"objectApiName": "EmailMessageRelation"
+							},
+							"externalReferences": {
+								"connection": "{SALESFORCE_CONNECTION_NAME}"
+							}
+						}
+					},
+					"sink": {
+						"type": "LakehouseTableSink",
+						"tableActionOption": "OverwriteSchema",
+						"partitionOption": "None",
+						"datasetSettings": {
+							"annotations": [],
+							"linkedService": {
+								"name": "{BRONZE_LAKEHOUSE_NAME}",
+								"properties": {
+									"annotations": [],
+									"type": "Lakehouse",
+									"typeProperties": {
+										"workspaceId": "{WORKSPACE_ID}",
+										"artifactId": "{BRONZE_LAKEHOUSE_ID}",
+										"rootFolder": "Tables"
+									}
+								}
+							},
+							"type": "LakehouseTable",
+							"schema": [],
+							"typeProperties": {
+								"table": "EmailMessageRelation_stg"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String",
+									"physicalType": "id"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "RelationId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "RelationId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "RelationType",
+									"type": "String",
+									"physicalType": "picklist"
+								},
+								"sink": {
+									"name": "RelationType",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "RelationObjectType",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "RelationObjectType",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "RelationAddress",
+									"type": "String",
+									"physicalType": "string"
+								},
+								"sink": {
+									"name": "RelationAddress",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailMessageId",
+									"type": "String",
+									"physicalType": "reference"
+								},
+								"sink": {
+									"name": "EmailMessageId",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"physicalType": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "SystemModstamp",
+									"physicalType": "timestamp"
+								}
+              },
+              {
+                "source": {
+                  "name": "IsDeleted",
+                  "type": "Boolean",
+                  "physicalType": "boolean"
+                },
+                "sink": {
+                  "name": "IsDeleted",
+                  "physicalType": "boolean"
+                }
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				}
+			},
+			{
+				"name": "EmailMessageRelation_LastWatermark",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "EmailMessage_Copy",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetLastWatermark').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().ObjectName, 'EmailMessageRelation')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"concurrency": 1
+	}
+}

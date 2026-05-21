@@ -1,0 +1,44 @@
+table DimCampaignType
+	lineageTag: 700bcb63-b24a-4aa3-b7a3-e2f9a3e854b6
+	sourceLineageTag: [dbo].[DimCampaignType]
+
+	column CampaignType
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 71db5ee3-a450-4b78-8a8c-cd5cb5f2d78e
+		sourceLineageTag: CampaignType
+		summarizeBy: none
+		sourceColumn: CampaignType
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignTypeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a05bd679-4767-42c1-a84c-d6aa96901bf6
+		sourceLineageTag: CampaignTypeKey
+		summarizeBy: none
+		sourceColumn: CampaignTypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignTypeId
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7cb1f5d7-e71d-4f63-b940-55b955838c82
+		sourceLineageTag: CampaignTypeId
+		summarizeBy: none
+		sourceColumn: CampaignTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCampaignType = entity
+		mode: directLake
+		source
+			entityName: DimCampaignType
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

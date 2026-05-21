@@ -1,0 +1,57 @@
+model Model
+	culture: en-US
+	collation: Latin1_General_100_BIN2_UTF8
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DatabaseQuery"]
+
+annotation PBI_ProTooling = ["WebModelingEdit"]
+
+ref table DimCampaignType
+ref table DimConstituentSegment_LifetimeGivingRange
+ref table DimConstituentSegment_AgeRange
+ref table DimEngagementPlatform
+ref table FactSocialEngagement
+ref table DimProgram
+ref table DimConstituent
+ref table DimVolunteeringType
+ref table FactEventAttendance
+ref table FactSoftCredit
+ref table DimSource
+ref table FactOpportunity
+ref table FactConstituentLetterEngagement
+ref table DimDonationSource
+ref table DimConstituentSegmentBridge_GiftRecurrence
+ref table DimLetter
+ref table Configuration
+ref table DimConstituentSegmentBridge_AgeRange
+ref table DimConstituentSegment_GiftRecurrence
+ref table DimDate
+ref table DimChannel
+ref table FactWealthScreening
+ref table FactConstituentPhonecallEngagement
+ref table FactDonation
+ref table DimCampaignChannelBridge
+ref table DimEmail
+ref table DimCampaign
+ref table DimEvent
+ref table FactConstituentEmailEngagement
+ref table DimOpportunityStage
+ref table DimAddress
+ref table FactVolunteerHours
+ref table ChangeDataFeedState
+ref table dm_CampaignAttribution
+ref table DimConstituentProgramBridge
+ref table dm_Constituent
+ref table DimPhonecall
+ref table dm_EngagementTimeline
+ref table DimConstituentSegmentBridge_LifetimeGivingRange
+ref table DimOpportunityType
+ref table FactConstituentSocialEngagement
+
