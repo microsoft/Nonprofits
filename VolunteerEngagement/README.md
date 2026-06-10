@@ -2,7 +2,7 @@
 
 Volunteer Engagement 2.0 is a Power Pages React single-page application (SPA) that helps volunteers discover opportunities, apply or register for engagements, manage profile information, and review their engagements. This package contains the Power Pages Enhanced Data Model implementation and AI-assisted migration guidance for moving legacy Volunteer Engagement site customizations to Volunteer Engagement 2.0.
 
-![Volunteer Engagement home page](docs/images/volunteer-engagement-home-page.png)
+![Volunteer Engagement home page](../Documents/img/volunteer-engagement-home-page.png)
 
 ## Solution overview
 
