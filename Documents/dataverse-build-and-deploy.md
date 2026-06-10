@@ -29,7 +29,7 @@ Before building or deploying a Dataverse solution, ensure you have the following
 - A **valid authentication method** for `pac auth create` (e.g., username/password, client ID & secret, certificate-based auth).
 
 ### 🏛 Required Data Model
-Before installing Fundraising, Outcome Management, Grant Management, or any other nonprofit solutions based on Dataverse, ensure that the Common Data Model (CDM) for Nonprofits is installed first.
+Before you install Fundraising, Grant Management, Outcome Management, Volunteer Management, or another solution built on Dataverse, install Common Data Model for Nonprofits first.
 
 This ensures compatibility and proper data structure alignment for all dependent solutions.
 

@@ -1,0 +1,14 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+append: true
+appendto: true
+contactrelationship: msnfp_contact_msnfp_participation_contactId
+create: true
+delete: false
+entitylogicalname: msnfp_participation
+entityname: Participation (Authenticated)
+id: b739ffbe-2020-49d2-b845-9eda1b3455ae
+parententitypermission: 
+read: true
+scope: 756150001
+write: true

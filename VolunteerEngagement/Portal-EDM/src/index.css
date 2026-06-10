@@ -1,0 +1,127 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	font-family:
+		'Segoe UI',
+		-apple-system,
+		BlinkMacSystemFont,
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background: white;
+}
+
+html.ve-dark,
+html.ve-dark body {
+	background: #292929;
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Hide empty duplicate #root divs injected by Power Pages platform */
+#root:empty {
+	display: none !important;
+}
+
+#root {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+}
+
+html.ve-dark ::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Improve footer text contrast in dark mode for screen readers (WCAG 1.4.3) */
+html.ve-dark .footer-bottom,
+html.ve-dark .footer-bottom p,
+html.ve-dark .footer-bottom span {
+	color: #adadad !important;
+}
+
+/* Override Power Pages Bootstrap heading color in dark mode (WCAG 1.4.3) */
+html.ve-dark .fui-FluentProvider h1,
+html.ve-dark .fui-FluentProvider h2,
+html.ve-dark .fui-FluentProvider h3,
+html.ve-dark .fui-FluentProvider h4 {
+	color: inherit !important;
+}
+
+/* --- Unified focus-visible indicators for keyboard accessibility --- */
+:root {
+	--focus-color: #0f6cbd;
+	--focus-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #0f6cbd;
+}
+
+html.ve-dark {
+	--focus-color: #479ef5;
+	--focus-shadow: 0 0 0 2px #292929, 0 0 0 4px #479ef5;
+}
+
+:focus-visible {
+	outline: 2px solid var(--focus-color);
+	outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* --- Phase 4: Responsive typography --- */
+@media (max-width: 768px) {
+	h1 {
+		font-size: 24px !important;
+	}
+}
+
+@media (max-width: 480px) {
+	h1 {
+		font-size: 20px !important;
+	}
+}
+
+/* Hide Power Pages chrome (header/footer) while keeping scripts in the DOM */
+.header,
+.navbar,
+.footer,
+.footer-bottom {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+}

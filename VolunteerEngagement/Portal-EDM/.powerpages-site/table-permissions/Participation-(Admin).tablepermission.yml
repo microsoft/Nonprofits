@@ -1,0 +1,13 @@
+adx_entitypermission_webrole:
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+create: true
+delete: false
+entitylogicalname: msnfp_participation
+entityname: Participation (Admin)
+id: c2554040-e714-4417-80f0-241b37d999c5
+parententitypermission: 
+read: true
+scope: 756150000
+write: true

@@ -1,0 +1,11 @@
+{% unless page.parent == null %}
+<ol class="breadcrumb">
+  {% if page.parent.parent %}
+  <li><a href="{{ page.parent.parent.url }}">{{ page.parent.parent.title }}</a></li>
+  {% endif %}
+  {% if page.parent %}
+  <li><a href="{{ page.parent.url }}">{{ page.parent.title }}</a></li>
+  {% endif %}
+  <li class="active">{{ page.title }}</li>
+</ol>
+{% endunless %}

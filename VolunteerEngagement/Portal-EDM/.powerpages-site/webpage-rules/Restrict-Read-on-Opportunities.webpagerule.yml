@@ -1,0 +1,8 @@
+adx_webpageaccesscontrolrule_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+id: c3bb6417-d833-42c7-9f83-cd7425efbff4
+name: Restrict Read on Opportunities
+right: 2
+statecode: 1
+statuscode: 2
+webpageid: 95fa6197-22c7-47e8-94f8-0b8dec736ae3

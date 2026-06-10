@@ -1,0 +1,14 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+create: false
+delete: false
+entitylogicalname: msnfp_engagementopportunityschedule
+entityname: Engagement Schedules (Admin & Auth)
+id: 50946975-2866-4697-99fe-6be1accd4582
+parententitypermission: 
+read: true
+scope: 756150000
+write: false

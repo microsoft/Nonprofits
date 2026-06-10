@@ -1,0 +1,15 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+contactrelationship: msnfp_contact_msnfp_preference_preference_customer
+create: true
+delete: true
+entitylogicalname: msnfp_preference
+entityname: Preference Add (Admin & Auth)
+id: eaba8d81-e3d8-4f8e-8331-c3ad11b88f4f
+parententitypermission: 
+read: true
+scope: 756150001
+write: true

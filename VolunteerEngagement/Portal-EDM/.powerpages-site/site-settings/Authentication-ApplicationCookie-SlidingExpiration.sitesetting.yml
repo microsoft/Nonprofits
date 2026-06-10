@@ -1,0 +1,4 @@
+description: The SlidingExpiration is set to true to instruct the middleware to reissue a new cookie with a new expiration time whenever it processes a request that's more than halfway through the expiration window.
+id: 1587bec5-fd1c-4f20-9c00-5753c448a91d
+name: Authentication/ApplicationCookie/SlidingExpiration
+value: true

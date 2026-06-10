@@ -1,0 +1,836 @@
+.crmEntityFormView, .entitylist, .modal-content, .popover-content {
+	border: none
+}
+
+div.page-heading { 
+    color: white;
+    background: #09517B;
+    text-align: center;
+    width: 100%;
+}
+
+input[name="ctl00\$ctl00\$ctl00\$ContentContainer\$MainContent\$MainContent\$EntityControls\$EntityFormControl\$UpdateButton"] {
+    display: none;
+}
+
+ul.breadcrumb {
+    display: none;
+}
+
+.well {
+    background-color: white;
+    border: none;
+}
+
+div.well > img {
+    border-radius: 50%
+}
+
+.btn {
+    border-radius: 60px/60px;
+}
+
+input[type="text"] {
+    margin: 0px 0px 0px 0px;
+}
+
+/* --- Dark mode overrides for profile pages --- */
+html.ve-dark .well {
+    background-color: #1f1f1f;
+}
+
+html.ve-dark div.page-heading {
+    background: #115ea3;
+}
+
+html.ve-dark .crmEntityFormView,
+html.ve-dark .entitylist,
+html.ve-dark .modal-content,
+html.ve-dark .popover-content {
+    background-color: #292929;
+    color: #ffffff;
+}
+
+/* ===================================================================
+   Global Liquid page layout — stretch body to viewport, pin footer
+   =================================================================== */
+body {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+}
+
+html.ve-dark,
+html.ve-dark body {
+    background-color: #292929;
+    color: #ffffff;
+}
+
+body > div:has(.footer-bottom) {
+    display: flex !important;
+    flex: 1 0 auto !important;
+    flex-direction: column !important;
+}
+
+html.ve-dark body > div:has(.footer-bottom) {
+    background-color: #292929;
+}
+
+.footer-bottom {
+    margin-top: auto !important;
+}
+
+/* ===================================================================
+   Auth page layout fixes (Sign In / Register / Redeem invitation).
+   profile.css is loaded on ALL auth pages; theme.css is NOT loaded
+   on the Redeem page, so shared auth fixes live here.
+   =================================================================== */
+
+/* --- Container centering --- */
+.container.wrapper-body {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* --- Two-column layout polyfill (Sign In / Register) --- */
+.page-content .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.page-content .row > .col-md-6,
+.page-content .row > .col-lg-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+/* --- External login column (stacked below local form) --- */
+.page-content > .row > .col-md-6:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    position: relative;
+}
+
+/* --- "or" divider between local and external login --- */
+.page-content > .row > .col-md-6:last-child::before {
+    content: "or";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    padding: 0 12px;
+    color: #616161;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+html.ve-dark .page-content > .row > .col-md-6:last-child {
+    border-top-color: #484644;
+}
+
+html.ve-dark .page-content > .row > .col-md-6:last-child::before {
+    background-color: #292929;
+    color: #d1d1d1;
+}
+
+/* --- External login button: always full width --- */
+.btn-line {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+/* --- Stacked form layout (label above input) --- */
+.portal-form .row.mb-3 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1rem;
+}
+
+.portal-form .row.mb-3 > .col-md-4,
+.portal-form .row.mb-3 > .col-md-8,
+.portal-form .row.mb-3 > .col-md-2,
+.portal-form .row.mb-3 > .col-md-10,
+.portal-form .row.mb-3 > .offset-md-4,
+.portal-form .row.mb-3 > .offset-md-2,
+.portal-form .row.mb-3 > .offset-md-4.col-md-8 {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    float: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+}
+
+.portal-form .col-form-label {
+    text-align: left !important;
+    padding-bottom: 4px;
+    font-weight: 600;
+}
+
+/* --- Tab bar --- */
+.nav-account {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    border-bottom: 2px solid #e0e0e0;
+    margin: 20px 0 0;
+}
+
+.nav-account .nav-item {
+    margin-bottom: -2px;
+}
+
+.nav-account .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    font-weight: 600;
+    color: #0f6cbd;
+}
+
+.nav-account .nav-link:focus-visible {
+    outline: 2px solid var(--focus-color, #0f6cbd);
+    outline-offset: -2px;
+}
+
+.nav-account .nav-link.active {
+    background-color: #0f6cbd;
+    color: #ffffff !important;
+    border-color: #0f6cbd;
+}
+
+.nav-account .nav-link:not(.active):hover,
+.nav-account .nav-link:not(.active):focus {
+    color: #115ea3;
+    background-color: #f5f5f5;
+}
+
+/* --- Empty tab label fallbacks (Redeem page uses aria-label="" for empty tabs) --- */
+.nav-account .nav-item:nth-child(1) .nav-link[aria-label=""]::after {
+    content: "Sign in";
+}
+
+.nav-account .nav-item:nth-child(2) .nav-link[aria-label=""]::after {
+    content: "Register";
+}
+
+.nav-account .nav-item:nth-child(3) .nav-link[aria-label=""]::after {
+    content: "Redeem invitation";
+}
+
+/* --- Form inputs --- */
+.portal-form .form-control {
+    display: block;
+    width: 100%;
+    border: 1px solid #616161;
+    color: #242424;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.portal-form .form-control:focus {
+    border-color: var(--focus-color, #0f6cbd);
+    box-shadow: 0 0 0 1px var(--focus-color, #0f6cbd);
+    outline: none;
+}
+
+/* --- Primary buttons --- */
+.portal-form .btn-primary,
+.btn-line {
+    background-color: #0f6cbd;
+    border-color: #0f6cbd;
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 80px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.portal-form .btn-primary:hover,
+.btn-line:hover {
+    background-color: #115ea3;
+    border-color: #115ea3;
+}
+
+/* --- Secondary buttons (Forgot password) --- */
+.portal-form .btn-default {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.portal-form .btn-default:focus {
+    border-color: var(--focus-color, #0f6cbd);
+    box-shadow: var(--focus-shadow, 0 0 0 2px #ffffff, 0 0 0 4px #0f6cbd);
+    outline: none;
+}
+
+/* --- Empty submit button fallback (Redeem) --- */
+#submit-redeem-invitation:empty::after {
+    content: "Redeem";
+}
+
+/* --- Login heading (Redeem) --- */
+.login-heading-section {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #0f6cbd;
+    margin-bottom: 20px;
+}
+
+.forgot-password-heading {
+    border-bottom: 0 !important;
+}
+
+/* --- Page content spacing --- */
+.page-content {
+    margin-top: 24px;
+    margin-bottom: 40px;
+}
+
+/* ===================================================================
+   Account management pages (Change password / Change email / Set password).
+   These platform pages use Profile child-page markup, not .portal-form.
+   Keep them visually aligned with Sign In / Register / Redeem pages.
+   =================================================================== */
+
+#header-page-title {
+    width: calc(100% - 30px);
+    max-width: 450px;
+    margin: 48px auto 16px;
+    padding: 0;
+    color: #242424;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+#header-page-title:empty::after {
+    content: "Set password";
+    display: block;
+}
+
+body:has(#NewPassword):not(:has(#OldPassword)) #header-page-title::after {
+    content: "Set password";
+    display: block;
+}
+
+.container:has(> .row > #mainContent) {
+    width: calc(100% - 30px);
+    max-width: 450px;
+    margin: 0 auto 40px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.container:has(> .row > #mainContent) > .row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.container:has(> .row > #mainContent) > .row > .col-lg-4,
+.container:has(> .row > #mainContent) > .row > #mainContent {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.container:has(> .row > #mainContent) > .row > .col-lg-4 > .card.mb-3 {
+    display: none;
+}
+
+.container:has(> .row > #mainContent) .card.nav-profile {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+
+.container:has(> .row > #mainContent) .card.nav-profile > .card-header {
+    display: none;
+}
+
+.container:has(> .row > #mainContent) .list-group.nav-profile {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: 0;
+    border-bottom: 2px solid #e0e0e0;
+    margin: 20px 0 0;
+    scrollbar-width: thin;
+}
+
+.container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    background: transparent;
+    color: #0f6cbd;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item:hover,
+.container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item:focus {
+    color: #115ea3;
+    background-color: #f5f5f5;
+}
+
+.container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item.active,
+.container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[aria-current="page"],
+body:has(#OldPassword) .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[href*="SetPassword"],
+body:has(#Email) .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[href*="ChangeEmail"],
+body:has(.change-login-default-li) .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[href*="ChangeLogin"] {
+    background-color: #0f6cbd;
+    border-color: #0f6cbd;
+    color: #ffffff;
+}
+
+#mainContent form,
+#mainContent fieldset {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+#mainContent fieldset {
+    margin-top: 16px;
+}
+
+#mainContent legend {
+    display: block;
+    width: 100%;
+    margin: 0 0 16px;
+    padding: 0;
+    border: 0;
+    color: #242424;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+#mainContent .row.mb-3 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1rem;
+}
+
+#mainContent .row.mb-3 > .col-md-4,
+#mainContent .row.mb-3 > .col-md-8,
+#mainContent .row.mb-3 > .offset-md-4,
+#mainContent .row.mb-3 > .offset-md-4.col-md-8 {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    float: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+}
+
+#mainContent .col-form-label,
+#mainContent label {
+    color: #242424;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: left !important;
+    padding-bottom: 4px;
+}
+
+#mainContent .form-control {
+    display: block;
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid #616161;
+    color: #242424;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+#mainContent .form-control:focus {
+    border-color: var(--focus-color, #0f6cbd);
+    box-shadow: 0 0 0 1px var(--focus-color, #0f6cbd);
+    outline: none;
+}
+
+#mainContent .btn-primary,
+#mainContent button[type="submit"] {
+    display: block;
+    width: 100%;
+    min-height: 38px;
+    background-color: #0f6cbd;
+    border: 1px solid #0f6cbd;
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#mainContent .btn-primary:hover,
+#mainContent button[type="submit"]:hover {
+    background-color: #115ea3;
+    border-color: #115ea3;
+}
+
+#mainContent .alert-danger,
+#mainContent .validation-summary-errors {
+    background-color: #fde7e9;
+    border-color: #d13438;
+    color: #a4262c;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+#mainContent .validation-summary-errors ul,
+#mainContent .validation-summary-valid ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+#mainContent .field-validation-error,
+#mainContent .text-danger,
+#mainContent [data-valmsg-for] {
+    display: block;
+    margin-top: 4px;
+    color: #a4262c;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+body:has(#OldPassword) #mainContent form[action*="ChangePassword"] button.btn-primary::after,
+body:has(#OldPassword) #mainContent form[action*="ChangePassword"] button[type="submit"]::after {
+    content: "Change password";
+}
+
+body:has(#Email) #mainContent form[action*="ChangeEmail"] button.btn-primary::after,
+body:has(#Email) #mainContent form[action*="ChangeEmail"] button[type="submit"]::after {
+    content: "Change email";
+}
+
+body:has(#NewPassword):not(:has(#OldPassword)) #mainContent form[action*="SetPassword"] button.btn-primary::after,
+body:has(#NewPassword):not(:has(#OldPassword)) #mainContent form[action*="SetPassword"] button[type="submit"]::after {
+    content: "Set password";
+}
+
+html.ve-dark #header-page-title,
+html.ve-dark #header-page-title * {
+    color: #ffffff;
+}
+
+html.ve-dark .container:has(> .row > #mainContent) .list-group.nav-profile {
+    border-bottom-color: #666666;
+}
+
+html.ve-dark .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item {
+    color: #479ef5;
+}
+
+html.ve-dark .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item:hover,
+html.ve-dark .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item:focus {
+    color: #62abf5;
+    background-color: #383838;
+}
+
+html.ve-dark .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item.active,
+html.ve-dark .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[aria-current="page"],
+html.ve-dark body:has(#OldPassword) .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[href*="SetPassword"],
+html.ve-dark body:has(#Email) .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[href*="ChangeEmail"],
+html.ve-dark body:has(.change-login-default-li) .container:has(> .row > #mainContent) .list-group.nav-profile .list-group-item[href*="ChangeLogin"] {
+    background-color: #115ea3;
+    border-color: #115ea3;
+    color: #ffffff;
+}
+
+html.ve-dark #mainContent .col-form-label,
+html.ve-dark #mainContent label,
+html.ve-dark #mainContent legend,
+html.ve-dark #mainContent legend * {
+    color: #d6d6d6;
+}
+
+html.ve-dark #mainContent .form-control {
+    background-color: #1f1f1f !important;
+    color: #ffffff;
+    border-color: #666666;
+}
+
+html.ve-dark #mainContent .form-control:focus {
+    border-color: var(--focus-color, #479ef5);
+    box-shadow: 0 0 0 1px var(--focus-color, #479ef5);
+}
+
+html.ve-dark #mainContent .alert-danger,
+html.ve-dark #mainContent .validation-summary-errors {
+    background-color: #442726;
+    border-color: #d13438;
+    color: #ff9da0;
+}
+
+html.ve-dark #mainContent .field-validation-error,
+html.ve-dark #mainContent .text-danger,
+html.ve-dark #mainContent [data-valmsg-for] {
+    color: #ff9da0;
+}
+
+/* --- Footer --- */
+.footer-bottom {
+    border-top: 1px solid #e0e0e0;
+    color: #616161;
+}
+
+/* --- Hide empty footer well --- */
+.footer.well {
+    display: none;
+}
+
+/* --- Private mode banner --- */
+.private-mode-banner {
+    padding: 12px 20px;
+}
+
+/* --- Validation errors --- */
+.portal-form .alert-danger {
+    background-color: #fde7e9;
+    border-color: #d13438;
+    color: #a4262c;
+    border-radius: 4px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 767px) {
+    .container.wrapper-body {
+        max-width: 100%;
+    }
+}
+
+/* --- Sub-breakpoint for small phones --- */
+@media (max-width: 480px) {
+    .nav-account .nav-link {
+        padding: 10px 10px;
+        font-size: 13px;
+    }
+}
+
+/* --- Tab bar: prevent height inconsistency from line-wrapping --- */
+.nav-account .nav-link {
+    white-space: nowrap;
+    gap: 6px;
+}
+
+/* --- Footer centering --- */
+.footer-bottom p {
+    text-align: center;
+}
+
+/* --- Dark mode: auth pages --- */
+html.ve-dark h1,
+html.ve-dark h2,
+html.ve-dark h3,
+html.ve-dark .page-heading {
+    color: #ffffff;
+}
+
+html.ve-dark .nav-account {
+    border-bottom-color: #666666;
+}
+
+html.ve-dark .nav-account .nav-link {
+    color: #479ef5;
+}
+
+html.ve-dark .nav-account .nav-link.active {
+    background-color: #115ea3;
+    color: #ffffff !important;
+    border-color: #115ea3;
+}
+
+html.ve-dark .nav-account .nav-link:not(.active):hover,
+html.ve-dark .nav-account .nav-link:not(.active):focus {
+    color: #62abf5;
+    background-color: #383838;
+}
+
+html.ve-dark .login-heading-section {
+    border-bottom-color: #479ef5;
+}
+
+html.ve-dark .portal-form .col-form-label,
+html.ve-dark .portal-form label {
+    color: #d6d6d6;
+}
+
+html.ve-dark .portal-form .form-control {
+    background-color: #1f1f1f !important;
+    color: #ffffff;
+    border-color: #666666;
+}
+
+html.ve-dark .portal-form .form-control:focus {
+    border-color: var(--focus-color, #479ef5);
+    box-shadow: 0 0 0 1px var(--focus-color, #479ef5);
+}
+
+html.ve-dark .portal-form .btn-default {
+    background-color: #292929;
+    color: #479ef5;
+    border-color: #666666;
+}
+
+html.ve-dark .portal-form .btn-default:hover {
+    background-color: #383838;
+    border-color: #479ef5;
+}
+
+html.ve-dark .portal-form .btn-default:focus {
+    border-color: var(--focus-color, #479ef5);
+    box-shadow: var(--focus-shadow, 0 0 0 2px #292929, 0 0 0 4px #479ef5);
+    outline: none;
+}
+
+html.ve-dark .nav-account .nav-link:focus-visible {
+    outline-color: var(--focus-color, #479ef5);
+}
+
+html.ve-dark .private-mode-banner {
+    background-color: #0a0a0a;
+}
+
+html.ve-dark .footer-bottom {
+    border-top-color: #666666;
+}
+
+html.ve-dark .portal-form .alert-danger {
+    background-color: #442726;
+    border-color: #d13438;
+    color: #ff9da0;
+}
+
+/* --- CAPTCHA section (Register page) --- */
+.portal-form img[alt*="CAPTCHA"] {
+    border-radius: 4px;
+    border: 1px solid #d1d1d1;
+    margin-bottom: 8px;
+}
+
+.RadCaptcha .rcRefreshImage,
+.RadCaptcha .rcCaptchaAudioLink {
+    display: inline-block !important;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+.RadCaptcha .rcRefreshImage {
+    margin-right: 12px;
+}
+
+.RadCaptcha p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+    margin-bottom: 0;
+}
+
+.RadCaptcha p label {
+    order: -1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.RadCaptcha p input[type="text"] {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.RadCaptcha p input[type="text"]:focus {
+    border-color: var(--focus-color, #0f6cbd);
+    box-shadow: 0 0 0 1px var(--focus-color, #0f6cbd);
+    outline: none;
+}
+
+html.ve-dark .RadCaptcha .rcRefreshImage,
+html.ve-dark .RadCaptcha .rcCaptchaAudioLink {
+    color: #479ef5;
+}
+
+html.ve-dark .RadCaptcha p input[type="text"] {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border-color: #666666;
+}
+
+html.ve-dark .RadCaptcha p input[type="text"]:focus {
+    border-color: var(--focus-color, #479ef5);
+    box-shadow: 0 0 0 1px var(--focus-color, #479ef5);
+    outline: none;
+}

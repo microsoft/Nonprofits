@@ -1,0 +1,4 @@
+description: Enables users to use webapi calls to modify the Participation table
+id: 5d004120-b46b-4a4b-a8e1-d03a114e3727
+name: Webapi/msnfp_participation/enabled
+value: true

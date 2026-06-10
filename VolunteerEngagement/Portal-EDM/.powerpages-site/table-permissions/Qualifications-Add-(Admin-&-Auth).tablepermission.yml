@@ -1,0 +1,15 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+contactrelationship: msnfp_contact_msnfp_qualification_contactId
+create: true
+delete: true
+entitylogicalname: msnfp_qualification
+entityname: Qualifications Add (Admin & Auth)
+id: 94ae07f4-7838-4f26-aad7-798afa083a09
+parententitypermission: 
+read: true
+scope: 756150001
+write: true

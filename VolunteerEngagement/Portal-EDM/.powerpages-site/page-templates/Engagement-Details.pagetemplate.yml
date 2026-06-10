@@ -1,0 +1,6 @@
+description: Shows the details and shift schedule for an engagement whose ID was added in the URL
+id: 9e4cb7ea-7bf4-458d-9206-8b491035a188
+isdefault: false
+name: Engagement Details
+type: 756150001
+webtemplateid: 8a749059-da81-4bf7-8400-83310bc386e2

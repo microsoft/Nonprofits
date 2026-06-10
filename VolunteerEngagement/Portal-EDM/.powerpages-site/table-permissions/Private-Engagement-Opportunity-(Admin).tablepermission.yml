@@ -1,0 +1,13 @@
+adx_entitypermission_webrole:
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+create: false
+delete: false
+entitylogicalname: msnfp_engagementopportunity
+entityname: Private Engagement Opportunity (Admin)
+id: 62aa42fe-b30b-424b-938a-9cb2127fceb1
+parententitypermission: 
+read: true
+scope: 756150000
+write: false

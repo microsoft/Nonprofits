@@ -1,0 +1,13 @@
+adx_entitypermission_webrole:
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+create: true
+delete: true
+entitylogicalname: contact
+entityname: Contact (Admin)
+id: 5a8b2286-cdbf-4285-a18e-aceeef573c2b
+parententitypermission: 
+read: true
+scope: 756150000
+write: true

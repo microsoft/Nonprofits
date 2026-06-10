@@ -1,0 +1,4 @@
+description: Fields that are allowed to be modified and used on the Participation Schedule table
+id: 29ae22f7-a90f-4189-b5f3-b4f3a7a0fb95
+name: Webapi/msnfp_participationschedule/fields
+value: msnfp_participationId,msnfp_schedulestatus,msnfp_engagementOpportunityScheduleId,msnfp_participationscheduleid,_msnfp_participationid_value,_msnfp_engagementopportunityscheduleid_value

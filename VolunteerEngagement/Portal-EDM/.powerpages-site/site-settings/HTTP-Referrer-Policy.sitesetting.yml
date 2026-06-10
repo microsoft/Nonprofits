@@ -1,0 +1,3 @@
+id: 8dd99db4-0f4d-4467-919a-7c1ff4cbfe29
+name: HTTP/Referrer-Policy
+value: strict-origin-when-cross-origin

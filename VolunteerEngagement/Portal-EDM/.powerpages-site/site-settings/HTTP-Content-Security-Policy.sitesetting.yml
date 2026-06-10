@@ -1,0 +1,3 @@
+id: a9e3d2f2-15cf-4b0b-9e3c-0e4f1fd4d74f
+name: HTTP/Content-Security-Policy
+value: "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://content.powerapps.com; style-src 'self' 'unsafe-inline' https://content.powerapps.com; img-src 'self' data: https://content.powerapps.com; font-src 'self' data: https://content.powerapps.com https://*.cdn.office.net https://cdn.jsdelivr.net; connect-src 'self' https://content.powerapps.com https://*.events.data.microsoft.com; frame-ancestors 'self'; form-action 'self' https:; upgrade-insecure-requests"

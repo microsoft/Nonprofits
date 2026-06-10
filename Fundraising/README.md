@@ -9,7 +9,7 @@ Fundraising aggregates constituent and fundraising data across various constitue
 - View a comprehensive donation history for individual and organizational donors.
 - Process gifts, import donations, and generate receipt data.
 
-Fundraising is built on the [Common Data Model (CDM) for Nonprofits](https://aka.ms/GitHubCDMforNonprofits), an industry-led, open-source data schema that reflects industry best practices and connects data across the organization to enable powerful interoperability, fuel greater insight and efficacy, and provide data transparency. With the CDM and Power Platform as the foundation, Fundraising connects with other platforms and applications in a seamless data flow, increasing operational efficiency and enabling data-driven decision-making.
+Fundraising is built on [Common Data Model for Nonprofits](https://aka.ms/GitHubCDMforNonprofits), an industry-led, open-source data schema that reflects industry best practices and connects data across the organization to enable powerful interoperability, fuel greater insight and efficacy, and provide data transparency. With Common Data Model for Nonprofits and Microsoft Power Platform as the foundation, Fundraising connects with other platforms and applications in a seamless data flow, increasing operational efficiency and enabling data-driven decision-making.
 
 Learn More:
 - Read about Fundraising on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/fundraising)

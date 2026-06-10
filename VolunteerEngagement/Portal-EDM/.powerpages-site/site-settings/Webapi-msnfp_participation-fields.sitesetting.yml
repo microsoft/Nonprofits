@@ -1,0 +1,4 @@
+description: Identifies the fields a user is allowed to modify on the Participation table through webapi calls
+id: 45c14543-9f5f-4595-994a-e97dda608182
+name: Webapi/msnfp_participation/fields
+value: msnfp_contactId,msnfp_engagementOpportunityId,msnfp_status,msnfp_participationid,_msnfp_contactid_value,_msnfp_engagementopportunityid_value
