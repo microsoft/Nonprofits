@@ -36,6 +36,7 @@ import { SignInButton } from '@/components/SignInButton';
 import { StatusBadge, StatusBadgeType } from '@/components/StatusBadge';
 
 import { useAuth } from '@/hooks/useAuth';
+
 import {
 	createParticipation,
 	createParticipationSchedule,
@@ -497,14 +498,16 @@ export default function EngagementDetails() {
 															)}
 														</TableCell>
 														<TableCell>
-															<Text weight="medium">
-																{es.msnfp_shiftname}
-															</Text>
+															<Text weight="medium">{es.msnfp_shiftname}</Text>
 														</TableCell>
 														<TableCell className={styles.nowrap}>
 															{new Date(es.msnfp_startperiod).toLocaleString()}
 														</TableCell>
-														<TableCell>{t('MSVE_SPA/Engagement/CapacityNeeded', { count: getRemainingCapacity(es) })}</TableCell>
+														<TableCell>
+															{t('MSVE_SPA/Engagement/CapacityNeeded', {
+																count: getRemainingCapacity(es),
+															})}
+														</TableCell>
 														<TableCell>
 															{ps ? (
 																<StatusBadge
@@ -512,10 +515,7 @@ export default function EngagementDetails() {
 																	type={StatusBadgeType.Schedule}
 																/>
 															) : (
-																<Badge
-																	appearance="tint"
-																	color="informative"
-																>
+																<Badge appearance="tint" color="informative">
 																	Available
 																</Badge>
 															)}

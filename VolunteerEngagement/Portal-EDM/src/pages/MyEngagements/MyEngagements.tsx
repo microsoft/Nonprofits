@@ -59,11 +59,7 @@ function isPastParticipation(participation: EnrichedParticipation, now: number) 
 		return true;
 	}
 
-	return (
-		!participation.engagement ||
-		boundaryTime === null ||
-		boundaryTime < now
-	);
+	return !participation.engagement || boundaryTime === null || boundaryTime < now;
 }
 
 export default function MyEngagements() {

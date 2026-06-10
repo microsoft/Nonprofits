@@ -698,19 +698,19 @@ function PrefsQualsTab({ contactId }: { contactId: string }) {
 						const preferenceName = getPrefTypeName(p._msnfp_preferencetypeid_value);
 
 						return (
-						<div key={p.msnfp_preferenceid} className={styles.preferenceItem}>
-							<Badge appearance="filled" color="brand" size="large">
-								{preferenceName}
-							</Badge>
-							<Button
-								aria-label={t('MSVE_SPA/Profile/DeletePreference', { name: preferenceName })}
-								icon={<Delete24Regular />}
-								appearance="transparent"
-								size="small"
-								onClick={() => handleDeletePref(p.msnfp_preferenceid)}
-								className={styles.compactDeleteButton}
-							/>
-						</div>
+							<div key={p.msnfp_preferenceid} className={styles.preferenceItem}>
+								<Badge appearance="filled" color="brand" size="large">
+									{preferenceName}
+								</Badge>
+								<Button
+									aria-label={t('MSVE_SPA/Profile/DeletePreference', { name: preferenceName })}
+									icon={<Delete24Regular />}
+									appearance="transparent"
+									size="small"
+									onClick={() => handleDeletePref(p.msnfp_preferenceid)}
+									className={styles.compactDeleteButton}
+								/>
+							</div>
 						);
 					})}
 				</div>
@@ -802,26 +802,28 @@ function PrefsQualsTab({ contactId }: { contactId: string }) {
 								(q._msnfp_typeid_value ? getQualTypeName(q._msnfp_typeid_value) : '—');
 
 							return (
-							<TableRow key={q.msnfp_qualificationid}>
-								<TableCell>
-									<Text weight="medium">{qualificationName}</Text>
-								</TableCell>
-								<TableCell>
-									{q.msnfp_startdate ? new Date(q.msnfp_startdate).toLocaleDateString() : '—'}
-								</TableCell>
-								<TableCell>
-									{q.msnfp_enddate ? new Date(q.msnfp_enddate).toLocaleDateString() : '—'}
-								</TableCell>
-								<TableCell>
-									<Button
-										aria-label={t('MSVE_SPA/Profile/DeleteQualification', { name: qualificationName })}
-										icon={<Delete24Regular />}
-										appearance="subtle"
-										size="small"
-										onClick={() => handleDeleteQual(q.msnfp_qualificationid)}
-									/>
-								</TableCell>
-							</TableRow>
+								<TableRow key={q.msnfp_qualificationid}>
+									<TableCell>
+										<Text weight="medium">{qualificationName}</Text>
+									</TableCell>
+									<TableCell>
+										{q.msnfp_startdate ? new Date(q.msnfp_startdate).toLocaleDateString() : '—'}
+									</TableCell>
+									<TableCell>
+										{q.msnfp_enddate ? new Date(q.msnfp_enddate).toLocaleDateString() : '—'}
+									</TableCell>
+									<TableCell>
+										<Button
+											aria-label={t('MSVE_SPA/Profile/DeleteQualification', {
+												name: qualificationName,
+											})}
+											icon={<Delete24Regular />}
+											appearance="subtle"
+											size="small"
+											onClick={() => handleDeleteQual(q.msnfp_qualificationid)}
+										/>
+									</TableCell>
+								</TableRow>
 							);
 						})}
 					</TableBody>
