@@ -77,15 +77,12 @@ Until confirmed, document this as a validation requirement:
 
 1. Confirm the target site and environment.
 2. Confirm bot licensing and admin permissions.
-3. Create or identify the Copilot Studio bot.
-4. Bind the bot to the target Power Pages site.
-5. Sync site metadata into `Portal-EDM`.
-6. Deploy the SPA with `npm run deploy`.
-7. Run table permission role patching.
-8. Run bot role assignment patching.
-9. Restart or refresh the Power Pages site if required.
-10. Validate bot visibility for anonymous and authenticated users according to expected roles.
-11. Validate option-set/choice display labels.
+3. The Copilot bot is auto-provisioned asynchronously after the site is deployed for the first time. The portal shows "Hold on, the agent is being set up." until provisioning completes. The bot is automatically bound to the site — no manual channel configuration is needed. Wait for provisioning to finish before proceeding.
+4. Sync site metadata: `npm run sync`.
+5. Run bot role assignment patching: `npm run permissions:patch-bot-roles`.
+6. Restart the site: `npm run site:restart`.
+7. Validate bot visibility for anonymous and authenticated users according to expected roles.
+8. Validate option-set/choice display labels.
 
 ## Validation checklist
 
