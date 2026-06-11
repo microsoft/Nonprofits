@@ -1,12 +1,8 @@
 # Volunteer Engagement
 
-Volunteer Engagement 2.0 is a Power Pages React single-page application (SPA) that helps volunteers discover opportunities, apply or register for engagements, manage profile information, and review their engagements. This package contains the Power Pages Enhanced Data Model implementation and AI-assisted migration guidance for moving legacy Volunteer Engagement site customizations to Volunteer Engagement 2.0.
+Volunteer Engagement is a Power Pages React single-page application (SPA), built on the Microsoft Power Platform, that gives volunteers a self-service web experience to discover opportunities, apply or register for engagements, manage their profile, and review their engagements. This package contains the Power Pages Enhanced Data Model implementation and AI-assisted guidance for migrating legacy Volunteer Engagement site customizations to Volunteer Engagement 2.0.
 
 ![Volunteer Engagement home page](../Documents/img/volunteer-engagement-home-page.png)
-
-## Solution overview
-
-Volunteer Engagement provides a self-service Power Pages experience for volunteers and works with Volunteer Management, where staff create and manage engagement opportunities. Published opportunities from Volunteer Management are available in the Volunteer Engagement site so volunteers can interact with your organization through an external-facing web experience.
 
 Volunteers can use Volunteer Engagement to:
 
@@ -15,26 +11,21 @@ Volunteers can use Volunteer Engagement to:
 - Apply or register for engagement opportunities by using their volunteer profile.
 - Review upcoming and previous engagements, including participation details and contributed hours.
 
-## Contents
+Volunteer Engagement works with [Volunteer Management](../VolunteerManagement/README.md), where staff create and manage the engagement opportunities that volunteers see, and is built on [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md). Install and configure both in the target environment before you deploy Volunteer Engagement.
 
-| Path | Purpose |
-| --- | --- |
-| `.ai/` | AI guidance for migration, customization, deployment validation, accessibility, and development workflows. |
-| `.github/` | Folder-local Copilot instructions, prompt, and skill definitions for Volunteer Engagement work. |
-| [docs/](docs/) | Simple checklists for deployment, security, operations, and migration, plus the documentation plan. |
-| [Portal-EDM/](Portal-EDM/README.md) | React + TypeScript + Vite SPA and Power Pages code-site metadata for Enhanced Data Model deployment. |
+## Deploy
 
-This folder doesn't include the solution packages for [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md) or [Volunteer Management](../VolunteerManagement/README.md). Before you deploy Volunteer Engagement, install and configure both in the target environment.
+[Deploy Volunteer Engagement](Portal-EDM/README.md). Run all development and deployment commands from `Portal-EDM/`.
 
-## Prerequisites
+Before you deploy, confirm that:
 
 - [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md) and [Volunteer Management](../VolunteerManagement/README.md) are installed and configured in the target environment.
 - [Power Pages Enhanced Data Model](https://learn.microsoft.com/en-us/power-pages/admin/enhanced-data-model) is enabled.
 - [Power Platform CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) is installed and authenticated.
 
-Volunteer Engagement itself doesn't need to be preinstalled. Run all development and deployment commands from `Portal-EDM/`. See [Portal-EDM/README.md](Portal-EDM/README.md) for setup, build, test, and deployment details.
+Volunteer Engagement itself doesn't need to be preinstalled.
 
-## Where to go next
+## Use
 
 Use the checklist that matches your task:
 
