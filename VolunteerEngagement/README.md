@@ -21,24 +21,27 @@ Volunteers can use Volunteer Engagement to:
 | --- | --- |
 | `.ai/` | AI guidance for migration, customization, deployment validation, accessibility, and development workflows. |
 | `.github/` | Folder-local Copilot instructions, prompt, and skill definitions for Volunteer Engagement work. |
+| [docs/](docs/) | Simple checklists for deployment, security, operations, and migration, plus the documentation plan. |
 | [Portal-EDM/](Portal-EDM/README.md) | React + TypeScript + Vite SPA and Power Pages code-site metadata for Enhanced Data Model deployment. |
 
-This folder doesn't include the solution packages for [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md) or [Volunteer Management](../VolunteerManagement/README.md). Before you deploy Volunteer Engagement, install and configure Common Data Model for Nonprofits and Volunteer Management in the target environment.
+This folder doesn't include the solution packages for [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md) or [Volunteer Management](../VolunteerManagement/README.md). Before you deploy Volunteer Engagement, install and configure both in the target environment.
 
-## Choose a deployment path
+## Prerequisites
 
-Use this package in one of two ways:
+- [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md) and [Volunteer Management](../VolunteerManagement/README.md) are installed and configured in the target environment.
+- [Power Pages Enhanced Data Model](https://learn.microsoft.com/en-us/power-pages/admin/enhanced-data-model) is enabled.
+- [Power Platform CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) is installed and authenticated.
 
-- Start from scratch when the target environment already has Common Data Model for Nonprofits and Volunteer Management installed and configured. Deploy `Portal-EDM` to add the Volunteer Engagement Power Pages site metadata, table permissions, and web roles.
-- Migrate an existing Volunteer Engagement site by using the AI-assisted migration instructions in `.ai/` and `.github/`. Use the migration guidance to compare the old site export with the Volunteer Engagement 2.0 React SPA baseline, classify customizations, and move approved site-specific changes into `Portal-EDM`.
+Volunteer Engagement itself doesn't need to be preinstalled. Run all development and deployment commands from `Portal-EDM/`. See [Portal-EDM/README.md](Portal-EDM/README.md) for setup, build, test, and deployment details.
 
-## Develop and deploy
+## Where to go next
 
-Run all development and deployment commands from `Portal-EDM/`. See [Portal-EDM/README.md](Portal-EDM/README.md) for prerequisites, setup, build, test, and deployment instructions.
+Use the checklist that matches your task:
 
-For a fresh deployment, the target environment needs [Common Data Model for Nonprofits](../CommonDataModelforNonprofits/README.md) and [Volunteer Management](../VolunteerManagement/README.md) installed. Volunteer Engagement itself doesn't need to be preinstalled.
-
-For a migration, keep the existing Volunteer Engagement site available as the source for export, comparison, and customization review until Volunteer Engagement 2.0 is validated.
+- Deploy a new site: [Deployment Checklist](docs/deployment-checklist.md)
+- Review security and permissions: [Security and Permissions Checklist](docs/security-and-permissions.md)
+- Run go-live and support checks: [Operations Checklist](docs/operations-checklist.md)
+- Migrate a legacy site: [Migration Checklist](docs/migration-checklist.md)
 
 ## AI-assisted development and migration
 

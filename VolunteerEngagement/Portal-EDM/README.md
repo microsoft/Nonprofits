@@ -7,7 +7,6 @@ Volunteer Engagement is a React, TypeScript, and Vite single-page application (S
 Review the official Power Pages guidance for creating and deploying SPA code sites: [Create and deploy a single-page application in Power Pages](https://learn.microsoft.com/en-us/power-pages/configure/create-code-sites).
 
 - Power Pages Enhanced Data Model is enabled.
-- A Power Pages site on version 9.7.4.x or later.
 - A Power Pages environment where you have [admin privileges](https://learn.microsoft.com/en-us/power-pages/getting-started/create-manage#roles-and-permissions).
 - [PAC CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) version 1.44.x or later installed and authenticated to the desired target environment.
 - [JavaScript file uploads](https://learn.microsoft.com/en-us/power-pages/configure/create-code-sites#allow-javascript-file-uploads) are allowed in the target Dataverse environment.

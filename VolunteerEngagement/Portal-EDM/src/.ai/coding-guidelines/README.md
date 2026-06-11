@@ -9,7 +9,8 @@ This folder contains AI assistant guidelines for maintaining code quality and co
 - **Fluent UI v9** (`@fluentui/react-components`)
 - **react-router-dom v6** (client-side routing)
 - **Power Pages Web API** (`/_api/`) for Dataverse data access
-- **ESLint 8** with `@typescript-eslint` (no Prettier)
+- **ESLint 8** with `@typescript-eslint` (linting)
+- **Prettier 3** with `@trivago/prettier-plugin-sort-imports` (formatting and import order)
 
 ## Guidelines
 
@@ -19,10 +20,10 @@ This folder contains AI assistant guidelines for maintaining code quality and co
 ## Key Conventions
 
 ### Formatting
-- **Indentation**: tabs (not spaces) — matches the monorepo `.editorconfig`
+- **Indentation**: tabs, width 4 — set by Prettier (`useTabs: true`, `tabWidth: 4`)
 - **Quotes**: single quotes
 - **Semicolons**: required
-- **No Prettier** — this project uses ESLint only
+- **Formatting**: Prettier (`.prettierrc.json`); run `npm run format` to apply
 
 ### File Organization
 - Pages in `src/pages/`
