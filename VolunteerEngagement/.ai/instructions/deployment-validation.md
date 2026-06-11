@@ -2,6 +2,10 @@
 
 Use these instructions before declaring a migration complete.
 
+**Always check `Portal-EDM/README.md` and `scripts/` for existing npm scripts and helper scripts before constructing manual CLI or API calls.** The project provides scripts for deployment, syncing, permission patching, site restart, and site removal. Use them.
+
+**Be proactive.** Guide the user through the full provisioning or migration flow step by step. After each step completes, immediately suggest and proceed to the next one without waiting to be asked. The typical flow is: environment selection → unblock JS uploads → install dependencies → build/lint/test → deploy → reactivate site (user action) → restart site → get site URL → validate in browser. Surface blockers early, resolve them, and keep the flow moving.
+
 ## Deployment model
 
 The new Volunteer Engagement site is deployed from `Portal-EDM` using the existing npm and PAC CLI flow.
@@ -9,6 +13,8 @@ The new Volunteer Engagement site is deployed from `Portal-EDM` using the existi
 The deployment can target an environment where the site already exists. It can also start from local site metadata when the site is not listed yet, but if the platform rejects the upload because the site must be provisioned/imported first, create or import the site, run `npm run sync`, and retry.
 
 ## Environment selection
+
+**Always ask the user which environment to target before running any `pac` commands or deployment scripts.** Do not assume the currently active environment is correct.
 
 From `Portal-EDM`:
 
@@ -19,6 +25,16 @@ npm run sync
 ```
 
 Confirm the selected environment is the intended target before deployment.
+
+## Unblock JavaScript file uploads
+
+Power Pages code sites require `.js` file uploads, but Dataverse blocks `.js` by default in the `blockedattachments` organization setting. Before the first deployment to a new environment, remove `js` from the blocked list:
+
+```shell
+pac org update-settings --name blockedattachments
+```
+
+Without this step, `pac pages upload-code-site` fails with `PortalFileContentUploadFailed` for `.js` web files. See [Allow JavaScript file uploads](https://learn.microsoft.com/en-us/power-pages/configure/create-code-sites#allow-javascript-file-uploads).
 
 ## Local validation
 
@@ -48,7 +64,25 @@ npm run deploy
 
 This builds the SPA, uploads code-site assets and templates, runs table permission role patching, and runs bot consumer role patching.
 
-After an initial deployment, the site can appear in Power Pages under **Inactive sites**. Reactivate the site in the target environment before browser validation. See [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
+After an initial deployment, the site appears in Power Pages under **Inactive sites** and has no working URL until reactivated. Reactivation is a manual step — it must be done by the user in [Power Pages](https://make.powerpages.microsoft.com/): select the environment, open **Inactive sites**, select the site, and click **Reactivate**. There is no PAC CLI or API command to reactivate a site. The Power Platform API may show the site as `StateConfigured` with a URL even when the site is inactive and not serving content. Do not treat the API status or the presence of a URL as proof the site is live — always confirm by loading the URL in a browser.
+
+AI agents cannot reactivate a site. Ask the user to do it and wait for confirmation before proceeding to browser validation.
+
+## Restarting the site
+
+Use `npm run site:restart` to restart the site. The script resolves the correct Power Platform site ID from the website record ID in `.powerpages-site/website.yml` — do not look up or hard-code Power Platform site IDs manually. Multiple Power Platform site instances can be bound to the same Dataverse website record; the restart script handles this. Requires Azure CLI (`az login`) authenticated to the same tenant as the environment.
+
+The restart script prints the site URL (e.g. `https://site-xyz.powerappsportals.com`). After a deploy or restart, always surface this URL to the user so they can navigate to it.
+
+## Getting the site URL
+
+The environment ID is available from `pac env who` and the website record ID is in `.powerpages-site/website.yml`. Use these to query the Power Platform API for the site URL:
+
+```
+GET https://api.powerplatform.com/powerpages/environments/{envId}/websites?api-version=2024-10-01
+```
+
+Filter the response by `websiteRecordId`, sort by `createdOn` descending (newest first), and take `websiteUrl` from the first match. This works at any point after the site is provisioned — do not ask the user for the URL when you can look it up.
 
 ## Cache-aware validation
 

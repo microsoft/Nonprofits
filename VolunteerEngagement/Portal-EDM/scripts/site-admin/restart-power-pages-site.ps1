@@ -40,7 +40,7 @@ $api = 'https://api.powerplatform.com'
 # Look up the Power Platform site ID (different from the Dataverse website record ID)
 Write-Host 'Looking up site in Power Platform API...' -ForegroundColor DarkGray
 $sites = az rest --method get --url "$api/powerpages/environments/$EnvironmentId/websites?api-version=2024-10-01" --resource $api | ConvertFrom-Json
-$site = $sites.value | Where-Object { ($Subdomain -and $_.subdomain -eq $Subdomain) -or $_.websiteRecordId -eq $WebsiteRecordId -or $_.properties.websiteRecordId -eq $WebsiteRecordId } | Select-Object -First 1
+$site = $sites.value | Where-Object { ($Subdomain -and $_.subdomain -eq $Subdomain) -or $_.websiteRecordId -eq $WebsiteRecordId -or $_.properties.websiteRecordId -eq $WebsiteRecordId } | Sort-Object createdOn -Descending | Select-Object -First 1
 if (-not $site) { throw "Site not found (subdomain=$Subdomain, websiteRecordId=$WebsiteRecordId)." }
 
 $siteId = $site.id
