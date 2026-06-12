@@ -1,7 +1,8 @@
 # Portal-EDM Scripts
 
 - `localization/`: content snippet generation, language setup, and i18n validation.
-- `permissions/`: table permission export, table permission role patching, and bot consumer role patching helpers.
+- `permissions/`: table permission export, table permission role patching, and Power Pages site agent role patching helpers.
+- `site-agent/`: Power Pages site agent setup and VE/VM knowledge-source customization helpers.
 - `shared/`: shared script helpers, including PAC environment and site ID resolution.
 - `site-admin/`: Power Pages site operations such as restart and removal.
 
@@ -13,7 +14,9 @@ Package scripts in `package.json` call these helpers:
 
 - `npm run sync` -> `site-admin/sync-power-pages-site.ps1`
 - `npm run permissions:patch-roles` -> `permissions/patch-table-permission-roles.ps1`
-- `npm run permissions:patch-bot-roles` -> `permissions/patch-bot-consumer-roles.ps1`
+- `npm run powerpages-site-agent:patch-roles` -> `permissions/patch-site-agent-roles.ps1`
+- `npm run powerpages-site-agent:customize-ve-vm` -> `site-agent/customize-ve-vm-site-agent.ps1`
+- `npm run powerpages-site-agent:configure-advanced` -> `site-agent/configure-site-agent-advanced.ps1`
 - `npm run site:restart` -> `site-admin/restart-power-pages-site.ps1`
 
-`npm run deploy` builds the SPA, uploads the Power Pages code site, and then runs both role patch helpers.
+`npm run deploy` builds the SPA, uploads the Power Pages code site, and then runs the table-permission role patch helper. Power Pages site agent role patching is a separate, deliberate step.

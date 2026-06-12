@@ -67,7 +67,7 @@ Read these files in order:
 2. `customization-migration.md` - how to classify and migrate site customizations.
 3. `spa-development.md` - how to work in the React SPA implementation.
 4. `authentication-migration.md` - authentication provider and web role migration guidance.
-5. `bot-setup.md` - Copilot Studio/Power Virtual Agents embedded bot setup guidance.
+5. `site-agent-setup.md` - Power Pages site agent (Copilot Studio) setup, web roles, knowledge sources, and advanced configuration guidance.
 6. `localization-accessibility.md` - localization readiness and WCAG expectations.
 7. `deployment-validation.md` - deployment, smoke testing, and definition of done.
 

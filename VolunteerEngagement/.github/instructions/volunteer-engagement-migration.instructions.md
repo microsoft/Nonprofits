@@ -11,7 +11,7 @@ applyTo:
 
 # Volunteer Engagement migration instructions
 
-When the user asks about Volunteer Engagement migration, migrating an existing site to a new portal SPA, legacy Power Pages sites, Standard Data Model to Enhanced Data Model, enhanced data model, `Portal-EDM`, React SPA customizations, exported Power Pages sites, table permissions, web roles, site settings, authentication, bot consumers, localization, or accessibility, use the detailed instruction package in `.ai/instructions`.
+When the user asks about Volunteer Engagement migration, migrating an existing site to a new portal SPA, legacy Power Pages sites, Standard Data Model to Enhanced Data Model, enhanced data model, `Portal-EDM`, React SPA customizations, exported Power Pages sites, table permissions, web roles, site settings, authentication, bot consumers, Power Pages site agent setup, localization, or accessibility, use the detailed instruction package in `.ai/instructions`.
 
 These instructions are intentionally folder-local to Volunteer Engagement. They are not mirrored at the repository root.
 

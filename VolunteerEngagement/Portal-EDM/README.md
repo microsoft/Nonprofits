@@ -13,7 +13,7 @@ Review the official Power Pages guidance for creating and deploying SPA code sit
 - [Common Data Model for Nonprofits](../../CommonDataModelforNonprofits/README.md) and [Volunteer Management](../../VolunteerManagement/README.md) are installed and configured in the target environment.
 - Node.js 24 LTS recommended. The supported engine range is `>=20.18.1 <25`.
 - PowerShell 7+ for helper scripts.
-- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli): required only for `npm run site:restart` and `scripts/site-admin/remove-power-pages-site.ps1`.
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or Az PowerShell signed in to the target tenant: required for `npm run site:restart`, `scripts/site-admin/remove-power-pages-site.ps1`, and the `powerpages-site-agent:*` Dataverse helper scripts.
 
 ## Folder structure
 
@@ -95,7 +95,7 @@ The migration workflow treats `Portal-EDM` as the target baseline and uses the e
 npm run deploy
 ```
 
-Builds the project, uploads JS, CSS, and web templates via `pac pages upload-code-site`, and patches table-permission and bot web-role assignments.
+Builds the project, uploads JS, CSS, and web templates via `pac pages upload-code-site`, and patches table-permission web-role assignments. Site agent role patching is a separate, deliberate step described in [Power Pages site agent](#power-pages-site-agent).
 
 For a fresh deployment, run `npm run deploy` after the target environment and prerequisites are ready. The command builds the SPA and uploads the code site by using `powerpages.config.json`. After the first successful deployment, run `npm run sync` to refresh local metadata from the environment.
 
@@ -133,16 +133,65 @@ When validating a deployment, do not rely only on a normal page refresh. Use a c
 - Run `pac auth list` to verify the selected environment.
 - Confirm `.powerpages-site/website.yml` points to the intended website record.
 - If `/assets/*.js` or `/assets/*.css` returns 404 after upload, verify that the hosted runtime is bound to the same website record and Home root that was uploaded.
-- If role-based table permissions or bot visibility are wrong after upload, rerun `npm run permissions:patch-roles` and `npm run permissions:patch-bot-roles`.
+- If role-based table permissions are wrong after upload, rerun `npm run permissions:patch-roles`.
+- If the Power Pages site agent is missing web roles, rerun `npm run powerpages-site-agent:patch-roles`.
 
 ## Helper scripts
 
 | Command | Description |
 |---------|-------------|
 | `npm run permissions:patch-roles` | Assigns web roles to table permissions via Dataverse API |
-| `npm run permissions:patch-bot-roles` | Assigns web roles to bot consumers via Dataverse API |
+| `npm run powerpages-site-agent:patch-roles` | Assigns web roles to the Power Pages site agent Bot Consumer via Dataverse API |
+| `npm run powerpages-site-agent:customize-ve-vm` | Adds Portal-EDM VE/VM Dataverse knowledge sources to the Power Pages site agent |
+| `npm run powerpages-site-agent:configure-advanced` | Applies JSON-defined Copilot Studio Overview instructions and Knowledge Source components to the Power Pages site agent |
 | `npm run site:restart` | Restarts the Power Pages site. Requires [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli); run `az login` first. |
 | `npm run sync` | Resolves the configured site in the selected PAC environment and downloads code-site metadata to `.powerpages-site/` |
+
+## Power Pages site agent
+
+The portal can include a Power Pages site agent (a Copilot Studio agent). The agent is auto-provisioned asynchronously after the first deployment; wait for provisioning to finish before running these helpers. Site agent configuration is a deliberate, post-provisioning step and is not part of `npm run deploy`.
+
+For detailed setup and security guidance, see [.ai/instructions/site-agent-setup.md](../.ai/instructions/site-agent-setup.md).
+
+### Assign site agent web roles
+
+```shell
+npm run powerpages-site-agent:patch-roles
+```
+
+Assigns web roles to the site agent's Enhanced Data Model Bot Consumer component. By default it assigns `Anonymous Users` and `Authenticated Users`. The defaults apply only when neither `-RoleNames` nor `-RoleIds` is supplied. To choose roles explicitly, run the script directly:
+
+```shell
+pwsh -NoProfile -File ./scripts/permissions/patch-site-agent-roles.ps1 -RoleNames "Authenticated Users"
+```
+
+If the site agent enablement setting is missing, add `-EnsureSiteAgentEnabled`.
+
+### Add VE/VM knowledge sources
+
+```shell
+npm run powerpages-site-agent:customize-ve-vm
+```
+
+Targets Enhanced Data Model sites only. Creates or updates a site-specific `dvtablesearch` knowledge source, adds the Portal-EDM tables used by the volunteer experience, and links the source to the EDM `powerpagesite` row and the site agent default GPT component.
+
+The default `Public` profile includes only public browsing data. For an authenticated-only portal agent, use the broader profile:
+
+```shell
+pwsh -NoProfile -File ./scripts/site-agent/customize-ve-vm-site-agent.ps1 -Profile VolunteerPortal
+```
+
+The script blocks non-public knowledge sources while the Bot Consumer is assigned to `Anonymous Users`. Remove the anonymous role before using `-Profile VolunteerPortal`. For staff-only deployments that should also use the Volunteer Management model-app search source, add `-IncludeVolunteerManagementModelAppSearch` after confirming web roles and table permissions.
+
+### Apply advanced Copilot Studio configuration
+
+```shell
+npm run powerpages-site-agent:configure-advanced
+```
+
+Reads `scripts/site-agent/site-agent-advanced.config.json` and writes the configured text to the default GPT component's Overview `instructions` field. It can also create or update Copilot Studio Knowledge Source components, such as the default public portal-page search source.
+
+The `instructions` and `knowledge` arrays are prompt guidance, not Dataverse `dvtablesearch` sources; use `powerpages-site-agent:customize-ve-vm` for table-backed knowledge sources. Use `-ConfigPath` to apply a different configuration file, or `-RemoveInstructions` to clear the Overview `instructions` field while leaving other metadata in place.
 
 ## Package as a Dataverse solution
 

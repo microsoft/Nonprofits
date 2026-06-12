@@ -19,6 +19,6 @@ See `.ai/instructions/legacy-to-spa-migration.md` and `.ai/instructions/customiz
 ## Move and validate
 
 - [ ] Move approved changes into `Portal-EDM`.
-- [ ] Migrate authentication and bot configuration as needed. See `.ai/instructions/authentication-migration.md` and `.ai/instructions/bot-setup.md`.
+- [ ] Migrate authentication and site agent configuration as needed. See `.ai/instructions/authentication-migration.md` and `.ai/instructions/site-agent-setup.md`.
 - [ ] Deploy and validate using the [Deployment Checklist](deployment-checklist.md) and [Security and Permissions Checklist](security-and-permissions.md).
 - [ ] Keep the legacy site until Volunteer Engagement 2.0 is validated.

@@ -17,7 +17,7 @@ Before planning or editing, read the relevant files in `.ai/instructions`:
 3. `customization-migration.md`
 4. `spa-development.md`
 5. `authentication-migration.md`
-6. `bot-setup.md`
+6. `site-agent-setup.md`
 7. `localization-accessibility.md`
 8. `deployment-validation.md`
 
@@ -54,7 +54,7 @@ Use this skill when the user asks to:
    - Site settings, authentication providers, secrets, anonymous access, table permissions, Web API fields, web roles, bot visibility, and third-party scripts.
    - Public bot visibility is allowed for opportunity discovery and general help, but apply, profile, participation, and personal-data bot flows must require sign-in.
 6. Validate before declaring completion.
-   - Use `npm run build`, `npm run lint`, `npm run test`, `npm run deploy`, `npm run permissions:patch-roles`, `npm run permissions:patch-bot-roles`, browser smoke tests, and WCAG AA-oriented checks as applicable from `Portal-EDM`.
+   - Use `npm run build`, `npm run lint`, `npm run test`, `npm run deploy`, `npm run permissions:patch-roles`, `npm run powerpages-site-agent:patch-roles`, browser smoke tests, and WCAG AA-oriented checks as applicable from `Portal-EDM`.
 
 ## Output expectations
 

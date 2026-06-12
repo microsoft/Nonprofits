@@ -89,7 +89,7 @@ Map legacy artifacts to SPA/EDM destinations:
 | Web files/images | `Portal-EDM/public`, `Portal-EDM/src/assets`, or `.powerpages-site/web-files`, matching existing patterns |
 | Table permission | `.powerpages-site/table-permissions` plus role patch validation |
 | Web role | `.powerpages-site/web-roles` and Dataverse web role association |
-| Bot consumer | `.powerpages-site/bot-consumers` plus role assignment validation |
+| Bot consumer / site agent | `.powerpages-site/bot-consumers`; assign roles with `npm run powerpages-site-agent:patch-roles` and configure with the `site-agent/` scripts |
 | Basic form | SPA page/component or Power Pages form only when server-rendered authentication or profile behavior requires it |
 | Site setting | Do not migrate by default. Classify and ask for approval. |
 

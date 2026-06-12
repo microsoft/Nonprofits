@@ -33,7 +33,8 @@ See [Site visibility in Power Pages](https://learn.microsoft.com/en-us/power-pag
 
 ## After changes
 
-- [ ] Run `npm run permissions:patch-roles` and `npm run permissions:patch-bot-roles` if role assignments changed.
+- [ ] Run `npm run permissions:patch-roles` if table-permission role assignments changed.
+- [ ] Run `npm run powerpages-site-agent:patch-roles` if the Power Pages site agent web roles changed.
 - [ ] Re-validate anonymous and authenticated flows.
 
 For deployment steps, see the [Deployment Checklist](deployment-checklist.md).

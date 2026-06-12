@@ -4,7 +4,9 @@ Use these instructions before declaring a migration complete.
 
 **Always check `Portal-EDM/README.md` and `scripts/` for existing npm scripts and helper scripts before constructing manual CLI or API calls.** The project provides scripts for deployment, syncing, permission patching, site restart, and site removal. Use them.
 
-**Be proactive.** Guide the user through the full provisioning or migration flow step by step. After each step completes, immediately suggest and proceed to the next one without waiting to be asked. The typical flow is: environment selection → unblock JS uploads → install dependencies → build/lint/test → deploy → reactivate site (user action) → restart site → get site URL → validate in browser. Surface blockers early, resolve them, and keep the flow moving.
+**Be proactive.** Guide the user through the full provisioning or migration flow step by step. After each step completes, immediately suggest and proceed to the next one without waiting to be asked. The typical flow is: environment selection → unblock JS uploads → install dependencies → build/lint/test → deploy → reactivate site (user action) → restart site → get site URL → validate in browser → (when a Power Pages site agent is in scope and provisioned) assign site agent web roles → add VE/VM knowledge sources → apply advanced agent configuration. Surface blockers early, resolve them, and keep the flow moving.
+
+Site agent role patching and configuration are separate, deliberate steps, not part of `npm run deploy`. After the site is live and the agent has finished provisioning, proactively suggest them in order and run each only after the user confirms. See `site-agent-setup.md`.
 
 ## Deployment model
 
@@ -62,7 +64,7 @@ Run:
 npm run deploy
 ```
 
-This builds the SPA, uploads code-site assets and templates, runs table permission role patching, and runs bot consumer role patching.
+This builds the SPA, uploads code-site assets and templates, and runs table permission role patching. Power Pages site agent role patching and advanced configuration are separate, deliberate steps, not part of `npm run deploy`. After the site is live and the agent has finished provisioning, proactively suggest running them in order; see `site-agent-setup.md`.
 
 After an initial deployment, the site appears in Power Pages under **Inactive sites** and has no working URL until reactivated. Reactivation is a manual step — it must be done by the user in [Power Pages](https://make.powerpages.microsoft.com/): select the environment, open **Inactive sites**, select the site, and click **Reactivate**. There is no PAC CLI or API command to reactivate a site. The Power Platform API may show the site as `StateConfigured` with a URL even when the site is inactive and not serving content. Do not treat the API status or the presence of a URL as proof the site is live — always confirm by loading the URL in a browser.
 
@@ -118,7 +120,7 @@ Validate at minimum:
 - My engagements loads the signed-in user's data.
 - Profile-related pages or flows work.
 - Custom pages and components work.
-- Bot loads for intended roles if in scope.
+- Site agent loads for intended roles if in scope.
 - Sign out works.
 
 ## Accessibility smoke tests
