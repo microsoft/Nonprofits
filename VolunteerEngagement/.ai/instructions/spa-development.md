@@ -7,7 +7,7 @@ Use these instructions when building or modifying site customizations in `Portal
 The SPA uses:
 
 - npm, not Bun.
-- Node.js `>=20.18.1 <25`.
+- Node.js `>=20.18.1`.
 - React 18.
 - TypeScript.
 - Vite.
@@ -45,7 +45,7 @@ npm run test:typecheck
 npm run deploy
 ```
 
-Use `npm run dev` for local SPA development and `npm run deploy` for Power Pages deployment.
+Use `npm run dev` for local SPA development and `npm run deploy` for Power Pages deployment. For the full deployment flow (environment selection, JS upload unblocking, reactivation, restart, site URL lookup, and browser validation), see `deployment-validation.md`.
 
 ## Code organization
 

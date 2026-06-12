@@ -1,8 +1,20 @@
 # Volunteer Engagement AI instructions
 
-Use these instructions when migrating a legacy Volunteer Engagement Power Pages site to the Volunteer Engagement 2.0 React SPA on Enhanced Data Model.
+These files are the public AI entry point for Volunteer Engagement 2.0 work. They are intentionally stored under `VolunteerEngagement/.ai/instructions` so they live beside the Volunteer Engagement source material.
 
-These files are the public AI entry point for this migration work. They are intentionally stored under `VolunteerEngagement/.ai/instructions` so they live beside the Volunteer Engagement source material.
+## New deployment
+
+For a fresh Volunteer Engagement deployment (no legacy site), follow `Portal-EDM/README.md` and these instruction files:
+
+1. `spa-development.md` — stack, code organization, development commands.
+2. `deployment-validation.md` — environment selection, JS upload unblocking, deploy, reactivation, restart, site URL lookup, browser validation.
+3. `site-agent-setup.md` — site agent role patching, knowledge sources, advanced configuration.
+
+The typical flow is: environment selection → unblock JS uploads → install dependencies → build/lint/test → deploy → reactivate site (manual) → restart → validate in browser → site agent setup.
+
+## Migration from legacy VE
+
+When migrating a legacy Volunteer Engagement Power Pages site to the Volunteer Engagement 2.0 React SPA on Enhanced Data Model, use the migration instructions below.
 
 ## Source inputs
 
