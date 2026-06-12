@@ -25,14 +25,13 @@ Before you deploy, confirm that:
 
 Volunteer Engagement itself doesn't need to be preinstalled.
 
-## Use
+## Choose the right path
 
-Use the checklist that matches your task:
-
-- Deploy a new site: [Deployment Checklist](docs/deployment-checklist.md)
-- Review security and permissions: [Security and Permissions Checklist](docs/security-and-permissions.md)
-- Run go-live and support checks: [Operations Checklist](docs/operations-checklist.md)
-- Migrate a legacy site: [Migration Checklist](docs/migration-checklist.md)
+- New Volunteer Engagement site: use the [Deployment Checklist](docs/deployment-checklist.md). Install and configure Common Data Model for Nonprofits and Volunteer Management first, then deploy Volunteer Engagement from `Portal-EDM/`.
+- Customized legacy Volunteer Engagement site: use the [Migration Checklist](docs/migration-checklist.md). The migration guidance is AI-assisted. Use the existing site export as the source of truth and migrate approved customizations onto the `Portal-EDM` baseline.
+- Uncustomized legacy Volunteer Engagement site: use the [Migration Checklist](docs/migration-checklist.md) for classification and validation. Do not rebuild legacy Liquid pages that are already replaced by the React SPA.
+- Security or authentication review: use the [Security and Permissions Checklist](docs/security-and-permissions.md) before go-live and whenever migration changes touch security-sensitive metadata.
+- Go-live or support review: use the [Operations Checklist](docs/operations-checklist.md) for site visibility, custom domain, Site Checker, caching, and restart checks.
 
 ## AI-assisted development and migration
 

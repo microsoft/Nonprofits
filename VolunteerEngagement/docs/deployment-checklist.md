@@ -10,6 +10,8 @@ Use this checklist for a fresh Volunteer Engagement deployment. Run all commands
 - [ ] JavaScript file uploads are allowed in the target environment. See [Create and deploy a single-page application in Power Pages](https://learn.microsoft.com/en-us/power-pages/configure/create-code-sites).
 - [ ] Node.js 24 LTS and PowerShell 7+ are installed.
 
+If `pac pages upload-code-site` fails while uploading `.js` files, confirm that JavaScript file uploads are allowed in Dataverse. The official SPA deployment guidance explains how to update the environment's blocked attachment settings.
+
 ## Deploy
 
 1. Install dependencies: `npm ci`.
