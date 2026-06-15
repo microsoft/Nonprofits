@@ -277,42 +277,52 @@ function Get-PowerPlatformEnvironmentApiHost {
 	return "$($compactEnvironmentId.Substring(0, 30)).$($compactEnvironmentId.Substring(30, 2)).environment.api.powerplatform.com"
 }
 
+function Add-CspDirectiveSources {
+	param(
+		[Parameter(Mandatory)][string]$CspValue,
+		[Parameter(Mandatory)][string]$DirectiveName,
+		[Parameter(Mandatory)][string[]]$Sources
+	)
+
+	$directives = @($CspValue -split ';' | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+	$directiveIndex = -1
+	for ($i = 0; $i -lt $directives.Count; $i++) {
+		if ($directives[$i] -match "^$([regex]::Escape($DirectiveName))(\s|$)") {
+			$directiveIndex = $i
+			break
+		}
+	}
+
+	if ($directiveIndex -lt 0) {
+		$directives += "$DirectiveName $($Sources -join ' ')"
+		return ($directives -join '; ')
+	}
+
+	$directiveParts = [System.Collections.Generic.List[string]]::new()
+	$existingSources = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+	foreach ($part in @($directives[$directiveIndex] -split '\s+' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })) {
+		$directiveParts.Add($part)
+		if ($part -ne $DirectiveName) { [void]$existingSources.Add($part) }
+	}
+
+	foreach ($source in $Sources) {
+		if (-not $existingSources.Contains($source)) {
+			$directiveParts.Add($source)
+			[void]$existingSources.Add($source)
+		}
+	}
+
+	$directives[$directiveIndex] = ($directiveParts -join ' ')
+	return ($directives -join '; ')
+}
+
 function Add-CspConnectSources {
 	param(
 		[Parameter(Mandatory)][string]$CspValue,
 		[Parameter(Mandatory)][string[]]$Sources
 	)
 
-	$directives = @($CspValue -split ';' | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
-	$connectIndex = -1
-	for ($i = 0; $i -lt $directives.Count; $i++) {
-		if ($directives[$i] -match '^connect-src(\s|$)') {
-			$connectIndex = $i
-			break
-		}
-	}
-
-	if ($connectIndex -lt 0) {
-		$directives += "connect-src 'self' $($Sources -join ' ')"
-		return ($directives -join '; ')
-	}
-
-	$connectParts = [System.Collections.Generic.List[string]]::new()
-	$existingSources = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-	foreach ($part in @($directives[$connectIndex] -split '\s+' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })) {
-		$connectParts.Add($part)
-		if ($part -ne 'connect-src') { [void]$existingSources.Add($part) }
-	}
-
-	foreach ($source in $Sources) {
-		if (-not $existingSources.Contains($source)) {
-			$connectParts.Add($source)
-			[void]$existingSources.Add($source)
-		}
-	}
-
-	$directives[$connectIndex] = ($connectParts -join ' ')
-	return ($directives -join '; ')
+	return Add-CspDirectiveSources -CspValue $CspValue -DirectiveName 'connect-src' -Sources $Sources
 }
 
 function Set-SiteAgentCspSetting {
@@ -325,9 +335,11 @@ function Set-SiteAgentCspSetting {
 		"https://$environmentApiHost",
 		'https://directline.botframework.com',
 		'https://*.directline.botframework.com',
+		'https://token.botframework.com',
 		'wss://directline.botframework.com',
 		'wss://*.directline.botframework.com'
 	)
+	$requiredImageSources = @('blob:')
 
 	$settingName = 'HTTP/Content-Security-Policy'
 	$encodedFilter = [System.Uri]::EscapeDataString("mspp_name eq '$settingName' and _mspp_websiteid_value eq $SiteId")
@@ -336,6 +348,7 @@ function Set-SiteAgentCspSetting {
 
 	if ($existing.Count -eq 0) {
 		$newValue = Add-CspConnectSources -CspValue $defaultCsp -Sources $requiredConnectSources
+		$newValue = Add-CspDirectiveSources -CspValue $newValue -DirectiveName 'img-src' -Sources $requiredImageSources
 		$body = @{
 			mspp_name = $settingName
 			mspp_value = $newValue
@@ -348,6 +361,7 @@ function Set-SiteAgentCspSetting {
 
 	foreach ($setting in $existing) {
 		$newValue = Add-CspConnectSources -CspValue ([string]$setting.mspp_value) -Sources $requiredConnectSources
+		$newValue = Add-CspDirectiveSources -CspValue $newValue -DirectiveName 'img-src' -Sources $requiredImageSources
 		if ($newValue -ne [string]$setting.mspp_value) {
 			$body = @{ mspp_value = $newValue } | ConvertTo-Json -Depth 5
 			Invoke-RestMethod -Uri "$api/mspp_sitesettings($($setting.mspp_sitesettingid))" -Headers $headers -Method PATCH -Body $body | Out-Null
