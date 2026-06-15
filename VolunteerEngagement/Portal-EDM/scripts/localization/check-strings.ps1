@@ -141,6 +141,7 @@ if ($unusedKeys.Count -gt 0) {
 Write-Host ""
 Write-Host "Check 5: Power Pages runtime bootstrap" -ForegroundColor Yellow
 $bootstrapErrors = 0
+$msveHomeRendersPageCopy = $false
 if (-not (Test-Path $webTemplatePath)) {
     Write-Host "  ERROR: MSVE_Home web template not found: $webTemplatePath" -ForegroundColor Red
     $errors++
@@ -166,7 +167,8 @@ if (-not (Test-Path $webTemplatePath)) {
         }
     }
 
-    if ($templateContent -match '\{\{\s*page\.adx_copy\s*\}\}') {
+    $msveHomeRendersPageCopy = $templateContent -match '\{\{\s*page\.adx_copy\s*\}\}'
+    if ($msveHomeRendersPageCopy) {
         Write-Host "  ERROR: MSVE_Home template appends page.adx_copy, which can duplicate the SPA shell." -ForegroundColor Red
         $errors++
         $bootstrapErrors++
@@ -175,6 +177,9 @@ if (-not (Test-Path $webTemplatePath)) {
 
 $shellCopyFiles = @(Get-ChildItem $webPagesDir -Recurse -Filter "*.webpage.copy.html" -ErrorAction SilentlyContinue |
     Where-Object {
+        $isPacGeneratedHomeCopy = $_.FullName -match '[\\/]web-pages[\\/]home[\\/]content-pages[\\/][^\\/]+[\\/]Home\.webpage\.copy\.html$'
+        if ($isPacGeneratedHomeCopy -and -not $msveHomeRendersPageCopy) { return $false }
+
         $copyContent = Get-Content $_.FullName -Raw -Encoding utf8
         $copyContent -match '<!DOCTYPE html|/assets/index\.js|<div id="root"'
     })
