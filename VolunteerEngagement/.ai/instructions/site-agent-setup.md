@@ -73,17 +73,19 @@ Calls `Portal-EDM/scripts/site-agent/configure-site-agent-advanced.ps1` and read
 2. Confirm Copilot Studio licensing and admin permissions.
 3. Wait for the site agent to finish auto-provisioning after the first deployment.
 4. Sync site metadata: `npm run sync`.
-5. Assign site agent web roles: `npm run powerpages-site-agent:patch-roles`.
-6. Add VE/VM knowledge sources: `npm run powerpages-site-agent:customize-ve-vm`.
-7. Apply advanced configuration: `npm run powerpages-site-agent:configure-advanced`.
-8. Restart the site if needed: `npm run site:restart`.
-9. Validate agent visibility for anonymous and authenticated users according to expected roles.
-10. Validate option-set/choice display labels.
+5. Ensure the `HTTP/Content-Security-Policy` site setting allows the site agent runtime in `connect-src`. The package script patches the target environment dynamically; do not commit tenant-specific environment API hosts to source metadata.
+6. Assign site agent web roles: `npm run powerpages-site-agent:patch-roles`.
+7. Add VE/VM knowledge sources: `npm run powerpages-site-agent:customize-ve-vm`.
+8. Apply advanced configuration: `npm run powerpages-site-agent:configure-advanced`.
+9. Restart the site if needed: `npm run site:restart`.
+10. Validate agent visibility for anonymous and authenticated users according to expected roles.
+11. Validate option-set/choice display labels.
 
 ## Validation checklist
 
 - Agent appears for intended users and roles, including anonymous users when public browsing assistance is expected.
 - Agent loads on the target site after deployment.
+- Browser console has no CSP violations for the environment API `/powervirtualagents/.../directline/token` request or Direct Line connections.
 - Agent does not expose restricted Dataverse data to anonymous users.
 - Apply, profile, participation, and personal-data flows require sign-in.
 - Agent answers from configured knowledge sources and declines when information is missing.

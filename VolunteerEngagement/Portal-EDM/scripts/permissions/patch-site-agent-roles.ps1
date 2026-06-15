@@ -8,6 +8,7 @@
 
 param(
 	[string]$OrgUrl,
+	[string]$EnvironmentId,
 	[string]$SiteId,
 	[string]$SiteName,
 	[string]$ProjectConfigPath,
@@ -16,7 +17,8 @@ param(
 	[string[]]$RoleNames = @(),
 	[string[]]$RoleIds = @(),
 	[switch]$ReplaceExistingRoles,
-	[switch]$EnsureSiteAgentEnabled
+	[switch]$EnsureSiteAgentEnabled,
+	[switch]$EnsureSiteAgentCsp
 )
 
 $ErrorActionPreference = 'Stop'
@@ -25,13 +27,21 @@ $ErrorActionPreference = 'Stop'
 
 $SiteId = Resolve-PowerPagesWebsiteRecordId -WebsiteRecordId $SiteId -SiteName $SiteName -ProjectConfigPath $ProjectConfigPath
 
-if (-not $OrgUrl) {
+$orgInfo = $null
+if (-not $OrgUrl -or -not $EnvironmentId) {
 	$orgInfo = Get-PacOrgInfo
+}
+
+if (-not $OrgUrl) {
 	$OrgUrl = $orgInfo.OrgUrl.TrimEnd('/')
 	Write-Host "Using PAC CLI environment: $OrgUrl"
 }
 else {
 	$OrgUrl = $OrgUrl.TrimEnd('/')
+}
+
+if (-not $EnvironmentId -and $orgInfo) {
+	$EnvironmentId = $orgInfo.EnvironmentId
 }
 
 if (-not $PSBoundParameters.ContainsKey('RoleNames') -and -not $PSBoundParameters.ContainsKey('RoleIds')) {
@@ -256,6 +266,99 @@ function Get-SiteAgentEnabledSetting {
 	return @(Invoke-DataverseCollection -Uri "$api/mspp_sitesettings?`$select=mspp_sitesettingid,mspp_name,mspp_value,_mspp_websiteid_value&`$filter=$encodedFilter")
 }
 
+function Get-PowerPlatformEnvironmentApiHost {
+	param([Parameter(Mandatory)][string]$EnvironmentId)
+
+	$compactEnvironmentId = ($EnvironmentId -replace '-', '').ToLowerInvariant()
+	if ($compactEnvironmentId.Length -ne 32) {
+		throw "Environment ID '$EnvironmentId' is not a valid GUID. Cannot derive Power Platform environment API host."
+	}
+
+	return "$($compactEnvironmentId.Substring(0, 30)).$($compactEnvironmentId.Substring(30, 2)).environment.api.powerplatform.com"
+}
+
+function Add-CspConnectSources {
+	param(
+		[Parameter(Mandatory)][string]$CspValue,
+		[Parameter(Mandatory)][string[]]$Sources
+	)
+
+	$directives = @($CspValue -split ';' | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+	$connectIndex = -1
+	for ($i = 0; $i -lt $directives.Count; $i++) {
+		if ($directives[$i] -match '^connect-src(\s|$)') {
+			$connectIndex = $i
+			break
+		}
+	}
+
+	if ($connectIndex -lt 0) {
+		$directives += "connect-src 'self' $($Sources -join ' ')"
+		return ($directives -join '; ')
+	}
+
+	$connectParts = [System.Collections.Generic.List[string]]::new()
+	$existingSources = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+	foreach ($part in @($directives[$connectIndex] -split '\s+' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })) {
+		$connectParts.Add($part)
+		if ($part -ne 'connect-src') { [void]$existingSources.Add($part) }
+	}
+
+	foreach ($source in $Sources) {
+		if (-not $existingSources.Contains($source)) {
+			$connectParts.Add($source)
+			[void]$existingSources.Add($source)
+		}
+	}
+
+	$directives[$connectIndex] = ($connectParts -join ' ')
+	return ($directives -join '; ')
+}
+
+function Set-SiteAgentCspSetting {
+	if ([string]::IsNullOrWhiteSpace($EnvironmentId)) {
+		throw 'Cannot ensure site-agent CSP because no PAC environment ID was resolved. Pass -EnvironmentId or authenticate with PAC CLI.'
+	}
+
+	$environmentApiHost = Get-PowerPlatformEnvironmentApiHost -EnvironmentId $EnvironmentId
+	$requiredConnectSources = @(
+		"https://$environmentApiHost",
+		'https://directline.botframework.com',
+		'https://*.directline.botframework.com',
+		'wss://directline.botframework.com',
+		'wss://*.directline.botframework.com'
+	)
+
+	$settingName = 'HTTP/Content-Security-Policy'
+	$encodedFilter = [System.Uri]::EscapeDataString("mspp_name eq '$settingName' and _mspp_websiteid_value eq $SiteId")
+	$existing = @(Invoke-DataverseCollection -Uri "$api/mspp_sitesettings?`$select=mspp_sitesettingid,mspp_name,mspp_value,_mspp_websiteid_value&`$filter=$encodedFilter")
+	$defaultCsp = "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://content.powerapps.com; style-src 'self' 'unsafe-inline' https://content.powerapps.com; img-src 'self' data: https://content.powerapps.com; font-src 'self' data: https://content.powerapps.com https://*.cdn.office.net https://cdn.jsdelivr.net; connect-src 'self' https://content.powerapps.com https://*.events.data.microsoft.com; frame-ancestors 'self'; form-action 'self' https:; upgrade-insecure-requests"
+
+	if ($existing.Count -eq 0) {
+		$newValue = Add-CspConnectSources -CspValue $defaultCsp -Sources $requiredConnectSources
+		$body = @{
+			mspp_name = $settingName
+			mspp_value = $newValue
+			'mspp_websiteid@odata.bind' = "/mspp_websites($SiteId)"
+		} | ConvertTo-Json -Depth 5
+		Invoke-RestMethod -Uri "$api/mspp_sitesettings" -Headers $headers -Method POST -Body $body | Out-Null
+		Write-Host "Created site setting $settingName with site-agent connect-src sources for $environmentApiHost"
+		return
+	}
+
+	foreach ($setting in $existing) {
+		$newValue = Add-CspConnectSources -CspValue ([string]$setting.mspp_value) -Sources $requiredConnectSources
+		if ($newValue -ne [string]$setting.mspp_value) {
+			$body = @{ mspp_value = $newValue } | ConvertTo-Json -Depth 5
+			Invoke-RestMethod -Uri "$api/mspp_sitesettings($($setting.mspp_sitesettingid))" -Headers $headers -Method PATCH -Body $body | Out-Null
+			Write-Host "Updated site setting $settingName with site-agent connect-src sources for $environmentApiHost"
+		}
+		else {
+			Write-Host "Site setting $settingName already allows site-agent connect-src sources for $environmentApiHost"
+		}
+	}
+}
+
 $roleComponents = @(Get-RoleComponents)
 $resolvedRoleIds = @(Resolve-RoleIds -roleComponents $roleComponents -names $RoleNames -ids $RoleIds)
 if ($resolvedRoleIds.Count -eq 0) {
@@ -287,6 +390,10 @@ Invoke-RestMethod -Uri "$api/powerpagecomponents($($botConsumer.powerpagecompone
 
 if ($EnsureSiteAgentEnabled) {
 	Set-SiteAgentEnabledSetting
+}
+
+if ($EnsureSiteAgentCsp) {
+	Set-SiteAgentCspSetting
 }
 
 $roleNamesById = @{}

@@ -21,7 +21,7 @@
         "deploy": "npm run build && pac pages upload-code-site --rootPath . && npm run permissions:patch-roles",
         "sync": "pwsh -NoProfile -File ./scripts/site-admin/sync-power-pages-site.ps1",
         "permissions:patch-roles": "pwsh -NoProfile -File ./scripts/permissions/patch-table-permission-roles.ps1",
-        "powerpages-site-agent:patch-roles": "pwsh -NoProfile -File ./scripts/permissions/patch-site-agent-roles.ps1",
+        "powerpages-site-agent:patch-roles": "pwsh -NoProfile -File ./scripts/permissions/patch-site-agent-roles.ps1 -EnsureSiteAgentCsp",
         "powerpages-site-agent:customize-ve-vm": "pwsh -NoProfile -File ./scripts/site-agent/customize-ve-vm-site-agent.ps1",
         "powerpages-site-agent:configure-advanced": "pwsh -NoProfile -File ./scripts/site-agent/configure-site-agent-advanced.ps1",
         "site:restart": "pwsh -NoProfile -File ./scripts/site-admin/restart-power-pages-site.ps1"
