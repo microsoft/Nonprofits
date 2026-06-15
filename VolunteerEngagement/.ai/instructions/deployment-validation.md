@@ -12,7 +12,9 @@ Site agent role patching and configuration are separate, deliberate steps, not p
 
 The new Volunteer Engagement site is deployed from `Portal-EDM` using the existing npm and PAC CLI flow.
 
-The deployment can target an environment where the site already exists. It can also start from local site metadata when the site is not listed yet, but if the platform rejects the upload because the site must be provisioned/imported first, create or import the site, run `npm run sync`, and retry.
+The deployment can target an environment where the site already exists. It can also start as a fresh install when no Power Pages website records exist yet. In that case, do not run `npm run sync` or resolver-based helper scripts before the first `npm run deploy`; let `pac pages upload-code-site` create the code-site website record from the local metadata first.
+
+After the site exists, all post-deploy helper scripts must resolve the target by website record ID, not display name. This matters when a legacy Volunteer Engagement site and the new Enhanced/code-site deployment have the same name. If the platform rejects upload because the site must be provisioned/imported first, create or import the site, run `npm run sync` from the intended website record ID, and retry.
 
 ## Environment selection
 
@@ -23,10 +25,9 @@ From `Portal-EDM`:
 ```shell
 pac auth list
 pac auth select --index <index>
-npm run sync
 ```
 
-Confirm the selected environment is the intended target before deployment.
+Confirm the selected environment is the intended target before deployment. For an existing Portal-EDM site, run `npm run sync` after selecting the environment to refresh local metadata. For a fresh install into an environment with no site records yet, skip sync until after the first deploy and manual reactivation.
 
 ## Unblock JavaScript file uploads
 

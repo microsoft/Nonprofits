@@ -136,24 +136,13 @@ function Resolve-PowerPagesWebsiteRecordId {
 	$localWebsiteRecordId = if ($websiteMetadata -and -not [string]::IsNullOrWhiteSpace([string]$websiteMetadata.Id)) { ([string]$websiteMetadata.Id).Trim() } else { $null }
 	$resolvedSiteName = Get-PortalSiteName -SiteName $SiteName -ProjectConfigPath $ProjectConfigPath
 	$sites = @(Get-PacPowerPagesSites)
-	$matches = @($sites | Where-Object { $_.FriendlyName -eq $resolvedSiteName })
 	$localIdMatches = if ($localWebsiteRecordId) { @($sites | Where-Object { $_.WebsiteRecordId -eq $localWebsiteRecordId }) } else { @() }
 
 	if ($localWebsiteRecordId) {
 		if ($localIdMatches.Count -eq 0) {
-			if ($matches.Count -eq 1) {
-				Write-Warning "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment. Using the single site named '$resolvedSiteName' instead: $($matches[0].WebsiteRecordId). Run npm run sync after deployment to refresh website.yml."
-				return $matches[0].WebsiteRecordId
-			}
-
 			$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
 			if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
-			if ($matches.Count -gt 1) {
-				$matchingIds = ($matches | ForEach-Object { $_.WebsiteRecordId }) -join ', '
-				throw "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment. Multiple sites named '$resolvedSiteName' were found: $matchingIds. Run npm run sync from the intended site ID or pass -WebsiteRecordId/-SiteId."
-			}
-
-			throw "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment and no site named '$resolvedSiteName' was found. Run npm run sync after selecting the intended environment, or pass -WebsiteRecordId/-SiteId with a website ID from that environment. Available sites: $availableSites."
+			throw "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment. Scripts do not fall back to display name because legacy and Enhanced sites can share the same name. For a fresh install, run npm run deploy first so upload-code-site creates the website record, then reactivate and sync. For an existing site, select the intended environment or pass -WebsiteRecordId/-SiteId explicitly. Configured site name: '$resolvedSiteName'. Available sites: $availableSites."
 		}
 
 		if ($localIdMatches.Count -gt 1) {
@@ -168,19 +157,9 @@ function Resolve-PowerPagesWebsiteRecordId {
 		return $localWebsiteRecordId
 	}
 
-	if ($matches.Count -eq 0) {
-		$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
-		if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
-		throw "Power Pages site '$resolvedSiteName' was not found in the selected PAC environment and no local website ID is available. Restore .powerpages-site/website.yml or pass -WebsiteRecordId/-SiteId for the intended target. Available sites: $availableSites."
-	}
-
-	if ($matches.Count -gt 1) {
-		$matchingIds = ($matches | ForEach-Object { $_.WebsiteRecordId }) -join ', '
-		throw "Multiple Power Pages sites named '$resolvedSiteName' were found in the selected PAC environment: $matchingIds. Sync from the intended site ID first or pass -WebsiteRecordId/-SiteId to choose one."
-	}
-
-	Write-Host "Resolved Power Pages site '$resolvedSiteName' to website record ID $($matches[0].WebsiteRecordId)"
-	return $matches[0].WebsiteRecordId
+	$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
+	if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
+	throw "Could not resolve a Power Pages website record ID because .powerpages-site/website.yml has no id. Scripts do not select by display name because legacy and Enhanced sites can share the same name. For a fresh install, run npm run deploy first so upload-code-site creates the website record, then reactivate and sync. For an existing site, restore/sync .powerpages-site/website.yml from the intended site or pass -WebsiteRecordId/-SiteId explicitly. Configured site name: '$resolvedSiteName'. Available sites: $availableSites."
 }
 
 function Get-PacOrgInfo {
