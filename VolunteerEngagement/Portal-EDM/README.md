@@ -11,7 +11,7 @@ Review the official Power Pages guidance for creating and deploying SPA code sit
 - [PAC CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) version 1.44.x or later installed and authenticated to the desired target environment.
 - [JavaScript file uploads](https://learn.microsoft.com/en-us/power-pages/configure/create-code-sites#allow-javascript-file-uploads) are allowed in the target Dataverse environment.
 - [Common Data Model for Nonprofits](../../CommonDataModelforNonprofits/README.md) and [Volunteer Management](../../VolunteerManagement/README.md) are installed and configured in the target environment.
-- Node.js 24 LTS recommended. The supported engine range is `>=20.18.1 <25`.
+- Node.js 24 LTS recommended. The supported engine range is `>=20.18.1`.
 - PowerShell 7+ for helper scripts.
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or Az PowerShell signed in to the target tenant: required for `npm run site:restart`, `scripts/site-admin/remove-power-pages-site.ps1`, and the `powerpages-site-agent:*` Dataverse helper scripts.
 
@@ -97,9 +97,11 @@ npm run deploy
 
 Builds the project, uploads JS, CSS, and web templates via `pac pages upload-code-site`, and patches table-permission web-role assignments. Site agent role patching is a separate, deliberate step described in [Power Pages site agent](#power-pages-site-agent).
 
-For a fresh deployment, run `npm run deploy` after the target environment and prerequisites are ready. The command builds the SPA and uploads the code site by using `powerpages.config.json`. After the first successful deployment, run `npm run sync` to refresh local metadata from the environment.
+For a fresh deployment, run `npm run deploy` after the target environment and prerequisites are ready. The command builds the SPA and uploads the code site by using `powerpages.config.json`.
 
-After the initial deployment, the site can appear in Power Pages under **Inactive sites**. In [Power Pages](https://make.powerpages.microsoft.com/), open the target environment, select **Inactive sites**, select the Volunteer Engagement site, and then select **Reactivate**. For more information, see [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
+After the initial deployment, the site can appear in Power Pages under **Inactive sites** and does not have an assigned, usable URL until it is reactivated. In [Power Pages](https://make.powerpages.microsoft.com/), open the target environment, select **Inactive sites**, select the Volunteer Engagement site, and then select **Reactivate**. Do not run `npm run site:restart`, rely on PAC/API portal URLs, or start browser validation until reactivation is complete. For more information, see [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
+
+After reactivation, run `npm run sync` to refresh local metadata from the environment, then run `npm run site:restart` and validate the site in a browser.
 
 ## Validate
 
@@ -109,9 +111,10 @@ Before deploying, run:
 npm run build
 npm run lint
 npm run test
+pwsh -NoProfile -File ./scripts/localization/check-strings.ps1
 ```
 
-After deployment, validate the Volunteer Engagement flows in a browser:
+After deployment and reactivation, validate the Volunteer Engagement flows in a browser:
 
 - Home page loads.
 - Opportunity listing, search, and filtering work.
@@ -121,6 +124,8 @@ After deployment, validate the Volunteer Engagement flows in a browser:
 - Authenticated users can apply or register.
 - My engagements and profile flows load for the signed-in user.
 - Required role-based visibility and table permissions work as expected.
+
+For localized sites, confirm the deployed page contains `#ve-bootstrap-data` and that `window.__VE_LOCALE`, `window.__VE_LANGUAGES`, and `window.__VE_STRINGS` are populated for the active language. Metadata-only snippet checks are not enough to prove the runtime is localized.
 
 ### Power Pages asset caching
 
@@ -145,7 +150,7 @@ When validating a deployment, do not rely only on a normal page refresh. Use a c
 | `npm run powerpages-site-agent:customize-ve-vm` | Adds Portal-EDM VE/VM Dataverse knowledge sources to the Power Pages site agent |
 | `npm run powerpages-site-agent:configure-advanced` | Applies JSON-defined Copilot Studio Overview instructions and Knowledge Source components to the Power Pages site agent |
 | `npm run site:restart` | Restarts the Power Pages site. Requires [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli); run `az login` first. |
-| `npm run sync` | Resolves the configured site in the selected PAC environment and downloads code-site metadata to `.powerpages-site/` |
+| `npm run sync` | After reactivation, resolves the configured site in the selected PAC environment and downloads code-site metadata to `.powerpages-site/` |
 
 ## Power Pages site agent
 

@@ -1,6 +1,6 @@
 # Volunteer Engagement Operational Notes
 
-This file is a compact source-of-truth map for humans and AI assistants. It does not replace the detailed AI migration instructions in `../../.ai` and `../../.github`, or the source-local coding guidance in `../src/.ai`; it records current `Portal-EDM` facts that are risky to infer from legacy Volunteer Engagement context.
+This file is a compact source-of-truth map for humans and AI assistants. It does not replace the detailed AI migration and coding guidance in `../../.ai` and `../../.github`; it records current `Portal-EDM` facts that are risky to infer from legacy Volunteer Engagement context.
 
 ## Current SPA Routes
 

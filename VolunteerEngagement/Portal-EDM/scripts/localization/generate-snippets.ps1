@@ -5,7 +5,8 @@
 .DESCRIPTION
   Reads fallback.ts to extract all translation keys and their English values,
   then creates the .powerpages-site/content-snippets/ folder structure for each key.
-  Each snippet gets a deterministic GUID based on its key name.
+    English snippets preserve the existing deterministic GUID based on key name.
+    Non-English snippets include the language code in the deterministic GUID seed.
 
   When -Key and -Value are provided, the new string is added to fallback.ts
   and then all snippets and the site setting are regenerated.
@@ -82,9 +83,9 @@ $content = Get-Content $fallbackPath -Raw -Encoding utf8
 
 $entries = [System.Collections.Generic.List[hashtable]]::new()
 $regex = [regex]"'(MSVE_SPA/[^']+)':\s*'([^']*)'"
-$matches = $regex.Matches($content)
+$fallbackMatches = $regex.Matches($content)
 
-foreach ($m in $matches) {
+foreach ($m in $fallbackMatches) {
     $entries.Add(@{
         Key   = $m.Groups[1].Value
         Value = $m.Groups[2].Value
@@ -122,6 +123,16 @@ function Get-DeterministicGuid {
     ).ToString()
 }
 
+function Get-SnippetGuidSeed {
+    param(
+        [string]$Key,
+        [string]$Language
+    )
+
+    if ($Language -eq "en-US") { return $Key }
+    return "${Key}:${Language}"
+}
+
 # ── Helper: key to folder name ────────────────────────────────────────
 function Get-FolderName {
     param([string]$Key)
@@ -146,7 +157,7 @@ foreach ($entry in $entries) {
 
     $folderName = Get-FolderName $key
     $fileName = Get-FileName $key
-    $guid = Get-DeterministicGuid $key
+    $guid = Get-DeterministicGuid (Get-SnippetGuidSeed -Key $key -Language $Language)
 
     $snippetDir = Join-Path $snippetsDir $folderName
     $langDir = Join-Path $snippetDir $Language

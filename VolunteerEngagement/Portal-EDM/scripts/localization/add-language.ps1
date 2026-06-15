@@ -3,14 +3,17 @@
   Add a new language to the Volunteer Engagement SPA.
 
 .DESCRIPTION
-  Clones all MSVE_SPA English Content Snippets AND all en-US Content Pages
-  for a new language. Creates the folder structures under
-  .powerpages-site/content-snippets/ and .powerpages-site/web-pages/
-  with the target language code.
+    Clones all MSVE_SPA English Content Snippets and all en-US Content Page
+    metadata for a new language. Creates the folder structures under
+    .powerpages-site/content-snippets/ and .powerpages-site/web-pages/
+    with the target language code.
 
   Content Pages are required so Power Pages serves the correct web template
   for the new language URL prefix (e.g. /fr-FR/). Without them, the Liquid
   script block that injects __VE_STRINGS is never executed.
+
+    The SPA shell, assets, and bootstrap are owned by the MSVE_Home web template.
+    Localized page copy files should not contain the built Vite document.
 
   Partners then translate the .value.html snippet files and upload via pac pages.
 
@@ -19,8 +22,13 @@
 
 .PARAMETER LanguageId
   Optional. The Dataverse mspp_websitelanguageid for the target language.
-  If omitted, the script auto-discovers it via pac org fetch.
+    If omitted, the script auto-discovers it via pac org fetch scoped to the
+    target Power Pages website record.
   The language must already be enabled in Power Pages Admin.
+
+.PARAMETER WebsiteRecordId
+    Optional. The Dataverse mspp_websiteid for the target Power Pages site.
+    If omitted, the script resolves it from local site metadata or PAC site list.
 
 .EXAMPLE
   # Add French (auto-discovers GUID from Dataverse)
@@ -36,28 +44,70 @@ param(
     [Parameter(Mandatory)]
     [string]$LanguageCode,
 
+    [Alias("SiteId")]
+    [string]$WebsiteRecordId,
+
+    [string]$SiteName,
+
+    [string]$ProjectConfigPath,
+
     [string]$LanguageId
 )
 
 $ErrorActionPreference = "Stop"
 
+. (Join-Path $PSScriptRoot '..\shared\portal-config.ps1')
+
 $repoRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
 $snippetsDir = Join-Path $repoRoot "Portal-EDM/.powerpages-site/content-snippets"
 
-# ── Auto-discover LanguageId from Dataverse if not provided ───────────
-if (-not $LanguageId) {
-    Write-Host "Looking up language '$LanguageCode' in Dataverse..." -ForegroundColor Cyan
-    $fetchXml = "<fetch><entity name='mspp_websitelanguage'><attribute name='mspp_websitelanguageid'/><attribute name='mspp_languagecode'/><filter><condition attribute='mspp_languagecode' operator='eq' value='$LanguageCode'/></filter></entity></fetch>"
-    $result = pac org fetch -x $fetchXml 2>&1
-    $guidMatch = [regex]::Match(($result | Out-String), '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-    if ($guidMatch.Success) {
-        $LanguageId = $guidMatch.Groups[1].Value
-        Write-Host "  Found: $LanguageId" -ForegroundColor Green
-    } else {
-        Write-Error "Language '$LanguageCode' not found in Dataverse. Enable it in Power Pages Admin first, or pass -LanguageId manually."
-        return
-    }
+$WebsiteRecordId = Resolve-PowerPagesWebsiteRecordId -WebsiteRecordId $WebsiteRecordId -SiteName $SiteName -ProjectConfigPath $ProjectConfigPath
+Write-Host "Target website record ID: $WebsiteRecordId" -ForegroundColor Cyan
+
+function ConvertTo-FetchXmlValue {
+    param([string]$Value)
+    return [System.Security.SecurityElement]::Escape($Value)
 }
+
+function Resolve-WebLanguageId {
+    param(
+        [Parameter(Mandatory)][string]$LanguageCode,
+        [Parameter(Mandatory)][string]$WebsiteRecordId,
+        [string]$LanguageId
+    )
+
+    $languageCodeValue = ConvertTo-FetchXmlValue $LanguageCode
+    $websiteRecordIdValue = ConvertTo-FetchXmlValue $WebsiteRecordId
+    $languageIdCondition = ''
+    if (-not [string]::IsNullOrWhiteSpace($LanguageId)) {
+        $languageIdValue = ConvertTo-FetchXmlValue $LanguageId
+        $languageIdCondition = "<condition attribute='mspp_websitelanguageid' operator='eq' value='$languageIdValue'/>"
+    }
+
+    $fetchXml = "<fetch><entity name='mspp_websitelanguage'><attribute name='mspp_websitelanguageid'/><filter type='and'><condition attribute='mspp_languagecode' operator='eq' value='$languageCodeValue'/><condition attribute='mspp_websiteid' operator='eq' value='$websiteRecordIdValue'/>$languageIdCondition</filter></entity></fetch>"
+    $result = pac org fetch -x $fetchXml 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not query website language '$LanguageCode' for website $WebsiteRecordId. $($result | Out-String)"
+    }
+
+    $languageIds = @([regex]::Matches(($result | Out-String), '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})') |
+        ForEach-Object { $_.Groups[1].Value.ToLowerInvariant() } |
+        Sort-Object -Unique)
+
+    if ($languageIds.Count -eq 0) {
+        throw "Language '$LanguageCode' was not found for website $WebsiteRecordId. Enable it in Power Pages Admin first."
+    }
+    if ($languageIds.Count -gt 1) {
+        throw "Language '$LanguageCode' resolved to multiple mspp_websitelanguage records for website ${WebsiteRecordId}: $($languageIds -join ', '). Pass -LanguageId to choose one."
+    }
+
+    return $languageIds[0]
+}
+
+# ── Auto-discover LanguageId from Dataverse if not provided ───────────
+Write-Host "Resolving language '$LanguageCode' for website $WebsiteRecordId..." -ForegroundColor Cyan
+$LanguageId = Resolve-WebLanguageId -LanguageCode $LanguageCode -WebsiteRecordId $WebsiteRecordId -LanguageId $LanguageId
+Write-Host "  Language record ID: $LanguageId" -ForegroundColor Green
 
 # ── Ensure MultiLanguage/DisplayLanguageCodeInURL is True ─────────────
 $siteSettingsDir = Join-Path $repoRoot "Portal-EDM/.powerpages-site/site-settings"
@@ -173,6 +223,7 @@ Write-Host "Done! Created $created snippet(s) for '$LanguageCode', skipped $skip
 $webPagesDir = Join-Path $repoRoot "Portal-EDM/.powerpages-site/web-pages"
 $pagesCreated = 0
 $pagesSkipped = 0
+$pageCopiesCleared = 0
 
 $webPageDirs = Get-ChildItem $webPagesDir -Directory |
     Where-Object { Test-Path (Join-Path $_.FullName "content-pages/en-US") }
@@ -222,6 +273,10 @@ foreach ($pageDir in $webPageDirs) {
         if ($sidecar) {
             $targetSidecar = Join-Path $targetDir $sidecar.Name
             $content = [System.IO.File]::ReadAllText($sidecar.FullName, [System.Text.UTF8Encoding]::new($false))
+            if ($pattern -eq "*.webpage.copy.html" -and $content -match '<!DOCTYPE html|/assets/index\.js|<div id="root"') {
+                $content = ''
+                $pageCopiesCleared++
+            }
             [System.IO.File]::WriteAllText($targetSidecar, $content, [System.Text.UTF8Encoding]::new($false))
         }
     }
@@ -230,6 +285,12 @@ foreach ($pageDir in $webPageDirs) {
 }
 
 Write-Host "Done! Created $pagesCreated content page(s), skipped $pagesSkipped existing." -ForegroundColor Green
+if ($pageCopiesCleared -gt 0) {
+    Write-Host "Cleared $pageCopiesCleared cloned page copy file(s) that contained the built SPA shell." -ForegroundColor Green
+}
+Write-Host "Website record ID: $WebsiteRecordId" -ForegroundColor Gray
+Write-Host "Language code: $LanguageCode" -ForegroundColor Gray
+Write-Host "Language record ID: $LanguageId" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
 Write-Host "  1. Translate each .value.html file in the '$LanguageCode' folders:" -ForegroundColor Yellow

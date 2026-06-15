@@ -8,6 +8,7 @@ The SPA uses:
 
 - npm, not Bun.
 - Node.js `>=20.18.1`.
+- PAC CLI `1.44.x` or later.
 - React 18.
 - TypeScript.
 - Vite.

@@ -10,7 +10,7 @@ For a fresh Volunteer Engagement deployment (no legacy site), follow `Portal-EDM
 2. `deployment-validation.md` — environment selection, JS upload unblocking, deploy, reactivation, restart, site URL lookup, browser validation.
 3. `site-agent-setup.md` — site agent role patching, knowledge sources, advanced configuration.
 
-The typical flow is: environment selection → unblock JS uploads → install dependencies → build/lint/test → deploy → reactivate site (manual) → restart → validate in browser → site agent setup.
+The typical flow is: environment selection → unblock JS uploads → install dependencies → build/lint/test → deploy → reactivate site (manual) → sync metadata → restart → validate in browser → site agent setup. Do not restart or use PAC/API-returned URLs before the fresh site is reactivated.
 
 ## Migration from legacy VE
 

@@ -114,7 +114,22 @@ function Resolve-PowerPagesWebsiteRecordId {
 	)
 
 	if (-not [string]::IsNullOrWhiteSpace($WebsiteRecordId)) {
-		return $WebsiteRecordId.Trim()
+		$explicitWebsiteRecordId = $WebsiteRecordId.Trim()
+		$sites = @(Get-PacPowerPagesSites)
+		$explicitIdMatches = @($sites | Where-Object { $_.WebsiteRecordId -eq $explicitWebsiteRecordId })
+
+		if ($explicitIdMatches.Count -eq 0) {
+			$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
+			if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
+			throw "Power Pages website ID $explicitWebsiteRecordId was not found in the selected PAC environment. Select the intended environment or pass a website ID from that environment. Available sites: $availableSites."
+		}
+
+		if ($explicitIdMatches.Count -gt 1) {
+			throw "PAC CLI returned duplicate entries for website ID $explicitWebsiteRecordId. Check the selected PAC environment before continuing."
+		}
+
+		Write-Host "Validated Power Pages site '$($explicitIdMatches[0].FriendlyName)' using explicit website ID $explicitWebsiteRecordId"
+		return $explicitWebsiteRecordId
 	}
 
 	$websiteMetadata = Get-LocalPowerPagesWebsiteMetadata
@@ -126,10 +141,19 @@ function Resolve-PowerPagesWebsiteRecordId {
 
 	if ($localWebsiteRecordId) {
 		if ($localIdMatches.Count -eq 0) {
+			if ($matches.Count -eq 1) {
+				Write-Warning "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment. Using the single site named '$resolvedSiteName' instead: $($matches[0].WebsiteRecordId). Run npm run sync after deployment to refresh website.yml."
+				return $matches[0].WebsiteRecordId
+			}
+
 			$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
 			if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
-			Write-Warning "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not listed in the selected PAC environment. Continuing with the local ID so first deploy/import flows can proceed. Available sites: $availableSites."
-			return $localWebsiteRecordId
+			if ($matches.Count -gt 1) {
+				$matchingIds = ($matches | ForEach-Object { $_.WebsiteRecordId }) -join ', '
+				throw "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment. Multiple sites named '$resolvedSiteName' were found: $matchingIds. Run npm run sync from the intended site ID or pass -WebsiteRecordId/-SiteId."
+			}
+
+			throw "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment and no site named '$resolvedSiteName' was found. Run npm run sync after selecting the intended environment, or pass -WebsiteRecordId/-SiteId with a website ID from that environment. Available sites: $availableSites."
 		}
 
 		if ($localIdMatches.Count -gt 1) {

@@ -25,6 +25,10 @@ Use the downloaded site export and any provided localization files to understand
 
 Do not duplicate the old full-portal-per-language implementation unless explicitly requested.
 
+## Runtime localization validation
+
+When adding or validating a language, check more than metadata coverage. The active Power Pages template must emit `#ve-bootstrap-data`, language rows, and snippet rows so `src/bootstrap/portalBootstrap.ts` can initialize `window.__VE_LOCALE`, `window.__VE_LANGUAGES`, and `window.__VE_STRINGS`. Run `Portal-EDM/scripts/localization/check-strings.ps1` locally, then confirm the same globals in the deployed localized page.
+
 ## Accessibility standard
 
 Target WCAG AA. Prefer the current Microsoft accessibility bar where it is stricter.

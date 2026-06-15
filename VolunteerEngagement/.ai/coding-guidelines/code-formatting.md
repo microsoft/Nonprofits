@@ -56,6 +56,26 @@ Key ESLint rules:
 - Includes React components, contexts, hooks, services, and type files
 - Covers `.ts`, `.tsx` file extensions
 
+## ⚙️ Portal-EDM Service Conventions
+
+The current SPA uses React 18, Fluent UI v9, `react-router-dom` v6, Vite, npm, and Power Pages Web API. Do not introduce Bun, TanStack Router, shadcn/ui, Tailwind, React Server Components, or React 19-only patterns unless the project deliberately adopts them.
+
+### Service Layer
+
+- Keep domain API access in `Portal-EDM/src/services/`, one service file per domain where practical.
+- Use the existing helpers in `src/services/apiClient.ts` instead of creating new fetch wrappers.
+- POST, PATCH, and DELETE requests require the Power Pages anti-forgery token sent as `__RequestVerificationToken`.
+- For `@odata.bind`, use the exact Dataverse relationship `NavigationPropertyName` casing. Do not guess lowercase names.
+- PATCH payloads must contain only known editable fields. Do not spread Web API response objects into PATCH bodies because they include OData metadata and formatted values.
+- Wrap role-dependent reads that may return 403 and return an intentional empty state only when that behavior is expected for the flow.
+
+### Power Pages Metadata
+
+- Every Dataverse table accessed through `/_api` needs matching `Webapi/<table>/enabled`, `Webapi/<table>/fields`, and table-permission metadata under `Portal-EDM/.powerpages-site`.
+- For `@odata.bind` associations, confirm the source table has append rights and the target table has append-to rights.
+- After `pac pages upload-code-site`, run the project role patch flow through `npm run deploy` or `npm run permissions:patch-roles`; do not invent a separate upload flow.
+- Do not run `pac` commands until the target environment has been confirmed.
+
 ## 🚀 Automatic Formatting Setup
 
 ### VS Code Integration

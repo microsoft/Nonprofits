@@ -6,9 +6,11 @@
 - `shared/`: shared script helpers, including PAC environment and site ID resolution.
 - `site-admin/`: Power Pages site operations such as restart and removal.
 
-Scripts resolve the Power Pages website record ID from the selected PAC environment. When `../.powerpages-site/website.yml` has an `id`, that ID is the stable target; the site name may differ if it was renamed in Power Pages. If local site metadata is missing, `../powerpages.config.json` supplies the fallback site name. Script parameters can still override the resolved site ID for one-off runs.
+Scripts resolve the Power Pages website record ID from the selected PAC environment. When `../.powerpages-site/website.yml` has an `id`, scripts validate that ID against the selected environment before using it; the site name may differ if it was renamed in Power Pages. If that local ID is stale but the selected environment has exactly one site with the configured name, scripts use that single match and ask you to sync afterward. If local site metadata is missing, `../powerpages.config.json` supplies the fallback site name. Script parameters can still override the resolved site ID for one-off runs, but explicit IDs are also validated against the selected environment.
 
-If the selected environment does not list the local website ID yet, scripts continue with the ID from `../.powerpages-site/website.yml` so first deploy/import flows can proceed. They do not switch to another same-name site automatically.
+If the selected environment does not list the local website ID and site-name matching is ambiguous or missing, scripts stop instead of using committed metadata from another environment. For a fresh code-site deployment, run `npm run deploy` first, reactivate the site in Power Pages, then run `npm run sync` so `../.powerpages-site/website.yml` reflects the target environment.
+
+Do not run `npm run site:restart` before a fresh deployment has been reactivated. PAC CLI and the Power Platform API can list portal host records or stale URLs before the newly installed site has an assigned, usable URL.
 
 Package scripts in `package.json` call these helpers:
 

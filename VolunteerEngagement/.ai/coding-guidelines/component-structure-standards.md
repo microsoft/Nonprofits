@@ -1,33 +1,43 @@
 # Component Structure Standards
 
-## Strict Component Pattern
+## Component Pattern
 
-Every component in the project **MUST** follow this exact structure:
+Components and pages should follow the existing folder-per-component pattern when they contain meaningful styles, local types, or reusable implementation details:
 
 ```
 ComponentName/
   ├── index.ts                 # Public exports only
   ├── ComponentName.tsx        # Component implementation
-  ├── ComponentName.types.ts   # TypeScript interfaces/types
-  ├── ComponentName.styles.ts  # Styled components/makeStyles
-  └── ComponentName.model.ts   # (optional) Business logic, helpers, constants
+  ├── ComponentName.styles.ts  # makeStyles hook
+  ├── ComponentName.types.ts   # Optional: local interfaces/types/constants
+  └── ComponentName.model.ts   # Optional: business logic, helpers, constants
 ```
+
+Small pages or components may omit `.types.ts` or `.model.ts` when there are no local types, constants, or helpers. Preserve established local patterns when editing existing components.
 
 ## Naming Conventions
 
 - **Folder name**: PascalCase matching the component name exactly
 - **File naming**: All files prefixed with the component name
 - **Style files**: Always use `.styles.ts` (NOT `.styles.tsx`)
-- **Types files**: Always use `.types.ts` for all type definitions
+- **Types files**: Use `.types.ts` for local type definitions when needed
 - **Model files**: Use `.model.ts` for business logic (optional, when needed)
 
 ## File Content Standards
 
 ### index.ts
 
+Export the component and any public types from the folder. Match the existing export style for that component area:
+
 ```typescript
-export * from './ComponentName.types';
-export * from './ComponentName';
+export { ComponentName } from './ComponentName';
+export type { ComponentNameProps } from './ComponentName.types';
+```
+
+For default-export pages, a default barrel export is acceptable:
+
+```typescript
+export { default } from './ComponentName';
 ```
 
 ### ComponentName.types.ts
@@ -45,59 +55,41 @@ export interface ComponentNameProps {
 ```typescript
 import React from 'react';
 
-// Types
 import type { ComponentNameProps } from './ComponentName.types';
+import { useStyles } from './ComponentName.styles';
 
-// Styles
-import { useComponentNameStyles } from './ComponentName.styles';
-
-export const ComponentName: React.FC<ComponentNameProps> = (props) => {
-	const styles = useComponentNameStyles();
+export function ComponentName(props: ComponentNameProps) {
+  const styles = useStyles();
 
 	// Component implementation
-};
+}
 ```
+
+Use functional components. Prefer the local component style already present in the file or neighboring components; do not convert between `function`, `const`, default export, and named export just for style.
 
 ### ComponentName.styles.ts
 
 ```typescript
 import { makeStyles, tokens } from '@fluentui/react-components';
-import type { CSSProperties } from 'react';
 
-export const useComponentNameStyles = makeStyles({
+export const useStyles = makeStyles({
 	root: {
 		display: 'flex',
 		gap: tokens.spacingHorizontalM,
 		// Styles
 	},
-} satisfies Record<string, CSSProperties>);
+});
 ```
 
 **Type Safety Rules:**
 
-- Add `import type { CSSProperties } from 'react'` for type checking
-- Use `satisfies Record<string, CSSProperties>` for standard styles
-- Use `satisfies Record<string, any>` if you have media queries or pseudo-selectors
-- Convert numeric CSS property values to strings: `margin: '0'`, `flex: '1'`
+- Use `makeStyles` from `@fluentui/react-components`; do not add CSS modules, Bootstrap, Tailwind, or shadcn/ui.
+- Keep style hooks in `.styles.ts`, usually exported as `useStyles` unless neighboring files use a more specific name.
+- Use Fluent UI tokens where practical.
+- Follow the project TypeScript and lint rules; add stronger style typing only when it helps and does not fight Fluent UI's accepted style syntax.
 
 ```typescript
-// ❌ Bad - Numeric values cause type errors
-export const useStyles = makeStyles({
-	container: {
-		margin: 0,
-		flex: 1,
-	},
-} satisfies Record<string, CSSProperties>);
-
-// ✅ Good - String values for type safety
-export const useStyles = makeStyles({
-	container: {
-		margin: '0',
-		flex: '1',
-	},
-} satisfies Record<string, CSSProperties>);
-
-// ✅ Good - Use 'any' for media queries/pseudo-selectors
+// Use normal makeStyles syntax for pseudo-selectors and media queries.
 export const useStyles = makeStyles({
 	container: {
 		display: 'flex',
@@ -108,7 +100,7 @@ export const useStyles = makeStyles({
 			opacity: '0.8',
 		},
 	},
-} satisfies Record<string, any>);
+});
 ```
 
 ### ComponentName.model.ts (optional)

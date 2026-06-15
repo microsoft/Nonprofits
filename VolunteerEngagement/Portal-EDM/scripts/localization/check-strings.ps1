@@ -4,10 +4,11 @@
   and every key in fallback.ts has a matching Content Snippet file.
 
 .DESCRIPTION
-  Three-way alignment check:
+    Alignment and runtime-template checks:
     1. SPA t() calls  →  fallback.ts keys  (missing = build error)
     2. fallback.ts keys  →  Content Snippets  (missing = warning)
     3. Content Snippets  →  fallback.ts keys  (orphaned = warning)
+        4. Power Pages web template emits the SPA bootstrap contract.
 
 .EXAMPLE
     .\check-strings.ps1
@@ -19,6 +20,8 @@ $repoRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -
 $srcDir = Join-Path $repoRoot "Portal-EDM/src"
 $fallbackPath = Join-Path $repoRoot "Portal-EDM/src/i18n/fallback.ts"
 $snippetsDir = Join-Path $repoRoot "Portal-EDM/.powerpages-site/content-snippets"
+$webTemplatePath = Join-Path $repoRoot "Portal-EDM/.powerpages-site/web-templates/msve_home/MSVE_Home.webtemplate.source.html"
+$webPagesDir = Join-Path $repoRoot "Portal-EDM/.powerpages-site/web-pages"
 
 $errors = 0
 $warnings = 0
@@ -132,6 +135,60 @@ if ($unusedKeys.Count -gt 0) {
     }
 } else {
     Write-Host "  All keys are referenced" -ForegroundColor Green
+}
+
+# ── 7. Check: Power Pages runtime bootstrap template ────────────────
+Write-Host ""
+Write-Host "Check 5: Power Pages runtime bootstrap" -ForegroundColor Yellow
+$bootstrapErrors = 0
+if (-not (Test-Path $webTemplatePath)) {
+    Write-Host "  ERROR: MSVE_Home web template not found: $webTemplatePath" -ForegroundColor Red
+    $errors++
+    $bootstrapErrors++
+} else {
+    $templateContent = Get-Content $webTemplatePath -Raw -Encoding utf8
+    $requiredTemplatePatterns = [ordered]@{
+        'bootstrap element #ve-bootstrap-data' = 'id="ve-bootstrap-data"'
+        'locale data attribute' = 'data-locale='
+        'language bootstrap rows' = 'data-ve-language'
+        'localized string bootstrap rows' = 'data-ve-string'
+        'MSVE_SPA/Keys site setting' = 'settings["MSVE_SPA/Keys"]'
+        'Liquid snippet lookup' = 'snippets[k]'
+        'single SPA root' = '<div id="root"></div>'
+        'SPA module script' = '/assets/index.js'
+    }
+
+    foreach ($requiredPattern in $requiredTemplatePatterns.GetEnumerator()) {
+        if ($templateContent -notmatch [regex]::Escape($requiredPattern.Value)) {
+            Write-Host "  ERROR: MSVE_Home template is missing $($requiredPattern.Key)." -ForegroundColor Red
+            $errors++
+            $bootstrapErrors++
+        }
+    }
+
+    if ($templateContent -match '\{\{\s*page\.adx_copy\s*\}\}') {
+        Write-Host "  ERROR: MSVE_Home template appends page.adx_copy, which can duplicate the SPA shell." -ForegroundColor Red
+        $errors++
+        $bootstrapErrors++
+    }
+}
+
+$shellCopyFiles = @(Get-ChildItem $webPagesDir -Recurse -Filter "*.webpage.copy.html" -ErrorAction SilentlyContinue |
+    Where-Object {
+        $copyContent = Get-Content $_.FullName -Raw -Encoding utf8
+        $copyContent -match '<!DOCTYPE html|/assets/index\.js|<div id="root"'
+    })
+
+if ($shellCopyFiles.Count -gt 0) {
+    foreach ($file in $shellCopyFiles) {
+        Write-Host "  ERROR: Page copy contains duplicate SPA shell markup: $($file.FullName)" -ForegroundColor Red
+        $errors++
+        $bootstrapErrors++
+    }
+}
+
+if ($bootstrapErrors -eq 0) {
+    Write-Host "  Runtime bootstrap template and page-copy shell checks passed" -ForegroundColor Green
 }
 
 # ── Summary ───────────────────────────────────────────────────────────

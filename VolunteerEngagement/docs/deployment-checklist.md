@@ -18,10 +18,11 @@ If `pac pages upload-code-site` fails while uploading `.js` files, confirm that 
 2. Authenticate: `pac auth create --environment <environment-url>`.
 3. Validate locally: `npm run build`, `npm run lint`, and `npm run test`.
 4. Deploy: `npm run deploy`.
-5. Refresh local metadata: `npm run sync`.
-6. If the site appears under **Inactive sites**, reactivate it. See [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
+5. In Power Pages, open **Inactive sites** and reactivate Volunteer Engagement. See [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
+6. After reactivation, refresh local metadata: `npm run sync`.
+7. Restart the site: `npm run site:restart`.
 
-## After you deploy
+## After you deploy and reactivate
 
 - [ ] Home page loads.
 - [ ] Opportunity listing, search, and filtering work.
