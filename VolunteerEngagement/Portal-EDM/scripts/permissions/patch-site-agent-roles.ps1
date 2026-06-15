@@ -48,26 +48,7 @@ if (-not $PSBoundParameters.ContainsKey('RoleNames') -and -not $PSBoundParameter
 	$RoleNames = @('Anonymous Users', 'Authenticated Users')
 }
 
-function Get-DataverseAccessTokenWithFallback([string]$ResourceUrl) {
-	$azCommand = Get-Command az -ErrorAction SilentlyContinue
-	if ($azCommand) {
-		$tokenOutput = az account get-access-token --resource $ResourceUrl --query accessToken -o tsv 2>&1
-		if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace([string]$tokenOutput)) {
-			return ([string]$tokenOutput).Trim()
-		}
-
-		Write-Host "Azure CLI token acquisition failed; trying Az PowerShell. $($tokenOutput | Out-String)" -ForegroundColor DarkYellow
-	}
-
-	try {
-		return Get-DataverseAccessToken -OrgUrl $ResourceUrl
-	}
-	catch {
-		throw "Could not get a Dataverse access token for $ResourceUrl. Sign in with az login or Connect-AzAccount for the target tenant. $($_.Exception.Message)"
-	}
-}
-
-$token = Get-DataverseAccessTokenWithFallback -ResourceUrl $OrgUrl
+$token = Get-DataverseAccessToken -OrgUrl $OrgUrl
 $headers = @{
 	Authorization    = "Bearer $token"
 	Accept           = 'application/json'

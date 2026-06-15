@@ -192,6 +192,23 @@ function Get-DataverseAccessToken {
 	)
 
 	$resourceUrl = $OrgUrl.TrimEnd('/')
+
+	# Prefer Azure CLI so the Dataverse token follows the same account and tenant the
+	# operator used for deployment, independent of global Az PowerShell state. This avoids
+	# acquiring a token for the wrong tenant when PAC and Az PowerShell are signed in to
+	# different accounts. Set $env:AZ_CLI to point at an isolated az wrapper (for example in
+	# CI) without changing the default 'az' on PATH.
+	$azCli = if (-not [string]::IsNullOrWhiteSpace($env:AZ_CLI)) { $env:AZ_CLI } else { 'az' }
+	if (Get-Command $azCli -ErrorAction SilentlyContinue) {
+		$tokenOutput = & $azCli account get-access-token --resource $resourceUrl --query accessToken -o tsv 2>&1
+		if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace([string]$tokenOutput)) {
+			return ([string]$tokenOutput).Trim()
+		}
+
+		Write-Host "Azure CLI token acquisition failed for $resourceUrl; falling back to Az PowerShell. $($tokenOutput | Out-String)" -ForegroundColor DarkYellow
+	}
+
+	# Fall back to Az PowerShell for environments where Azure CLI is unavailable.
 	$accessToken = (Get-AzAccessToken -ResourceUrl $resourceUrl -WarningAction SilentlyContinue -ErrorAction Stop).Token
 	$token = if ($accessToken -is [System.Security.SecureString]) {
 		[System.Net.NetworkCredential]::new('', $accessToken).Password
@@ -200,7 +217,7 @@ function Get-DataverseAccessToken {
 	}
 
 	if ([string]::IsNullOrWhiteSpace([string]$token)) {
-		throw "Could not get an Azure access token for $resourceUrl. Run 'Connect-AzAccount' for the same tenant as the PAC environment."
+		throw "Could not get a Dataverse access token for $resourceUrl. Sign in with 'az login' or 'Connect-AzAccount' for the same tenant as the PAC environment."
 	}
 
 	return $token
