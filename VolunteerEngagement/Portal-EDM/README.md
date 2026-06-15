@@ -95,9 +95,9 @@ The migration workflow treats `Portal-EDM` as the target baseline and uses the e
 npm run deploy
 ```
 
-Builds the project, uploads JS, CSS, and web templates via `pac pages upload-code-site`, and patches table-permission web-role assignments. Site agent role patching is a separate, deliberate step described in [Power Pages site agent](#power-pages-site-agent).
+Builds the project, uploads JS, CSS, and web templates via `pac pages upload-code-site` (configured by `powerpages.config.json`), and patches table-permission web-role assignments. Site agent role patching is a separate, deliberate step described in [Power Pages site agent](#power-pages-site-agent).
 
-For a fresh deployment, run `npm run deploy` after the target environment and prerequisites are ready. The command builds the SPA and uploads the code site by using `powerpages.config.json`.
+For a fresh deployment, run `npm run deploy` once the target environment and prerequisites are ready.
 
 After the initial deployment, the site can appear in Power Pages under **Inactive sites** and does not have an assigned, usable URL until it is reactivated. In [Power Pages](https://make.powerpages.microsoft.com/), open the target environment, select **Inactive sites**, select the Volunteer Engagement site, and then select **Reactivate**. Do not run `npm run site:restart`, rely on PAC/API portal URLs, or start browser validation until reactivation is complete. For more information, see [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
 
@@ -134,6 +134,25 @@ For localized sites, confirm the deployed page contains `#ve-bootstrap-data` and
 Power Pages can continue serving cached web-file assets after `pac pages upload-code-site` reports success. A site restart does not reliably clear browser or CDN cache for JS/CSS assets, and fixed Vite filenames are used here to avoid stale HTML pointing at missing hashed files.
 
 When validating a deployment, do not rely only on a normal page refresh. Use a cache-bypassing request such as `fetch('/assets/index.js', { cache: 'no-store' })` in the browser console to confirm the server has the new asset, or wait for the web-file cache TTL to expire before judging browser-rendered behavior.
+
+## Localization
+
+The SPA ships in English and is localization-ready. Translatable strings live in `src/i18n/fallback.ts` and are served at runtime from Power Pages content snippets. Scripts in `scripts/localization/` manage the workflow:
+
+| Script | Purpose |
+|--------|---------|
+| `generate-snippets.ps1` | Generates content-snippet metadata for every `fallback.ts` key. Adds a single key with `-Key` and `-Value`. |
+| `add-language.ps1` | Clones the English snippets and content pages for a new language code. |
+| `sync-strings.ps1` | Regenerates `fallback.ts` from the English content snippets to keep the dev fallback aligned with Dataverse. |
+| `check-strings.ps1` | Validates string coverage, snippet metadata, and the runtime bootstrap template. |
+
+Run a script with PowerShell 7+, for example:
+
+```shell
+pwsh -NoProfile -File ./scripts/localization/add-language.ps1 -LanguageCode fr-FR
+```
+
+Enable the target language in Power Pages Admin before you generate or upload localized metadata. For detailed guidance, see [.ai/instructions/localization-accessibility.md](../.ai/instructions/localization-accessibility.md).
 
 ## Troubleshooting
 

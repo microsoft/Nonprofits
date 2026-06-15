@@ -16,7 +16,7 @@ If `pac pages upload-code-site` fails while uploading `.js` files, confirm that 
 
 1. Install dependencies: `npm ci`.
 2. Authenticate: `pac auth create --environment <environment-url>`.
-3. Validate locally: `npm run build`, `npm run lint`, and `npm run test`.
+3. Validate locally: `npm run build`, `npm run lint`, and `npm run test`. For localized sites, also run `pwsh -NoProfile -File ./scripts/localization/check-strings.ps1`.
 4. Deploy: `npm run deploy`.
 5. In Power Pages, open **Inactive sites** and reactivate Volunteer Engagement. See [Reactivate sites](https://learn.microsoft.com/en-us/power-pages/admin/reactivate-website).
 6. After reactivation, refresh local metadata: `npm run sync`.
