@@ -65,6 +65,9 @@ export const useStyles = makeStyles({
 		textAlign: 'center',
 	},
 	loginPrompt: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
 		textAlign: 'center',
 		padding: '64px 24px',
 	},
