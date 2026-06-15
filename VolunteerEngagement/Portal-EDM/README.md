@@ -125,6 +125,8 @@ After deployment and reactivation, validate the Volunteer Engagement flows in a 
 - My engagements and profile flows load for the signed-in user.
 - Required role-based visibility and table permissions work as expected.
 
+If the first browser session shows unauthorized or access denied after deployment, validate with a fresh session by using an InPrivate/incognito window or signing out and back in. If the issue persists, recheck table-permission role patching and target-site metadata.
+
 For localized sites, confirm the deployed page contains `#ve-bootstrap-data` and that `window.__VE_LOCALE`, `window.__VE_LANGUAGES`, and `window.__VE_STRINGS` are populated for the active language. Metadata-only snippet checks are not enough to prove the runtime is localized.
 
 ### Power Pages asset caching
@@ -139,6 +141,7 @@ When validating a deployment, do not rely only on a normal page refresh. Use a c
 - Confirm `.powerpages-site/website.yml` points to the intended website record.
 - If `/assets/*.js` or `/assets/*.css` returns 404 after upload, verify that the hosted runtime is bound to the same website record and Home root that was uploaded.
 - If role-based table permissions are wrong after upload, rerun `npm run permissions:patch-roles`.
+- If users see unauthorized or access denied after deployment, validate with a fresh session and then recheck role patching if it persists.
 - If the Power Pages site agent is missing web roles, rerun `npm run powerpages-site-agent:patch-roles`.
 
 ## Helper scripts

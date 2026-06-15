@@ -110,6 +110,10 @@ fetch('/assets/index.css', { cache: 'no-store' })
 
 Confirm the returned assets contain the expected build output before judging browser behavior.
 
+## First-visit authorization state
+
+After the first deployment, reactivation, metadata sync, table-permission role patching, and restart, an existing browser session can still show an unauthorized or access-denied state. Treat this as a Power Pages authorization/cache timing behavior before assuming the metadata is wrong. Validate with a fresh session: use an InPrivate/incognito window, or sign out and back in, so Power Pages reevaluates the current user and web roles. If the fresh session still fails, recheck the table-permission role patch output, target website record ID, and web role metadata.
+
 ## EDM website binding check
 
 If `pac pages upload-code-site` succeeds but `/assets/index.js` or `/assets/index.css` returns 404, do not assume the Vite build is wrong. Verify that the hosted Power Pages runtime is bound to the same website record and Home root that was uploaded.

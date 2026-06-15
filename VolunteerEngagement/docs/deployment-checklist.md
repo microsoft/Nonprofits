@@ -32,4 +32,6 @@ If `pac pages upload-code-site` fails while uploading `.js` files, confirm that 
 - [ ] Authenticated users can apply or register.
 - [ ] My engagements and profile flows load for the signed-in user.
 
+- [ ] If the first browser session shows unauthorized or access denied, retry with a fresh session. See the deployment validation instructions for details.
+
 For caching behavior during validation, see the [Operations Checklist](operations-checklist.md).
