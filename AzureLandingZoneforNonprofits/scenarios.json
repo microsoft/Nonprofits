@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0",
+  "publicSurface": "cli-package",
+  "scenarios": [
+    {
+      "id": "foundation",
+      "aliases": [
+        "foundation",
+        "foundation-subscription"
+      ],
+      "displayName": "Foundation",
+      "commandFamily": "sub",
+      "entryPoint": "infra/entrypoints/direct/foundation-subscription.bicep",
+      "exampleConfigFile": "examples/commands/foundation.install-config.json",
+      "defaultParametersFile": "examples/parameters/foundation/foundation.subscription-only.parameters.json",
+      "cli": {
+        "classification": "public",
+        "publicSurface": "cli-package"
+      },
+      "requires": {
+        "subscription": true,
+        "managementGroup": false
+      },
+      "warnings": [
+        {
+          "parameter": "monthlyBudgetAmount",
+          "message": "Creating a Foundation subscription budget uses the subscription billing currency and requires the deployment principal to hold Cost Management Contributor (or Contributor / Owner) on the subscription; the subscription must also be at least ~48 hours old. Without those prerequisites, set monthlyBudgetAmount to 0 to skip the budget step — otherwise the entire deployment will fail.",
+          "requiresExplicitApproval": false
+        },
+        {
+          "parameter": "enablePrivateDnsAndEndpoints",
+          "message": "Private connectivity changes the platform access model and may require extra DNS configuration.",
+          "requiresExplicitApproval": false
+        }
+      ]
+    },
+    {
+      "id": "expanded-platform",
+      "aliases": [
+        "expanded-platform",
+        "expanded",
+        "extended-platform",
+        "extended"
+      ],
+      "displayName": "Expanded Platform",
+      "commandFamily": "tenant",
+      "entryPoint": "infra/entrypoints/direct/expanded-platform.bicep",
+      "exampleConfigFile": "examples/commands/expanded-platform.install-config.json",
+      "defaultParametersFile": "examples/parameters/expanded-platform/expanded-platform.parameters.json",
+      "cli": {
+        "classification": "public",
+        "publicSurface": "cli-package"
+      },
+      "requires": {
+        "subscription": false,
+        "managementGroup": false,
+        "parameterSubscriptions": [
+          "managementSubscriptionId",
+          "connectivitySubscriptionId"
+        ]
+      },
+      "warnings": [
+        {
+          "parameter": "monthlyBudgetAmount",
+          "message": "Creating an Expanded Platform management subscription budget uses the management subscription billing currency and requires the deployment principal to hold Cost Management Contributor (or Contributor / Owner) on that subscription; the subscription must also be at least ~48 hours old. Without those prerequisites, set monthlyBudgetAmount to 0 to skip the budget step — otherwise the entire deployment will fail.",
+          "requiresExplicitApproval": false
+        },
+        {
+          "parameter": "reserveGatewaySubnet",
+          "message": "This option only reserves the GatewaySubnet in the hub network. The Landing Zone does not deploy a VPN gateway, ExpressRoute gateway, or Azure Virtual WAN; provision the gateway separately when hybrid connectivity is required.",
+          "requiresExplicitApproval": false
+        },
+        {
+          "parameter": "enablePrivateDnsAndEndpoints",
+          "message": "Private connectivity changes the platform access model and may require extra DNS configuration.",
+          "requiresExplicitApproval": false
+        }
+      ]
+    }
+  ]
+}

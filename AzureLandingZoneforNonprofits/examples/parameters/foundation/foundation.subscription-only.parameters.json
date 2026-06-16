@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "deploymentPrefix": {
+      "value": "npalz"
+    },
+    "primaryLocation": {
+      "value": "westeurope"
+    },
+    "tags": {
+      "value": {
+        "Workload": "platform"
+      }
+    },
+    "serviceOwner": {
+      "value": "platform@example.org"
+    },
+    "monthlyBudgetAmount": {
+      "value": 0
+    },
+    "budgetContactEmails": {
+      "value": []
+    },
+    "monitoringNotificationEmails": {
+      "value": [
+        "ops@example.org"
+      ]
+    },
+    "customerPlatformAdminsGroupObjectId": {
+      "value": ""
+    },
+    "partnerOperatorsGroupObjectId": {
+      "value": ""
+    },
+    "enableSimpleNetwork": {
+      "value": false
+    },
+    "enablePrivateDnsAndEndpoints": {
+      "value": false
+    }
+  }
+}
