@@ -1,0 +1,4 @@
+description: Enables WebAPI calls to the Participation Schedule table
+id: 5d80c2ec-d9a5-4a3a-9ba0-461bfcd53623
+name: Webapi/msnfp_participationschedule/enabled
+value: true

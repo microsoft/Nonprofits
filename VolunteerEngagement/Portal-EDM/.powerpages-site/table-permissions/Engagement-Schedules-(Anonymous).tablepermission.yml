@@ -1,0 +1,13 @@
+adx_entitypermission_webrole:
+- a7b004c7-4b02-47c3-b115-7c46cb932da8
+append: false
+appendto: false
+create: false
+delete: false
+entitylogicalname: msnfp_engagementopportunityschedule
+entityname: Engagement Schedules (Anonymous)
+id: 7334072a-6158-48a5-8027-1ac0453a4a25
+parententitypermission: 
+read: true
+scope: 756150000
+write: false

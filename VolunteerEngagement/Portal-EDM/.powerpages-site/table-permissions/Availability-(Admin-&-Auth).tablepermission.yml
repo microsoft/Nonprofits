@@ -1,0 +1,15 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: true
+appendto: true
+contactrelationship: msnfp_contact_msnfp_availability_contactId
+create: true
+delete: true
+entitylogicalname: msnfp_availability
+entityname: Availability (Admin & Auth)
+id: 225de81a-2ad9-4aec-bb30-f7d48d1ed0a3
+parententitypermission: 
+read: true
+scope: 756150001
+write: true

@@ -1,0 +1,14 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+append: true
+appendto: true
+create: true
+delete: false
+entitylogicalname: msnfp_participationschedule
+entityname: Participation Schedules (Authenticated)
+id: d1e7b49e-cdae-41d4-af0c-ad38eef6d1f5
+parententitypermission: b739ffbe-2020-49d2-b845-9eda1b3455ae
+parentrelationship: msnfp_ParticipationSchedule_participation
+read: true
+scope: 756150003
+write: true

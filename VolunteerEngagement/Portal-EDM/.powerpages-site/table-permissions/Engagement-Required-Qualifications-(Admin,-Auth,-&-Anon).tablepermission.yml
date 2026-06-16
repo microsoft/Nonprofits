@@ -1,0 +1,15 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+- a7b004c7-4b02-47c3-b115-7c46cb932da8
+- f610173d-6167-4f4d-b2d5-5a68d3f59f89
+append: false
+appendto: false
+create: false
+delete: false
+entitylogicalname: msnfp_engagementopportunityparticipantqual
+entityname: Engagement Required Qualifications (Admin, Auth, & Anon)
+id: 8eb6f4f8-1846-4298-b62a-eeb74ce8c01f
+parententitypermission: 
+read: true
+scope: 756150000
+write: false

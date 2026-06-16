@@ -9,7 +9,7 @@ Outcome Management helps nonprofits manage the impact of programs, projects, and
 - Define and adapt programs and projects based on output, outcome, and results.
 - Manage impact indicators and measurements.
 
-Outcome Management is built on the [Common Data Model (CDM) for Nonprofits](https://aka.ms/GitHubCDMforNonprofits), an industry-led, open-source data schema that reflects industry best practices and connects data across the organization to enable powerful interoperability, fuel greater insight and efficacy, and provide data transparency. With the CDM and Power Platform as the foundation, Outcome Management connects with other platforms and applications in a seamless data flow, increasing operational efficiency and enabling data-driven decision-making.
+Outcome Management is built on [Common Data Model for Nonprofits](https://aka.ms/GitHubCDMforNonprofits), an industry-led, open-source data schema that reflects industry best practices and connects data across the organization to enable powerful interoperability, fuel greater insight and efficacy, and provide data transparency. With Common Data Model for Nonprofits and Microsoft Power Platform as the foundation, Outcome Management connects with other platforms and applications in a seamless data flow, increasing operational efficiency and enabling data-driven decision-making.
 
 Learn More:
 - Read about Outcome Management on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/outcome-management)

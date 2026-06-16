@@ -1,0 +1,4 @@
+description: 'Controls how much time the application cookie will remain valid from the moment it was created (token is reissued if there is sliding expiration). '
+id: a4c5ece3-696d-48c9-bed9-dce6f6c0c4d1
+name: Authentication/ApplicationCookie/ExpireTimeSpan
+value: 00:30:00

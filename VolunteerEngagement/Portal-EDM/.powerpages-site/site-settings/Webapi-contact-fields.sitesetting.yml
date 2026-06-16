@@ -1,0 +1,4 @@
+description: Allows a user to be able to set their contact as being a volunteer through an Odata query.
+id: d2879181-be3c-f111-88b5-7c1e52062cd0
+name: Webapi/contact/fields
+value: contactid,firstname,lastname,emailaddress1,telephone1,address1_line1,address1_line2,address1_city,address1_stateorprovince,address1_postalcode,address1_country,donotemail,donotphone,donotfax,donotpostalmail,msnfp_volunteer

@@ -1,0 +1,288 @@
+function Get-PortalProjectConfig {
+	[CmdletBinding()]
+	param(
+		[string]$ProjectConfigPath
+	)
+
+	if (-not $ProjectConfigPath) {
+		$ProjectConfigPath = Join-Path $PSScriptRoot '..\..\powerpages.config.json'
+	}
+
+	$resolvedProjectConfigPath = Resolve-Path -LiteralPath $ProjectConfigPath -ErrorAction SilentlyContinue
+	if (-not $resolvedProjectConfigPath) {
+		throw "Power Pages project config not found: $ProjectConfigPath"
+	}
+
+	try {
+		$config = Get-Content -LiteralPath $resolvedProjectConfigPath.Path -Raw | ConvertFrom-Json
+	}
+	catch {
+		throw "Power Pages project config is not valid JSON: $($resolvedProjectConfigPath.Path). $($_.Exception.Message)"
+	}
+
+	return $config
+}
+
+function Get-LocalPowerPagesWebsiteMetadata {
+	[CmdletBinding()]
+	param(
+		[string]$WebsiteMetadataPath
+	)
+
+	if (-not $WebsiteMetadataPath) {
+		$WebsiteMetadataPath = Join-Path $PSScriptRoot '..\..\.powerpages-site\website.yml'
+	}
+
+	$resolvedWebsiteMetadataPath = Resolve-Path -LiteralPath $WebsiteMetadataPath -ErrorAction SilentlyContinue
+	if (-not $resolvedWebsiteMetadataPath) {
+		return $null
+	}
+
+	$metadata = [ordered]@{
+		Path = $resolvedWebsiteMetadataPath.Path
+		Id = $null
+		Name = $null
+	}
+
+	foreach ($line in Get-Content -LiteralPath $resolvedWebsiteMetadataPath.Path) {
+		if ($line -match '^\s*(?<key>id|name)\s*:\s*(?<value>.*?)\s*$') {
+			$value = $Matches.value.Trim()
+			if (($value.StartsWith('"') -and $value.EndsWith('"')) -or ($value.StartsWith("'") -and $value.EndsWith("'"))) {
+				$value = $value.Substring(1, $value.Length - 2)
+			}
+
+			if ($Matches.key -eq 'id') { $metadata.Id = $value }
+			elseif ($Matches.key -eq 'name') { $metadata.Name = $value }
+		}
+	}
+
+	return [pscustomobject]$metadata
+}
+
+function Get-PortalSiteName {
+	[CmdletBinding()]
+	param(
+		[string]$SiteName,
+		[string]$ProjectConfigPath
+	)
+
+	if (-not [string]::IsNullOrWhiteSpace($SiteName)) {
+		return $SiteName.Trim()
+	}
+
+	$websiteMetadata = Get-LocalPowerPagesWebsiteMetadata
+	if ($websiteMetadata -and -not [string]::IsNullOrWhiteSpace([string]$websiteMetadata.Name)) {
+		return ([string]$websiteMetadata.Name).Trim()
+	}
+
+	$config = Get-PortalProjectConfig -ProjectConfigPath $ProjectConfigPath
+	if (-not ($config.PSObject.Properties.Name -contains 'siteName') -or [string]::IsNullOrWhiteSpace([string]$config.siteName)) {
+		throw "Could not resolve Power Pages site name. Pass -SiteName, restore .powerpages-site/website.yml, or update powerpages.config.json."
+	}
+
+	return ([string]$config.siteName).Trim()
+}
+
+function Get-PacPowerPagesSites {
+	[CmdletBinding()]
+	param()
+
+	$output = pac pages list 2>&1
+	if ($LASTEXITCODE -ne 0) {
+		throw "Could not list Power Pages websites from the selected PAC environment. $($output | Out-String)"
+	}
+
+	$sites = @()
+	foreach ($line in $output) {
+		if ($line -match '^\s*\[\d+\]\s+(?<id>[0-9a-fA-F-]{36})\s+(?<name>.+?)\s*$') {
+			$sites += [pscustomobject]@{
+				WebsiteRecordId = $Matches.id
+				FriendlyName = $Matches.name.Trim()
+			}
+		}
+	}
+
+	return $sites
+}
+
+function Resolve-PowerPagesWebsiteRecordId {
+	[CmdletBinding()]
+	param(
+		[string]$WebsiteRecordId,
+		[string]$SiteName,
+		[string]$ProjectConfigPath
+	)
+
+	if (-not [string]::IsNullOrWhiteSpace($WebsiteRecordId)) {
+		$explicitWebsiteRecordId = $WebsiteRecordId.Trim()
+		$sites = @(Get-PacPowerPagesSites)
+		$explicitIdMatches = @($sites | Where-Object { $_.WebsiteRecordId -eq $explicitWebsiteRecordId })
+
+		if ($explicitIdMatches.Count -eq 0) {
+			$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
+			if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
+			throw "Power Pages website ID $explicitWebsiteRecordId was not found in the selected PAC environment. Select the intended environment or pass a website ID from that environment. Available sites: $availableSites."
+		}
+
+		if ($explicitIdMatches.Count -gt 1) {
+			throw "PAC CLI returned duplicate entries for website ID $explicitWebsiteRecordId. Check the selected PAC environment before continuing."
+		}
+
+		Write-Host "Validated Power Pages site '$($explicitIdMatches[0].FriendlyName)' using explicit website ID $explicitWebsiteRecordId"
+		return $explicitWebsiteRecordId
+	}
+
+	$websiteMetadata = Get-LocalPowerPagesWebsiteMetadata
+	$localWebsiteRecordId = if ($websiteMetadata -and -not [string]::IsNullOrWhiteSpace([string]$websiteMetadata.Id)) { ([string]$websiteMetadata.Id).Trim() } else { $null }
+	$resolvedSiteName = Get-PortalSiteName -SiteName $SiteName -ProjectConfigPath $ProjectConfigPath
+	$sites = @(Get-PacPowerPagesSites)
+	$localIdMatches = if ($localWebsiteRecordId) { @($sites | Where-Object { $_.WebsiteRecordId -eq $localWebsiteRecordId }) } else { @() }
+
+	if ($localWebsiteRecordId) {
+		if ($localIdMatches.Count -eq 0) {
+			$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
+			if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
+			throw "Local .powerpages-site/website.yml points to website ID $localWebsiteRecordId, but that ID was not found in the selected PAC environment. Scripts do not fall back to display name because legacy and Enhanced sites can share the same name. For a fresh install, run npm run deploy first so upload-code-site creates the website record, then reactivate and sync. For an existing site, select the intended environment or pass -WebsiteRecordId/-SiteId explicitly. Configured site name: '$resolvedSiteName'. Available sites: $availableSites."
+		}
+
+		if ($localIdMatches.Count -gt 1) {
+			throw "PAC CLI returned duplicate entries for website ID $localWebsiteRecordId. Pass -WebsiteRecordId/-SiteId to choose the intended target."
+		}
+
+		if ($localIdMatches[0].FriendlyName -ne $resolvedSiteName) {
+			Write-Warning "Local .powerpages-site/website.yml ID $localWebsiteRecordId belongs to site '$($localIdMatches[0].FriendlyName)' in the selected PAC environment, while local/configured name is '$resolvedSiteName'. Continuing by ID because Power Pages site names can be renamed. Run sync to refresh website.yml, and update powerpages.config.json if this rename should be the new fallback name."
+		}
+
+		Write-Host "Resolved Power Pages site '$($localIdMatches[0].FriendlyName)' using .powerpages-site/website.yml ID $localWebsiteRecordId"
+		return $localWebsiteRecordId
+	}
+
+	$availableSites = ($sites | ForEach-Object { "'$($_.FriendlyName)' ($($_.WebsiteRecordId))" }) -join ', '
+	if ([string]::IsNullOrWhiteSpace($availableSites)) { $availableSites = '<none>' }
+	throw "Could not resolve a Power Pages website record ID because .powerpages-site/website.yml has no id. Scripts do not select by display name because legacy and Enhanced sites can share the same name. For a fresh install, run npm run deploy first so upload-code-site creates the website record, then reactivate and sync. For an existing site, restore/sync .powerpages-site/website.yml from the intended site or pass -WebsiteRecordId/-SiteId explicitly. Configured site name: '$resolvedSiteName'. Available sites: $availableSites."
+}
+
+function Get-PacOrgInfo {
+	[CmdletBinding()]
+	param()
+
+	$output = pac org who --json 2>&1
+	if ($LASTEXITCODE -ne 0) {
+		throw "PAC CLI is not authenticated to an environment. Run 'pac auth select' or 'pac auth create' first. $($output | Out-String)"
+	}
+
+	try {
+		$orgInfo = $output | ConvertFrom-Json
+	}
+	catch {
+		throw "Could not parse PAC CLI environment details. $($_.Exception.Message)"
+	}
+
+	if ([string]::IsNullOrWhiteSpace([string]$orgInfo.OrgUrl)) {
+		throw 'PAC CLI did not return an OrgUrl for the selected environment.'
+	}
+
+	return $orgInfo
+}
+
+function Get-DataverseAccessToken {
+	[CmdletBinding()]
+	param(
+		[Parameter(Mandatory)][string]$OrgUrl
+	)
+
+	$resourceUrl = $OrgUrl.TrimEnd('/')
+
+	# Prefer Azure CLI so the Dataverse token follows the same account and tenant the
+	# operator used for deployment, independent of global Az PowerShell state. This avoids
+	# acquiring a token for the wrong tenant when PAC and Az PowerShell are signed in to
+	# different accounts. Set $env:AZ_CLI to point at an isolated az wrapper (for example in
+	# CI) without changing the default 'az' on PATH.
+	$azCli = if (-not [string]::IsNullOrWhiteSpace($env:AZ_CLI)) { $env:AZ_CLI } else { 'az' }
+	if (Get-Command $azCli -ErrorAction SilentlyContinue) {
+		$tokenOutput = & $azCli account get-access-token --resource $resourceUrl --query accessToken -o tsv 2>&1
+		if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace([string]$tokenOutput)) {
+			return ([string]$tokenOutput).Trim()
+		}
+
+		Write-Host "Azure CLI token acquisition failed for $resourceUrl; falling back to Az PowerShell. $($tokenOutput | Out-String)" -ForegroundColor DarkYellow
+	}
+
+	# Fall back to Az PowerShell for environments where Azure CLI is unavailable.
+	$accessToken = (Get-AzAccessToken -ResourceUrl $resourceUrl -WarningAction SilentlyContinue -ErrorAction Stop).Token
+	$token = if ($accessToken -is [System.Security.SecureString]) {
+		[System.Net.NetworkCredential]::new('', $accessToken).Password
+	} else {
+		$accessToken
+	}
+
+	if ([string]::IsNullOrWhiteSpace([string]$token)) {
+		throw "Could not get a Dataverse access token for $resourceUrl. Sign in with 'az login' or 'Connect-AzAccount' for the same tenant as the PAC environment."
+	}
+
+	return $token
+}
+
+function Publish-PacCopilot {
+	[CmdletBinding(SupportsShouldProcess = $true)]
+	param(
+		[Parameter(Mandatory)][string]$Environment,
+		[Parameter(Mandatory)][string]$Bot,
+		[int]$TimeoutSeconds = 120
+	)
+
+	if ($TimeoutSeconds -lt 1) {
+		throw 'Publish timeout must be at least 1 second.'
+	}
+
+	$pacCommand = Get-Command pac -ErrorAction SilentlyContinue
+	if (-not $pacCommand) {
+		throw 'PAC CLI was not found on PATH. Install PAC CLI or run from a Power Platform CLI-enabled shell.'
+	}
+
+	$result = [ordered]@{
+		attempted = $false
+		skipped = $false
+		timedOut = $false
+		exitCode = $null
+	}
+
+	if (-not $PSCmdlet.ShouldProcess($Bot, "Publish Copilot in $Environment")) {
+		$result.skipped = $true
+		return [pscustomobject]$result
+	}
+
+	$result.attempted = $true
+	$stdoutPath = [System.IO.Path]::GetTempFileName()
+	$stderrPath = [System.IO.Path]::GetTempFileName()
+
+	try {
+		Write-Host "Publishing Copilot '$Bot' in $Environment..."
+		$arguments = @('copilot', 'publish', '--environment', $Environment, '--bot', $Bot)
+		$process = Start-Process -FilePath $pacCommand.Source -ArgumentList $arguments -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath -NoNewWindow -PassThru
+		$completed = $process.WaitForExit($TimeoutSeconds * 1000)
+		$stdout = if (Test-Path -LiteralPath $stdoutPath) { Get-Content -LiteralPath $stdoutPath -Raw } else { '' }
+		$stderr = if (Test-Path -LiteralPath $stderrPath) { Get-Content -LiteralPath $stderrPath -Raw } else { '' }
+
+		if (-not [string]::IsNullOrWhiteSpace($stdout)) { Write-Host $stdout.TrimEnd() }
+		if (-not [string]::IsNullOrWhiteSpace($stderr)) { Write-Host $stderr.TrimEnd() -ForegroundColor DarkYellow }
+
+		if (-not $completed) {
+			try { $process.Kill() } catch { }
+			$result.timedOut = $true
+			Write-Warning "PAC CLI did not return from copilot publish within $TimeoutSeconds seconds. The server-side publish request may still have completed; check the bot published timestamp or run 'pac copilot status --environment $Environment --bot-id $Bot'."
+			return [pscustomobject]$result
+		}
+
+		$result.exitCode = $process.ExitCode
+		if ($process.ExitCode -ne 0) {
+			throw "PAC CLI copilot publish failed with exit code $($process.ExitCode)."
+		}
+
+		Write-Host 'Copilot publish command completed.'
+		return [pscustomobject]$result
+	}
+	finally {
+		Remove-Item -LiteralPath $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue
+	}
+}

@@ -1,0 +1,18 @@
+{% extends 'Layout 1 Column' %}
+{% block main %}
+  {% include 'Page Copy' %}
+<div class="container" role="main">
+    {% include 'Child Navigation' showdescriptions: true %}
+    {% if page.mspp_entitylist %}
+    {% include 'entity_list' key: page.mspp_entitylist.id %}
+    {% endif %}
+
+    {% if page.mspp_entityform %}
+    {% entityform id: page.mspp_entityform.id %}
+    {% endif %}
+
+    {% if page.mspp_webform %}
+    {% webform id: page.mspp_webform.id %}
+    {% endif %}
+</div>
+{% endblock %}

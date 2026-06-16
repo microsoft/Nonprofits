@@ -1,0 +1,4 @@
+description: Allows inner errors to be read for testing purposes
+id: e8655384-6150-430b-9a49-a191f33d29b5
+name: Webapi/error/innererror
+value: false

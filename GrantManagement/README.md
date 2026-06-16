@@ -9,7 +9,7 @@ Grant Management aggregates constituent and grant data into a comprehensive prof
 - Track disbursements by type, amount, status, and schedule.
 - Aggregate reports and manage activities, providing insights into, and enabling proactive management of, stakeholders across the grant lifecycle.
 
-Grant Management is built on the [Common Data Model (CDM) for Nonprofits](https://aka.ms/GitHubCDMforNonprofits), an industry-led, open-source data schema that reflects industry best practices and connects data across the organization to enable powerful interoperability, fuel greater insight and efficacy, and provide data transparency. With the CDM and Power Platform as the foundation, Grant Management connects with other platforms and applications in a seamless data flow, increasing operational efficiency and enabling data-driven decision-making.
+Grant Management is built on [Common Data Model for Nonprofits](https://aka.ms/GitHubCDMforNonprofits), an industry-led, open-source data schema that reflects industry best practices and connects data across the organization to enable powerful interoperability, fuel greater insight and efficacy, and provide data transparency. With Common Data Model for Nonprofits and Microsoft Power Platform as the foundation, Grant Management connects with other platforms and applications in a seamless data flow, increasing operational efficiency and enabling data-driven decision-making.
 
 Learn More:
 - Read about Grant Management on [MS Learn](https://learn.microsoft.com/en-us/industry/nonprofit/grant-management)

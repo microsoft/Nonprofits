@@ -1,0 +1,4 @@
+description: Enables contacts to be queries through OData (restricted to only signed-in user's contact through Table Permissions)
+id: f07c7f9b-7b01-44cc-8f76-b45272820882
+name: Webapi/contact/enabled
+value: true

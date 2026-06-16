@@ -1,0 +1,13 @@
+adx_entitypermission_webrole:
+- a5a02c76-f61b-4ced-b9cd-8208761251aa
+append: true
+appendto: true
+create: false
+delete: false
+entitylogicalname: contact
+entityname: Contact (Authenticated)
+id: 4e1487e6-bf5e-4eee-bc81-6edb1010e57f
+parententitypermission: 
+read: true
+scope: 756150004
+write: true

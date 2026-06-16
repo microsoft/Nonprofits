@@ -1,0 +1,13 @@
+displayorder: 12
+enablerating: false
+enabletracking: false
+excludefromsearch: true
+hiddenfromsitemap: true
+id: 06b4f7dd-9bee-4108-b706-ce09b1503076
+isroot: true
+name: Profile - Availability
+pagetemplateid: bfe404a0-0934-4558-bdf4-cf081e3d2be8
+parentpageid: d2f7d340-00cb-42db-a089-03a56fd9b403
+partialurl: profile-availability
+publishingstateid: 8cfb9786-ea00-4d6f-a765-cef998f8e4f8
+sharedpageconfiguration: true
