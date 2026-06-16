@@ -178,6 +178,8 @@ Enable the target language in Power Pages Admin before you generate or upload lo
 
 The portal can include a Power Pages site agent (a Copilot Studio agent). The agent is auto-provisioned asynchronously after the first deployment; wait for provisioning to finish before running these helpers. Site agent configuration is a deliberate, post-provisioning step and is not part of `npm run deploy`.
 
+Before running the configuration helpers for a newly provisioned site, open **Set up > Agents** in Power Pages, confirm **Site agent** and **Show in Chat Widget** are enabled, then save the agent once. This creates the bot consumer metadata that the helper scripts configure. The helper scripts publish the agent automatically after they apply changes; pass `-SkipPublish` only when you deliberately want to defer publishing.
+
 For detailed setup and security guidance, see [.ai/instructions/site-agent-setup.md](../.ai/instructions/site-agent-setup.md).
 
 ### Assign site agent web roles
@@ -200,7 +202,7 @@ If the site agent enablement setting is missing, add `-EnsureSiteAgentEnabled`.
 npm run powerpages-site-agent:customize-ve-vm
 ```
 
-Targets Enhanced Data Model sites only. Creates or updates a site-specific `dvtablesearch` knowledge source, adds the Portal-EDM tables used by the volunteer experience, and links the source to the EDM `powerpagesite` row and the site agent default GPT component.
+Targets Enhanced Data Model sites only. Creates or updates a site-specific `dvtablesearch` knowledge source, adds the Portal-EDM tables used by the volunteer experience, links the source to the EDM `powerpagesite` row and the site agent default GPT component, and publishes the agent when changes are applied.
 
 The default `Public` profile includes only public browsing data. For an authenticated-only portal agent, use the broader profile:
 
@@ -218,7 +220,7 @@ npm run powerpages-site-agent:configure-advanced
 
 Reads `scripts/site-agent/site-agent-advanced.config.json` and writes the configured text to the default GPT component's Overview `instructions` field. It can also create or update Copilot Studio Knowledge Source components, such as the default public portal-page search source.
 
-The `instructions` and `knowledge` arrays are prompt guidance, not Dataverse `dvtablesearch` sources; use `powerpages-site-agent:customize-ve-vm` for table-backed knowledge sources. Use `-ConfigPath` to apply a different configuration file, or `-RemoveInstructions` to clear the Overview `instructions` field while leaving other metadata in place.
+The `instructions` and `knowledge` arrays are prompt guidance, not Dataverse `dvtablesearch` sources; use `powerpages-site-agent:customize-ve-vm` for table-backed knowledge sources. Use `-ConfigPath` to apply a different configuration file, `-RemoveInstructions` to clear the Overview `instructions` field while leaving other metadata in place, `-SkipPublish` to defer publishing, or `-ForcePublish` to publish even when no metadata changed. If the site URL cannot be resolved from Power Pages metadata or the Admin API, pass `-WebsiteUrl`.
 
 ## Package as a Dataverse solution
 

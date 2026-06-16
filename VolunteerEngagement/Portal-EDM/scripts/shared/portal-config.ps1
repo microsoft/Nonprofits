@@ -222,3 +222,67 @@ function Get-DataverseAccessToken {
 
 	return $token
 }
+
+function Publish-PacCopilot {
+	[CmdletBinding(SupportsShouldProcess = $true)]
+	param(
+		[Parameter(Mandatory)][string]$Environment,
+		[Parameter(Mandatory)][string]$Bot,
+		[int]$TimeoutSeconds = 120
+	)
+
+	if ($TimeoutSeconds -lt 1) {
+		throw 'Publish timeout must be at least 1 second.'
+	}
+
+	$pacCommand = Get-Command pac -ErrorAction SilentlyContinue
+	if (-not $pacCommand) {
+		throw 'PAC CLI was not found on PATH. Install PAC CLI or run from a Power Platform CLI-enabled shell.'
+	}
+
+	$result = [ordered]@{
+		attempted = $false
+		skipped = $false
+		timedOut = $false
+		exitCode = $null
+	}
+
+	if (-not $PSCmdlet.ShouldProcess($Bot, "Publish Copilot in $Environment")) {
+		$result.skipped = $true
+		return [pscustomobject]$result
+	}
+
+	$result.attempted = $true
+	$stdoutPath = [System.IO.Path]::GetTempFileName()
+	$stderrPath = [System.IO.Path]::GetTempFileName()
+
+	try {
+		Write-Host "Publishing Copilot '$Bot' in $Environment..."
+		$arguments = @('copilot', 'publish', '--environment', $Environment, '--bot', $Bot)
+		$process = Start-Process -FilePath $pacCommand.Source -ArgumentList $arguments -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath -NoNewWindow -PassThru
+		$completed = $process.WaitForExit($TimeoutSeconds * 1000)
+		$stdout = if (Test-Path -LiteralPath $stdoutPath) { Get-Content -LiteralPath $stdoutPath -Raw } else { '' }
+		$stderr = if (Test-Path -LiteralPath $stderrPath) { Get-Content -LiteralPath $stderrPath -Raw } else { '' }
+
+		if (-not [string]::IsNullOrWhiteSpace($stdout)) { Write-Host $stdout.TrimEnd() }
+		if (-not [string]::IsNullOrWhiteSpace($stderr)) { Write-Host $stderr.TrimEnd() -ForegroundColor DarkYellow }
+
+		if (-not $completed) {
+			try { $process.Kill() } catch { }
+			$result.timedOut = $true
+			Write-Warning "PAC CLI did not return from copilot publish within $TimeoutSeconds seconds. The server-side publish request may still have completed; check the bot published timestamp or run 'pac copilot status --environment $Environment --bot-id $Bot'."
+			return [pscustomobject]$result
+		}
+
+		$result.exitCode = $process.ExitCode
+		if ($process.ExitCode -ne 0) {
+			throw "PAC CLI copilot publish failed with exit code $($process.ExitCode)."
+		}
+
+		Write-Host 'Copilot publish command completed.'
+		return [pscustomobject]$result
+	}
+	finally {
+		Remove-Item -LiteralPath $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue
+	}
+}

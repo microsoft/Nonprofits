@@ -72,14 +72,15 @@ Calls `Portal-EDM/scripts/site-agent/configure-site-agent-advanced.ps1` and read
 1. Confirm the target site and environment.
 2. Confirm Copilot Studio licensing and admin permissions.
 3. Wait for the site agent to finish auto-provisioning after the first deployment.
-4. Sync site metadata: `npm run sync`.
-5. Ensure the `HTTP/Content-Security-Policy` site setting allows the site agent runtime in `connect-src`. The package script patches the target environment dynamically; do not commit tenant-specific environment API hosts to source metadata.
-6. Assign site agent web roles: `npm run powerpages-site-agent:patch-roles`.
-7. Add VE/VM knowledge sources: `npm run powerpages-site-agent:customize-ve-vm`.
-8. Apply advanced configuration: `npm run powerpages-site-agent:configure-advanced`.
-9. Restart the site if needed: `npm run site:restart`.
-10. Validate agent visibility for anonymous and authenticated users according to expected roles.
-11. Validate option-set/choice display labels.
+4. Open **Set up > Agents** in Power Pages, confirm **Site agent** and **Show in Chat Widget** are enabled, then save the agent once. This creates the bot consumer metadata used by the helper scripts.
+5. Sync site metadata: `npm run sync`.
+6. Ensure the `HTTP/Content-Security-Policy` site setting allows the site agent runtime in `connect-src`. The package script patches the target environment dynamically; do not commit tenant-specific environment API hosts to source metadata.
+7. Assign site agent web roles: `npm run powerpages-site-agent:patch-roles`.
+8. Add VE/VM knowledge sources: `npm run powerpages-site-agent:customize-ve-vm`.
+9. Apply advanced configuration: `npm run powerpages-site-agent:configure-advanced`. The helper scripts publish the agent automatically after applying changes; use `-SkipPublish` only when publishing is intentionally deferred.
+10. Restart the site if needed: `npm run site:restart`.
+11. Validate agent visibility for anonymous and authenticated users according to expected roles.
+12. Validate option-set/choice display labels.
 
 ## Validation checklist
 

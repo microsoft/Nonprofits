@@ -24,7 +24,10 @@ param(
 	[switch]$IncludeVolunteerManagementModelAppSearch,
 	[switch]$RequireVolunteerManagementModelAppSearch,
 	[switch]$AllowAnonymousAccessToNonPublicKnowledgeSources,
-	[string]$VolunteerManagementAppUniqueName = 'msnfp_NonprofitVolunteerManagement'
+	[string]$VolunteerManagementAppUniqueName = 'msnfp_NonprofitVolunteerManagement',
+	[switch]$SkipPublish,
+	[switch]$ForcePublish,
+	[int]$PublishTimeoutSeconds = 120
 )
 
 $ErrorActionPreference = 'Stop'
@@ -66,6 +69,7 @@ $patchHeaders = @{
 	'If-Match'      = '*'
 }
 $api = "$OrgUrl/api/data/v9.2"
+$script:SiteAgentCustomizationChanged = $false
 
 function Escape-ODataString([string]$value) {
 	return $value.Replace("'", "''")
@@ -192,15 +196,21 @@ function Get-AgentRoleSummary($botConsumer) {
 
 function Get-GptComponent([string]$schemaName) {
 	if (-not [string]::IsNullOrWhiteSpace($GptComponentId)) {
-		return Invoke-RestMethod -Uri "$api/botcomponents($($GptComponentId.Trim()))?`$select=botcomponentid,name,schemaname,componenttype" -Headers $headers -Method GET
+		return Invoke-RestMethod -Uri "$api/botcomponents($($GptComponentId.Trim()))?`$select=botcomponentid,name,schemaname,componenttype,_parentbotid_value" -Headers $headers -Method GET
 	}
 
 	$gptSchemaName = "$schemaName.gpt.default"
 	$encodedFilter = [System.Uri]::EscapeDataString("schemaname eq '$(Escape-ODataString $gptSchemaName)' and componenttype eq 15")
-	$components = @(Invoke-DataverseCollection -Uri "$api/botcomponents?`$select=botcomponentid,name,schemaname,componenttype&`$filter=$encodedFilter")
+	$components = @(Invoke-DataverseCollection -Uri "$api/botcomponents?`$select=botcomponentid,name,schemaname,componenttype,_parentbotid_value&`$filter=$encodedFilter")
+
+	if ($components.Count -eq 0 -and -not $SkipPublish) {
+		Write-Host "No default GPT component '$gptSchemaName' was found. Publishing site agent '$schemaName' and retrying."
+		Publish-PacCopilot -Environment $OrgUrl -Bot $schemaName -TimeoutSeconds $PublishTimeoutSeconds | Out-Null
+		$components = @(Invoke-DataverseCollection -Uri "$api/botcomponents?`$select=botcomponentid,name,schemaname,componenttype,_parentbotid_value&`$filter=$encodedFilter")
+	}
 
 	if ($components.Count -eq 0) {
-		throw "No default GPT component '$gptSchemaName' was found. Publish or refresh the site agent, or re-run with -GptComponentId."
+		throw "No default GPT component '$gptSchemaName' was found. Enable and save the site agent in Power Pages, then re-run this script; pass -SkipPublish only after the default GPT component exists."
 	}
 	if ($components.Count -gt 1) {
 		$available = ($components | ForEach-Object { "'$($_.name)' ($($_.botcomponentid), schema=$($_.schemaname))" }) -join ', '
@@ -321,6 +331,7 @@ function Ensure-SiteTableSearch {
 	if ($PSCmdlet.ShouldProcess($TableSearchName, 'Create Portal-EDM site-agent Dataverse table search')) {
 		$created = New-TableSearch -name $TableSearchName
 		Write-Host "Created Dataverse table search '$($created.name)' ($($created.dvtablesearchid))"
+		$script:SiteAgentCustomizationChanged = $true
 		return $created
 	}
 
@@ -358,6 +369,7 @@ function Ensure-TableSearchEntity([object]$tableSearch, [string]$logicalName, [o
 	if ($PSCmdlet.ShouldProcess($logicalName, "Add to table search '$($tableSearch.name)'")) {
 		Invoke-RestMethod -Uri "$api/dvtablesearchentities" -Headers $writeHeaders -Method POST -Body $body | Out-Null
 		Write-Host "Added $logicalName to table search '$($tableSearch.name)'"
+		$script:SiteAgentCustomizationChanged = $true
 	}
 }
 
@@ -367,6 +379,7 @@ function Remove-TableSearchEntities([object]$tableSearch) {
 		if ($PSCmdlet.ShouldProcess($entity.entitylogicalname, "Remove from table search '$($tableSearch.name)'") ) {
 			Invoke-RestMethod -Uri "$api/dvtablesearchentities($($entity.dvtablesearchentityid))" -Headers $patchHeaders -Method DELETE | Out-Null
 			Write-Host "Removed $($entity.entitylogicalname) from table search '$($tableSearch.name)'"
+			$script:SiteAgentCustomizationChanged = $true
 		}
 	}
 }
@@ -389,6 +402,7 @@ function Ensure-TableSearchAssociation([string]$sourceSet, [string]$sourceId, [s
 	if ($PSCmdlet.ShouldProcess($description, "Associate table search '$($tableSearch.name)'") ) {
 		Invoke-RestMethod -Uri "$api/$sourceSet($sourceId)/$relationship/`$ref" -Headers $writeHeaders -Method POST -Body $body | Out-Null
 		Write-Host "Linked $description to '$($tableSearch.name)'"
+		$script:SiteAgentCustomizationChanged = $true
 	}
 }
 
@@ -450,6 +464,8 @@ $site = Get-EdmPowerPagesSite
 $botConsumer = Get-BotConsumerComponent
 $resolvedBotSchemaName = Resolve-BotSchemaName -botConsumer $botConsumer
 $gptComponent = Get-GptComponent -schemaName $resolvedBotSchemaName
+$botId = $gptComponent._parentbotid_value
+if ([string]::IsNullOrWhiteSpace([string]$botId)) { throw "Default GPT component '$($gptComponent.schemaname)' is missing parent bot lookup." }
 
 $entitiesToApply = if ($EntityLogicalNames.Count -gt 0) {
 	@($EntityLogicalNames | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | ForEach-Object { $_.Trim() } | Select-Object -Unique)
@@ -494,4 +510,13 @@ if ($IncludeVolunteerManagementModelAppSearch) {
 
 Write-Host 'Power Pages site agent VE/VM customization completed.'
 Write-ReadbackSummary -site $site -botConsumer $botConsumer -gptComponent $gptComponent -siteTableSearch $siteTableSearch
-Write-Host 'Publish the site agent in Copilot Studio if the runtime does not pick up new Dataverse knowledge sources immediately.'
+
+if ($SkipPublish) {
+	Write-Host 'Skipped Copilot publish because -SkipPublish was specified.'
+}
+elseif ($ForcePublish -or $script:SiteAgentCustomizationChanged) {
+	Publish-PacCopilot -Environment $OrgUrl -Bot $botId -TimeoutSeconds $PublishTimeoutSeconds | ConvertTo-Json -Depth 5 | Write-Host
+}
+else {
+	Write-Host 'Skipped Copilot publish because VE/VM site-agent knowledge sources were already up to date. Use -ForcePublish to publish anyway.'
+}

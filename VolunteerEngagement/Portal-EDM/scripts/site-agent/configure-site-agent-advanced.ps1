@@ -6,6 +6,8 @@ param(
 	[string]$SiteId,
 	[string]$SiteName,
 	[string]$ProjectConfigPath,
+	[string]$EnvironmentId,
+	[string]$WebsiteUrl,
 	[string]$BotConsumerId,
 	[string]$BotSchemaName,
 	[string]$GptComponentId,
@@ -13,7 +15,10 @@ param(
 	[string]$ConfigPath = (Join-Path $PSScriptRoot 'site-agent-advanced.config.json'),
 	[switch]$RemoveInstructions,
 	[switch]$SkipKnowledgeSources,
-	[switch]$SkipLegacyTopicCleanup
+	[switch]$SkipLegacyTopicCleanup,
+	[switch]$SkipPublish,
+	[switch]$ForcePublish,
+	[int]$PublishTimeoutSeconds = 120
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,14 +28,28 @@ $ErrorActionPreference = 'Stop'
 $SiteId = Resolve-PowerPagesWebsiteRecordId -WebsiteRecordId $SiteId -SiteName $SiteName -ProjectConfigPath $ProjectConfigPath
 $managedBlockStart = 'BEGIN Portal-EDM advanced site-agent configuration'
 $managedBlockEnd = 'END Portal-EDM advanced site-agent configuration'
+$orgInfo = $null
 
 if (-not $OrgUrl) {
 	$orgInfo = Get-PacOrgInfo
 	$OrgUrl = $orgInfo.OrgUrl.TrimEnd('/')
 	Write-Host "Using PAC CLI environment: $OrgUrl"
+	if (-not $EnvironmentId -and $orgInfo.PSObject.Properties.Name -contains 'EnvironmentId') { $EnvironmentId = $orgInfo.EnvironmentId }
 }
 else {
 	$OrgUrl = $OrgUrl.TrimEnd('/')
+}
+
+if (-not $EnvironmentId) {
+	try {
+		if (-not $orgInfo) { $orgInfo = Get-PacOrgInfo }
+		if ($orgInfo.PSObject.Properties.Name -contains 'EnvironmentId' -and ([string]$orgInfo.OrgUrl).TrimEnd('/') -eq $OrgUrl) {
+			$EnvironmentId = $orgInfo.EnvironmentId
+		}
+	}
+	catch {
+		# Website URL resolution can still succeed from -WebsiteUrl or powerpagesite.primarydomainname.
+	}
 }
 
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -69,6 +88,53 @@ function Invoke-DataverseCollection([string]$Uri) {
 	return $items
 }
 
+function Normalize-WebsiteUrl([string]$value) {
+	if ([string]::IsNullOrWhiteSpace($value)) { return $null }
+	$normalized = $value.Trim().TrimEnd('/')
+	if ($normalized -notmatch '^https?://') { $normalized = "https://$normalized" }
+	return $normalized
+}
+
+function Get-WebsiteUrlFromAdminApi([string]$environmentId, [string]$siteId) {
+	if ([string]::IsNullOrWhiteSpace($environmentId)) { return $null }
+
+	$resource = 'https://api.powerplatform.com'
+	$adminUrl = "$resource/powerpages/environments/$environmentId/websites?api-version=2024-10-01"
+	$output = az rest --method get --url $adminUrl --resource $resource 2>&1
+	if ($LASTEXITCODE -ne 0) {
+		Write-Warning "Could not resolve Power Pages website URL from Admin API. $($output | Out-String)"
+		return $null
+	}
+
+	try { $sites = $output | ConvertFrom-Json }
+	catch {
+		Write-Warning "Could not parse Power Pages Admin API response while resolving website URL. $($_.Exception.Message)"
+		return $null
+	}
+
+	$matches = @($sites.value | Where-Object { $_.websiteRecordId -eq $siteId -or $_.properties.websiteRecordId -eq $siteId })
+	if ($matches.Count -eq 0) { return $null }
+	if ($matches.Count -gt 1) {
+		$urls = ($matches | ForEach-Object { $_.websiteUrl }) -join ', '
+		throw "Multiple Power Pages Admin API sites matched website record $siteId. Pass -WebsiteUrl explicitly. Matched URLs: $urls"
+	}
+
+	return Normalize-WebsiteUrl -value ([string]$matches[0].websiteUrl)
+}
+
+function Resolve-SiteWebsiteUrl($site) {
+	$explicitUrl = Normalize-WebsiteUrl -value $WebsiteUrl
+	if ($explicitUrl) { return $explicitUrl }
+
+	$primaryDomainUrl = Normalize-WebsiteUrl -value ([string]$site.primarydomainname)
+	if ($primaryDomainUrl) { return $primaryDomainUrl }
+
+	$adminApiUrl = Get-WebsiteUrlFromAdminApi -environmentId $EnvironmentId -siteId $site.powerpagesiteid
+	if ($adminApiUrl) { return $adminApiUrl }
+
+	throw "Could not resolve the public Power Pages website URL for site '$($site.name)' ($($site.powerpagesiteid)). The powerpagesite.primarydomainname value is empty; pass -WebsiteUrl or -EnvironmentId."
+}
+
 function Get-JsonArray($object, [string]$propertyName) {
 	if (-not $object -or -not ($object.PSObject.Properties.Name -contains $propertyName)) { return @() }
 	return @($object.$propertyName | Where-Object { $null -ne $_ })
@@ -83,7 +149,7 @@ function ConvertFrom-ComponentContent($component) {
 
 function Expand-ConfigTokens([string]$value, $site) {
 	if ($null -eq $value) { return $null }
-	return $value.Replace('{SiteId}', [string]$site.powerpagesiteid).Replace('{SiteName}', [string]$site.name).Replace('{PrimaryDomainName}', [string]$site.primarydomainname).Replace('{OrgUrl}', $OrgUrl)
+	return $value.Replace('{SiteId}', [string]$site.powerpagesiteid).Replace('{SiteName}', [string]$site.name).Replace('{PrimaryDomainName}', [string]$site.primarydomainname).Replace('{WebsiteUrl}', [string]$site.websiteurl).Replace('{OrgUrl}', $OrgUrl)
 }
 
 function ConvertTo-YamlScalar([object]$value) {
@@ -267,7 +333,13 @@ function Get-GptComponent([string]$schemaName) {
 	$encodedFilter = [System.Uri]::EscapeDataString("schemaname eq '$(Escape-ODataString $gptSchemaName)' and componenttype eq 15")
 	$components = @(Invoke-DataverseCollection -Uri "$api/botcomponents?`$select=botcomponentid,name,schemaname,componenttype,data,_parentbotid_value&`$filter=$encodedFilter")
 
-	if ($components.Count -eq 0) { throw "No default GPT component '$gptSchemaName' was found. Publish or refresh the site agent, or re-run with -GptComponentId." }
+	if ($components.Count -eq 0 -and -not $SkipPublish) {
+		Write-Host "No default GPT component '$gptSchemaName' was found. Publishing site agent '$schemaName' and retrying."
+		Publish-PacCopilot -Environment $OrgUrl -Bot $schemaName -TimeoutSeconds $PublishTimeoutSeconds | Out-Null
+		$components = @(Invoke-DataverseCollection -Uri "$api/botcomponents?`$select=botcomponentid,name,schemaname,componenttype,data,_parentbotid_value&`$filter=$encodedFilter")
+	}
+
+	if ($components.Count -eq 0) { throw "No default GPT component '$gptSchemaName' was found. Enable and save the site agent in Power Pages, then re-run this script; pass -SkipPublish only after the default GPT component exists." }
 	if ($components.Count -gt 1) { throw "Multiple default GPT components matched '$gptSchemaName'. Re-run with -GptComponentId." }
 
 	return $components[0]
@@ -377,6 +449,10 @@ function Clear-LegacyTopicManagedBlock($searchTopic) {
 }
 
 $site = Get-EdmPowerPagesSite
+$resolvedWebsiteUrl = Resolve-SiteWebsiteUrl -site $site
+$resolvedPrimaryDomainName = ([System.Uri]$resolvedWebsiteUrl).Host
+$site | Add-Member -NotePropertyName websiteurl -NotePropertyValue $resolvedWebsiteUrl -Force
+$site | Add-Member -NotePropertyName primarydomainname -NotePropertyValue $resolvedPrimaryDomainName -Force
 $botConsumer = Get-BotConsumerComponent
 $resolvedBotSchemaName = Resolve-BotSchemaName -botConsumer $botConsumer
 $gptComponent = Get-GptComponent -schemaName $resolvedBotSchemaName
@@ -420,6 +496,22 @@ if (-not $SkipLegacyTopicCleanup) {
 	$legacyCleanup = Clear-LegacyTopicManagedBlock -searchTopic (Get-SearchTopicComponent -schemaName $resolvedBotSchemaName)
 }
 
+$configurationChanged = ($gptData -ne $gptComponent.data) -or (@($knowledgeResults | Where-Object { $_.changed }).Count -gt 0) -or ($legacyCleanup.changed -eq $true)
+$publishResult = [pscustomobject]@{ attempted = $false; skipped = $false; timedOut = $false; exitCode = $null; reason = $null }
+if ($SkipPublish) {
+	Write-Host 'Skipped Copilot publish because -SkipPublish was specified.'
+	$publishResult.skipped = $true
+	$publishResult.reason = 'SkipPublish'
+}
+elseif ($ForcePublish -or $configurationChanged) {
+	$publishResult = Publish-PacCopilot -Environment $OrgUrl -Bot $botId -TimeoutSeconds $PublishTimeoutSeconds
+}
+else {
+	Write-Host 'Skipped Copilot publish because site agent configuration was already up to date. Use -ForcePublish to publish anyway.'
+	$publishResult.skipped = $true
+	$publishResult.reason = 'NoChanges'
+}
+
 $summary = [ordered]@{
 	siteId = $site.powerpagesiteid
 	botConsumerId = $botConsumer.powerpagecomponentid
@@ -429,8 +521,9 @@ $summary = [ordered]@{
 	visibleMarkerPresent = $instructionsText.Contains($managedBlockStart) -or $instructionsText.Contains($managedBlockEnd)
 	knowledgeSources = $knowledgeResults
 	legacyTopicCleanup = $legacyCleanup
+	publish = $publishResult
 }
 
 Write-Host 'Power Pages site agent advanced configuration completed.'
 Write-Host ($summary | ConvertTo-Json -Depth 10)
-Write-Host 'Refresh Copilot Studio Overview. Publish the site agent if runtime behavior does not pick up metadata changes immediately.'
+Write-Host 'Refresh Copilot Studio Overview if the maker UI is open; changed site-agent metadata is published automatically unless -SkipPublish is used.'

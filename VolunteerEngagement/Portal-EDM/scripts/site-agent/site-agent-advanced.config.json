@@ -35,7 +35,7 @@
       "description": "Searches public pages in the Volunteer Engagement Power Pages portal. Personal volunteer data remains available only through signed-in portal authorization.",
       "source": {
         "kind": "PublicSiteSearchSource",
-        "site": "https://{PrimaryDomainName}/"
+        "site": "{WebsiteUrl}/"
       }
     }
   ]
