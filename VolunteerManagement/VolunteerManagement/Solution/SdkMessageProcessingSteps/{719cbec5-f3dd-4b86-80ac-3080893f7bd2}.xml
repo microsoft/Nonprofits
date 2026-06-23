@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPostPublicPublish: Update of msnfp_engagementopportunity" SdkMessageProcessingStepId="{98a62c4e-57df-eb11-bacb-000d3a5819ec}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPostPublicPublish: Update of msnfp_engagementopportunity" SdkMessageProcessingStepId="{719cbec5-f3dd-4b86-80ac-3080893f7bd2}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityOnPostPublicPublish, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>26a8fb7c-1844-4a2a-baa3-4813f5bfd7b3</PluginTypeId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPostPublicPublish, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>f103c524-9415-4525-92ea-6a61f334480c</PluginTypeId>
   <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
   <AsyncAutoDelete>1</AsyncAutoDelete>
   <Description>Plugins.EngagementOpportunityOnPostPublicPublish: Update of msnfp_engagementopportunity</Description>

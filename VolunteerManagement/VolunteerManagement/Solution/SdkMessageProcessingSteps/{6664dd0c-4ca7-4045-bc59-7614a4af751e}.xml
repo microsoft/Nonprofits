@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.QualificationOnPostUpdate: Update of msnfp_qualification" SdkMessageProcessingStepId="{b42728b8-6b16-ec11-b6e6-000d3a1b92d8}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Plugins.QualificationOnPostUpdate: Update of msnfp_qualification" SdkMessageProcessingStepId="{6664dd0c-4ca7-4045-bc59-7614a4af751e}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.QualificationOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>8edb8a98-f648-407a-86b1-590bb88ddafd</PluginTypeId>
+  <PluginTypeName>Plugins.QualificationOnPostUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>a04067ed-8ac6-4ac4-8883-063aa492bccb</PluginTypeId>
   <PrimaryEntity>msnfp_qualification</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <Description>Plugins.QualificationOnPostUpdate: Update of msnfp_qualification</Description>
