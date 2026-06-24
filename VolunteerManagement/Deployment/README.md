@@ -31,40 +31,44 @@ then publishing. After that the AppSource solution deletes cleanly.
 
 ## Migration steps
 
+> Run all commands from the **repository root**. Paths below are relative to it: the solution
+> project lives under `VolunteerManagement\VolunteerManagement\` and the migration script under
+> `VolunteerManagement\Deployment\`.
+
 1. **Back up the environment.** The strip stage edits active form/view layers in place and
    deleting the AppSource solution is irreversible without a backup.
 
 2. **Import the OS managed solution side-by-side.**
 
    ```powershell
-   pac solution import --path .\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip
+   pac solution import --path .\VolunteerManagement\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip
    ```
 
-   (Build it first with `dotnet build VolunteerManagement\VolunteerManagement.cdsproj -c Release`.)
+   (Build it first with `dotnet build VolunteerManagement\VolunteerManagement\VolunteerManagement.cdsproj -c Release`.)
 
 3. **Strip the AppSource PCF references and publish.**
 
    ```powershell
-   .\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -StripReferences
+   .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -StripReferences
    ```
 
 4. **Delete the AppSource managed solution.**
 
    ```powershell
-   .\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -DeleteAppSourceSolution
+   .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -DeleteAppSourceSolution
    ```
 
 5. **Re-import / upgrade the OS solution** so its own forms restore the PCF controls under OS
    ownership.
 
    ```powershell
-   pac solution import --path .\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip --force-overwrite
+   pac solution import --path .\VolunteerManagement\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip --force-overwrite
    ```
 
 6. **Verify.**
 
    ```powershell
-   .\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -Verify
+   .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -Verify
    ```
 
 ## Authentication

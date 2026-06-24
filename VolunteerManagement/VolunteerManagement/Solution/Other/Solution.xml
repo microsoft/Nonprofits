@@ -6,7 +6,7 @@
       <LocalizedName description="Volunteer Management (OS)" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.2.4.0</Version>
+    <Version>1.1.3.0</Version>
     <Managed>2</Managed>
     <Publisher>
       <UniqueName>microsofttechforsocialimpact</UniqueName>

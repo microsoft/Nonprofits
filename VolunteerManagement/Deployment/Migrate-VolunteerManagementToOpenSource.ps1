@@ -123,6 +123,21 @@ $headers = @{
     'OData-Version'   = '4.0'
 }
 
+# Retrieve every page of a Dataverse Web API query. The Web API caps each response at a
+# page (default 5000 rows) and returns @odata.nextLink for the rest, so a single call can
+# miss forms/views that still reference the AppSource PCF controls.
+function Get-AllPages {
+    param([string]$Url)
+    $all = @()
+    $next = $Url
+    while ($next) {
+        $page = Invoke-RestMethod -Uri $next -Headers $headers
+        if ($page.value) { $all += $page.value }
+        $next = $page.'@odata.nextLink'
+    }
+    return $all
+}
+
 # Replace any <customControl name="<target>" .../> with a clone of the form/view's default
 # control definition, preserving formFactor. This removes the Form/View -> PCF dependency.
 function Repair-ControlXml {
@@ -149,7 +164,7 @@ function Repair-ControlXml {
 
 function Invoke-StripReferences {
     Write-Host '=== Stripping AppSource PCF references from system forms ===' -ForegroundColor Cyan
-    $forms = (Invoke-RestMethod -Uri "$base/systemforms?`$select=formid,name,objecttypecode,formxml" -Headers $headers).value
+    $forms = Get-AllPages -Url "$base/systemforms?`$select=formid,name,objecttypecode,formxml"
     $patchedForms = 0
     foreach ($f in $forms) {
         if (-not $f.formxml) { continue }
@@ -165,7 +180,7 @@ function Invoke-StripReferences {
     Write-Host "Patched forms: $patchedForms"
 
     Write-Host '=== Stripping AppSource PCF references from saved queries (views) ===' -ForegroundColor Cyan
-    $views = (Invoke-RestMethod -Uri "$base/savedqueries?`$select=savedqueryid,name,returnedtypecode,layoutxml" -Headers $headers).value
+    $views = Get-AllPages -Url "$base/savedqueries?`$select=savedqueryid,name,returnedtypecode,layoutxml"
     $patchedViews = 0
     foreach ($v in $views) {
         if (-not $v.layoutxml) { continue }
