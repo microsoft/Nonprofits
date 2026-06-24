@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Post-Update Participation Schedule" SdkMessageProcessingStepId="{ca3b8244-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Post-Update Participation Schedule" SdkMessageProcessingStepId="{dc676866-dead-48da-9b43-52059af2ab83}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.ParticipationScheduleOnPostUpdateAndCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>9d64be49-51f1-4711-845f-6ebe1363aa1d</PluginTypeId>
+  <PluginTypeName>Plugins.ParticipationScheduleOnPostUpdateAndCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>ed6ba47e-ba76-4cd9-a261-143865c50e85</PluginTypeId>
   <PrimaryEntity>msnfp_participationschedule</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes>msnfp_schedulestatus</FilteringAttributes>

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Pre-Update Engagement Opportuntiy Schedule" SdkMessageProcessingStepId="{9c040360-23be-eb11-8236-000d3a31c0f1}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Pre-Update Engagement Opportuntiy Schedule" SdkMessageProcessingStepId="{f47addb7-4a4e-4a86-8056-4e4bcbb37f19}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityScheduleOnPreCreateUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>df58085a-23be-eb11-8236-000d3a31c0f1</PluginTypeId>
+  <PluginTypeName>Plugins.EngagementOpportunityScheduleOnPreCreateUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>8badf9cc-b6ee-4587-a3d3-620ae3c2603a</PluginTypeId>
   <PrimaryEntity>msnfp_engagementopportunityschedule</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes>msnfp_effectivefrom,msnfp_effectiveto,msnfp_minimum,msnfp_maximum,msnfp_engagementopportunity,msnfp_shiftname</FilteringAttributes>

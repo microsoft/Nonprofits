@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPreUpdate: Update of msnfp_engagementopportunity" SdkMessageProcessingStepId="{53dba732-fdd1-ec11-a7b5-000d3a3af529}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPreUpdate: Update of msnfp_engagementopportunity" SdkMessageProcessingStepId="{5751b036-57ec-4d93-b297-2004a77c8ae7}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityOnPreUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>0c14a9f4-ad5f-472d-9f40-1e634fd007ef</PluginTypeId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPreUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>22ca14be-748a-4b78-abbf-232b8807a56c</PluginTypeId>
   <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <Description>Plugins.EngagementOpportunityOnPreUpdate: Update of msnfp_engagementopportunity</Description>

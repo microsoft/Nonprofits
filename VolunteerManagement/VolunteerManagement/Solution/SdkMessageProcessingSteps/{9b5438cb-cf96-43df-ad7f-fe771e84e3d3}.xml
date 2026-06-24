@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.QualificationStageOnPreUpdate: Update of msnfp_qualificationstage" SdkMessageProcessingStepId="{1e3d5ff7-3cf9-eb11-94ef-000d3a135c2d}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Plugins.QualificationStageOnPreUpdate: Update of msnfp_qualificationstage" SdkMessageProcessingStepId="{9b5438cb-cf96-43df-ad7f-fe771e84e3d3}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.QualificationStageOnPreUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>3e7d5d74-2c9e-4fa6-815b-94f7874b17a8</PluginTypeId>
+  <PluginTypeName>Plugins.QualificationStageOnPreUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>c2c4a9a0-6593-4d3a-8a06-bfd212dfc569</PluginTypeId>
   <PrimaryEntity>msnfp_qualificationstage</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <Description>Plugins.QualificationStageOnPreUpdate: Update of msnfp_qualificationstage</Description>

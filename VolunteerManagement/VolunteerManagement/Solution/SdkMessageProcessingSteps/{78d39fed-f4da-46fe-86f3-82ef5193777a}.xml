@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPreCreate: Create of msnfp_engagementopportunity" SdkMessageProcessingStepId="{0ff87207-fdd1-ec11-a7b5-000d3a3afd3a}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPreCreate: Create of msnfp_engagementopportunity" SdkMessageProcessingStepId="{78d39fed-f4da-46fe-86f3-82ef5193777a}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>d44d669b-ac09-4020-968c-d79e29dcfdce</PluginTypeId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPreCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>32f62435-ba3a-45ad-8811-a6ea543ff82d</PluginTypeId>
   <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <Description>Plugins.EngagementOpportunityOnPreCreate: Create of msnfp_engagementopportunity</Description>

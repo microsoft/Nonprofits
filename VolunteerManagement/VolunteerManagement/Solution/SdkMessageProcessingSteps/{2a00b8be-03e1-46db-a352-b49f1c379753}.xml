@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.ParticipationScheduleOnPreCreate: Create of msnfp_participationschedule" SdkMessageProcessingStepId="{24e4c865-82dd-eb11-bacb-000d3a5819ec}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Post-Create Participation Schedule" SdkMessageProcessingStepId="{2a00b8be-03e1-46db-a352-b49f1c379753}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.ParticipationScheduleOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>5bccbc89-5bae-4ad9-801c-25fc4748c92b</PluginTypeId>
+  <PluginTypeName>Plugins.ParticipationScheduleOnPostUpdateAndCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>ed6ba47e-ba76-4cd9-a261-143865c50e85</PluginTypeId>
   <PrimaryEntity>msnfp_participationschedule</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
-  <Description>Plugins.ParticipationScheduleOnPreCreate: Create of msnfp_participationschedule</Description>
   <FilteringAttributes></FilteringAttributes>
   <InvocationSource>1</InvocationSource>
   <Mode>0</Mode>
   <Rank>1</Rank>
   <EventHandlerTypeCode>4602</EventHandlerTypeCode>
-  <Stage>20</Stage>
+  <Stage>40</Stage>
   <IsCustomizable>1</IsCustomizable>
   <IsHidden>0</IsHidden>
   <SupportedDeployment>0</SupportedDeployment>

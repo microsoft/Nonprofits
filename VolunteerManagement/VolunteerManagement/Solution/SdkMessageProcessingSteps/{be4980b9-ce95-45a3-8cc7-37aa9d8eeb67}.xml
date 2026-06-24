@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Pre-Create Engagement Opportunity Setting" SdkMessageProcessingStepId="{9b3b8244-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Pre-Create Engagement Opportunity Participant Qualification" SdkMessageProcessingStepId="{be4980b9-ce95-45a3-8cc7-37aa9d8eeb67}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunitySettingOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>ccee094b-9aa2-49dd-b6af-00348d4ba76f</PluginTypeId>
-  <PrimaryEntity>msnfp_engagementopportunitysetting</PrimaryEntity>
+  <PluginTypeName>Plugins.EngagementOpportunityQualificationOnPreCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>149c1ff6-f0d5-4717-87ea-2130c62a1c75</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunityparticipantqual</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes></FilteringAttributes>
   <InvocationSource>1</InvocationSource>

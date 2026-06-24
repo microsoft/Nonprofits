@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Post-Update Participation" SdkMessageProcessingStepId="{d33b8244-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Post-Update Participation" SdkMessageProcessingStepId="{8271517a-25f9-4cf2-a006-20e7248dc767}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.ParticipationOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>49dc1e97-2b4c-4203-86ac-ba38aa39641a</PluginTypeId>
+  <PluginTypeName>Plugins.ParticipationOnPostUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>48f1bbba-39e2-4325-bf62-80d495efab45</PluginTypeId>
   <PrimaryEntity>msnfp_participation</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes>msnfp_status,msnfp_hours</FilteringAttributes>

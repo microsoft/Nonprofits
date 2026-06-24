@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Plugins.QualificationOnPostCreate: Create of msnfp_qualification" SdkMessageProcessingStepId="{3408687d-3cf5-eb11-94ef-000d3a135c2d}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Plugins.QualificationOnPostCreate: Create of msnfp_qualification" SdkMessageProcessingStepId="{39ef623b-a978-4e2a-a5cf-9df6268c4cce}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.QualificationOnPostCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>d7b2c2d1-e5d5-4aee-9eaf-f656bd5248d5</PluginTypeId>
+  <PluginTypeName>Plugins.QualificationOnPostCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>40838878-f4df-4d05-bc78-6da8f21a5f27</PluginTypeId>
   <PrimaryEntity>msnfp_qualification</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <Description>Plugins.QualificationOnPostCreate: Create of msnfp_qualification</Description>

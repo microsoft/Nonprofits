@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Post-Update Engagement Opportunity" SdkMessageProcessingStepId="{d9837a4a-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Post-Update Engagement Opportunity" SdkMessageProcessingStepId="{2c7c7185-3d66-41d3-89fb-c8c635046dae}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityOnPostUpdate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>82086afa-6b54-42de-a651-cb813259497f</PluginTypeId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPostUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>188ca6f7-e614-4adf-8598-fd123475d982</PluginTypeId>
   <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes>msnfp_endingdate,msnfp_maximum,msnfp_minimum,msnfp_shifts,msnfp_startingdate</FilteringAttributes>
