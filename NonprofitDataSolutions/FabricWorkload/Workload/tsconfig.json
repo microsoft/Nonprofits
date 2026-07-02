@@ -1,0 +1,40 @@
+{
+	"compilerOptions": {
+		"allowJs": false,
+		"allowSyntheticDefaultImports": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"forceConsistentCasingInFileNames": true,
+		"importHelpers": true,
+		"inlineSources": true,
+		"jsx": "react-jsx",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"preserveSymlinks": false,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"strictNullChecks": false,
+		"stripInternal": true,
+		"target": "ES2017",
+		"useUnknownInCatchVariables": false,
+		"lib": ["ES2017", "DOM"],
+		"types": ["react", "react-dom", "node"],
+		"paths": {
+			"@src/*": ["./app/*"],
+			"@context/*": ["./app/context/*"],
+			"@components/*": ["./app/components/*"],
+			"@services/*": ["./app/services/*"],
+			"@controller/*": ["./app/controller/*"],
+			"@clients/*": ["./app/clients/*"],
+			"@originalInstaller/*": ["./app/items/PackageInstallerItem/*"],
+			"@nds/*": ["./app/items/NonprofitDataSolutions/*"]
+		}
+	},
+	"include": ["app/**/*"],
+	"exclude": ["node_modules", "dist"]
+}

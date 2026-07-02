@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ItemDefinition" elementFormDefault="qualified"
+	xmlns=""
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./CommonTypesDefinitions.xsd" />
+
+	<xs:element name="ItemManifestConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Item" type="ItemMetadata" />
+			</xs:sequence>
+			<xs:attribute name="SchemaVersion" type="SchemaVersion" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ItemMetadata">
+		<xs:sequence>
+			<xs:element name="Workload" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:attribute name="WorkloadName" type="WorkloadName" use="required" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="JobScheduler" type="JobScheduler" minOccurs="0" maxOccurs="1">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="TypeName" type="TypeName" use="required"/>
+		<xs:attribute name="Category" type="Category" use="optional" default="Unknown" />
+		<xs:attribute name="CreateOneLakeFoldersOnArtifactCreation" use="optional" default="false" />
+	</xs:complexType>
+
+	<xs:complexType name="JobScheduler">
+		<xs:all>
+			<xs:element name="OnDemandJobDeduplicateOptions" type="JobDeduplicateOption" minOccurs="1" maxOccurs="1" />
+			<xs:element name="ScheduledJobDeduplicateOptions" type="JobDeduplicateOption" minOccurs="1" maxOccurs="1" />
+			<xs:element name="ItemJobTypes" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ItemJobType" type="JobType" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="JobType">
+		<xs:attribute name="Name" type="JobTypeName" use="required" />
+	</xs:complexType>
+	<xs:simpleType name="Category">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Code" />
+			<xs:enumeration value="Data" />
+			<xs:enumeration value="Unknown" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="JobDeduplicateOption">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="PerItem" />
+			<xs:enumeration value="PerUser" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkloadName">
+		<xs:restriction base ="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="32" />
+			<xs:pattern value="([a-zA-Z0-9-]+)\.([a-zA-Z0-9-]+)" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TypeName">
+		<xs:annotation>
+			<xs:documentation>
+				TypeName should contain WorkloadName as a prefix, e.g. Org.WorkloadSample.SampleWorkloadItem
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base ="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="64" />
+			<xs:pattern value="([a-zA-Z0-9-]+)\.([a-zA-Z0-9-]+)\.([a-zA-Z0-9-]+)" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="JobTypeName">
+		<xs:annotation>
+			<xs:documentation>
+				JobTypeName should contain Item's TypeName as a prefix, e.g. Org.WorkloadSample.SampleWorkloadItem.SampleJobType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base ="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="96" />
+			<xs:pattern value="([a-zA-Z0-9-]+)\.([a-zA-Z0-9-]+)\.([a-zA-Z0-9-]+)\.([a-zA-Z0-9-]+)" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

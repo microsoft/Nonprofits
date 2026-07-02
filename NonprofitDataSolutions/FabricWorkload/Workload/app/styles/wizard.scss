@@ -1,0 +1,86 @@
+// Hide the wizard toolbar
+fabric-wizard {
+	--wizard-toolbar-display: none !important;
+	--wizard-tablist-width: 268px;
+	--wizard-overflow-tablist-width: 268px;
+	--wizard-overflow-step-width: 268px;
+}
+
+fabric-wizard::part(steps) {
+	width: 268px !important;
+	max-width: 268px !important;
+	min-width: 268px !important;
+	flex-direction: column !important;
+	align-items: flex-start !important;
+	overflow: visible !important;
+}
+
+// Style wizard panels for proper layout
+fabric-wizard-panel {
+	height: 100%;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-height: 0;
+}
+
+fabric-wizard-panel[aria-hidden='false'] {
+	display: flex;
+	height: 100%;
+	flex: 1 1 auto;
+	min-height: 0;
+}
+
+fabric-wizard-panel::part(panel) {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	min-height: 0;
+}
+
+fabric-wizard-panel::part(content) {
+	flex: 1 1 0;
+	height: 0;
+	overflow-y: auto !important;
+	min-height: 0;
+	margin-right: 22px;
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 16px;
+}
+
+fabric-wizard-panel::part(footer) {
+	flex: 0 0 64px;
+	margin-top: auto;
+	min-height: 64px;
+	height: 64px;
+	max-height: 64px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+// The fabric-wizard switches to an overflow rail inside the workload iframe,
+// narrowing each step to the icon only. Force the full circle + label layout.
+fabric-wizard-step,
+fabric-wizard-step.overflow {
+	width: 100% !important;
+	flex: 0 0 auto !important;
+}
+
+fabric-wizard-step::part(step) {
+	width: 100%;
+	flex-direction: row !important;
+	justify-content: flex-start !important;
+	align-items: center !important;
+}
+
+fabric-wizard-step::part(summary) {
+	display: flex !important;
+	flex-direction: column;
+}
+
+fabric-wizard-step::part(title) {
+	display: block !important;
+}
+
