@@ -4,11 +4,25 @@
  */
 
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const fs = require('fs').promises;
 const path = require('path');
 const { buildManifestPackage } = require('./build-manifest');
 
 const router = express.Router();
+
+/**
+ * Rate limiter for the manifest routes, which read from the local file system.
+ * This is a local development server, so the limit is generous.
+ */
+const manifestRateLimiter = rateLimit({
+	windowMs: 60 * 1000, // 1 minute
+	max: 100, // limit each IP to 100 requests per window
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
+router.use(manifestRateLimiter);
 
 /**
  * OPTIONS handler for CORS preflight requests
