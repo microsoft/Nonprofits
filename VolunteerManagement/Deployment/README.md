@@ -1,8 +1,11 @@
-# Migrating Volunteer Management to the open-source build
+# Migrate-VolunteerManagementToOpenSource.ps1
 
-Both the AppSource and the open-source (OS) Volunteer Management solutions are published by
-Microsoft; they are distinguished by **origin** — the AppSource managed solution (installed
-from the marketplace) versus the OS build (compiled from the public GitHub repository).
+Reference for the migration script that moves an environment from the AppSource Volunteer
+Management solution to the open-source (OS) build.
+
+> **Looking for the step-by-step migration walkthrough?** See the
+> [migration guide](../MIGRATION.md). This document only covers the script itself — its
+> stages, parameters, authentication, and safety switches.
 
 The OS build installs **side-by-side** with its own identity so it never collides with the
 AppSource solution:
@@ -29,47 +32,28 @@ The `Migrate-VolunteerManagementToOpenSource.ps1` script removes the blocker by 
 active form/view layers so they substitute the default control for the AppSource PCF control,
 then publishing. After that the AppSource solution deletes cleanly.
 
-## Migration steps
+## Stages
 
-> Run all commands from the **repository root**. Paths below are relative to it: the solution
-> project lives under `VolunteerManagement\VolunteerManagement\` and the migration script under
-> `VolunteerManagement\Deployment\`.
+Each stage is **opt-in** via a switch; nothing runs unless requested. Run the script from the
+**repository root**. For the full end-to-end migration order (build, import, re-import),
+see the [migration guide](../MIGRATION.md).
 
-1. **Back up the environment.** The strip stage edits active form/view layers in place and
-   deleting the AppSource solution is irreversible without a backup.
+| Switch | What it does |
+| --- | --- |
+| `-StripReferences` | Rewrites forms + saved queries to drop the AppSource PCF references (substituting the default control), then runs `PublishAllXml`. |
+| `-DeleteAppSourceSolution` | Deletes the AppSource managed solution identified by `-AppSourceSolutionUniqueName`. |
+| `-Verify` | Reports the plugin assemblies, PCF control ownership, and SDK steps registered on `PluginsOS`. |
 
-2. **Import the OS managed solution side-by-side.**
+```powershell
+# Strip AppSource PCF references and publish
+.\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -StripReferences
 
-   ```powershell
-   pac solution import --path .\VolunteerManagement\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip
-   ```
+# Delete the AppSource managed solution
+.\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -DeleteAppSourceSolution
 
-   (Build it first with `dotnet build VolunteerManagement\VolunteerManagement\VolunteerManagement.cdsproj -c Release`.)
-
-3. **Strip the AppSource PCF references and publish.**
-
-   ```powershell
-   .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -StripReferences
-   ```
-
-4. **Delete the AppSource managed solution.**
-
-   ```powershell
-   .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -DeleteAppSourceSolution
-   ```
-
-5. **Re-import / upgrade the OS solution** so its own forms restore the PCF controls under OS
-   ownership.
-
-   ```powershell
-   pac solution import --path .\VolunteerManagement\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip --force-overwrite
-   ```
-
-6. **Verify.**
-
-   ```powershell
-   .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -Verify
-   ```
+# Verify the result
+.\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -Verify
+```
 
 ## Authentication
 
@@ -84,7 +68,7 @@ Sign in first with `az login`, or:
 - Every stage is **opt-in**; running the script with no stage switch does nothing.
 - The destructive stages support `-WhatIf` and `-Confirm` (the script declares
   `ConfirmImpact = 'High'`), so you can preview each PATCH / publish / delete.
-- Always take an environment backup before steps 3–5.
+- Always take an environment backup before running the destructive stages.
 
 ## Parameters
 
