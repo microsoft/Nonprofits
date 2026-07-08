@@ -27,6 +27,7 @@ Any use of third-party trademarks or logos are subject to those third-party's po
     - [Setting things up](#setting-things-up)
   - [Implement your custom workload](#start-coding)
   - [Publish your workload](#publish-your-workload)
+    - [Certification and publishing resources](#certification-and-publishing-resources)
 - [Resources](#resources)
 
 ## Introduction
@@ -86,7 +87,26 @@ Be sure to look at what has been released with the [newest version of the WDK](.
 
 ### Publish your workload
 
-After developing your Fabric Workload according to the [certification requirements](https://learn.microsoft.com/en-us/fabric/workload-development-kit/publish-workload-requirements), you can publish it to the Workload Hub which will allow every Fabric user a chance to easily start a trial experience and then buy your workload. Use the in-depth description of [how to publish a workload](https://learn.microsoft.com/en-us/fabric/workload-development-kit/publish-workload-flow) for the different stages and concepts provided by the platform.
+Once you customize this workload, you can publish it either **internally** (to your own Fabric tenant) or **cross-tenant** (to all Fabric customers through the Workload Hub). Cross-tenant distribution goes through a Microsoft **certification** process; internal publishing does not.
+
+Start with the [Publishing overview](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-overview) to pick the scenario that fits, then work through the requirements below before submitting the [Publishing Request Form](https://aka.ms/fabric_workload_publishing).
+
+#### Certification and publishing resources
+
+Use these links to take a customized workload through certification and publication:
+
+| Topic | Description |
+|-------|-------------|
+| [Publishing overview](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-overview) | The two publishing scenarios (internal vs. cross-tenant) and the end-to-end flow. |
+| [General publishing requirements](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-requirements-general) | Baseline requirements for all workloads — Entra custom domain, app registration, manifest, hosting, and security. |
+| [Publishing requirements (overview)](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-requirements-overview) | Full set of certification requirements for Workload Hub distribution, plus prerequisites and the publishing process. |
+| [Publishing requirements for workloads](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-requirements-workload) | Workload-level functionality, reliability, compliance, and documentation standards. |
+| [Publishing requirements for items](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-requirements-item) | Item-level UX, data handling, accessibility, and lifecycle standards. |
+| [Vendor attestation template](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-vendor-attestation-template) | Template for the compliance attestation document referenced by `AttestationUrl` in your manifest. |
+| [Manifest overview](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/manifest-overview) | How to prepare the manifest package that is validated, certified, and published. |
+| [Validate your workload for publishing](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/tutorial-validate-workload) | Run the official validation tool to catch compliance issues before submission. |
+| [Upload / publish a workload](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/tutorial-publish-workload) | Step-by-step upload through the Fabric Admin Portal and workload-name registration. |
+| [Publishing Request Form](https://aka.ms/fabric_workload_publishing) | Submit your workload to Microsoft to move to Preview and then General Availability. |
 
 ## Resources
 
@@ -95,4 +115,5 @@ Here are all the resources included and referenced. These documents provide addi
 - [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview)
 - [One Lake APIs](https://learn.microsoft.com/en-us/fabric/onelake/onelake-access-api)
 - [Monitoring Hub Configuration Guide](https://learn.microsoft.com/en-us/fabric/workload-development-kit/monitoring-hub)
-- [Publish a workload to the Workload Hub](https://learn.microsoft.com/en-us/fabric/workload-development-kit/publish-workload-flow)
+- [Publishing overview (Extensibility Toolkit)](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-overview)
+- [General publishing requirements](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/publishing-requirements-general)
