@@ -9,7 +9,7 @@ export const useDeploymentIncludesStyles = makeStyles({
 	},
 	deploymentGrid: {
 		display: 'grid',
-		gridTemplateColumns: 'repeat(2, 1fr)',
+		gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
 		gap: '12px',
 		padding: 0,
 		margin: 0,

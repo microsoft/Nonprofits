@@ -7,6 +7,7 @@ export const useStyles = makeStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		flexGrow: 1,
+		minWidth: '0',
 		paddingBottom: '0', // Footer will handle its own padding
 	},
 	stepTitle: {
@@ -31,6 +32,7 @@ export const useStyles = makeStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		flex: 1,
+		minWidth: '0',
 	},
 	contentContainer: {
 		flex: 1,
@@ -39,6 +41,7 @@ export const useStyles = makeStyles({
 		flexDirection: 'column',
 		gap: '24px',
 		minHeight: '0',
+		minWidth: '0',
 		overflowY: 'auto',
 		overflowX: 'hidden',
 		paddingRight: '10px',
@@ -51,6 +54,8 @@ export const useStyles = makeStyles({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		gap: '16px',
+		rowGap: '8px',
+		flexWrap: 'wrap',
 		flexShrink: 0,
 		width: '100%',
 		height: '100%',

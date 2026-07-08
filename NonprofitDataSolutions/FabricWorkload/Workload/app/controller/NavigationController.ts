@@ -125,12 +125,16 @@ export async function openInstallationWizard(
 	const currentParams = typeof window !== 'undefined' ? window.location.search : '';
 	const path = `/package-deployment/${itemObjectId}/${currentParams}`;
 
+	// On small viewports (phones/tablets) use a full-screen dialog so the wizard
+	// has enough room; on larger screens keep it centered at 80% x 90%.
+	const isSmallViewport = typeof window !== 'undefined' && window.innerWidth < 768;
+
 	return await callDialogOpen(
 		workloadClient,
 		workloadName,
 		path,
-		'80%',
-		'90%',
+		isSmallViewport ? '100%' : '80%',
+		isSmallViewport ? '100%' : '90%',
 		false, // hasCloseButton handled inside wizard UI
 		true, // isBlocking to prevent closing when clicking outside
 	);

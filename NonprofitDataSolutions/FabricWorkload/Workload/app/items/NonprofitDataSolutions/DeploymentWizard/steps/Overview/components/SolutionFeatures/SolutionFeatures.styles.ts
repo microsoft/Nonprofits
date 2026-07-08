@@ -3,7 +3,7 @@ import { makeStyles, tokens } from '@fluentui/react-components';
 export const useSolutionFeaturesStyles = makeStyles({
 	featuresGrid: {
 		display: 'grid',
-		gridTemplateColumns: 'repeat(2, 1fr)',
+		gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
 		gap: '16px',
 		padding: 0,
 		margin: 0,
@@ -42,21 +42,3 @@ export const useSolutionFeaturesStyles = makeStyles({
 		padding: '0',
 	},
 });
-
-
-	// featureCard: {
-	// 	display: 'flex',
-	// 	alignItems: 'flex-start',
-	// 	gap: '16px',
-	// 	padding: '16px',
-	// 	borderRadius: tokens.borderRadiusMedium,
-	// 	border: `1px solid ${tokens.colorNeutralStroke2}`,
-	// 	backgroundColor: tokens.colorNeutralBackground1,
-	// },
-
-	// featureIcon: {
-	// 	padding: '8px',
-	// 	borderRadius: tokens.borderRadiusSmall,
-	// 	flexShrink: 0,
-	// 	color: tokens.colorBrandForeground2,
-	// },

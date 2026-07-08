@@ -36,6 +36,7 @@ fabric-wizard-panel::part(panel) {
 	flex-direction: column;
 	overflow: hidden;
 	min-height: 0;
+	min-width: 0;
 }
 
 fabric-wizard-panel::part(content) {
@@ -43,6 +44,7 @@ fabric-wizard-panel::part(content) {
 	height: 0;
 	overflow-y: auto !important;
 	min-height: 0;
+	min-width: 0;
 	margin-right: 22px;
 	padding-right: 0;
 	padding-top: 0;
@@ -84,3 +86,93 @@ fabric-wizard-step::part(title) {
 	display: block !important;
 }
 
+// --- Responsive fixes ---------------------------------------------------
+// The wizard is hosted in a percentage-sized dialog iframe, so its own width
+// shrinks on tablets/phones. Allow the flex children to shrink below their
+// content size, otherwise the fixed step rail plus a non-shrinking panel force
+// horizontal overflow (page scrollbar + clipped content/buttons).
+fabric-wizard,
+fabric-wizard::part(wizard),
+fabric-wizard-panel,
+fabric-wizard-panel::part(panel),
+fabric-wizard-panel::part(content) {
+	min-width: 0;
+	max-width: 100%;
+}
+
+// Tablet-sized dialog: narrow the step rail so the content pane keeps a usable
+// width instead of being pushed off-screen.
+@media (max-width: 700px) {
+	fabric-wizard {
+		--wizard-tablist-width: 200px;
+		--wizard-overflow-tablist-width: 200px;
+		--wizard-overflow-step-width: 200px;
+	}
+
+	fabric-wizard::part(steps) {
+		width: 200px !important;
+		min-width: 200px !important;
+		max-width: 200px !important;
+	}
+
+	fabric-wizard-panel::part(content) {
+		margin-right: 12px;
+	}
+
+	// Below a certain width the component stacks the rail on top of the panel
+	// (flex-direction: column) and the panel stops filling the remaining height,
+	// squishing the content. Keep the rail beside the panel and let the panel
+	// grow to the full dialog height.
+	fabric-wizard::part(wizard) {
+		flex-direction: row !important;
+	}
+
+	fabric-wizard::part(panels-container) {
+		flex: 1 1 0 !important;
+		min-width: 0 !important;
+		height: 100% !important;
+	}
+
+	// In this narrow "overflow" mode the component keeps the horizontal-stepper
+	// connector (an absolutely-positioned 2px line spanning the full step width),
+	// which strikes through the vertically-stacked step labels. Hide it so the
+	// rail renders as a clean vertical list of circles + labels.
+	fabric-wizard-step::part(step-connector) {
+		display: none !important;
+	}
+}
+
+// Phone-sized dialog: collapse the rail to an icon-only strip. The current step
+// name is still shown in the panel header, so no navigation context is lost.
+@media (max-width: 480px) {
+	fabric-wizard {
+		--wizard-tablist-width: 56px;
+		--wizard-overflow-tablist-width: 56px;
+		--wizard-overflow-step-width: 56px;
+	}
+
+	fabric-wizard::part(steps) {
+		width: 56px !important;
+		min-width: 56px !important;
+		max-width: 56px !important;
+	}
+
+	fabric-wizard-step::part(step) {
+		justify-content: center !important;
+	}
+
+	fabric-wizard-step::part(title) {
+		display: none !important;
+	}
+
+	fabric-wizard-panel::part(content) {
+		margin-right: 8px;
+	}
+
+	// Let the footer buttons wrap onto a second row instead of being clipped.
+	fabric-wizard-panel::part(footer) {
+		height: auto;
+		min-height: 56px;
+		max-height: none;
+	}
+}
