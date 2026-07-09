@@ -31,6 +31,21 @@ The solution provides an end-to-end analytics foundation built on Microsoft Fabr
 
 Additional capabilities will be added over time to support other nonprofit operations.
 
+## Requirements and cost
+
+**Fabric capacity** — An [F SKU](https://learn.microsoft.com/fabric/enterprise/licenses) (F4 or higher),
+Trial, or Premium capacity must be assigned to the target workspace. Deploying the solution provisions
+roughly 20+ Fabric items (Lakehouses, notebooks, pipelines, a semantic model, and a Power BI report).
+
+**Permissions** — You need the **Admin** or **Member** role on the workspace to create items. To ingest from
+an external source, you also need credentials for that connector (Salesforce NPSP or Dynamics 365 /
+Common Data Model for Nonprofits). Sample data requires no external connection.
+
+**Cost** — Fabric billing is consumption-based: you pay for the assigned capacity (compute) and the OneLake
+storage you use. Spark notebook runs and pipeline activity consume Capacity Units (CUs). Monitor usage with the
+[Fabric Capacity Metrics app](https://learn.microsoft.com/fabric/enterprise/metrics-app) and see
+[Fabric licensing](https://learn.microsoft.com/fabric/enterprise/licenses) for details.
+
 ## Deploy the solution
 
 You can deploy in two ways. We recommend the Fabric Workload for a faster, guided experience.
