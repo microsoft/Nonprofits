@@ -1,7 +1,7 @@
 # Migrating Social Impact solutions from AppSource/PPAC to the GitHub build
 
 Guidance for moving the Fundraising, Grant Management, and Outcome Management solutions
-off the retired AppSource/PPAC (managed) versions onto the equivalent build from this repo.
+from the AppSource/PPAC (managed) versions onto the equivalent build from this repo.
 
 ## Solutions in scope
 

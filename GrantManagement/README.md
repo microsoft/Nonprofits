@@ -21,7 +21,7 @@ Learn More:
 
 ## Migrate from AppSource/PPAC
 
-Moving off the retired AppSource/PPAC version? See the [migration guide](../Documents/ppac-to-github-migration.md).
+Moving from the AppSource/PPAC version? See the [migration guide](../Documents/ppac-to-github-migration.md).
 
 ## Use
 
