@@ -19,6 +19,10 @@ Learn More:
 
 [Deploy Outcome Management](../Documents/dataverse-build-and-deploy.md).
 
+## Migrate from AppSource/PPAC
+
+Moving off the retired AppSource/PPAC version? See the [migration guide](../Documents/ppac-to-github-migration.md).
+
 ## Use
 
 [Use Outcome Management](https://learn.microsoft.com/en-us/industry/nonprofit/outcome-management).
