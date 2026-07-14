@@ -73,7 +73,7 @@ namespace Plugins.Tests
 			}
 			catch (InvalidPluginExecutionException ex) when (ex.Message.ToLower().Contains("error during resolving service from container"))
 			{
-				// TODO #1187179 update to exception validation instead of exception message validation
+				// Future: validate on exception type rather than exception message text.
 				var realMessage = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? ex.Message;
 				if (realMessage.ToLower().Contains("type func`2 "))
 				{

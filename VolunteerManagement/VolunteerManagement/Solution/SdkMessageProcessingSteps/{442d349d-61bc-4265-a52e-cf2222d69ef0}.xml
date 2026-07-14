@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Pre-Create Group Membership" SdkMessageProcessingStepId="{a93b8244-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Pre-Create Engagement Opportunity Setting" SdkMessageProcessingStepId="{442d349d-61bc-4265-a52e-cf2222d69ef0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.GroupMembershipOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>be18fbf2-065c-4cb3-80c1-69984671d900</PluginTypeId>
-  <PrimaryEntity>msnfp_groupmembership</PrimaryEntity>
+  <PluginTypeName>Plugins.EngagementOpportunitySettingOnPreCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>b22c2840-4e15-4892-b93a-61d938edff3f</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunitysetting</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes></FilteringAttributes>
   <InvocationSource>1</InvocationSource>

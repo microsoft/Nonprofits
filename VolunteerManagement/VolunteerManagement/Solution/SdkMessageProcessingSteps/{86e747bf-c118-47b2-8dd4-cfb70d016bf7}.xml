@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Pre-Create Engagement Opportunity Preference" SdkMessageProcessingStepId="{ad3b8244-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Pre-Create Participation" SdkMessageProcessingStepId="{86e747bf-c118-47b2-8dd4-cfb70d016bf7}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityPreferenceOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>cce61d3d-fef3-482b-b536-adef5972f552</PluginTypeId>
-  <PrimaryEntity>msnfp_engagementopportunitypreference</PrimaryEntity>
+  <PluginTypeName>Plugins.ParticipationOnPreCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>3434c556-ed15-4a03-9d03-062512717595</PluginTypeId>
+  <PrimaryEntity>msnfp_participation</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes></FilteringAttributes>
   <InvocationSource>1</InvocationSource>

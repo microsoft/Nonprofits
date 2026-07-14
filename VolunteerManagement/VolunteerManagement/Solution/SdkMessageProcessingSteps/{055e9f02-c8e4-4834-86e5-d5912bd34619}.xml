@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Post-Create Engagement Opportunity" SdkMessageProcessingStepId="{de837a4a-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Post-Create Engagement Opportuntiy Schedule" SdkMessageProcessingStepId="{055e9f02-c8e4-4834-86e5-d5912bd34619}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.EngagementOpportunityOnPostCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>e137afe8-051b-4ade-9bd7-051b653fb01a</PluginTypeId>
-  <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
+  <PluginTypeName>Plugins.EngagementOpportunityScheduleOnPostUpdateAndCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>78fe9806-1633-4113-8c77-bf379676d7e3</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunityschedule</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes></FilteringAttributes>
   <InvocationSource>1</InvocationSource>

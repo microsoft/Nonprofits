@@ -21,6 +21,13 @@ Read about Volunteer Management on [MS Learn](https://learn.microsoft.com/en-us/
 
 [Deploy Volunteer Management](../Documents/dataverse-build-and-deploy.md).
 
+## Migrate to the open-source version
+
+If you have the AppSource Volunteer Management solution installed, follow the
+[migration guide](./MIGRATION.md) to move to the open-source build. The AppSource solution is
+no longer supported; the open-source build installs side-by-side so the AppSource solution can
+then be removed.
+
 ## Use
 
 [Use Volunteer Management](https://learn.microsoft.com/en-us/industry/nonprofit/volunteer-management-use).

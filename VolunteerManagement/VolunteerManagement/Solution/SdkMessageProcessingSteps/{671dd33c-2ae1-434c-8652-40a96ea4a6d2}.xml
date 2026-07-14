@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SdkMessageProcessingStep Name="Pre-Create Participation" SdkMessageProcessingStepId="{ce837a4a-1eb4-eb11-8236-00224808e1d0}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<SdkMessageProcessingStep Name="Post-Create Participation" SdkMessageProcessingStepId="{671dd33c-2ae1-434c-8652-40a96ea4a6d2}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
-  <PluginTypeName>Plugins.ParticipationOnPreCreate, Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c</PluginTypeName>
-  <PluginTypeId>3af5242d-43cf-4b14-8848-7bd20a44ae8c</PluginTypeId>
+  <PluginTypeName>Plugins.ParticipationOnPostCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>f38e6ad5-d5d2-4436-aa24-dd80e1bc7b68</PluginTypeId>
   <PrimaryEntity>msnfp_participation</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
   <FilteringAttributes></FilteringAttributes>
@@ -10,7 +10,7 @@
   <Mode>0</Mode>
   <Rank>1</Rank>
   <EventHandlerTypeCode>4602</EventHandlerTypeCode>
-  <Stage>20</Stage>
+  <Stage>40</Stage>
   <IsCustomizable>1</IsCustomizable>
   <IsHidden>0</IsHidden>
   <SupportedDeployment>0</SupportedDeployment>

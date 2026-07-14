@@ -921,9 +921,9 @@
     <value>Microsoft Tech for Social Impact</value>
     <comment> 'microsofttechforsocialimpact' : LocalizedName for Solution Publisher</comment>
   </data>
-	<data name="15062:LocalizedName,VolunteerManagement" xml:space="preserve">
-    <value>Volunteer Management</value>
-    <comment> 'VolunteerManagement' : LocalizedName for Solution</comment>
+	<data name="15062:LocalizedName,volunteermanagementos" xml:space="preserve">
+    <value>Volunteer Management (OS)</value>
+    <comment> 'volunteermanagementos' : LocalizedName for Solution</comment>
   </data>
 	<data name="1:Description,ActivityPointerRegardingObjectId" xml:space="preserve">
     <value>Unique identifier of the object with which the activity is associated.</value>
