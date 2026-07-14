@@ -20,6 +20,10 @@ Included in this repository are:
 
 [Deploy the Common Data Model for Nonprofits](../Documents/dataverse-build-and-deploy.md).
 
+## Migrate from AppSource/PPAC
+
+Moving from the AppSource/PPAC versions to the builds in this repository? See the [migration guide](../Documents/ppac-to-github-migration.md), which covers Common Data Model for Nonprofits and the template apps that depend on it (Fundraising, Grant Management, and Outcome Management).
+
 ## Use
 
 See the [Common Data Model for Nonprofits ERD and How-to Guide](./Documents/common-data-model-for-nonprofits-erd-and-how-to-guide.pdf).
