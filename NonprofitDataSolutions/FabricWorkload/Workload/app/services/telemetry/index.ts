@@ -1,0 +1,1 @@
+export { workloadTelemetryService } from './WorkloadTelemetryService';

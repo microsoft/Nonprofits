@@ -1,0 +1,124 @@
+{
+	"name": "Product",
+	"version": "1.100",
+	"displayName": "Workload_Display_Name",
+	"fullDisplayName": "Workload_Full_Display_Name",
+	"description": "Workload_Description",
+	"favicon": "assets/images/fundraising-icon.png",
+	"icon": {
+		"name": "assets/images/fundraising-icon.png"
+	},
+	"homePage": {
+		"learningMaterials": [
+			{
+				"title": "Learning_Materials_Box_1_Title",
+				"introduction": "Learning_Materials_Box_1_Subtitle",
+				"description": "Learning_Materials_Box_1_Subtitle",
+				"image": "assets/images/nds-learn-more.png",
+				"link": "https://aka.ms/nds/docs"
+			},
+			{
+				"title": "Learning_Materials_Box_2_Title",
+				"introduction": "Learning_Materials_Box_2_Subtitle",
+				"description": "Learning_Materials_Box_2_Subtitle",
+				"image": "assets/images/fabric-learn-more.png",
+				"link": "https://learn.microsoft.com/fabric/fundamentals/microsoft-fabric-overview"
+			}
+		],
+		"newSection": {
+			"customActions": []
+		},
+		"recommendedItemTypes": []
+	},
+	"createExperience": {
+		"description": "Workload_Description",
+		"cards": [
+			{
+				"title": "FundraisingItem_Display_Name",
+				"description": "FundraisingItem_Description",
+				"icon": {
+					"name": "assets/images/fundraising-icon.png"
+				},
+				"icon_small": {
+					"name": "assets/images/fundraising-icon.png"
+				},
+				"availableIn": [
+					"home",
+					"create-hub",
+					"workspace-plus-new",
+					"workspace-plus-new-teams"
+				],
+				"itemType": "Fundraising",
+				"createItemDialogConfig": {
+					"onCreationFailure": {
+						"action": "Fundraising.onCreationFailure"
+					},
+					"onCreationSuccess": {
+						"action": "Fundraising.onCreationSuccess"
+					}
+				}
+			}
+		]
+	},
+	"productDetail": {
+		"publisher": "Microsoft",
+		"slogan": "Workload_Hub_Slogan",
+		"description": "Workload_Hub_Description",
+		"image": {
+			"mediaType": 0,
+			"source": "assets/images/hero.jpg"
+		},
+		"slideMedia": [
+			{
+				"mediaType": 0,
+				"source": "assets/images/slide-1.jpg"
+			},
+			{
+				"mediaType": 0,
+				"source": "assets/images/slide-2.jpg"
+			},
+			{
+				"mediaType": 0,
+				"source": "assets/images/slide-3.jpg"
+			},
+			{
+				"mediaType": 0,
+				"source": "assets/images/slide-4.jpg"
+			},
+			{
+				"mediaType": 0,
+				"source": "assets/images/slide-5.jpg"
+			}
+		],
+		"supportLink": {
+			"documentation": {
+				"url": "https://aka.ms/nds/docs"
+			},
+			"certification": {
+				"url": "https://aka.ms/nds/docs/certification"
+			},
+			"help": {
+				"url": "https://aka.ms/nds/docs/tsg"
+			},
+			"privacy": {
+				"url": "https://aka.ms/privacy"
+			},
+			"terms": {
+				"url": "https://aka.ms/nds/legal/terms"
+			},
+			"license": {
+				"url": "https://aka.ms/license"
+			}
+		}
+	},
+	"itemJobTypes": [
+		"storeData",
+		"others"
+	],
+	"compatibleItemTypes": [
+		"Lakehouse",
+		"Pipeline",
+		"SynapseNotebook",
+		"report"
+	]
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="WorkloadManifestConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Workload">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Version" type="xs:string" />
+							<xs:element name="RemoteServiceConfiguration">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CloudServiceConfiguration">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Cloud" type="xs:string" />
+													<xs:element name="AADFEApp" minOccurs="1" maxOccurs="1">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="AppId" type="xs:string" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="EnableSandboxRelaxation" type="xs:boolean" />
+													<xs:element name="Endpoints">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="ServiceEndpoint" minOccurs="1" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Name" type="xs:string" />
+																			<xs:element name="Url" type="xs:string" />
+																			<xs:element name="IsEndpointResolutionService" type="xs:boolean" />
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="WorkloadName" type="xs:string" use="required" />
+						<xs:attribute name="HostingType" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="SchemaVersion" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

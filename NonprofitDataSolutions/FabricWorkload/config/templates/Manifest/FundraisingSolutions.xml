@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ItemManifestConfiguration SchemaVersion="2.0.0">
+	<Item TypeName="{{WORKLOAD_NAME}}.Fundraising" Category="Data">
+		<Workload WorkloadName="{{WORKLOAD_NAME}}" />
+	</Item>
+</ItemManifestConfiguration>

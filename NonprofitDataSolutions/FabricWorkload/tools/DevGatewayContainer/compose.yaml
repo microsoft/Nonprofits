@@ -1,0 +1,13 @@
+services:
+  dev-gateway:
+    image: dev-gateway:v1.2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    env_file:
+      - .env
+    volumes:
+      - ${MANIFEST_PACKAGE_FILE_PATH}:/app/ManifestPackage.nupkg
+    tty: true
+    stdin_open: true
