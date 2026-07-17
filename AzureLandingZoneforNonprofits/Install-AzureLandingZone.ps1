@@ -1314,6 +1314,9 @@ function New-CustomerSummary {
       networkResourceGroupName = Get-OutputValue -Outputs $outputs -Name 'networkResourceGroupName'
       logAnalyticsWorkspaceResourceId = Get-OutputValue -Outputs $outputs -Name 'logAnalyticsWorkspaceResourceId'
       keyVaultResourceId = Get-OutputValue -Outputs $outputs -Name 'keyVaultResourceId'
+      vnetResourceId = Get-OutputValue -Outputs $outputs -Name 'vnetResourceId'
+      applicationSubnetResourceId = Get-OutputValue -Outputs $outputs -Name 'applicationSubnetResourceId'
+      applicationNetworkSecurityGroupResourceId = Get-OutputValue -Outputs $outputs -Name 'applicationNetworkSecurityGroupResourceId'
       followUpActions = $followUpActions
     }
   }

@@ -38,7 +38,7 @@ param partnerOperatorsGroupObjectId string = ''
 @description('Deploy the optional simple Foundation network baseline.')
 param enableSimpleNetwork bool = false
 
-@description('Enable private DNS and a private endpoint for the shared platform Key Vault. In Foundation this requires the simple network baseline.')
+@description('Enable private DNS and a private endpoint for the shared platform Key Vault, and disable its public endpoint. In Foundation this requires the simple network baseline. When false, the public endpoint remains enabled but the Key Vault firewall denies all public IP and virtual-network traffic by default.')
 param enablePrivateDnsAndEndpoints bool = false
 
 @description('Enable purge protection on the Foundation platform Key Vault. Defaults to false so evaluation deployments stay reversible (purge protection is irrevocable for 7 days once turned on). Enable this once the environment will hold real platform secrets that must survive accidental deletion.')
@@ -161,6 +161,8 @@ output networkResourceGroupName string = foundationPlatformBaseline.outputs.netw
 output logAnalyticsWorkspaceResourceId string = foundationPlatformBaseline.outputs.logAnalyticsWorkspaceResourceId
 output keyVaultResourceId string = foundationPlatformBaseline.outputs.keyVaultResourceId
 output vnetResourceId string = foundationPlatformBaseline.outputs.vnetResourceId
+output applicationSubnetResourceId string = foundationPlatformBaseline.outputs.applicationSubnetResourceId
+output applicationNetworkSecurityGroupResourceId string = foundationPlatformBaseline.outputs.applicationNetworkSecurityGroupResourceId
 output keyVaultPrivateEndpointResourceId string = foundationPlatformBaseline.outputs.keyVaultPrivateEndpointResourceId
 output securityKeyVaultPrivateHardeningStatus string = foundationSecurity.outputs.keyVaultPrivateHardeningStatus
 output governanceBudgetStatus string = foundationBudget.outputs.budgetStatus
