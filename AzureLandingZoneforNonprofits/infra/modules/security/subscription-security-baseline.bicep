@@ -20,7 +20,7 @@ var defenderRecommended = defenderBaseline == 'recommended'
 var keyVaultPrivateHardeningStatus = !empty(keyVaultResourceId) ? (enablePrivateDnsAndEndpoints ? (keyVaultPrivateEndpointImplemented ? 'implemented-via-networking-profile' : 'requested-but-not-implemented') : 'not-requested') : 'not-applicable-no-keyvault-in-scope'
 var securityFollowUpActions = concat(
   !empty(keyVaultResourceId) && !enablePrivateDnsAndEndpoints ? [
-    'Key Vault uses public network access by default. Enable private DNS and the Key Vault private endpoint later only when private-only secret access is required or a compliance review requires it.'
+    'Key Vault public endpoint is protected by a deny-by-default firewall with deployment-owned empty allowlists. Manually added firewall rules are removed on redeployment; enable private DNS and the Key Vault private endpoint when persistent data-plane access is required.'
   ] : [],
   !empty(keyVaultResourceId) && enablePrivateDnsAndEndpoints && !keyVaultPrivateEndpointImplemented ? [
     'Key Vault private connectivity was requested, but the selected networking profile did not implement the required private endpoint and private DNS path. Complete the networking prerequisite or disable private-only Key Vault access.'

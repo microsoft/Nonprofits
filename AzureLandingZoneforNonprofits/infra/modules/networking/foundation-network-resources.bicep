@@ -27,6 +27,7 @@ param privateEndpointsSubnetAddressPrefix string = '10.20.2.0/24'
 
 var foundationVnetName = '${deploymentPrefix}-vnet-001'
 var applicationSubnetName = 'application'
+var applicationNetworkSecurityGroupName = '${deploymentPrefix}-app-nsg-001'
 var privateEndpointsSubnetName = 'private-endpoints'
 
 module tagInheritance '../governance/resource-group-tag-inheritance.bicep' = {
@@ -53,12 +54,56 @@ resource foundationVnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   }
 }
 
+resource applicationNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
+  name: applicationNetworkSecurityGroupName
+  location: primaryLocation
+  tags: tags
+}
+
+// Keep baseline rules as child resources so their ownership is explicit and the
+// parent NSG doesn't declare a complete inline rule collection. Always review
+// what-if before rerunning against an NSG with workload-specific rules.
+resource denyInternetInboundRule 'Microsoft.Network/networkSecurityGroups/securityRules@2024-05-01' = {
+  parent: applicationNetworkSecurityGroup
+  name: 'DenyInternetInbound'
+  properties: {
+    description: 'Blocks unsolicited internet ingress to future Foundation workloads.'
+    protocol: '*'
+    sourcePortRange: '*'
+    destinationPortRange: '*'
+    sourceAddressPrefix: 'Internet'
+    destinationAddressPrefix: '*'
+    access: 'Deny'
+    priority: 4095
+    direction: 'Inbound'
+  }
+}
+
+resource denyInternetOutboundRule 'Microsoft.Network/networkSecurityGroups/securityRules@2024-05-01' = {
+  parent: applicationNetworkSecurityGroup
+  name: 'DenyInternetOutbound'
+  properties: {
+    description: 'Requires future Foundation workloads to use an explicitly approved outbound design.'
+    protocol: '*'
+    sourcePortRange: '*'
+    destinationPortRange: '*'
+    sourceAddressPrefix: '*'
+    destinationAddressPrefix: 'Internet'
+    access: 'Deny'
+    priority: 4096
+    direction: 'Outbound'
+  }
+}
+
 resource applicationSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
   parent: foundationVnet
   name: applicationSubnetName
   properties: {
     addressPrefix: applicationSubnetAddressPrefix
     defaultOutboundAccess: false
+    networkSecurityGroup: {
+      id: applicationNetworkSecurityGroup.id
+    }
   }
 }
 
@@ -70,6 +115,9 @@ resource privateEndpointsSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-
     defaultOutboundAccess: false
     privateEndpointNetworkPolicies: 'Disabled'
   }
+  dependsOn: [
+    applicationSubnet
+  ]
 }
 
 resource keyVaultPrivateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = if (enablePrivateDnsAndEndpoints && !empty(keyVaultResourceId)) {
@@ -130,6 +178,7 @@ resource keyVaultPrivateDnsZoneGroup 'Microsoft.Network/privateEndpoints/private
 
 output vnetResourceId string = foundationVnet.id
 output applicationSubnetResourceId string = applicationSubnet.id
+output applicationNetworkSecurityGroupResourceId string = applicationNetworkSecurityGroup.id
 output privateEndpointsSubnetResourceId string = enablePrivateDnsAndEndpoints ? privateEndpointsSubnet.id : ''
 output keyVaultPrivateEndpointResourceId string = enablePrivateDnsAndEndpoints && !empty(keyVaultResourceId) ? keyVaultPrivateEndpoint.id : ''
 output keyVaultPrivateDnsZoneResourceId string = enablePrivateDnsAndEndpoints && !empty(keyVaultResourceId) ? keyVaultPrivateDnsZone.id : ''

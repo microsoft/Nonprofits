@@ -24,7 +24,7 @@ param createKeyVault bool = true
 @description('Optional stable seed for the generated Key Vault name. Leave empty to preserve the default deterministic name; set a custom value only when an evaluation deployment must avoid a soft-deleted Key Vault name in the same resource group.')
 param keyVaultNameSeed string = ''
 
-@description('Public network access mode for the shared Key Vault.')
+@description('Public endpoint mode for the shared Key Vault. The Key Vault firewall remains deny-by-default with no public IP or virtual-network allow rules; private endpoint deployments set this to Disabled.')
 param keyVaultPublicNetworkAccess 'Enabled' | 'Disabled' = 'Enabled'
 
 @description('Enable purge protection on the shared Key Vault. Once enabled, deleted Key Vault contents cannot be permanently removed for 7 days and the setting cannot be turned off retroactively. Recommended for production. This shared module defaults to false; Foundation exposes it as an opt-in, while Expanded Platform enables it for the management Key Vault.')
@@ -64,7 +64,7 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if (c
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = if (createKeyVault) {
+resource keyVault 'Microsoft.KeyVault/vaults@2026-02-01' = if (createKeyVault) {
   name: keyVaultName
   location: primaryLocation
   tags: mergedTags
@@ -73,6 +73,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = if (createKeyVault) {
     enablePurgeProtection: enableKeyVaultPurgeProtection ? true : null
     enableSoftDelete: true
     publicNetworkAccess: keyVaultPublicNetworkAccess
+    // The empty allowlists are intentional and deployment-owned: the default
+    // data plane stays sealed. Redeployment removes manually added allow rules;
+    // use the supported private endpoint path for durable network access.
+    networkAcls: {
+      bypass: 'None'
+      defaultAction: 'Deny'
+      ipRules: []
+      virtualNetworkRules: []
+    }
     sku: {
       family: 'A'
       name: 'standard'

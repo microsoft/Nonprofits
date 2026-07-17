@@ -33,9 +33,14 @@ param applicationSubnetAddressPrefix string = '10.20.1.0/24'
 param privateEndpointsSubnetAddressPrefix string = '10.20.2.0/24'
 
 var privateKeyVaultConnectivityEnabled = enableSimpleNetwork && enablePrivateDnsAndEndpoints && !empty(keyVaultResourceId)
-var networkingFollowUpActions = enablePrivateDnsAndEndpoints && !enableSimpleNetwork ? [
-  'Foundation private Key Vault connectivity requires the simple network baseline. Enable simple networking or disable private connectivity for Key Vault.'
-] : []
+var networkingFollowUpActions = concat(
+  enableSimpleNetwork ? [
+    'The Foundation application subnet blocks internet ingress and egress by default. Before deploying workloads, define workload-specific segmentation, required NSG allow rules, and an explicit outbound connectivity method when internet access is needed.'
+  ] : [],
+  enablePrivateDnsAndEndpoints && !enableSimpleNetwork ? [
+    'Foundation private Key Vault connectivity requires the simple network baseline. Enable simple networking or disable private connectivity for Key Vault.'
+  ] : []
+)
 
 resource foundationNetworkResourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' = if (enableSimpleNetwork) {
   name: networkResourceGroupName
@@ -61,6 +66,7 @@ module foundationNetworkResources 'foundation-network-resources.bicep' = if (ena
 output networkResourceGroupName string = enableSimpleNetwork ? foundationNetworkResourceGroup.name : ''
 output vnetResourceId string = enableSimpleNetwork ? foundationNetworkResources!.outputs.vnetResourceId : ''
 output applicationSubnetResourceId string = enableSimpleNetwork ? foundationNetworkResources!.outputs.applicationSubnetResourceId : ''
+output applicationNetworkSecurityGroupResourceId string = enableSimpleNetwork ? foundationNetworkResources!.outputs.applicationNetworkSecurityGroupResourceId : ''
 output privateEndpointsSubnetResourceId string = privateKeyVaultConnectivityEnabled ? foundationNetworkResources!.outputs.privateEndpointsSubnetResourceId : ''
 output keyVaultPrivateEndpointResourceId string = privateKeyVaultConnectivityEnabled ? foundationNetworkResources!.outputs.keyVaultPrivateEndpointResourceId : ''
 output keyVaultPrivateDnsZoneResourceId string = privateKeyVaultConnectivityEnabled ? foundationNetworkResources!.outputs.keyVaultPrivateDnsZoneResourceId : ''
