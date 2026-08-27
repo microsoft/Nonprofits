@@ -8,7 +8,7 @@ The migration creates a new Volunteer Engagement site. It does not upgrade the l
 
 Volunteer Engagement 2.0 replaces the legacy Liquid-based portal experience with the `Portal-EDM` React SPA. The new and legacy sites can coexist during migration because they have separate Power Pages website records.
 
-Volunteer and engagement records remain in the shared Dataverse tables provided by Common Data Model for Nonprofits and Volunteer Management. The migration normally does not copy that business data. Site-specific pages, code, content, security metadata, authentication configuration, and other customizations must be reviewed and either reimplemented, reconfigured, or retired.
+Volunteer Engagement records remain in the shared Dataverse tables provided by Common Data Model for Nonprofits and Volunteer Management. The migration normally does not copy that business data. Site-specific pages, code, content, security metadata, authentication configuration, and other customizations must be reviewed and either reimplemented, reconfigured, or retired.
 
 Do not copy the entire legacy portal into the new site. Volunteer Engagement 2.0 is the product baseline; migrate only approved customizations and configuration that the new experience does not already provide.
 
