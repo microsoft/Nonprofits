@@ -243,7 +243,7 @@ namespace Plugins.Tests
 				Entity entity = new Entity(logicalName);
 				entity.LogicalName = logicalName;
 				entity.Id = ids[i];
-				entity["emailaddress1"] = i < (ids.Length - 1) ? "test@gmail.com" : null;
+				entity["emailaddress1"] = i < (ids.Length - 1) ? "test@example.com" : null;
 				entity["emailaddress2"] = null;
 				entity["emailaddress3"] = null;
 				entity["donotemail"] = donotemail;

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "packageName": "azure-landing-zone-cli",
   "publicSurface": "cli-package",
-  "generatedAtUtc": "2026-05-20T07:38:11.8913138Z",
+  "generatedAtUtc": "2026-07-16T20:57:16.5324167Z",
   "includedItems": [
     {
       "sourcePath": "cli/Install-AzureLandingZone.ps1",

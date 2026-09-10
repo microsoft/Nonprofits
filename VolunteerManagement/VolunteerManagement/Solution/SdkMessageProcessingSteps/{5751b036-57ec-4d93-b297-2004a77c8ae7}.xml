@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SdkMessageProcessingStep Name="Plugins.EngagementOpportunityOnPreUpdate: Update of msnfp_engagementopportunity" SdkMessageProcessingStepId="{5751b036-57ec-4d93-b297-2004a77c8ae7}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPreUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>22ca14be-748a-4b78-abbf-232b8807a56c</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
+  <AsyncAutoDelete>0</AsyncAutoDelete>
+  <Description>Plugins.EngagementOpportunityOnPreUpdate: Update of msnfp_engagementopportunity</Description>
+  <FilteringAttributes>msnfp_endingdate,msnfp_multipledays,msnfp_startingdate</FilteringAttributes>
+  <InvocationSource>0</InvocationSource>
+  <Mode>0</Mode>
+  <Rank>1</Rank>
+  <EventHandlerTypeCode>4602</EventHandlerTypeCode>
+  <Stage>10</Stage>
+  <IsCustomizable>1</IsCustomizable>
+  <IsHidden>0</IsHidden>
+  <SupportedDeployment>0</SupportedDeployment>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="Target">
+      <SdkMessageProcessingStepImageId>{27ee3556-fdd1-ec11-a7b5-000d3a3af529}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_endingdate,msnfp_multipledays,msnfp_startingdate</Attributes>
+      <EntityAlias>Target</EntityAlias>
+      <ImageType>0</ImageType>
+      <MessagePropertyName>Target</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
+</SdkMessageProcessingStep>

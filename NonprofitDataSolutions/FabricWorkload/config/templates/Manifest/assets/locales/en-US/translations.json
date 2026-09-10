@@ -1,0 +1,17 @@
+{
+	"Workload_Display_Name": "Nonprofit data solutions",
+	"Workload_Full_Display_Name": "Nonprofit data solutions",
+	"Workload_Description": "Unify, transform, and visualize fundraising data with a preconfigured data and analytics solution.",
+	
+	"Workload_Hub_Slogan": "Transform fundraising data into actionable insights",
+	"Workload_Hub_Description": "Harness the power of your fundraising data and prepare for the era of AI with a preconfigured, scalable solution in Microsoft Fabric. Nonprofit data solutions enables nonprofits to centralize, clean, and transform their data, then populate it into out-of-the-box fundraising reports. With connected data and intelligent analytics, organizations can gain a full picture of their constituents, enhance engagement efforts, and refine fundraising strategies - turning data into decisions that drive better outcomes.",
+	
+	"FundraisingItem_Display_Name": "Fundraising",
+	"FundraisingItem_Display_Name_Plural": "Fundraising",
+	"FundraisingItem_Description": "Fundraising, part of Nonprofit data solutions",
+	
+	"Learning_Materials_Box_1_Title": "Learn more",
+	"Learning_Materials_Box_1_Subtitle": "Learn more about Nonprofit data solutions",
+	"Learning_Materials_Box_2_Title": "Fabric fundamentals",
+	"Learning_Materials_Box_2_Subtitle": "Learn more about Microsoft Fabric"
+}

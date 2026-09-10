@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SdkMessageProcessingStep Name="Post-Create Message AutoComplete" SdkMessageProcessingStepId="{659e5220-eae9-430a-b1a0-75f423107a4a}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SdkMessageId>9ebdbb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
+  <PluginTypeName>Plugins.MessageOnPostCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>e7482d3c-0111-4d7f-aa6b-b31a93e88d63</PluginTypeId>
+  <PrimaryEntity>msnfp_message</PrimaryEntity>
+  <AsyncAutoDelete>0</AsyncAutoDelete>
+  <FilteringAttributes></FilteringAttributes>
+  <InvocationSource>1</InvocationSource>
+  <Mode>1</Mode>
+  <Rank>1</Rank>
+  <EventHandlerTypeCode>4602</EventHandlerTypeCode>
+  <Stage>40</Stage>
+  <IsCustomizable>1</IsCustomizable>
+  <IsHidden>0</IsHidden>
+  <SupportedDeployment>0</SupportedDeployment>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="Image">
+      <SdkMessageProcessingStepImageId>{187ce908-c5bc-eb11-8236-000d3a31dec1}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_autocomplete</Attributes>
+      <EntityAlias>Image</EntityAlias>
+      <ImageType>1</ImageType>
+      <MessagePropertyName>Id</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
+</SdkMessageProcessingStep>

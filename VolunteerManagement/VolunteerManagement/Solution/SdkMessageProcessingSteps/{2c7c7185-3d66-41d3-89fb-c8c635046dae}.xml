@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SdkMessageProcessingStep Name="Post-Update Engagement Opportunity" SdkMessageProcessingStepId="{2c7c7185-3d66-41d3-89fb-c8c635046dae}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SdkMessageId>20bebb1b-ea3e-db11-86a7-000a3a5473e8</SdkMessageId>
+  <PluginTypeName>Plugins.EngagementOpportunityOnPostUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472</PluginTypeName>
+  <PluginTypeId>188ca6f7-e614-4adf-8598-fd123475d982</PluginTypeId>
+  <PrimaryEntity>msnfp_engagementopportunity</PrimaryEntity>
+  <AsyncAutoDelete>0</AsyncAutoDelete>
+  <FilteringAttributes>msnfp_endingdate,msnfp_maximum,msnfp_minimum,msnfp_shifts,msnfp_startingdate</FilteringAttributes>
+  <InvocationSource>1</InvocationSource>
+  <Mode>0</Mode>
+  <Rank>1</Rank>
+  <EventHandlerTypeCode>4602</EventHandlerTypeCode>
+  <Stage>40</Stage>
+  <IsCustomizable>1</IsCustomizable>
+  <IsHidden>0</IsHidden>
+  <SupportedDeployment>0</SupportedDeployment>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="Target">
+      <SdkMessageProcessingStepImageId>{ba1847ed-52d3-eb11-bacc-0022481d978f}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_endingdate,msnfp_engagementopportunitytitle,msnfp_maximum,msnfp_minimum,msnfp_shifts,msnfp_startingdate</Attributes>
+      <EntityAlias>Target</EntityAlias>
+      <ImageType>2</ImageType>
+      <MessagePropertyName>Target</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
+</SdkMessageProcessingStep>

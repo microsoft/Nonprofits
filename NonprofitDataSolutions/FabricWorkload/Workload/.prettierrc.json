@@ -1,0 +1,23 @@
+{
+	"useTabs": true,
+	"tabWidth": 4,
+	"semi": true,
+	"singleQuote": true,
+	"printWidth": 120,
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"importOrder": [
+		"^react$",
+		"<THIRD_PARTY_MODULES>",
+		"^@src/(.*)$",
+		"^@context/(.*)$",
+		"^@components/(.*)$",
+		"^@services/(.*)$",
+		"^@controller/(.*)$",
+		"^@clients/(.*)$",
+		"^@originalInstaller/(.*)$",
+		"^@nds/(.*)$",
+		"^[./]"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true
+}

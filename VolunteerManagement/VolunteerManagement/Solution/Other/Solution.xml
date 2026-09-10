@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImportExportXml version="9.2.22042.149" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
-    <UniqueName>VolunteerManagement</UniqueName>
+    <UniqueName>volunteermanagementos</UniqueName>
     <LocalizedNames>
-      <LocalizedName description="Volunteer Management" languagecode="1033" />
+      <LocalizedName description="Volunteer Management (OS)" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.3.10172</Version>
+    <Version>1.1.3.0</Version>
     <Managed>2</Managed>
     <Publisher>
       <UniqueName>microsofttechforsocialimpact</UniqueName>
@@ -163,31 +163,31 @@
       <RootComponent type="66" schemaName="msnfp_microsoftdynamics365nonprofitaccelerator.SendMessages" behavior="0" />
       <RootComponent type="66" schemaName="msnfp_VolunteerManagement.GetStarted" behavior="0" />
       <RootComponent type="80" schemaName="msnfp_NonprofitVolunteerManagement" behavior="0" />
-      <RootComponent type="91" id="{5d562315-37a4-eb11-b1ac-000d3a1fc0e7}" schemaName="Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ad1edaac4bc000c" behavior="0" />
-      <RootComponent type="92" id="{0ff87207-fdd1-ec11-a7b5-000d3a3afd3a}" behavior="0" />
-      <RootComponent type="92" id="{167ce908-c5bc-eb11-8236-000d3a31dec1}" behavior="0" />
-      <RootComponent type="92" id="{1e3d5ff7-3cf9-eb11-94ef-000d3a135c2d}" behavior="0" />
-      <RootComponent type="92" id="{24e4c865-82dd-eb11-bacb-000d3a5819ec}" behavior="0" />
-      <RootComponent type="92" id="{3408687d-3cf5-eb11-94ef-000d3a135c2d}" behavior="0" />
-      <RootComponent type="92" id="{53dba732-fdd1-ec11-a7b5-000d3a3af529}" behavior="0" />
-      <RootComponent type="92" id="{6d990968-47c4-eb11-bacc-000d3a31d619}" behavior="0" />
-      <RootComponent type="92" id="{98a62c4e-57df-eb11-bacb-000d3a5819ec}" behavior="0" />
-      <RootComponent type="92" id="{9b3b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{9c040360-23be-eb11-8236-000d3a31c0f1}" behavior="0" />
-      <RootComponent type="92" id="{a23b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{a93b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{ad3b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{b42728b8-6b16-ec11-b6e6-000d3a1b92d8}" behavior="0" />
-      <RootComponent type="92" id="{b553b924-15f6-eb11-94ef-000d3a135c2d}" behavior="0" />
-      <RootComponent type="92" id="{c8837a4a-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{ca3b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{ce837a4a-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{cf3b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{d2837a4a-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{d33b8244-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{d6837a4a-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{d9837a4a-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
-      <RootComponent type="92" id="{de837a4a-1eb4-eb11-8236-00224808e1d0}" behavior="0" />
+      <RootComponent type="91" id="{50d34bb8-e4aa-4df8-84ea-9d70b19dc72d}" schemaName="PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" behavior="0" />
+      <RootComponent type="92" id="{78d39fed-f4da-46fe-86f3-82ef5193777a}" behavior="0" />
+      <RootComponent type="92" id="{659e5220-eae9-430a-b1a0-75f423107a4a}" behavior="0" />
+      <RootComponent type="92" id="{9b5438cb-cf96-43df-ad7f-fe771e84e3d3}" behavior="0" />
+      <RootComponent type="92" id="{867d43b7-af76-4888-bfe2-fed50d694fdf}" behavior="0" />
+      <RootComponent type="92" id="{39ef623b-a978-4e2a-a5cf-9df6268c4cce}" behavior="0" />
+      <RootComponent type="92" id="{5751b036-57ec-4d93-b297-2004a77c8ae7}" behavior="0" />
+      <RootComponent type="92" id="{e64ae12c-30cd-44eb-97e0-b57d576ab55b}" behavior="0" />
+      <RootComponent type="92" id="{719cbec5-f3dd-4b86-80ac-3080893f7bd2}" behavior="0" />
+      <RootComponent type="92" id="{442d349d-61bc-4265-a52e-cf2222d69ef0}" behavior="0" />
+      <RootComponent type="92" id="{f47addb7-4a4e-4a86-8056-4e4bcbb37f19}" behavior="0" />
+      <RootComponent type="92" id="{be4980b9-ce95-45a3-8cc7-37aa9d8eeb67}" behavior="0" />
+      <RootComponent type="92" id="{85b90a27-8b53-40aa-a130-f2d0d5b91c9e}" behavior="0" />
+      <RootComponent type="92" id="{252d5074-6f45-4861-a269-ee1ea14ac398}" behavior="0" />
+      <RootComponent type="92" id="{6664dd0c-4ca7-4045-bc59-7614a4af751e}" behavior="0" />
+      <RootComponent type="92" id="{7fec674a-f06a-4fef-89c0-9a7f814e5e86}" behavior="0" />
+      <RootComponent type="92" id="{671dd33c-2ae1-434c-8652-40a96ea4a6d2}" behavior="0" />
+      <RootComponent type="92" id="{dc676866-dead-48da-9b43-52059af2ab83}" behavior="0" />
+      <RootComponent type="92" id="{86e747bf-c118-47b2-8dd4-cfb70d016bf7}" behavior="0" />
+      <RootComponent type="92" id="{2a00b8be-03e1-46db-a352-b49f1c379753}" behavior="0" />
+      <RootComponent type="92" id="{7a061612-6940-4b13-8706-3d0fb99e2c30}" behavior="0" />
+      <RootComponent type="92" id="{8271517a-25f9-4cf2-a006-20e7248dc767}" behavior="0" />
+      <RootComponent type="92" id="{055e9f02-c8e4-4834-86e5-d5912bd34619}" behavior="0" />
+      <RootComponent type="92" id="{2c7c7185-3d66-41d3-89fb-c8c635046dae}" behavior="0" />
+      <RootComponent type="92" id="{81f97b73-9836-4d95-91b6-6e6736f581b1}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
       <MissingDependency>
@@ -668,7 +668,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="statecode" displayName="Status" parentSchemaName="msnfp_engagementopportunityschedule" parentDisplayName="Engagement Opportunity Schedule" solution="NonprofitCore (3.0.3.9899)" />
-        <Dependent type="92" id="{d2837a4a-1eb4-eb11-8236-00224808e1d0}" />
+        <Dependent type="92" id="{7a061612-6940-4b13-8706-3d0fb99e2c30}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="statecode" displayName="Status" parentSchemaName="msnfp_engagementopportunityschedule" parentDisplayName="Engagement Opportunity Schedule" solution="NonprofitCore (3.0.3.9899)" />
