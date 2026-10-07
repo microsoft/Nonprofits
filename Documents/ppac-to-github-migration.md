@@ -27,7 +27,7 @@ The GitHub build and the AppSource/PPAC build are the same solution. They share 
 ## Requirements and constraints
 
 - **Build a managed solution.** AppSource installs a managed solution, and Dataverse blocks importing an unmanaged solution over a managed one. Build the **Release** configuration, because `dotnet build` on its own produces an unmanaged solution, which Dataverse rejects.
-- **Use a version that's the same or higher.** The template-app source is `1.0.3.1`, and the Common Data Model source is `3.1.3.4`. Increase the version if the installed version is higher.
+- **Use a version that's the same or higher.** The template-app source is `1.0.3.3`, and the Common Data Model source is `3.1.3.4`. Increase the version if the installed version is higher.
 - **Migrate `NonprofitCore` first.** Keep it installed and compatible before you migrate the apps that depend on it.
 - **Preserve the exact identity.** Keep the unique name, publisher, and prefix. Renaming creates duplicate tables and orphans data.
 - **Plan for removed components.** Applying an upgrade removes components that were deleted between versions. Rehearse in a sandbox and back up first.

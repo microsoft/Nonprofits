@@ -8,7 +8,7 @@
     <Descriptions>
       <Description description="Fundraising description." languagecode="1033" />
     </Descriptions>
-    <Version>1.0.3.1</Version>
+    <Version>1.0.3.3</Version>
     <Managed>2</Managed>
     <Publisher>
       <UniqueName>microsofttechforsocialimpact</UniqueName>
