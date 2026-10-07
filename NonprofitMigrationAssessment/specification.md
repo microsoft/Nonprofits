@@ -532,7 +532,7 @@ Implemented behavior:
 - Bundled `engineering-assumptions-0.2` catalog defaults, dependency-path reporting, per-route ranges, and known combined subtotals when other routes remain blocked.
 - A concise customer Markdown report (114 lines in the latest six-family live run) plus detailed local JSON.
 - One hundred five passing offline tests, a reproducible package/install/CLI validation, and successful seven-category standard-sandbox assessments. The package contains 22 public-safe files, installs through its executable entry point, and reports zero installed dependency vulnerabilities. The latest live run observed 933 relevant components across five solutions; dependency, integration, and count evidence remained explicitly partial because of approved caps and the Dataverse 5,000-row OData count ceiling.
-- Production target commands fetch `origin/master`; pinned commits must be reachable from the fetched branch. Local-only commits require an explicit test-only override.
+- Production target commands fetch `origin/master`; pinned commits must be reachable from the fetched branch, and local-only commits are rejected.
 - Compatibility and assumption values are validated external catalogs instead of embedded logic.
 - A four-measurement calibration command compares rehearsal effort, elapsed time, execution, and downtime with the assessed scenario without mutating rules.
 - A small representative scenario suite covers standard alignment/VM, bounded mixed work, opaque ownerless work, VE auth/language/journey scope, and denied access.

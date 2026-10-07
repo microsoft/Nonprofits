@@ -22,7 +22,7 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) and [
 ## Procedure
 
 1. Explain the supported public destinations and the prototype limitations using public documentation only.
-2. Confirm a clean local checkout whose `origin` is `https://github.com/microsoft/Nonprofits`. Production commands fetch and resolve `origin/master`; never use `--allow-local-test-target` for a customer assessment. Build the package if needed with `npm ci` and `npm run build` from the package root.
+2. Confirm a clean local checkout whose `origin` is `https://github.com/microsoft/Nonprofits`. Production commands fetch and resolve `origin/master`; local-only commits are rejected. Build the package if needed with `npm ci` and `npm run build` from the package root.
 3. Guide the user to run `init --repository <checkout-root>` in their own terminal and edit only customer/environment fields in the local questionnaire outside source control. Keep `scope: "auto"` unless the customer explicitly includes or excludes a family. For CDM/template apps choose alignment confirmation, PPAC ownership transition, or a newer GitHub release; use replacement migration for VM/VE. Do not edit the generated `target` block.
 4. Keep environment selection, answers, and discovery-based follow-ups in that isolated local channel. If the host cannot provide it, stop; do not silently switch to chat.
 5. When the customer is ready and has reviewed the environment, solutions, components, dependencies, integrations, aggregate counts, and sites categories, guide them to run `collect --repository <checkout-root>` in a human terminal. The command reproduces the pinned target evidence, validates category-specific consent, and confirms the environment before authentication.

@@ -84,6 +84,6 @@ export async function createPublicRepository(
 	return {
 		path: repository,
 		commit,
-		target: await resolvePublicTarget(repository, undefined, { allowLocalRevision: true, refreshRemote: false }),
+		target: await resolvePublicTarget(repository, undefined, { refreshRemote: false }),
 	};
 }

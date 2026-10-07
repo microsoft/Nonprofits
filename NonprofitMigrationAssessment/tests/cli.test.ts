@@ -13,14 +13,14 @@ import { writeLocalBundle } from '../src/storage.js';
 import { inventory, NOW } from './fixtures.js';
 import { createPublicRepository } from './repository-fixture.js';
 
-const CLI = fileURLToPath(new URL('../src/cli.js', import.meta.url));
+const CLI = fileURLToPath(new URL('./cli-runner.js', import.meta.url));
 
 test('init generates local draft/schema files without consent and refuses overwrite', async t => {
 	const root = await mkdtemp(join(tmpdir(), 'nma-cli-'));
 	t.after(() => rm(root, { recursive: true, force: true }));
 	const repository = await createPublicRepository(root);
 	const output = join(root, 'init');
-	const run = spawnSync(process.execPath, [CLI, 'init', '--repository', repository.path, '--output', output, '--allow-local-test-target'], { encoding: 'utf8' });
+	const run = spawnSync(process.execPath, [CLI, 'init', '--repository', repository.path, '--output', output], { encoding: 'utf8' });
 	assert.equal(run.status, 0, run.stderr);
 	const draft = JSON.parse(await readFile(join(output, 'questionnaire.json'), 'utf8')) as {
 		consent: { readOnly: boolean };
@@ -33,7 +33,7 @@ test('init generates local draft/schema files without consent and refuses overwr
 	assert.ok((await readFile(join(output, 'rules-review.json'), 'utf8')).includes('provisional-typical'));
 	assert.ok((await readFile(join(output, 'rules-review.schema.json'), 'utf8')).includes('reviewedAt'));
 	assert.ok((await readFile(join(output, 'inventory.schema.json'), 'utf8')).includes('additionalProperties'));
-	const repeat = spawnSync(process.execPath, [CLI, 'init', '--repository', repository.path, '--output', output, '--allow-local-test-target'], { encoding: 'utf8' });
+	const repeat = spawnSync(process.execPath, [CLI, 'init', '--repository', repository.path, '--output', output], { encoding: 'utf8' });
 	assert.equal(repeat.status, 1);
 	assert.ok(repeat.stderr.includes('ASSESSMENT_FAILED'));
 });
@@ -57,7 +57,7 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	await writeFile(input, JSON.stringify(source));
 	const output = join(root, 'report');
 	const run = spawnSync(process.execPath, [
-		CLI, 'assess', '--repository', repository.path, '--input', input, '--output', output, '--allow-local-test-target',
+		CLI, 'assess', '--repository', repository.path, '--input', input, '--output', output,
 	], { encoding: 'utf8' });
 	assert.equal(run.status, 0, run.stderr);
 	assert.ok(run.stdout.includes('Local assessment written'));
@@ -87,7 +87,7 @@ test('collection refuses non-TTY invocation before contacting an environment', a
 	questionnaire.target = repository.target;
 	await writeFile(path, JSON.stringify(questionnaire));
 	const run = spawnSync(process.execPath, [
-		CLI, 'collect', '--repository', repository.path, '--input', path, '--output', join(root, 'inventory'), '--allow-local-test-target',
+		CLI, 'collect', '--repository', repository.path, '--input', path, '--output', join(root, 'inventory'),
 	], { encoding: 'utf8' });
 	assert.equal(run.status, 1);
 	assert.ok(run.stderr.includes('ASSESSMENT_FAILED'));
@@ -103,7 +103,7 @@ test('local guided review refuses non-TTY invocation', async t => {
 	const input = join(root, 'inventory.json');
 	await writeFile(input, JSON.stringify(source));
 	const run = spawnSync(process.execPath, [
-		CLI, 'review', '--repository', repository.path, '--input', input, '--output', join(root, 'reviewed'), '--allow-local-test-target',
+		CLI, 'review', '--repository', repository.path, '--input', input, '--output', join(root, 'reviewed'),
 	], { encoding: 'utf8' });
 	assert.equal(run.status, 1);
 	assert.ok(run.stderr.includes('ASSESSMENT_FAILED'));
@@ -178,14 +178,14 @@ test('schema failure and invalid JSON never echo sensitive input', async t => {
 	const path = join(root, 'inventory.json');
 	await writeFile(path, JSON.stringify({ ...inventory(), password: 'SECRET-CANARY' }));
 	const run = spawnSync(process.execPath, [
-		CLI, 'assess', '--repository', repository.path, '--input', path, '--output', join(root, 'report'), '--allow-local-test-target',
+		CLI, 'assess', '--repository', repository.path, '--input', path, '--output', join(root, 'report'),
 	], { encoding: 'utf8' });
 	assert.equal(run.status, 1);
 	assert.ok(run.stderr.includes('INPUT_INVALID'));
 	assert.ok(!`${run.stdout}${run.stderr}`.includes('SECRET-CANARY'));
 	await writeFile(path, '{"SECRET-CANARY"');
 	const invalid = spawnSync(process.execPath, [
-		CLI, 'assess', '--repository', repository.path, '--input', path, '--output', join(root, 'report'), '--allow-local-test-target',
+		CLI, 'assess', '--repository', repository.path, '--input', path, '--output', join(root, 'report'),
 	], { encoding: 'utf8' });
 	assert.equal(invalid.status, 1);
 	assert.ok(!invalid.stderr.includes('SECRET-CANARY'));

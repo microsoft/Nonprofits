@@ -24,8 +24,7 @@ const EVIDENCE_FILES: readonly string[] = [
 ];
 
 type Target = Questionnaire['target'];
-export interface TargetResolutionOptions {
-	allowLocalRevision?: boolean;
+interface TargetResolutionOptions {
 	refreshRemote?: boolean;
 }
 
@@ -144,7 +143,7 @@ export async function resolvePublicTarget(
 	if (!/^[a-f0-9]{40}$/.test(commit)) {
 		throw new Error('Public target revision did not resolve to a commit.');
 	}
-	if (!options.allowLocalRevision && !await isAncestor(repository, commit, upstream)) {
+	if (!await isAncestor(repository, commit, upstream)) {
 		throw new Error('Public target revision is not reachable from freshly fetched origin/master.');
 	}
 	const contents = new Map<string, Buffer>();

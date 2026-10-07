@@ -1,0 +1,61 @@
+name: Nonprofit migration assessment
+
+on:
+  pull_request:
+    paths:
+      - ".github/skills/nonprofit-migration-assessment/**"
+      - ".github/workflows/nonprofit-migration-assessment.yml"
+      - "NonprofitMigrationAssessment/**"
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/skills/nonprofit-migration-assessment/**"
+      - ".github/workflows/nonprofit-migration-assessment.yml"
+      - "NonprofitMigrationAssessment/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    defaults:
+      run:
+        working-directory: NonprofitMigrationAssessment
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.17.1
+          cache: npm
+          cache-dependency-path: NonprofitMigrationAssessment/package-lock.json
+
+      - name: Restore dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Validate package contents
+        run: npm run package:check
+
+      - name: Audit production dependencies
+        if: runner.os == 'Linux'
+        run: npm audit --omit=dev --audit-level=high

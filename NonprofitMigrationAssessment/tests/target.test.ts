@@ -11,7 +11,6 @@ import { inventory, NOW, rules } from './fixtures.js';
 import { createPublicRepository } from './repository-fixture.js';
 
 const LOCAL_TARGET = { refreshRemote: false } as const;
-const LOCAL_TEST_TARGET = { allowLocalRevision: true, refreshRemote: false } as const;
 
 function git(repository: string, args: string[]): void {
 	const result = spawnSync('git', ['-C', repository, ...args], { encoding: 'utf8', windowsHide: true });
@@ -53,7 +52,7 @@ test('target verification rejects changed provenance and accepts a historical pi
 	await verifyPublicTarget(repository.path, repository.target, LOCAL_TARGET);
 });
 
-test('production target rejects an unpushed local commit unless test mode is explicit', async t => {
+test('production target rejects an unpushed local commit', async t => {
 	const root = await mkdtemp(join(tmpdir(), 'nma-target-reachability-'));
 	t.after(() => rm(root, { recursive: true, force: true }));
 	const repository = await createPublicRepository(root);
@@ -62,8 +61,6 @@ test('production target rejects an unpushed local commit unless test mode is exp
 	git(repository.path, ['-c', 'user.name=Synthetic Test', '-c', 'user.email=test@example.invalid',
 		'commit', '-m', 'Local-only revision']);
 	await assert.rejects(() => resolvePublicTarget(repository.path, 'HEAD', LOCAL_TARGET), /reachable/);
-	const local = await resolvePublicTarget(repository.path, 'HEAD', LOCAL_TEST_TARGET);
-	assert.notEqual(local.commit, repository.commit);
 });
 
 test('wrong origin and dirty checkout fail closed', async t => {

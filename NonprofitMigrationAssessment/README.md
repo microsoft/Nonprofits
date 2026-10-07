@@ -43,7 +43,7 @@ Tests in the source repository use local synthetic fixtures and mocked HTTP. The
 
 Use a clean local checkout whose `origin` is `https://github.com/microsoft/Nonprofits`. The tool reads allowlisted files from the pinned Git commit, not mutable working-tree files or manually entered package metadata. Git must be installed.
 
-Production target commands fetch `origin/master` anonymously before resolving target evidence. `init` uses the fetched master commit, and later commands require the pinned commit to remain reachable from `origin/master`. Local-only commits are rejected. The `--allow-local-test-target` option exists only for isolated synthetic tests and must not be used for customer assessments.
+Production target commands fetch `origin/master` anonymously before resolving target evidence. `init` uses the fetched master commit, and later commands require the pinned commit to remain reachable from `origin/master`. Local-only commits are rejected.
 
 Run this command in your own terminal, not through a cloud assistant's captured interactive terminal. Choose a new directory under an existing local parent outside all Git checkouts:
 

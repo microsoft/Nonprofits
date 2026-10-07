@@ -20,27 +20,29 @@ import {
 } from './calibration.js';
 
 const json = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
+interface CliRuntime {
+	targetOptions?: { refreshRemote?: boolean };
+}
 
-export async function main(args: string[]): Promise<number> {
+export async function main(args: string[], runtime: CliRuntime = {}): Promise<number> {
 	const { values, positionals } = parseArgs({
 		args,
 		options: {
 			input: { type: 'string' }, output: { type: 'string' }, rules: { type: 'string' },
 			repository: { type: 'string' }, rehearsal: { type: 'string' },
-			'allow-local-test-target': { type: 'boolean', default: false },
 		},
 		allowPositionals: true, strict: true,
 	});
 	const command = positionals[0];
 	if (command === 'help' && positionals.length === 1) {
-		console.log('Commands: init --repository <microsoft/Nonprofits-checkout> --output <new-local-folder>; collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master; --allow-local-test-target is test-only.');
+		console.log('Commands: init --repository <microsoft/Nonprofits-checkout> --output <new-local-folder>; collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master.');
 		return 0;
 	}
 	if (positionals.length !== 1 || !values.output) {
 		throw new Error('Invalid command.');
 	}
 	if (command === 'finalize-rules') {
-		if (!values.input || values.rules || values.repository || values.rehearsal || values['allow-local-test-target']) {
+		if (!values.input || values.rules || values.repository || values.rehearsal) {
 			throw new Error('Invalid finalize-rules options.');
 		}
 		const rules = finalizeRuleReviewDraft(await readLocalJson(values.input));
@@ -52,7 +54,7 @@ export async function main(args: string[]): Promise<number> {
 		return 0;
 	}
 	if (command === 'calibrate') {
-		if (!values.input || !values.rehearsal || values.rules || values.repository || values['allow-local-test-target']) {
+		if (!values.input || !values.rehearsal || values.rules || values.repository) {
 			throw new Error('Invalid calibrate options.');
 		}
 		const result = calibrateAssessment(
@@ -70,9 +72,7 @@ export async function main(args: string[]): Promise<number> {
 	if (!values.repository) {
 		throw new Error('Public target repository is required.');
 	}
-	const targetOptions = values['allow-local-test-target']
-		? { allowLocalRevision: true, refreshRemote: false }
-		: {};
+	const targetOptions = runtime.targetOptions ?? {};
 	if (command === 'init') {
 		if (values.input || values.rules || values.rehearsal) {
 			throw new Error('Invalid init options.');
@@ -299,12 +299,12 @@ export async function main(args: string[]): Promise<number> {
 	throw new Error('Unknown command.');
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+export async function execute(args: string[], runtime: CliRuntime = {}): Promise<void> {
 	if (!process.versions.node.startsWith('22.')) {
 		console.error(`UNSUPPORTED_NODE: Node.js 22.x is required; detected ${process.versions.node}.`);
 		process.exitCode = 1;
 	} else try {
-		process.exitCode = await main(process.argv.slice(2));
+		process.exitCode = await main(args, runtime);
 	} catch (error) {
 		// Do not leak local values, auth errors, server bodies, or Zod input details to a host.
 		console.error(error instanceof z.ZodError
@@ -312,4 +312,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
 			: 'ASSESSMENT_FAILED: Check command, local paths, consent, terminal isolation, and prerequisites in README. No report completion is claimed.');
 		process.exitCode = 1;
 	}
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+	await execute(process.argv.slice(2));
 }
