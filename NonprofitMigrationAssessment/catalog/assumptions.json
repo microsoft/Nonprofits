@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0",
+  "version": "engineering-assumptions-0.2",
+  "status": "assumed",
+  "owner": "Microsoft Nonprofits owning team approval required",
+  "basis": "Conservative engineering planning assumptions derived from documented route phases; not measured migration data.",
+  "limitations": [
+    "Customer-specific scope, staffing, platform behavior, and rehearsal results can materially change the range."
+  ],
+  "sharedPreparation": {
+    "effort": [8, 16],
+    "elapsed": [16, 40]
+  },
+  "routes": {
+    "cdm": {
+      "sandbox": { "effort": [8, 16], "elapsed": [8, 24] },
+      "validation": { "effort": [12, 24], "elapsed": [16, 40] },
+      "acceptance": { "effort": [8, 16], "elapsed": [16, 40] },
+      "production": { "effort": [6, 12], "elapsed": [4, 8], "execution": [2, 4], "downtime": [0, 2] },
+      "post-cutover": { "effort": [4, 8], "elapsed": [8, 16] }
+    },
+    "fundraising": {
+      "sandbox": { "effort": [6, 12], "elapsed": [8, 24] },
+      "validation": { "effort": [10, 20], "elapsed": [16, 40] },
+      "acceptance": { "effort": [6, 12], "elapsed": [16, 40] },
+      "production": { "effort": [4, 8], "elapsed": [4, 8], "execution": [2, 4], "downtime": [0, 2] },
+      "post-cutover": { "effort": [4, 8], "elapsed": [8, 16] }
+    },
+    "grants": {
+      "sandbox": { "effort": [6, 12], "elapsed": [8, 24] },
+      "validation": { "effort": [10, 20], "elapsed": [16, 40] },
+      "acceptance": { "effort": [6, 12], "elapsed": [16, 40] },
+      "production": { "effort": [4, 8], "elapsed": [4, 8], "execution": [2, 4], "downtime": [0, 2] },
+      "post-cutover": { "effort": [4, 8], "elapsed": [8, 16] }
+    },
+    "outcomes": {
+      "sandbox": { "effort": [6, 12], "elapsed": [8, 24] },
+      "validation": { "effort": [10, 20], "elapsed": [16, 40] },
+      "acceptance": { "effort": [6, 12], "elapsed": [16, 40] },
+      "production": { "effort": [4, 8], "elapsed": [4, 8], "execution": [2, 4], "downtime": [0, 2] },
+      "post-cutover": { "effort": [4, 8], "elapsed": [8, 16] }
+    },
+    "vm": {
+      "sandbox": { "effort": [24, 48], "elapsed": [24, 80] },
+      "validation": { "effort": [24, 48], "elapsed": [24, 80] },
+      "acceptance": { "effort": [16, 32], "elapsed": [24, 80] },
+      "production": { "effort": [16, 32], "elapsed": [8, 16], "execution": [4, 8], "downtime": [0, 4] },
+      "post-cutover": { "effort": [8, 16], "elapsed": [8, 24] }
+    },
+    "ve": {
+      "sandbox": { "effort": [32, 64], "elapsed": [40, 120] },
+      "validation": { "effort": [24, 48], "elapsed": [24, 80] },
+      "acceptance": { "effort": [16, 32], "elapsed": [24, 80] },
+      "production": { "effort": [16, 32], "elapsed": [8, 16], "execution": [4, 8], "downtime": [0, 4] },
+      "post-cutover": { "effort": [8, 16], "elapsed": [8, 24] }
+    }
+  },
+  "scopedWork": {
+    "customization": {
+      "moderate": { "effort": [16, 40], "elapsed": [24, 120] },
+      "heavy": { "effort": [40, 120], "elapsed": [80, 320] }
+    },
+    "integration": {
+      "moderate": { "effort": [12, 32], "elapsed": [24, 120] },
+      "heavy": { "effort": [32, 96], "elapsed": [80, 320] }
+    },
+    "risk": {
+      "bounded": { "effort": [8, 24], "elapsed": [16, 80] }
+    }
+  }
+}

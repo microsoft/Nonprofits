@@ -1,0 +1,43 @@
+{
+	"name": "nonprofit-migration-assessment",
+	"version": "0.5.0",
+	"private": true,
+	"description": "Local, read-only nonprofit migration assessment prototype",
+	"type": "module",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/microsoft/Nonprofits.git",
+		"directory": "NonprofitMigrationAssessment"
+	},
+	"homepage": "https://github.com/microsoft/Nonprofits",
+	"bugs": {
+		"url": "https://github.com/microsoft/Nonprofits/issues"
+	},
+	"bin": {
+		"nonprofit-migration-assessment": "dist/src/cli.js"
+	},
+	"files": [
+		"catalog",
+		"dist",
+		"README.md",
+		"LICENSE.txt"
+	],
+	"engines": { "node": ">=22 <23" },
+	"scripts": {
+		"build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+		"build:test": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+		"package:check": "npm run build && npm pack --dry-run",
+		"typecheck": "tsc --noEmit",
+		"test": "npm run build:test && node --test --test-reporter=spec dist/tests/*.test.js",
+		"start": "node dist/src/cli.js"
+	},
+	"dependencies": {
+		"@azure/identity": "^4.13.0",
+		"zod": "^4.1.11"
+	},
+	"devDependencies": {
+		"@types/node": "22.19.20",
+		"typescript": "^5.9.3"
+	}
+}
