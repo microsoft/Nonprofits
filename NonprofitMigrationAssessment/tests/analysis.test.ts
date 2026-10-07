@@ -19,17 +19,25 @@ test('compatibility catalog separates version blockers from candidate routes', (
 });
 
 test('reviewed same-release mappings report alignment without migration', () => {
-	const input = inventory(['cdm']);
-	const route = ROUTES.find(item => item.family === 'cdm')!;
-	const answer = input.questionnaire.answers[0]!;
-	const source = input.discovery.solutions[0]!;
-	const target = input.questionnaire.target.solutions[0]!;
-	answer.intent = 'confirm-alignment';
-	source.version = '3.1.3.4';
-	target.version = '3.1.3.4';
-	const result = evaluateCompatibility(route, answer, source, target, undefined);
-	assert.equal(result.status, 'already-aligned');
-	assert.match(result.reason, /no product or data migration/i);
+	const cases = [
+		{ family: 'cdm' as const, version: '3.1.3.4' },
+		{ family: 'fundraising' as const, version: '1.0.3.3' },
+		{ family: 'grants' as const, version: '1.0.3.3' },
+		{ family: 'outcomes' as const, version: '1.0.3.3' },
+	];
+	for (const item of cases) {
+		const input = inventory(item.family === 'cdm' ? ['cdm'] : ['cdm', item.family]);
+		const route = ROUTES.find(route => route.family === item.family)!;
+		const answer = input.questionnaire.answers.find(answer => answer.family === item.family)!;
+		const source = input.discovery.solutions.find(solution => solution.uniqueName === route.source)!;
+		const target = input.questionnaire.target.solutions.find(solution => solution.uniqueName === route.target)!;
+		answer.intent = 'confirm-alignment';
+		source.version = item.version;
+		target.version = item.version;
+		const result = evaluateCompatibility(route, answer, source, target, undefined);
+		assert.equal(result.status, 'already-aligned');
+		assert.match(result.reason, /no product or data migration/i);
+	}
 });
 
 test('same versions outside the reviewed catalog require release mapping', () => {
@@ -39,8 +47,8 @@ test('same versions outside the reviewed catalog require release mapping', () =>
 	const source = input.discovery.solutions.find(solution => solution.uniqueName === route.source)!;
 	const target = input.questionnaire.target.solutions.find(solution => solution.uniqueName === route.target)!;
 	answer.intent = 'confirm-alignment';
-	source.version = '1.0.3.3';
-	target.version = '1.0.3.3';
+	source.version = '1.0.3.2';
+	target.version = '1.0.3.2';
 	assert.equal(evaluateCompatibility(route, answer, source, target, undefined).status, 'investigation-required');
 });
 
