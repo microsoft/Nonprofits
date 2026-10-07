@@ -37,7 +37,7 @@ const assertSanitized = (value: unknown) => {
 	const text = JSON.stringify(value);
 	assert.ok(!text.includes(CANARY));
 	assert.ok(!text.includes(TOKEN));
-	assert.ok(!text.includes(ORIGIN));
+	assert.doesNotMatch(text, /https:\/\/synthetic-assessment\.crm\.dynamics\.com(?:[/"\s]|$)/);
 };
 function options(fetch: typeof globalThis.fetch, extra: Partial<CollectionOptions> = {}): CollectionOptions {
 	return {

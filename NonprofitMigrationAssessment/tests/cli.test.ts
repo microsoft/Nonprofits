@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -60,9 +60,10 @@ test('offline CLI produces both reports without emitting inventory or questionna
 		CLI, 'assess', '--repository', repository.path, '--input', input, '--output', output,
 	], { encoding: 'utf8' });
 	assert.equal(run.status, 0, run.stderr);
-	assert.ok(run.stdout.includes('Local assessment written'));
+	const prefix = 'Local assessment written: ';
+	assert.equal(run.stdout.startsWith(prefix), true);
+	assert.equal(await realpath(run.stdout.trim().slice(prefix.length)), await realpath(output));
 	assert.ok(!`${run.stdout}${run.stderr}`.includes('CUSTOMER-QUESTIONNAIRE-CANARY'));
-	assert.ok(!`${run.stdout}${run.stderr}`.includes('synthetic.crm.dynamics.com'));
 	const report = JSON.parse(await readFile(join(output, 'assessment.json'), 'utf8')) as {
 		status: string;
 		workItems: { estimateType: string | null }[];

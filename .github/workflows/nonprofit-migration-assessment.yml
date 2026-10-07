@@ -34,6 +34,12 @@ jobs:
         working-directory: NonprofitMigrationAssessment
 
     steps:
+      - name: Enable long paths on Windows
+        if: runner.os == 'Windows'
+        working-directory: .
+        shell: pwsh
+        run: git config --global core.longpaths true
+
       - name: Check out repository
         uses: actions/checkout@v4
 
