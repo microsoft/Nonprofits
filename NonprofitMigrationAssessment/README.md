@@ -248,6 +248,8 @@ The skill does not invoke the VM migration script, the VE deployment skill, `pac
 
 ## Before customer release
 
+Complete the owning-team approvals in the [release checklist](https://github.com/microsoft/Nonprofits/blob/master/NonprofitMigrationAssessment/RELEASE-CHECKLIST.md).
+
 - Validate the detailed collector field/query coverage against an authorized standard, customized, and mixed environment.
 - Validate least-privilege permissions and authentication in a representative test tenant.
 - Complete a reviewed supported version and compatibility matrix; pinned target-package identity verification is implemented.

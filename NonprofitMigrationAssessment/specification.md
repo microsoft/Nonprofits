@@ -511,6 +511,8 @@ Develop the package in this folder first. Keep paths relative and public depende
 
 A customer-ready release requires all normative requirements to pass, critical open decisions to be resolved, and validation/calibration evidence and example reports to be linked. A draft prototype must not be presented as meeting the story's acceptance criteria.
 
+Owning-team approvals, constrained-account evidence, representative validation, and customer-release sign-off are recorded in [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+
 ### 12.1 Initial implementation profile
 
 The selected runtime is Node.js 22 with TypeScript. Version 0.5 is a self-contained public-npm-compatible package in this folder; see [setup and usage](README.md), [test coverage](tests/README.md), and the [standard live-test record](tests/standard-baseline-2026-09-30.md).
