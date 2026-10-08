@@ -197,7 +197,7 @@ export async function collectSolutions(options: CollectionOptions): Promise<Disc
 	const origin = validateEnvironmentUrl(options.environmentUrl);
 	const maxPages = bound(options.maxPages, 20, 1, 100);
 	const maxRetries = bound(options.maxRetries, 2, 0, 5);
-	const timeoutMs = bound(options.timeoutMs, 30_000, 1, 120_000);
+	const timeoutMs = bound(options.timeoutMs, 300_000, 1, 900_000);
 	const transport = options.fetch ?? globalThis.fetch;
 	if (typeof options.getToken !== 'function' || typeof transport !== 'function'
 		|| (options.now !== undefined && typeof options.now !== 'function')

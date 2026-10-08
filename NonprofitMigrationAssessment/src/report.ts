@@ -32,7 +32,7 @@ function text(value: string): string {
 
 function range(value: EffortRange | null, excluded = 0): string {
 	if (!value) {
-		return 'Not estimable';
+		return 'Unavailable';
 	}
 	if (value.min === 0 && value.max === 0 && excluded > 0) {
 		return 'None quantified';
@@ -47,7 +47,7 @@ function estimate(value: ScenarioEstimate): string {
 	if (value.knownSubtotal.min > 0 || value.knownSubtotal.max > 0) {
 		return `${range(value.knownSubtotal)} known; incomplete`;
 	}
-	return 'Not estimable';
+	return 'Unavailable';
 }
 
 function observed(value: number | null | undefined, suffix = ''): string {
@@ -201,7 +201,7 @@ export function renderMarkdown(report: Assessment): string {
 			? `Bundled uncalibrated engineering assumptions; ${assumedEstimateItems.length} work items; validate with a migration partner and rehearsal`
 			: 'No numeric rules applied';
 	const confidence = report.routes.some(route => route.confidence === 'not-estimable')
-		? 'Not estimable'
+		? 'Unavailable'
 		: report.routes.every(route => route.confidence === 'medium') ? 'Medium' : 'Low';
 	const componentResult = component
 		? `${component.relevantComponents} across ${component.relevantSolutions} solutions`
@@ -235,7 +235,7 @@ export function renderMarkdown(report: Assessment): string {
 		'',
 		'## Decision summary',
 		'',
-		`**${noMigrationRequired ? 'No migration required' : assessment.total ? 'Planning range available' : 'Migration is not yet estimable'}** for **${text(report.environment)}**. `
+		`**${noMigrationRequired ? 'No migration required' : assessment.total ? 'Planning range available' : 'Complete planning range unavailable'}** for **${text(report.environment)}**. `
 			+ `${findings.length} blocker group${findings.length === 1 ? '' : 's'} (${blocking.length} route findings) remain; `
 			+ `${observedCategories} of ${categories.length} discovery categories produced usable evidence.`,
 		'',

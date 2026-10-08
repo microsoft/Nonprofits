@@ -431,8 +431,8 @@ export async function collectAssessmentDetails(
 	if (requested.length === 0) {
 		return DiscoverySchema.parse(base);
 	}
-	const timeoutMs = options.timeoutMs ?? 60_000;
-	if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120_000) {
+	const timeoutMs = options.timeoutMs ?? 300_000;
+	if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 900_000) {
 		throw new Error('Invalid discovery limits.');
 	}
 	const controller = new AbortController();

@@ -16,9 +16,13 @@ const CompatibilityCatalogSchema = z.strictObject({
 		target: z.string().regex(/^\d+\.\d+\.\d+\.\d+$/),
 		basis: z.string().min(1),
 	})),
+	excludedFamilies: z.array(z.strictObject({
+		family: z.enum(['vm', 've']),
+		reason: z.string().min(1),
+	})),
 });
 const compatibilityCatalog = CompatibilityCatalogSchema.parse(JSON.parse(readFileSync(
-	new URL('../../catalog/compatibility.json', import.meta.url),
+	new URL('../../catalog/release-equivalence.json', import.meta.url),
 	'utf8',
 )) as unknown);
 export const COMPATIBILITY_CATALOG_VERSION = compatibilityCatalog.version;

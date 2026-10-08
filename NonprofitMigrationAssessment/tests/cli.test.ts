@@ -76,7 +76,7 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	const markdown = await readFile(join(output, 'assessment.md'), 'utf8');
 	assert.ok(markdown.includes('## Environment summary'));
 	assert.ok(markdown.includes('## Migration readiness'));
-	assert.ok(markdown.includes('Not estimable'));
+	assert.ok(markdown.includes('Unavailable'));
 });
 
 test('collection refuses non-TTY invocation before contacting an environment', async t => {
@@ -89,6 +89,22 @@ test('collection refuses non-TTY invocation before contacting an environment', a
 	await writeFile(path, JSON.stringify(questionnaire));
 	const run = spawnSync(process.execPath, [
 		CLI, 'collect', '--repository', repository.path, '--input', path, '--output', join(root, 'inventory'),
+	], { encoding: 'utf8' });
+	assert.equal(run.status, 1);
+	assert.ok(run.stderr.includes('ASSESSMENT_FAILED'));
+	assert.equal(run.stdout, '');
+});
+
+test('local configuration refuses non-TTY invocation', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-configure-refusal-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const path = join(root, 'questionnaire.json');
+	const questionnaire = inventory().questionnaire;
+	questionnaire.target = repository.target;
+	await writeFile(path, JSON.stringify(questionnaire));
+	const run = spawnSync(process.execPath, [
+		CLI, 'configure', '--repository', repository.path, '--input', path, '--output', join(root, 'configured'),
 	], { encoding: 'utf8' });
 	assert.equal(run.status, 1);
 	assert.ok(run.stderr.includes('ASSESSMENT_FAILED'));

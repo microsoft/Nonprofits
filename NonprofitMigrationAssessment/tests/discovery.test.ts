@@ -92,7 +92,7 @@ test('consent and configuration validation happen before credentials or transpor
 	for (const limits of [
 		{ maxPages: 0 }, { maxPages: 101 }, { maxPages: 1.5 },
 		{ maxRetries: -1 }, { maxRetries: 6 }, { maxRetries: NaN },
-		{ timeoutMs: 0 }, { timeoutMs: Infinity }, { timeoutMs: 120_001 },
+		{ timeoutMs: 0 }, { timeoutMs: Infinity }, { timeoutMs: 900_001 },
 	]) {
 		await assert.rejects(collectSolutions({ ...opts, ...limits }), /Invalid discovery limits/);
 	}

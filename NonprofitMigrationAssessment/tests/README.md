@@ -1,4 +1,6 @@
-# Offline test cases and remaining validation
+# Source validation tests
+
+These tests support repository CI and maintainers. They aren't included in the distributed customer package.
 
 Run `npm test` from the package root. The tests use Node's built-in test runner and synthetic fixtures. They do not connect to a tenant or create customizations.
 

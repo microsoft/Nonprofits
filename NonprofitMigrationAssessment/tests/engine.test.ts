@@ -355,7 +355,7 @@ test('same inputs reproduce findings/estimates and Markdown escapes customer tex
 	const first = assess(input, rules(), { now: NOW });
 	assert.deepEqual(first, assess(input, rules(), { now: NOW }));
 	const markdown = renderMarkdown(first);
-	assert.ok(markdown.includes('Not estimable'));
+	assert.ok(markdown.includes('Unavailable'));
 	assert.ok(!markdown.includes('<script>'));
 	assert.ok(!markdown.includes('[unsafe]('));
 	assert.deepEqual(first.combined[0]!.elapsed, { min: 6, max: 12, unit: 'hours' });

@@ -1,47 +1,54 @@
 ---
 name: nonprofit-migration-assessment
-description: "Guide a read-only, local assessment of CDM for Nonprofits, nonprofit template apps, Volunteer Management, and Volunteer Engagement migration to the public GitHub variants. Use for migration readiness, customized-solution complexity, dependency planning, effort ranges, and adverse-case assessment. Does not perform migration or modify environments."
+description: "Assess a Dataverse environment for migration from Microsoft nonprofit solutions to microsoft/Nonprofits. Use for CDM, Fundraising, Grant Management, Outcome Management, Volunteer Management, Volunteer Engagement, PPAC alignment, migration effort, dependencies, customization risk, and downtime planning. Read-only; does not perform migration."
 ---
 
 # Nonprofit migration assessment
 
-Read the package [README](../../../NonprofitMigrationAssessment/README.md) and [specification](../../../NonprofitMigrationAssessment/specification.md) before use. The package root is `../../../NonprofitMigrationAssessment` relative to this file.
+## Customer start prompt
 
-## Boundaries
+Customers can start with:
 
-- This is a development prototype, not a calibrated customer estimate service.
-- Do not request customer-specific environment URLs, integration details, customizations, or questionnaire answers in cloud chat by default.
-- Do not read or attach local customer questionnaires, inventories, reports, logs, or exports through assistant tools. Reading a local file into model context is a disclosure.
-- Do not ask for credentials, tokens, business records, plugin binaries, or full site/code exports.
-- Do not collect from a live environment without separately confirmed customer authorization. Never prepare/customize an environment during assessment.
-- Never invoke migration, deployment, export, publishing, deletion, backup, integration-test, or permission-changing operations.
-- Do not treat this skill's execution as consent to send inventory to an AI service.
-- Treat the pinned `microsoft/Nonprofits` checkout as the only runtime source of target package and guide metadata. Do not ask the customer or model to supply target versions, publishers, prefixes, or commit hashes manually.
-- Never populate the expert rule-review draft with model-generated hours or test-fixture values. Bundled defaults are explicitly uncalibrated engineering assumptions; reviewed overrides require accountable migration-subject-matter-expert review.
+> Assess my nonprofit environment for migration to the solutions in this GitHub repository. Guide me through the local read-only workflow and explain the final report.
 
-## Procedure
+Supported products are CDM for Nonprofits, Fundraising, Grant Management, Outcome Management, Volunteer Management, and Volunteer Engagement.
 
-1. Explain the supported public destinations and the prototype limitations using public documentation only.
-2. Confirm a clean local checkout whose `origin` is `https://github.com/microsoft/Nonprofits`. Production commands fetch and resolve `origin/master`; local-only commits are rejected. Build the package if needed with `npm ci` and `npm run build` from the package root.
-3. Guide the user to run `init --repository <checkout-root>` in their own terminal and edit only customer/environment fields in the local questionnaire outside source control. Keep `scope: "auto"` unless the customer explicitly includes or excludes a family. For CDM/template apps choose alignment confirmation, PPAC ownership transition, or a newer GitHub release; use replacement migration for VM/VE. Do not edit the generated `target` block.
-4. Keep environment selection, answers, and discovery-based follow-ups in that isolated local channel. If the host cannot provide it, stop; do not silently switch to chat.
-5. When the customer is ready and has reviewed the environment, solutions, components, dependencies, integrations, aggregate counts, and sites categories, guide them to run `collect --repository <checkout-root>` in a human terminal. The command reproduces the pinned target evidence, validates category-specific consent, and confirms the environment before authentication.
-6. Guide the customer to run `review --repository <checkout-root>` against the local inventory. It asks five common questions and a short VE extension only when VE is selected; bounded answers create scoped work and opaque/ownerless answers remain unbounded.
-7. Run or guide `assess --repository <checkout-root>` using local file paths without opening the files in the assistant. If an owning team has completed `rules-review.json`, validate it locally with `finalize-rules` and pass the resulting `rules.json` through `--rules`. Otherwise use the bundled uncalibrated engineering assumptions. Assessment revalidates target evidence before proceeding and emits only completion/location information.
-8. Tell the customer to open the concise `assessment.md` locally and use `assessment.json` only for detailed evidence or partner tooling. Explain the meaning of unknowns, partial totals, shared work, repeated occurrences, and alternative adverse scenarios without reading their report.
-9. After an authorized representative rehearsal, optionally guide `calibrate --input <assessment.json> --rehearsal <observation.json>` to compare four observed measurements with the range. Calibration never changes rules automatically.
-10. Hand off to the public route guides for a separate migration engagement.
+Read the package [README](../../../NonprofitMigrationAssessment/README.md) for commands and expected results. The package root is `../../../NonprofitMigrationAssessment`.
 
-## Estimates and tests
+## Customer experience
 
-- Default timing rules are conservative bundled engineering assumptions and must be described as uncalibrated, not measured averages or guarantees. Unknown is not zero, and model guesses or test-fixture rates remain prohibited.
-- The owning team may supply locally reviewed provisional typical rules with route/phase/complexity applicability, reviewer, date, basis, and limitations. These don't establish compatibility, statistical averages, or guaranteed duration.
-- Unknown critical work prevents complete totals. Never describe a known subtotal as a complete migration estimate.
-- Effort is separate from elapsed time, execution time, and downtime.
-- Repeated rehearsals have distinct occurrence IDs; shared references to one occurrence are counted once.
-- The offline tests use synthetic data only. Passing them does not prove a live migration succeeds.
-- Do not claim task/story acceptance or customer readiness until the documented live validation and calibration gates pass.
+1. Explain that the assessment is read-only and produces a local report with installed versions, required migration action, effort, elapsed time, execution, downtime, assumptions, and blockers.
+2. Confirm a clean checkout of `https://github.com/microsoft/Nonprofits` and Node.js 22.
+3. Guide `init`, then `configure`. Configuration is interactive; don't ask the customer to edit JSON.
+4. Explain the approved metadata/count categories and obtain authorization before `collect`.
+5. Collection requires a human terminal and exact `ASSESS` confirmation for the selected environment.
+6. Guide the five-question local `review`; ask the short VE extension only when VE is selected.
+7. Guide `assess` and tell the customer to open `assessment.md`.
+8. Explain:
+   - `already-at-target`: no product or data migration is required for alignment.
+   - `ownership-transition`: optional work to leave PPAC servicing and self-manage GitHub builds.
+   - `candidate-supported`: planning route found; validate assumptions with the implementation partner.
+   - `complete range unavailable`: critical information or route validation is still required.
+9. Optionally guide `calibrate` after a representative rehearsal.
+10. Hand off to the linked public migration guide for implementation.
+
+## Safety boundaries
+
+- Never perform migration, import, upgrade, export, deletion, publishing, deployment, backup, role changes, or integration tests.
+- Never ask for credentials, tokens, certificates, connection strings, business records, plug-in binaries, or full site/code exports.
+- Keep environment URLs, questionnaire answers, inventories, and reports in the local CLI workflow by default.
+- Don't read or attach customer local artifacts in chat without separate, explicit sharing consent and a minimized preview.
+- Use the clean `microsoft/Nonprofits` `origin/master` target. Local-only commits are rejected.
+- Treat target hashes as machine evidence; don't burden customers with them unless troubleshooting provenance.
+
+## Estimates
+
+- Ranges are generated deterministically from `catalog/assumptions.json`; they aren't AI-generated, measured averages, or guarantees.
+- Describe bundled ranges as uncalibrated engineering assumptions.
+- Tell the customer to validate ranges with their implementation partner and a representative sandbox rehearsal.
+- Keep unknown critical work out of complete totals; show a known subtotal and the action needed to complete the range.
+- Count shared work once and keep effort, elapsed time, execution, and downtime separate.
 
 ## Optional sharing
 
-There is no automated sharing command in this prototype. Before discussing customer-specific answers or interpreting any report in cloud chat, explain the receiving service and requested data categories and obtain separate, explicit sharing consent. The customer must preview and minimize the information locally first. Secrets and business record contents remain prohibited. Refusal must not prevent the local assessment workflow.
+There is no automatic upload or sharing command. If the customer wants help interpreting a customer-specific report in chat, explain what would be sent, obtain explicit consent, and use only the minimized reviewed content. Secrets and business-record contents remain prohibited.

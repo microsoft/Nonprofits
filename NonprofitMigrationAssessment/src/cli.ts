@@ -35,7 +35,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 	});
 	const command = positionals[0];
 	if (command === 'help' && positionals.length === 1) {
-		console.log('Commands: init --repository <microsoft/Nonprofits-checkout> --output <new-local-folder>; collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master.');
+		console.log('Commands: init --repository <microsoft/Nonprofits-checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master.');
 		return 0;
 	}
 	if (positionals.length !== 1 || !values.output) {
@@ -130,6 +130,95 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 	}
 	if (!values.input) {
 		throw new Error('Local input is required.');
+	}
+	if (command === 'configure') {
+		if (values.rules || values.rehearsal || !process.stdin.isTTY || !process.stdout.isTTY) {
+			throw new Error('Local configuration requires an isolated human terminal.');
+		}
+		const questionnaire = QuestionnaireSchema.parse(await readLocalJson(values.input));
+		await verifyPublicTarget(values.repository, questionnaire.target, targetOptions);
+		const { createInterface } = await import('node:readline/promises');
+		const terminal = createInterface({ input: process.stdin, output: process.stdout });
+		const choose = async <T extends string>(
+			label: string,
+			options: ReadonlyArray<{ label: string; value: T }>,
+		): Promise<T> => {
+			while (true) {
+				console.log(`\n${label}`);
+				options.forEach((option, index) => console.log(`  ${index + 1}. ${option.label}`));
+				const answer = await terminal.question('Select a number: ');
+				const index = Number(answer) - 1;
+				if (Number.isInteger(index) && options[index]) {
+					return options[index].value;
+				}
+			}
+		};
+		try {
+			const assessmentId = (await terminal.question(`Assessment ID [${questionnaire.assessmentId}]: `)).trim()
+				|| questionnaire.assessmentId;
+			const alias = (await terminal.question(`Environment alias [${questionnaire.environment.alias}]: `)).trim()
+				|| questionnaire.environment.alias;
+			const url = (await terminal.question('Dataverse environment URL: ')).trim();
+			const type = await choose('Environment type?', [
+				{ label: 'Production', value: 'production' },
+				{ label: 'Sandbox', value: 'sandbox' },
+				{ label: 'Trial', value: 'trial' },
+				{ label: 'Developer', value: 'developer' },
+				{ label: 'Unknown', value: 'unknown' },
+			] as const);
+			const region = (await terminal.question('Region [unknown]: ')).trim() || 'unknown';
+			const managedEnvironment = await choose('Managed Environment?', [
+				{ label: 'Yes', value: 'yes' },
+				{ label: 'No', value: 'no' },
+				{ label: 'Unknown', value: 'unknown' },
+			] as const);
+			const accessRestriction = await choose('Environment access restriction?', [
+				{ label: 'Security group', value: 'security-group' },
+				{ label: 'Unrestricted', value: 'unrestricted' },
+				{ label: 'Unknown', value: 'unknown' },
+			] as const);
+			const sameIdentityIntent = await choose('For CDM and template apps, what is the goal?', [
+				{ label: 'Confirm alignment with the GitHub release', value: 'confirm-alignment' },
+				{ label: 'Leave PPAC servicing and self-manage GitHub builds', value: 'ownership-transition' },
+				{ label: 'Apply a newer GitHub release', value: 'apply-github-release' },
+			] as const);
+			const consent = await choose(
+				'Authorize the listed read-only metadata and aggregate-count categories for this environment?',
+				[
+					{ label: 'Yes, authorize read-only collection', value: 'yes' },
+					{ label: 'No', value: 'no' },
+				] as const,
+			);
+			if (consent !== 'yes') {
+				throw new Error('Read-only collection was not authorized.');
+			}
+			questionnaire.assessmentId = assessmentId;
+			questionnaire.environment = {
+				alias,
+				url,
+				type,
+				region,
+				managedEnvironment,
+				accessRestriction,
+			};
+			questionnaire.consent.readOnly = true;
+			questionnaire.consent.confirmedAt = new Date().toISOString();
+			for (const answer of questionnaire.answers) {
+				answer.scope = 'auto';
+				answer.intent = ['cdm', 'fundraising', 'grants', 'outcomes'].includes(answer.family)
+					? sameIdentityIntent
+					: 'replace-with-github';
+			}
+			const configured = QuestionnaireSchema.parse(questionnaire);
+			const location = await writeLocalBundle(values.output, {
+				'questionnaire.json': json(configured),
+				'questionnaire.schema.json': json(z.toJSONSchema(QuestionnaireSchema)),
+			});
+			console.log(`Configured local questionnaire written: ${location}`);
+			return 0;
+		} finally {
+			terminal.close();
+		}
 	}
 	if (command === 'review') {
 		if (values.rules || values.rehearsal || !process.stdin.isTTY || !process.stdout.isTTY) {

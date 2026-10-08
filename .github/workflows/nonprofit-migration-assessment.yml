@@ -1,5 +1,6 @@
 name: Nonprofit migration assessment
 
+# Run validation only when the skill, its package, or this workflow changes.
 on:
   pull_request:
     paths:

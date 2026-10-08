@@ -29,5 +29,15 @@
       "target": "1.0.3.3",
       "basis": "The PPAC and GitHub Outcome Management releases use the same solution identity and aligned package version."
     }
+  ],
+  "excludedFamilies": [
+    {
+      "family": "vm",
+      "reason": "Volunteer Management migrates from VolunteerManagement to the different volunteermanagementos solution identity, so release equivalence does not apply."
+    },
+    {
+      "family": "ve",
+      "reason": "Volunteer Engagement migrates a Power Pages site to Portal-EDM, so solution release equivalence does not apply."
+    }
   ]
 }
