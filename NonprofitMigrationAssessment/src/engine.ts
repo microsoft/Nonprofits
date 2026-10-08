@@ -357,8 +357,8 @@ export function assess(
 		status: allAbsent ? 'no-relevant-solutions'
 			: allResolvedWithoutMigration || assessmentComplete ? 'complete' : 'partial',
 		limitations: [
-			'Prototype, not customer-ready. No source/target compatibility matrix or migration timings have been independently calibrated.',
-			'Numeric inputs, if provided, are locally reviewed planning assumptions, not guaranteed duration or statistical percentiles.',
+			'Planning output, not a migration approval or guarantee. Validate compatibility and timing with the implementation partner.',
+			'Bundled numeric ranges are uncalibrated engineering assumptions, not measured averages or statistical percentiles.',
 			'Component overlap, dependency references, integration registrations, counts, and site totals are bounded metadata signals; they do not prove behavioral compatibility or absence of undiscoverable dependencies.',
 			'Environment type, region, Managed Environment state, access restriction, and questionnaire answers are customer assertions unless separately marked as observed.',
 			'Customer answers remain assertions. CLI execution verifies target manifests and guides against the pinned public Git commit; direct library callers must perform equivalent verification.',

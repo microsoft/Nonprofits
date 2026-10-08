@@ -57,6 +57,17 @@ test('bounded review creates scoped heavy remediation and a complete assumed ran
 	assert.ok(result.combined.find(item => item.id === 'assessed')!.total);
 });
 
+test('bounded migration review does not create remediation for alignment-only products', () => {
+	const input = inventory(['cdm', 'vm']);
+	input.questionnaire.answers.find(answer => answer.family === 'cdm')!.intent = 'confirm-alignment';
+	input.discovery.solutions.find(solution => solution.uniqueName === 'NonprofitCore')!.version = '3.1.3.4';
+	input.questionnaire.target.solutions.find(solution => solution.uniqueName === 'NonprofitCore')!.version = '3.1.3.4';
+	const reviewed = applyLocalReview(input, review({ customization: 'bounded' }));
+	assert.deepEqual(reviewed.questionnaire.work[0]!.families, ['vm']);
+	const result = assess(reviewed, DEFAULT_RULES, { now: NOW });
+	assert.equal(result.findings.some(item => item.id === 'cdm.customization-unscoped'), false);
+});
+
 test('opaque or ownerless work remains unbounded', () => {
 	const input = inventory(['vm']);
 	const reviewed = applyLocalReview(input, review({

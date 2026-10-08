@@ -58,15 +58,18 @@ export function applyLocalReview(input: unknown, reviewInput: unknown): Inventor
 	const review = LocalReviewSchema.parse(reviewInput);
 	const selected = selectAnswers(inventory.questionnaire, inventory.discovery);
 	const families = migrationFamilies(inventory);
+	const migrationSet = new Set(families);
 	const ownerMakesOpaque = review.ownerAvailability === 'unavailable';
 	inventory.questionnaire.work = inventory.questionnaire.work.filter(item =>
 		!['review.customization', 'review.integration', 'review.ve-journeys', 'review.ve-configuration'].includes(item.id));
 
 	for (const answer of selected) {
-		answer.customization = review.customization === 'none' ? 'standard'
-			: review.customization === 'unknown' ? 'unknown' : 'customized';
-		answer.integrations = ['none', 'bounded'].includes(review.integrations) ? 'reviewed' : 'unknown';
-		answer.validation = review.sandboxAndTests === 'ready' ? 'ready' : 'unknown';
+		if (migrationSet.has(answer.family)) {
+			answer.customization = review.customization === 'none' ? 'standard'
+				: review.customization === 'unknown' ? 'unknown' : 'customized';
+			answer.integrations = ['none', 'bounded'].includes(review.integrations) ? 'reviewed' : 'unknown';
+			answer.validation = review.sandboxAndTests === 'ready' ? 'ready' : 'unknown';
+		}
 		answer.basis = `Local guided review: customization ${review.customization}; integrations ${review.integrations}; owner ${review.ownerAvailability}; sandbox/tests ${review.sandboxAndTests}.`;
 		if (answer.family === 've' && review.ve) {
 			answer.veSource = review.ve.source;
