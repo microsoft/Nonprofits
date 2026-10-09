@@ -170,6 +170,8 @@ test('lower target version or wrong publisher blocks compatibility', () => {
 	const input = inventory();
 	input.questionnaire.target.solutions[0]!.version = '1.0.0.0';
 	assert.ok(assess(input, rules(), { now: NOW }).findings.some(item => item.code === 'compatibility-blocked'));
+	const assumed = assess(input, DEFAULT_RULES, { now: NOW });
+	assert.ok(renderMarkdown(assumed).includes('Review required (Medium known)'));
 	input.questionnaire.target.solutions[0]!.publisher = 'unrecognized';
 	assert.ok(assess(input, rules(), { now: NOW }).findings.some(item => item.code === 'target-identity'));
 	assert.equal(compareVersions('1.0.0.100', '1.0.0.99'), 1);

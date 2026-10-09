@@ -5,6 +5,7 @@ import {
 	type Discovery, type DiscoveryCategory, type Evidence,
 } from './contracts.js';
 import { validateEnvironmentUrl } from './discovery.js';
+import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 
 const API = '/api/data/v9.2/';
 const RESPONSE_BYTES = 512 * 1024;
@@ -13,13 +14,6 @@ const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 25;
 const MAX_COUNT_TABLES = 50;
-const MICROSOFT_PUBLISHERS = new Set([
-	'microsoftcorporation',
-	'microsoftdynamics',
-	'microsoftdynamics365nonprofitaccelerator',
-	'microsoftfirstparty',
-	'microsofttechforsocialimpact',
-]);
 
 const VersionResponseSchema = z.object({ Version: z.string() });
 const ComponentPageSchema = z.object({
@@ -279,7 +273,7 @@ async function collectComponents(
 		.filter(solution => solution.solutionId
 			&& !relevantNames.has(solution.uniqueName.toLowerCase())
 			&& !['active', 'default', 'system'].includes(solution.uniqueName.toLowerCase())
-			&& (!solution.managed || !MICROSOFT_PUBLISHERS.has(solution.publisher.toLowerCase())));
+			&& !isMicrosoftFirstPartyPublisher(solution.publisher));
 	const relevant: { componenttype: number; objectid: string | null }[] = [];
 	const productKeys = new Map<string, Set<string>>();
 	const componentTypes = new Map<number, number>();

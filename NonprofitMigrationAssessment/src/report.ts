@@ -3,6 +3,7 @@ import {
 	type Assessment, type DurationRange, type EffortRange, type Family, type Finding, type Phase, type ScenarioEstimate,
 } from './contracts.js';
 import { ROUTES } from './routes.js';
+import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 
 const FAMILY_NAMES: Record<Family, string> = {
 	cdm: 'CDM for Nonprofits',
@@ -81,6 +82,20 @@ function effortBand(value: Assessment['routes'][number]['effortBand']): string {
 	}[value];
 }
 
+function bandForMaximum(max: number): string {
+	return max <= 80 ? 'Low' : max <= 200 ? 'Medium' : 'High';
+}
+
+function effortSummary(route: Assessment['routes'][number]): string {
+	if (route.effortBand !== 'review-required') {
+		return effortBand(route.effortBand);
+	}
+	const assessed = route.scenarios.find(item => item.id === 'assessed');
+	return assessed && assessed.knownSubtotal.max > 0
+		? `Review required (${bandForMaximum(assessed.knownSubtotal.max)} known)`
+		: 'Review required';
+}
+
 function recommendation(route: Assessment['routes'][number]): string {
 	if (route.status === 'already-at-target') {
 		return 'No action — already aligned';
@@ -108,18 +123,21 @@ function dependencies(family: Family): string {
 
 function customizationSignal(report: Assessment, family: Family): string {
 	const route = ROUTES.find(item => item.family === family)!;
+	const candidates = report.discoverySummary.components?.customizationCandidates
+		?.filter(item => !isMicrosoftFirstPartyPublisher(item.publisher)) ?? [];
+	const matching = candidates.flatMap(item => item.overlaps
+		.filter(overlap => [route.source, route.target].includes(overlap.productUniqueName))
+		.map(overlap => ({ solution: item.uniqueName, count: overlap.componentCount })));
+	if (matching.length > 0) {
+		const count = matching.reduce((total, item) => total + item.count, 0);
+		return `${count} overlapping component(s) from ${matching.map(item => text(item.solution)).join(', ')}`;
+	}
 	const summary = report.discoverySummary.components?.productSummaries?.find(item =>
 		[route.source, route.target].includes(item.uniqueName));
-	if (!summary) {
+	if (!summary && candidates.length === 0) {
 		return family === 've' ? 'See site review' : 'Not available';
 	}
-	if (summary.overlappingCustomizationComponents === 0) {
-		return 'No direct component overlap found';
-	}
-	const names = summary.customizationSolutions.length
-		? ` from ${summary.customizationSolutions.map(text).join(', ')}`
-		: '';
-	return `${summary.overlappingCustomizationComponents} overlapping component(s)${names}`;
+	return 'No direct component overlap found';
 }
 
 function actionFor(finding: Finding): string {
@@ -278,6 +296,8 @@ export function renderMarkdown(report: Assessment): string {
 		&& assessment.downtime.max > report.operations.maxInterruptionHours
 		? `- The estimated downtime upper bound (${assessment.downtime.max} hours) exceeds the reviewed maximum interruption (${report.operations.maxInterruptionHours} hours); add rehearsal or cutover mitigation before approval.`
 		: null;
+	const customizationCandidates = component?.customizationCandidates?.filter(item =>
+		!isMicrosoftFirstPartyPublisher(item.publisher) && item.componentCount > 0) ?? [];
 	const output = [
 		'# Nonprofit migration assessment',
 		'',
@@ -306,14 +326,14 @@ export function renderMarkdown(report: Assessment): string {
 		'| Product | Installed solution / version | GitHub target / version | Customization signal | Depends on | Recommended action | Effort | GitHub |',
 		'| --- | --- | --- | --- | --- | --- | --- | --- |',
 		...report.routes.map(route =>
-			`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${customizationSignal(report, route.family)} | ${text(dependencies(route.family))} | ${text(recommendation(route))} | ${effortBand(route.effortBand)} | [Guide](${route.guide}) |`),
+			`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${customizationSignal(report, route.family)} | ${text(dependencies(route.family))} | ${text(recommendation(route))} | ${effortSummary(route)} | [Guide](${route.guide}) |`),
 		'',
 		'## Customization solutions',
 		'',
-		...(component?.customizationCandidates?.length ? [
+		...(customizationCandidates.length ? [
 			'| Solution | Type | Publisher | Components | Affects supported products |',
 			'| --- | --- | --- | --- | --- |',
-			...component.customizationCandidates.map(item => {
+			...customizationCandidates.map(item => {
 				const affects = item.overlaps.length
 					? item.overlaps.map(overlap => `${text(overlap.productUniqueName)} (${overlap.componentCount})`).join(', ')
 					: 'No direct overlap found';
