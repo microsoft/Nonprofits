@@ -85,10 +85,11 @@ function componentType(type: number): string {
 
 function componentBreakdown(
 	types: Array<{ type: number; count: number }>,
+	componentCount: number,
 ): string {
 	return types.length
 		? types.map(item => `${componentType(item.type)}: ${item.count}`).join(', ')
-		: 'None';
+		: componentCount > 0 ? 'Not captured in this inventory' : 'No components';
 }
 
 function recommendation(route: Assessment['routes'][number]): string {
@@ -206,8 +207,40 @@ function groupedFindings(report: Assessment): {
 		.map(({ order: _order, ...item }) => item);
 }
 
+function dependencyDiagram(report: Assessment): string[] {
+	const included = new Set(report.routes.map(route => route.family));
+	const classes = new Map<string, Family[]>();
+	const nodes = report.routes.map(route => {
+		const className = ['already-at-target', 'not-installed'].includes(route.status)
+			? 'ready'
+			: ['blocked', 'unsupported'].includes(route.status) ? 'blocked' : 'review';
+		classes.set(className, [...(classes.get(className) ?? []), route.family]);
+		return `  ${route.family}["${FAMILY_NAMES[route.family]}<br/>${effortSummary(route)}"]`;
+	});
+	const edges = report.routes.flatMap(route => {
+		const definition = ROUTES.find(item => item.family === route.family)!;
+		return definition.prerequisites
+			.filter(prerequisite => included.has(prerequisite))
+			.map(prerequisite => `  ${prerequisite} --> ${route.family}`);
+	});
+	const assignments = [...classes.entries()]
+		.map(([className, families]) => `  class ${families.join(',')} ${className}`);
+	return [
+		'```mermaid',
+		'flowchart LR',
+		...nodes,
+		...edges,
+		'  classDef ready fill:#dff6dd,stroke:#107c10,color:#242424',
+		'  classDef review fill:#fff4ce,stroke:#8a6d1d,color:#242424',
+		'  classDef blocked fill:#fde7e9,stroke:#a4262c,color:#242424',
+		...assignments,
+		'```',
+	];
+}
+
 export function renderMarkdown(report: Assessment): string {
 	const component = report.discoverySummary.components;
+	const dependency = report.discoverySummary.dependencies;
 	const findings = groupedFindings(report);
 	const assessed = report.combined.find(item => item.id === 'assessed');
 	const noMigrationRequired = report.routes.length > 0
@@ -250,25 +283,39 @@ export function renderMarkdown(report: Assessment): string {
 		...(!solutionInventoryAvailable
 			? ['Customization inventory is unavailable because installed solutions could not be read.']
 			: customizationCandidates.length ? [
-			'| Solution | Type | Publisher | Components | Component types | Affects supported products |',
-			'| --- | --- | --- | --- | --- | --- |',
+			`**Summary:** ${customizationCandidates.length} custom or partner solution(s); ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => item.overlaps.length > 0).length} with direct supported-product overlap.`,
+			'',
+			'| Solution | Type | Publisher | Components | Component details | Affects supported products | Why review it? |',
+			'| --- | --- | --- | --- | --- | --- | --- |',
 			...customizationCandidates.map(item => {
 				const affects = item.overlaps.length
 					? item.overlaps.map(overlap => `${text(overlap.productUniqueName)} (${overlap.componentCount})`).join(', ')
 					: 'No direct overlap found';
-				return `| ${text(item.uniqueName)} | ${item.managed ? 'Managed' : 'Unmanaged'} | ${text(item.publisher)} | ${item.componentCount} | ${componentBreakdown(item.componentTypes)} | ${affects} |`;
+				const review = item.overlaps.length
+					? 'Direct overlap found; validate behavior and deployment order'
+					: 'No direct overlap found; confirm dynamic dependencies separately';
+				return `| ${text(item.uniqueName)} | ${item.managed ? 'Managed' : 'Unmanaged'} | ${text(item.publisher)} | ${item.componentCount} | ${componentBreakdown(item.componentTypes, item.componentCount)} | ${affects} | ${review} |`;
 			}),
+			...(component?.truncated ? ['', '> Collection limits were reached. Additional customization solutions or components may exist.'] : []),
 			] : ['No custom or partner solution candidates were identified within the bounded collection scope.']),
 		'',
 		'## Priority blockers and next actions',
 		'',
 		...(findings.length ? [
-			'| Scope | Finding | Required action |',
-			'| --- | --- | --- |',
-			...findings.map(item => `| ${item.families.map(family => text(FAMILY_NAMES[family])).join(', ')}${item.derived ? ' (derived)' : ''} | ${text(item.message)} | ${text(item.action)} |`),
+			'Resolve the blockers from top to bottom. Dependency blockers clear only after their prerequisite product is resolved.',
+			'',
+			'| # | Scope | Type | Blocker | Required action |',
+			'| --- | --- | --- | --- | --- |',
+			...findings.map((item, index) => `| ${index + 1} | ${item.families.map(family => text(FAMILY_NAMES[family])).join(', ')} | ${item.derived ? 'Dependency' : 'Direct'} | ${text(item.message)} | ${text(item.action)} |`),
 		] : ['No blocking findings were produced. Review limitations before migration approval.']),
 		'',
 		'## Dependencies',
+		'',
+		'### Product migration order',
+		'',
+		...dependencyDiagram(report),
+		'',
+		'The arrows show required migration order, not every Dataverse component dependency.',
 		'',
 		'| Product | Depends on |',
 		'| --- | --- |',
@@ -279,6 +326,18 @@ export function renderMarkdown(report: Assessment): string {
 				: 'None';
 			return `| ${text(FAMILY_NAMES[route.family])} | ${prerequisites} |`;
 		}),
+		'',
+		'### Observed environment dependency signal',
+		'',
+		...(dependency ? [
+			'| Signal | Result | What it means |',
+			'| --- | --- | --- |',
+			`| Components checked | ${dependency.checkedComponents} | Deterministic bounded sample of supported-product components |`,
+			`| Dependent references returned | ${dependency.dependentReferences} | Total references returned by sampled lookups; not a list of unique dependency edges |`,
+			`| Coverage | ${dependency.truncated ? 'Partial — collection limit reached' : 'Bounded sample completed'} | ${dependency.truncated ? 'More dependencies may exist' : 'Dynamic or undiscoverable dependencies may still exist'} |`,
+			'',
+			'> This assessment does not retain individual source-to-target dependency records. Use a solution-aware technical review when exact dependency names are required.',
+		] : ['Dependency metadata was not available.']),
 		'',
 		'## Notes',
 		'',

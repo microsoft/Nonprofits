@@ -187,18 +187,17 @@ When critical work remains unresolved, the report shows the known planning subto
 
 The concise Markdown report contains:
 
-1. Decision summary
-2. Environment summary
-3. Installed solution and target-version table
-4. Simple required action per product
-5. Priority blockers and next actions
-6. Evidence coverage
-7. Dependencies and assumptions
-8. Combined scenario and phase ranges
-9. Public migration-guide links
-10. Limitations
+1. Environment name, URL, and overall recommendation
+2. Installed solution and target-version table
+3. Simple required action and relative effort per product
+4. Custom/partner solution details, component-type summaries, direct product overlap, and why each candidate needs review
+5. Prioritized direct and dependency blockers with next actions
+6. A visual product migration order and a supporting dependency table
+7. Bounded environment dependency signals with explicit collection limitations
+8. Public migration-guide links
+9. Short customer-facing notes
 
-The detailed JSON contains machine evidence, file hashes, work dependencies, rule provenance, and scenario reasons.
+The detailed JSON contains machine evidence, file hashes, work dependencies, rule provenance, scenario reasons, and numeric planning ranges. The bounded collector summarizes environment dependency counts; it doesn't retain individual source-to-target dependency records.
 
 Assessment artifacts remain local by default. Optional sharing requires customer review and consent. Secrets and business-record contents must never be shared.
 

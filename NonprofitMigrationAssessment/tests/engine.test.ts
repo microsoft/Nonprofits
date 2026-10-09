@@ -404,14 +404,52 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	assert.ok(markdown.includes('## What is installed and what should you do?'));
 	assert.ok(markdown.includes('## Customization solutions'));
 	assert.ok(markdown.includes('## Environment'));
+	assert.ok(markdown.includes('```mermaid'));
+	assert.ok(markdown.includes('### Product migration order'));
+	assert.ok(markdown.includes('### Observed environment dependency signal'));
 	assert.ok(markdown.includes('NonprofitCore 2.0.0.0'));
 	assert.ok(markdown.includes('NonprofitCore 3.0.0.0'));
-	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | Forms: 1, Scripts/web resources: 2 | NonprofitCore (1) |'));
+	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | Forms: 1, Scripts/web resources: 2 | NonprofitCore (1) | Direct overlap found; validate behavior and deployment order |'));
 	assert.ok(markdown.includes('| Medium | [Guide]('));
 	assert.ok(markdown.includes('Detailed ranges, evidence, hashes, and technical reasons'));
 	assert.ok(!markdown.includes('0-0 person-hours'));
 	assert.ok(!markdown.includes('### shared.preparation'));
 	assert.ok(markdown.split('\n').length < 180);
+});
+
+test('customer Markdown distinguishes missing customization detail from no components', () => {
+	const input = inventory();
+	input.questionnaire.target.solutions[0]!.publisher = 'unrecognized';
+	input.discovery.components = {
+		relevantSolutions: 1,
+		relevantComponents: 10,
+		componentTypes: [],
+		unmanagedSolutions: 1,
+		analyzedUnmanagedSolutions: 1,
+		overlappingUnmanagedComponents: 1,
+		productSummaries: [],
+		customizationCandidates: [{
+			uniqueName: 'LegacyCustomerCustom',
+			managed: false,
+			publisher: 'Customer',
+			componentCount: 2,
+			componentTypes: [],
+			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
+		}],
+		truncated: true,
+	};
+	input.discovery.dependencies = {
+		checkedComponents: 25,
+		dependentReferences: 809,
+		truncated: true,
+	};
+	const markdown = renderMarkdown(assess(input, DEFAULT_RULES, { now: NOW }));
+	assert.ok(markdown.includes('Not captured in this inventory'));
+	assert.ok(markdown.includes('25 | Deterministic bounded sample'));
+	assert.ok(markdown.includes('809 | Total references returned'));
+	assert.ok(markdown.includes('Partial — collection limit reached'));
+	assert.ok(markdown.includes('Additional customization solutions or components may exist'));
+	assert.ok(markdown.includes('| # | Scope | Type | Blocker | Required action |'));
 });
 
 test('declared work for an absent solution is a scope conflict, not a zero-work success', () => {

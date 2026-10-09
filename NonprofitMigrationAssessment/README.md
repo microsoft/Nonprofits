@@ -27,8 +27,9 @@ The Markdown report shows:
 
 - Installed supported solutions and versions
 - Whether each product needs migration, needs review, or requires no action
-- Custom/partner solution candidates, their managed/unmanaged state, and direct overlap with supported products
-- Standard product dependencies
+- Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review
+- A visual product migration order plus bounded environment dependency signals and their collection limits
+- Prioritized direct and dependency blockers with the action needed to clear each one
 - A simple per-product effort rating: None, Low, Medium, High, or Review required
 - GitHub migration-guide links
 - Blockers, missing information, and next actions
