@@ -13,6 +13,10 @@ const AGE_LIMIT_MS = 7 * 24 * 60 * 60 * 1000;
 const RULE_AGE_LIMIT_MS = 365 * 24 * 60 * 60 * 1000;
 const BASE_PHASES: Phase[] = ['sandbox', 'validation', 'acceptance', 'production', 'post-cutover'];
 
+function defaultIntent(family: Family): RouteResult['intent'] {
+	return ['vm', 've'].includes(family) ? 'replace-with-github' : 'ownership-transition';
+}
+
 export function assess(
 	input: unknown,
 	ruleInput: unknown = DEFAULT_RULES,
@@ -89,9 +93,9 @@ export function assess(
 			reason: 'Local customer assertions; not independent compatibility verification.',
 		});
 		const result: RouteResult = {
-			family, routeId: route.id, compatibility,
+			family, routeId: route.id, intent: answer.intent ?? defaultIntent(family), compatibility,
 			complexity: complexityByFamily.get(family)!,
-			status: 'eligible', confidence: 'low',
+			status: 'eligible', effortBand: 'review-required', confidence: 'low',
 			guide: guideUrl(route, q.target.commit), scenarios: [],
 		};
 		routes.push(result);
@@ -311,6 +315,13 @@ export function assess(
 				&& !['not-installed', 'already-at-target'].includes(route.status)
 				? ['Adverse risks have not been scoped.'] : [])],
 			route.family));
+		const assessed = route.scenarios.find(item => item.id === 'assessed');
+		route.effortBand = ['already-at-target', 'not-installed'].includes(route.status)
+			? 'none'
+			: route.status !== 'eligible' || !assessed?.total
+				? 'review-required'
+				: assessed.total.max <= 80 ? 'low'
+					: assessed.total.max <= 200 ? 'medium' : 'high';
 	}
 	const allAbsent = routes.every(route => route.status === 'not-installed');
 	const allResolvedWithoutMigration = routes.length > 0

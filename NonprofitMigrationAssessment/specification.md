@@ -29,9 +29,12 @@ For each selected product, the report shows:
 
 - Installed solution name and version
 - GitHub target name and version or site
-- Required action in simple language
-- Customization and dependency risk
-- Planning effort range
+- Required action in simple language: no action, migrate, update, verify completion, or review
+- Custom/partner solution candidates, managed/unmanaged state, component count, and direct overlap with supported products
+- Standard product dependencies
+- Simple effort rating: None, Low, Medium, High, or Review required
+- GitHub migration-guide link
+- Detailed planning range for partner use
 - Elapsed-time range when available
 - Production execution and potential-downtime ranges
 - Confidence, assumptions, blockers, and next actions

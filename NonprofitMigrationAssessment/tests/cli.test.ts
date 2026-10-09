@@ -74,8 +74,8 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	assert.equal(report.combined.find(item => item.id === 'adverse-unscoped')!.total, null);
 	assert.ok(report.workItems.every(item => item.estimateType === 'uncalibrated-assumption'));
 	const markdown = await readFile(join(output, 'assessment.md'), 'utf8');
-	assert.ok(markdown.includes('## Environment summary'));
-	assert.ok(markdown.includes('## Migration readiness'));
+	assert.ok(markdown.includes('## What is installed and what should you do?'));
+	assert.ok(markdown.includes('## Environment details'));
 	assert.ok(markdown.includes('Unavailable'));
 });
 

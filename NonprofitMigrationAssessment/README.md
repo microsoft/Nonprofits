@@ -26,9 +26,12 @@ The skill guides the local commands, explains consent and limitations, and helps
 The Markdown report shows:
 
 - Installed supported solutions and versions
-- Whether each product is already aligned, needs an ownership transition, needs a newer release, or requires replacement migration
-- Relevant customization, dependency, integration, data-volume, and Power Pages signals
-- Per-solution and combined effort ranges
+- Whether each product needs migration, needs review, or requires no action
+- Custom/partner solution candidates, their managed/unmanaged state, and direct overlap with supported products
+- Standard product dependencies
+- A simple per-product effort rating: None, Low, Medium, High, or Review required
+- GitHub migration-guide links
+- Detailed per-solution and combined ranges for implementation partners
 - Elapsed-time, execution, and potential-downtime ranges when available
 - Assumptions, confidence, blockers, missing information, and next actions
 

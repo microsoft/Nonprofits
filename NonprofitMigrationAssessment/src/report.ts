@@ -71,6 +71,57 @@ function targetVersion(report: Assessment, family: Family): string {
 	return target ? `${text(target.uniqueName)} ${text(target.version)}` : family === 've' ? 'Portal-EDM site' : 'Target metadata unavailable';
 }
 
+function effortBand(value: Assessment['routes'][number]['effortBand']): string {
+	return {
+		none: 'None',
+		low: 'Low',
+		medium: 'Medium',
+		high: 'High',
+		'review-required': 'Review required',
+	}[value];
+}
+
+function recommendation(route: Assessment['routes'][number]): string {
+	if (route.status === 'already-at-target') {
+		return 'No action — already aligned';
+	}
+	if (route.status === 'not-installed') {
+		return 'No action — not installed';
+	}
+	if (route.status === 'eligible') {
+		return route.intent === 'ownership-transition' ? 'Optional ownership transition'
+			: route.intent === 'apply-github-release' ? 'Update to GitHub release'
+				: 'Migrate to GitHub solution';
+	}
+	if (route.family === 'vm' && route.compatibility.status === 'investigation-required') {
+		return 'Verify whether VM migration is complete';
+	}
+	return route.status === 'unsupported' ? 'Route not supported' : 'Review before migration';
+}
+
+function dependencies(family: Family): string {
+	const route = ROUTES.find(item => item.family === family)!;
+	return route.prerequisites.length
+		? route.prerequisites.map(item => FAMILY_NAMES[item]).join(', ')
+		: 'None';
+}
+
+function customizationSignal(report: Assessment, family: Family): string {
+	const route = ROUTES.find(item => item.family === family)!;
+	const summary = report.discoverySummary.components?.productSummaries?.find(item =>
+		[route.source, route.target].includes(item.uniqueName));
+	if (!summary) {
+		return family === 've' ? 'See site review' : 'Not available';
+	}
+	if (summary.overlappingCustomizationComponents === 0) {
+		return 'No direct component overlap found';
+	}
+	const names = summary.customizationSolutions.length
+		? ` from ${summary.customizationSolutions.map(text).join(', ')}`
+		: '';
+	return `${summary.overlappingCustomizationComponents} overlapping component(s)${names}`;
+}
+
 function actionFor(finding: Finding): string {
 	if (finding.code === 'target-version' || finding.code === 'compatibility-blocked') {
 		return 'Publish or select a supported GitHub target version, then reassess.';
@@ -250,7 +301,27 @@ export function renderMarkdown(report: Assessment): string {
 		`| Estimate basis | ${estimateBasis} |`,
 		`| Confidence | ${confidence} |`,
 		'',
-		'## Environment summary',
+		'## What is installed and what should you do?',
+		'',
+		'| Product | Installed solution / version | GitHub target / version | Customization signal | Depends on | Recommended action | Effort | GitHub |',
+		'| --- | --- | --- | --- | --- | --- | --- | --- |',
+		...report.routes.map(route =>
+			`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${customizationSignal(report, route.family)} | ${text(dependencies(route.family))} | ${text(recommendation(route))} | ${effortBand(route.effortBand)} | [Guide](${route.guide}) |`),
+		'',
+		'## Customization solutions',
+		'',
+		...(component?.customizationCandidates?.length ? [
+			'| Solution | Type | Publisher | Components | Affects supported products |',
+			'| --- | --- | --- | --- | --- |',
+			...component.customizationCandidates.map(item => {
+				const affects = item.overlaps.length
+					? item.overlaps.map(overlap => `${text(overlap.productUniqueName)} (${overlap.componentCount})`).join(', ')
+					: 'No direct overlap found';
+				return `| ${text(item.uniqueName)} | ${item.managed ? 'Managed' : 'Unmanaged'} | ${text(item.publisher)} | ${item.componentCount} | ${affects} |`;
+			}),
+		] : ['No custom or partner solution candidates were identified within the bounded collection scope.']),
+		'',
+		'## Environment details',
 		'',
 		'| Property | Result | Evidence |',
 		'| --- | --- | --- |',
@@ -265,19 +336,6 @@ export function renderMarkdown(report: Assessment): string {
 		`| Relevant data scale | ${counts ? `${counts.tables.length} tables; ${observed(totalRelevantRows)} snapshot rows${counts.truncated ? '; partial' : ''}` : 'Not collected'} | Aggregate counts only; no records read |`,
 		`| Power Pages | ${siteResult} | Site counts plus customer-provided configuration |`,
 		`| Operational readiness | ${operationsResult} | Local guided review |`,
-		'',
-		'## Migration readiness',
-		'',
-		'| Family | Installed source | GitHub target | Compatibility | Complexity | Route status | Typical effort | Main blocker |',
-		'| --- | --- | --- | --- | --- | --- | --- | --- |',
-		...report.routes.map(route => {
-			const blocker = report.findings.find(item => item.blocking && item.families.includes(route.family));
-			const scenario = route.scenarios.find(item => item.id === 'assessed') ?? route.scenarios[0]!;
-			const effort = route.status === 'already-at-target' ? 'No migration work' : estimate(scenario);
-			return `| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(route.compatibility.status)} | ${text(route.complexity.level)} | ${text(route.status)} | ${effort} | ${blocker ? text(blocker.message) : 'None identified'} |`;
-		}),
-		'',
-		'`Eligible` means assessable against the documented route, not approved for production migration.',
 		'',
 		'## Priority blockers and next actions',
 		'',

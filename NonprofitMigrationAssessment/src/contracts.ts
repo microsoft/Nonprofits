@@ -71,6 +71,22 @@ export const ComponentSummarySchema = z.strictObject({
 	unmanagedSolutions: CountMetricSchema,
 	analyzedUnmanagedSolutions: CountMetricSchema,
 	overlappingUnmanagedComponents: CountMetricSchema,
+	productSummaries: z.array(z.strictObject({
+		uniqueName: IdentifierSchema,
+		componentCount: CountMetricSchema,
+		overlappingCustomizationComponents: CountMetricSchema,
+		customizationSolutions: z.array(IdentifierSchema),
+	})).optional(),
+	customizationCandidates: z.array(z.strictObject({
+		uniqueName: IdentifierSchema,
+		managed: z.boolean(),
+		publisher: IdentifierSchema,
+		componentCount: CountMetricSchema,
+		overlaps: z.array(z.strictObject({
+			productUniqueName: IdentifierSchema,
+			componentCount: CountMetricSchema,
+		})),
+	})).optional(),
 	truncated: z.boolean(),
 });
 export const DependencySummarySchema = z.strictObject({
@@ -180,6 +196,8 @@ export const DurationRangeSchema = z.strictObject({
 export type DurationRange = z.infer<typeof DurationRangeSchema>;
 export const ComplexitySchema = z.enum(['likely-standard', 'standard', 'moderate', 'heavy', 'unbounded', 'unknown']);
 export type Complexity = z.infer<typeof ComplexitySchema>;
+export const EffortBandSchema = z.enum(['none', 'low', 'medium', 'high', 'review-required']);
+export type EffortBand = z.infer<typeof EffortBandSchema>;
 
 export const WorkRequestSchema = z.strictObject({
 	id: IdentifierSchema,
@@ -376,6 +394,7 @@ export type RouteStatus = 'eligible' | 'blocked' | 'unsupported' | 'insufficient
 export interface RouteResult {
 	family: Family;
 	routeId: string;
+	intent: NonNullable<Questionnaire['answers'][number]['intent']>;
 	compatibility: {
 		status: 'already-aligned' | 'candidate-supported' | 'blocked' | 'investigation-required' | 'unsupported';
 		catalogVersion: string;
@@ -387,6 +406,7 @@ export interface RouteResult {
 		evidenceIds: string[];
 	};
 	status: RouteStatus;
+	effortBand: EffortBand;
 	confidence: 'low' | 'medium' | 'not-estimable';
 	guide: string;
 	scenarios: ScenarioEstimate[];
@@ -457,6 +477,7 @@ const ScenarioSchema: z.ZodType<ScenarioEstimate> = z.strictObject({
 });
 const RouteResultSchema: z.ZodType<RouteResult> = z.strictObject({
 	family: FamilySchema, routeId: z.string(),
+	intent: z.enum(['confirm-alignment', 'ownership-transition', 'apply-github-release', 'replace-with-github']),
 	compatibility: z.strictObject({
 		status: z.enum(['already-aligned', 'candidate-supported', 'blocked', 'investigation-required', 'unsupported']),
 		catalogVersion: z.string(),
@@ -468,6 +489,7 @@ const RouteResultSchema: z.ZodType<RouteResult> = z.strictObject({
 		evidenceIds: z.array(z.string()),
 	}),
 	status: z.enum(['eligible', 'blocked', 'unsupported', 'insufficient-evidence', 'already-at-target', 'not-installed']),
+	effortBand: EffortBandSchema,
 	confidence: z.enum(['low', 'medium', 'not-estimable']), guide: z.url(), scenarios: z.array(ScenarioSchema),
 });
 export const AssessmentSchema: z.ZodType<Assessment> = z.strictObject({

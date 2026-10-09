@@ -11,6 +11,7 @@ test('default rules provide clearly labeled conservative engineering assumptions
 	assert.equal(result.status, 'complete');
 	assert.deepEqual(result.combined.find(item => item.id === 'assessed')!.total,
 		{ min: 46, max: 92, unit: 'person-hours' });
+	assert.equal(result.routes[0]!.effortBand, 'medium');
 	assert.equal(result.workItems.every(item => item.estimateType === 'uncalibrated-assumption'
 		&& item.reviewer === null), true);
 	assert.equal(result.routes[0]!.confidence, 'low');
@@ -59,6 +60,14 @@ test('standard mixed environment has six routes and one shared preparation occur
 	const result = assess(inventory([...FAMILIES]), rules(), { now: NOW });
 	assert.equal(result.routes.length, 6);
 	assert.equal(result.routes.every(item => item.status === 'eligible'), true);
+	assert.deepEqual(result.routes.map(item => [item.family, item.effortBand]), [
+		['cdm', 'low'],
+		['fundraising', 'low'],
+		['grants', 'low'],
+		['outcomes', 'low'],
+		['vm', 'low'],
+		['ve', 'low'],
+	]);
 	assert.equal(result.routes.every(item => item.compatibility.status === 'candidate-supported'), true);
 	assert.equal(result.routes.every(item => item.complexity.level === 'standard'), true);
 	assert.equal(result.workItems.filter(item => item.id === 'shared.preparation').length, 1);
@@ -243,6 +252,7 @@ test('alignment intent produces no migration work for equivalent releases', () =
 	const result = assess(input, DEFAULT_RULES, { now: NOW });
 	assert.equal(result.status, 'complete');
 	assert.equal(result.routes[0]!.status, 'already-at-target');
+	assert.equal(result.routes[0]!.effortBand, 'none');
 	assert.deepEqual(result.routes[0]!.scenarios.find(item => item.id === 'assessed')!.total,
 		{ min: 0, max: 0, unit: 'person-hours' });
 	assert.equal(result.workItems.length, 0);
@@ -363,12 +373,38 @@ test('same inputs reproduce findings/estimates and Markdown escapes customer tex
 });
 
 test('customer Markdown is concise, shows source-to-target versions, and never renders unknown as zero', () => {
-	const result = assess(inventory([...FAMILIES]), DEFAULT_RULES, { now: NOW });
+	const input = inventory([...FAMILIES]);
+	input.discovery.components = {
+		relevantSolutions: 5,
+		relevantComponents: 100,
+		componentTypes: [],
+		unmanagedSolutions: 1,
+		analyzedUnmanagedSolutions: 1,
+		overlappingUnmanagedComponents: 1,
+		productSummaries: [{
+			uniqueName: 'NonprofitCore',
+			componentCount: 20,
+			overlappingCustomizationComponents: 1,
+			customizationSolutions: ['CustomerCustom'],
+		}],
+		customizationCandidates: [{
+			uniqueName: 'CustomerCustom',
+			managed: false,
+			publisher: 'Customer',
+			componentCount: 3,
+			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
+		}],
+		truncated: false,
+	};
+	const result = assess(input, DEFAULT_RULES, { now: NOW });
 	const markdown = renderMarkdown(result);
-	assert.ok(markdown.includes('## Environment summary'));
-	assert.ok(markdown.includes('## Migration readiness'));
+	assert.ok(markdown.includes('## What is installed and what should you do?'));
+	assert.ok(markdown.includes('## Customization solutions'));
+	assert.ok(markdown.includes('## Environment details'));
 	assert.ok(markdown.includes('NonprofitCore 2.0.0.0'));
 	assert.ok(markdown.includes('NonprofitCore 3.0.0.0'));
+	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | NonprofitCore (1) |'));
+	assert.ok(markdown.includes('| Medium | [Guide]('));
 	assert.ok(markdown.includes('Detailed evidence, hashes, work-item dependencies'));
 	assert.ok(!markdown.includes('0-0 person-hours'));
 	assert.ok(!markdown.includes('### shared.preparation'));

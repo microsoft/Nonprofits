@@ -13,6 +13,13 @@ const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 25;
 const MAX_COUNT_TABLES = 50;
+const MICROSOFT_PUBLISHERS = new Set([
+	'microsoftcorporation',
+	'microsoftdynamics',
+	'microsoftdynamics365nonprofitaccelerator',
+	'microsoftfirstparty',
+	'microsofttechforsocialimpact',
+]);
 
 const VersionResponseSchema = z.object({ Version: z.string() });
 const ComponentPageSchema = z.object({
@@ -268,7 +275,13 @@ async function collectComponents(
 	const unmanaged = discovery.solutions
 		.filter(solution => !solution.managed && solution.solutionId
 			&& !['active', 'default'].includes(solution.uniqueName.toLowerCase()));
+	const customizationCandidates = discovery.solutions
+		.filter(solution => solution.solutionId
+			&& !relevantNames.has(solution.uniqueName.toLowerCase())
+			&& !['active', 'default', 'system'].includes(solution.uniqueName.toLowerCase())
+			&& (!solution.managed || !MICROSOFT_PUBLISHERS.has(solution.publisher.toLowerCase())));
 	const relevant: { componenttype: number; objectid: string | null }[] = [];
+	const productKeys = new Map<string, Set<string>>();
 	const componentTypes = new Map<number, number>();
 	let truncated = relevantSolutions.length > MAX_RELEVANT_SOLUTIONS;
 	for (const solution of relevantSolutions.slice(0, MAX_RELEVANT_SOLUTIONS)) {
@@ -280,18 +293,32 @@ async function collectComponents(
 				'$top': '5000',
 			})));
 		truncated ||= parsed['@odata.nextLink'] !== undefined;
+		const keys = new Set<string>();
 		for (const item of parsed.value) {
 			relevant.push(item);
 			componentTypes.set(item.componenttype, (componentTypes.get(item.componenttype) ?? 0) + 1);
+			if (item.objectid !== null) {
+				keys.add(`${item.componenttype}:${item.objectid}`);
+			}
 		}
+		productKeys.set(solution.uniqueName, keys);
 	}
 	const relevantKeys = new Set(relevant
 		.filter(item => item.objectid !== null)
 		.map(item => `${item.componenttype}:${item.objectid}`));
 	const overlapping = new Set<string>();
-	const analyzedUnmanaged = unmanaged.slice(0, MAX_UNMANAGED_SOLUTIONS);
-	truncated ||= unmanaged.length > MAX_UNMANAGED_SOLUTIONS;
-	for (const solution of analyzedUnmanaged) {
+	const analyzedCandidates = customizationCandidates.slice(0, MAX_UNMANAGED_SOLUTIONS);
+	truncated ||= customizationCandidates.length > MAX_UNMANAGED_SOLUTIONS;
+	const candidateSummaries: Array<{
+		uniqueName: string;
+		managed: boolean;
+		publisher: string;
+		componentCount: number;
+		overlaps: Array<{ productUniqueName: string; componentCount: number }>;
+	}> = [];
+	const productCustomizationSolutions = new Map<string, Set<string>>();
+	const productOverlapCounts = new Map<string, number>();
+	for (const solution of analyzedCandidates) {
 		const parsed = ComponentPageSchema.parse(await getJson(context,
 			apiUrl(context.origin, 'solutioncomponents', {
 				'$select': 'componenttype,objectid',
@@ -300,12 +327,34 @@ async function collectComponents(
 				'$top': '5000',
 			})));
 		truncated ||= parsed['@odata.nextLink'] !== undefined;
+		const overlapsByProduct = new Map<string, number>();
 		for (const item of parsed.value) {
 			const key = item.objectid === null ? '' : `${item.componenttype}:${item.objectid}`;
-			if (relevantKeys.has(key)) {
+			if (!solution.managed && relevantKeys.has(key)) {
 				overlapping.add(key);
 			}
+			if (!key) {
+				continue;
+			}
+			for (const [product, keys] of productKeys) {
+				if (keys.has(key)) {
+					overlapsByProduct.set(product, (overlapsByProduct.get(product) ?? 0) + 1);
+					const names = productCustomizationSolutions.get(product) ?? new Set<string>();
+					names.add(solution.uniqueName);
+					productCustomizationSolutions.set(product, names);
+					productOverlapCounts.set(product, (productOverlapCounts.get(product) ?? 0) + 1);
+				}
+			}
 		}
+		candidateSummaries.push({
+			uniqueName: solution.uniqueName,
+			managed: solution.managed,
+			publisher: solution.publisher,
+			componentCount: parsed.value.length,
+			overlaps: [...overlapsByProduct.entries()]
+				.map(([productUniqueName, componentCount]) => ({ productUniqueName, componentCount }))
+				.sort((left, right) => left.productUniqueName.localeCompare(right.productUniqueName, 'en')),
+		});
 	}
 	return {
 		summary: ComponentSummarySchema.parse({
@@ -315,9 +364,16 @@ async function collectComponents(
 				.sort(([left], [right]) => left - right)
 				.map(([type, count]) => ({ type, count })),
 			unmanagedSolutions: unmanaged.length,
-			analyzedUnmanagedSolutions: analyzedUnmanaged.length,
+				analyzedUnmanagedSolutions: analyzedCandidates.filter(solution => !solution.managed).length,
 			overlappingUnmanagedComponents: overlapping.size,
-			truncated,
+				productSummaries: [...productKeys.entries()].map(([uniqueName, keys]) => ({
+					uniqueName,
+					componentCount: keys.size,
+					overlappingCustomizationComponents: productOverlapCounts.get(uniqueName) ?? 0,
+					customizationSolutions: [...(productCustomizationSolutions.get(uniqueName) ?? [])].sort(),
+				})),
+				customizationCandidates: candidateSummaries,
+				truncated,
 		}),
 		relevant,
 	};

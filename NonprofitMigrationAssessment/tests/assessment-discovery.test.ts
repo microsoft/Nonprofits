@@ -8,6 +8,7 @@ const DATE = '2026-09-29T12:00:00.000Z';
 const TOKEN = 'SYNTHETIC_TOKEN_CANARY';
 const RELEVANT_ID = '11111111-1111-4111-8111-111111111111';
 const CUSTOM_ID = '22222222-2222-4222-8222-222222222222';
+const PARTNER_ID = '55555555-5555-4555-8555-555555555555';
 const TABLE_ID = '33333333-3333-f333-8333-333333333333';
 const WEBRESOURCE_ID = '44444444-4444-4444-8444-444444444444';
 
@@ -30,6 +31,14 @@ function baseDiscovery() {
 				managed: false,
 				publisher: 'Customer',
 				publisherPrefix: 'cus',
+			},
+			{
+				solutionId: PARTNER_ID,
+				uniqueName: 'PartnerManaged',
+				version: '1.0.0.0',
+				managed: true,
+				publisher: 'PartnerPublisher',
+				publisherPrefix: 'partner',
 			},
 		],
 		evidence: [{
@@ -68,14 +77,16 @@ test('detailed discovery summarizes approved environment metadata without record
 				return Response.json({ Version: '9.2.26091.152', forbiddenRecordContent: 'ignored' });
 			}
 			if (url.pathname.endsWith('/solutioncomponents')) {
-				const relevant = url.searchParams.get('$filter')?.includes(RELEVANT_ID);
+				const filter = url.searchParams.get('$filter') ?? '';
 				return Response.json({
-					value: relevant
+					value: filter.includes(RELEVANT_ID)
 						? [
 							{ componenttype: 1, objectid: TABLE_ID, forbiddenContent: 'ignored' },
 							{ componenttype: 61, objectid: WEBRESOURCE_ID },
 						]
-						: [{ componenttype: 61, objectid: WEBRESOURCE_ID }],
+						: filter.includes(CUSTOM_ID)
+							? [{ componenttype: 61, objectid: WEBRESOURCE_ID }]
+							: [{ componenttype: 1, objectid: TABLE_ID }],
 				});
 			}
 			if (url.pathname.includes('RetrieveDependentComponents')) {
@@ -117,6 +128,25 @@ test('detailed discovery summarizes approved environment metadata without record
 		unmanagedSolutions: 1,
 		analyzedUnmanagedSolutions: 1,
 		overlappingUnmanagedComponents: 1,
+		productSummaries: [{
+			uniqueName: 'NonprofitCore',
+			componentCount: 2,
+			overlappingCustomizationComponents: 2,
+			customizationSolutions: ['CustomerCustom', 'PartnerManaged'],
+		}],
+		customizationCandidates: [{
+			uniqueName: 'CustomerCustom',
+			managed: false,
+			publisher: 'Customer',
+			componentCount: 1,
+			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
+		}, {
+			uniqueName: 'PartnerManaged',
+			managed: true,
+			publisher: 'PartnerPublisher',
+			componentCount: 1,
+			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
+		}],
 		truncated: false,
 	});
 	assert.deepEqual(result.dependencies, {

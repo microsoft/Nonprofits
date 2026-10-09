@@ -17,7 +17,7 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) for c
 
 ## Customer experience
 
-1. Explain that the assessment is read-only and produces a local report with installed versions, required migration action, effort, elapsed time, execution, downtime, assumptions, and blockers.
+1. Explain that the assessment is read-only and first answers: what supported products and versions are installed, what customization solutions were found and what they overlap, what each product depends on, whether migration is needed, a None/Low/Medium/High effort rating, and the relevant GitHub guide. Detailed ranges remain available for implementation partners.
 2. Confirm a clean checkout of `https://github.com/microsoft/Nonprofits` and Node.js 22.
 3. Guide `init`, then `configure`. Configuration is interactive; don't ask the customer to edit JSON.
 4. Explain the approved metadata/count categories and obtain authorization before `collect`.
