@@ -16,6 +16,9 @@ const MAX_DEPENDENCY_COMPONENTS = 25;
 const MAX_COUNT_TABLES = 50;
 
 const VersionResponseSchema = z.object({ Version: z.string() });
+const OrganizationPageSchema = z.object({
+	value: z.array(z.object({ name: z.string().trim().min(1).max(200) })).min(1).max(1),
+});
 const ComponentPageSchema = z.object({
 	value: z.array(z.object({
 		componenttype: z.number().int().nonnegative(),
@@ -308,6 +311,7 @@ async function collectComponents(
 		managed: boolean;
 		publisher: string;
 		componentCount: number;
+		componentTypes: Array<{ type: number; count: number }>;
 		overlaps: Array<{ productUniqueName: string; componentCount: number }>;
 	}> = [];
 	const productCustomizationSolutions = new Map<string, Set<string>>();
@@ -322,7 +326,9 @@ async function collectComponents(
 			})));
 		truncated ||= parsed['@odata.nextLink'] !== undefined;
 		const overlapsByProduct = new Map<string, number>();
+		const candidateTypes = new Map<number, number>();
 		for (const item of parsed.value) {
+			candidateTypes.set(item.componenttype, (candidateTypes.get(item.componenttype) ?? 0) + 1);
 			const key = item.objectid === null ? '' : `${item.componenttype}:${item.objectid}`;
 			if (!solution.managed && relevantKeys.has(key)) {
 				overlapping.add(key);
@@ -345,6 +351,9 @@ async function collectComponents(
 			managed: solution.managed,
 			publisher: solution.publisher,
 			componentCount: parsed.value.length,
+			componentTypes: [...candidateTypes.entries()]
+				.map(([type, count]) => ({ type, count }))
+				.sort((left, right) => left.type - right.type),
 			overlaps: [...overlapsByProduct.entries()]
 				.map(([productUniqueName, componentCount]) => ({ productUniqueName, componentCount }))
 				.sort((left, right) => left.productUniqueName.localeCompare(right.productUniqueName, 'en')),
@@ -548,8 +557,15 @@ export async function collectAssessmentDetails(
 		};
 		await run('environment', [], async () => {
 			const parsed = VersionResponseSchema.parse(await getJson(context, apiUrl(origin, 'RetrieveVersion()')));
-			result.environment = EnvironmentObservationSchema.parse({ dataverseVersion: parsed.Version });
-		}, 'The Dataverse environment version was observed.');
+			const organization = OrganizationPageSchema.parse(await getJson(context, apiUrl(origin, 'organizations', {
+				'$select': 'name',
+				'$top': '1',
+			})));
+			result.environment = EnvironmentObservationSchema.parse({
+				dataverseVersion: parsed.Version,
+				name: organization.value[0]!.name,
+			});
+		}, 'The Dataverse environment name and version were observed.');
 		await run('components', ['solutions'], async () => {
 			componentData = await collectComponents(context, result,
 				new Set(options.relevantSolutionNames.map(name => name.toLowerCase())));

@@ -35,7 +35,7 @@ test('short local review records operational readiness without inventing custom 
 	assert.equal(result.routes.find(route => route.family === 'cdm')!.status, 'already-at-target');
 	assert.deepEqual(result.combined.find(item => item.id === 'assessed')!.total,
 		{ min: 96, max: 192, unit: 'person-hours' });
-	assert.ok(renderMarkdown(result).includes('exceeds the reviewed maximum interruption'));
+	assert.ok(renderMarkdown(result).includes('may exceed the stated interruption limit'));
 });
 
 test('bounded review creates scoped heavy remediation and a complete assumed range', () => {

@@ -52,7 +52,7 @@ test('observed no-overlap evidence yields a likely-standard assumption range wit
 		{ min: 46, max: 92, unit: 'person-hours' });
 	assert.ok(result.findings.some(item => item.code === 'assumption-based' && !item.blocking));
 	const markdown = renderMarkdown(result);
-	assert.ok(markdown.includes('## Dependencies and estimation assumptions'));
+	assert.ok(markdown.includes('## Dependencies'));
 	assert.ok(markdown.includes('Bundled uncalibrated engineering assumptions'));
 });
 
@@ -171,7 +171,7 @@ test('lower target version or wrong publisher blocks compatibility', () => {
 	input.questionnaire.target.solutions[0]!.version = '1.0.0.0';
 	assert.ok(assess(input, rules(), { now: NOW }).findings.some(item => item.code === 'compatibility-blocked'));
 	const assumed = assess(input, DEFAULT_RULES, { now: NOW });
-	assert.ok(renderMarkdown(assumed).includes('Review required (Medium known)'));
+	assert.ok(renderMarkdown(assumed).includes('| Review required |'));
 	input.questionnaire.target.solutions[0]!.publisher = 'unrecognized';
 	assert.ok(assess(input, rules(), { now: NOW }).findings.some(item => item.code === 'target-identity'));
 	assert.equal(compareVersions('1.0.0.100', '1.0.0.99'), 1);
@@ -367,7 +367,7 @@ test('same inputs reproduce findings/estimates and Markdown escapes customer tex
 	const first = assess(input, rules(), { now: NOW });
 	assert.deepEqual(first, assess(input, rules(), { now: NOW }));
 	const markdown = renderMarkdown(first);
-	assert.ok(markdown.includes('Unavailable'));
+	assert.ok(markdown.includes('## Notes'));
 	assert.ok(!markdown.includes('<script>'));
 	assert.ok(!markdown.includes('[unsafe]('));
 	assert.deepEqual(first.combined[0]!.elapsed, { min: 6, max: 12, unit: 'hours' });
@@ -394,6 +394,7 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 			managed: false,
 			publisher: 'Customer',
 			componentCount: 3,
+			componentTypes: [{ type: 60, count: 1 }, { type: 61, count: 2 }],
 			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
 		}],
 		truncated: false,
@@ -402,12 +403,12 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	const markdown = renderMarkdown(result);
 	assert.ok(markdown.includes('## What is installed and what should you do?'));
 	assert.ok(markdown.includes('## Customization solutions'));
-	assert.ok(markdown.includes('## Environment details'));
+	assert.ok(markdown.includes('## Environment'));
 	assert.ok(markdown.includes('NonprofitCore 2.0.0.0'));
 	assert.ok(markdown.includes('NonprofitCore 3.0.0.0'));
-	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | NonprofitCore (1) |'));
+	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | Forms: 1, Scripts/web resources: 2 | NonprofitCore (1) |'));
 	assert.ok(markdown.includes('| Medium | [Guide]('));
-	assert.ok(markdown.includes('Detailed evidence, hashes, work-item dependencies'));
+	assert.ok(markdown.includes('Detailed ranges, evidence, hashes, and technical reasons'));
 	assert.ok(!markdown.includes('0-0 person-hours'));
 	assert.ok(!markdown.includes('### shared.preparation'));
 	assert.ok(markdown.split('\n').length < 180);

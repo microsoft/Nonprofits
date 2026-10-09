@@ -31,9 +31,9 @@ The Markdown report shows:
 - Standard product dependencies
 - A simple per-product effort rating: None, Low, Medium, High, or Review required
 - GitHub migration-guide links
-- Detailed per-solution and combined ranges for implementation partners
-- Elapsed-time, execution, and potential-downtime ranges when available
-- Assumptions, confidence, blockers, missing information, and next actions
+- Blockers, missing information, and next actions
+
+Detailed numeric ranges and technical evidence remain in JSON for implementation partners. The customer-facing Markdown uses relative effort only.
 
 Ranges are automatically calculated by deterministic rules. Bundled defaults are uncalibrated engineering assumptions, not guarantees or measured averages. Validate the result with your implementation partner and a representative rehearsal.
 
@@ -75,14 +75,7 @@ nonprofit-migration-assessment configure `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-configured"
 ```
 
-The command asks locally for:
-
-- Assessment and environment names
-- Dataverse environment URL
-- Environment type and region
-- Managed Environment and access restriction
-- Whether CDM/template apps should be checked for alignment, PPAC ownership transition, or a newer GitHub release
-- Read-only consent
+The command asks only for the Dataverse environment URL. It derives the local assessment ID and environment alias, uses automatic product scope, and defaults CDM/template apps to alignment checking. Typing `ASSESS` in the next step records read-only consent.
 
 The generated `questionnaire.json` is a local machine-readable input. Customers don't need to edit it manually.
 
@@ -141,8 +134,8 @@ nonprofit-migration-assessment assess `
 
 Open:
 
-- `assessment.md` for the concise customer report
-- `assessment.json` for detailed evidence and partner tooling
+- `assessment-<environment-name>.md` for the concise customer report
+- `assessment-<environment-name>.json` for detailed evidence and partner tooling
 
 ## How alignment is determined
 
@@ -154,18 +147,11 @@ Alignment applies only to same-identity releases listed in `catalog/release-equi
 
 Leaving PPAC automatic servicing and self-managing GitHub builds is an ownership transition even when the product is already functionally aligned.
 
-## Estimates and confidence
+## Effort
 
-The skill separates:
+The customer report uses `None`, `Low`, `Medium`, `High`, or `Review required`. Unknown critical work isn't treated as zero.
 
-- Person-effort
-- Dependency-path elapsed time
-- Production execution time
-- Potential downtime
-
-Unknown critical work isn't treated as zero. When a complete range can't be supported, the report shows the known planning subtotal and the action needed to complete the range.
-
-Default ranges are stored in `catalog/assumptions.json`. A reviewed rulebook can override them with `assess --rules`.
+Detailed numeric ranges remain in JSON. Default ranges are stored in `catalog/assumptions.json`, and a reviewed rulebook can override them with `assess --rules`.
 
 ## Compare with a rehearsal
 

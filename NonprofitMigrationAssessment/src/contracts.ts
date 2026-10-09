@@ -60,6 +60,7 @@ export type Solution = z.infer<typeof SolutionSchema>;
 const CountMetricSchema = z.number().int().nonnegative();
 export const EnvironmentObservationSchema = z.strictObject({
 	dataverseVersion: ObservedVersionSchema,
+	name: z.string().trim().min(1).max(200).optional(),
 });
 export const ComponentSummarySchema = z.strictObject({
 	relevantSolutions: CountMetricSchema,
@@ -82,6 +83,10 @@ export const ComponentSummarySchema = z.strictObject({
 		managed: z.boolean(),
 		publisher: IdentifierSchema,
 		componentCount: CountMetricSchema,
+		componentTypes: z.array(z.strictObject({
+			type: z.number().int().nonnegative(),
+			count: CountMetricSchema,
+		})),
 		overlaps: z.array(z.strictObject({
 			productUniqueName: IdentifierSchema,
 			componentCount: CountMetricSchema,
@@ -419,6 +424,7 @@ export interface Assessment {
 	assessmentId: string;
 	assessedAt: string;
 	environment: string;
+	environmentUrl: string;
 	environmentProfile: {
 		type: 'production' | 'sandbox' | 'trial' | 'developer' | 'unknown';
 		region: string;
@@ -495,7 +501,7 @@ const RouteResultSchema: z.ZodType<RouteResult> = z.strictObject({
 export const AssessmentSchema: z.ZodType<Assessment> = z.strictObject({
 	schemaVersion: z.literal('1.0'), toolVersion: z.string(), routeCatalogVersion: z.string(),
 	rulesVersion: z.string(), assessmentId: z.string(), assessedAt: TimestampSchema,
-	environment: z.string(),
+	environment: z.string(), environmentUrl: z.url(),
 	environmentProfile: z.strictObject({
 		type: z.enum(['production', 'sandbox', 'trial', 'developer', 'unknown']),
 		region: z.string(),

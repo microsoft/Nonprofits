@@ -76,6 +76,10 @@ test('detailed discovery summarizes approved environment metadata without record
 			if (url.pathname.endsWith('/RetrieveVersion()')) {
 				return Response.json({ Version: '9.2.26091.152', forbiddenRecordContent: 'ignored' });
 			}
+			if (url.pathname.endsWith('/organizations')) {
+				assert.equal(url.searchParams.get('$select'), 'name');
+				return Response.json({ value: [{ name: 'Synthetic Nonprofit Environment' }] });
+			}
 			if (url.pathname.endsWith('/solutioncomponents')) {
 				const filter = url.searchParams.get('$filter') ?? '';
 				return Response.json({
@@ -120,7 +124,10 @@ test('detailed discovery summarizes approved environment metadata without record
 		},
 	});
 
-	assert.equal(result.environment?.dataverseVersion, '9.2.26091.152');
+	assert.deepEqual(result.environment, {
+		dataverseVersion: '9.2.26091.152',
+		name: 'Synthetic Nonprofit Environment',
+	});
 	assert.deepEqual(result.components, {
 		relevantSolutions: 1,
 		relevantComponents: 2,
@@ -139,12 +146,14 @@ test('detailed discovery summarizes approved environment metadata without record
 			managed: false,
 			publisher: 'Customer',
 			componentCount: 1,
+			componentTypes: [{ type: 61, count: 1 }],
 			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
 		}, {
 			uniqueName: 'PartnerManaged',
 			managed: true,
 			publisher: 'PartnerPublisher',
 			componentCount: 1,
+			componentTypes: [{ type: 1, count: 1 }],
 			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
 		}],
 		truncated: false,

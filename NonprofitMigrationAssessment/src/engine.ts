@@ -335,7 +335,8 @@ export function assess(
 	return AssessmentSchema.parse({
 		schemaVersion: '1.0', toolVersion: VERSION, routeCatalogVersion: CATALOG_VERSION,
 		rulesVersion: rules.version, assessmentId: q.assessmentId, assessedAt: now.toISOString(),
-		environment: q.environment.alias,
+		environment: discovery.environment?.name ?? q.environment.alias,
+		environmentUrl: q.environment.url,
 		environmentProfile: {
 			type: q.environment.type ?? 'unknown',
 			region: q.environment.region ?? 'unknown',

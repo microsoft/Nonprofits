@@ -99,5 +99,5 @@ test('representative denied-access scenario remains unknown rather than standard
 	assert.equal(result.routes[0]!.complexity.level, 'unknown');
 	assert.equal(result.routes[0]!.status, 'insufficient-evidence');
 	assert.equal(result.combined.find(item => item.id === 'assessed')!.total, null);
-	assert.ok(renderMarkdown(result).includes('access-denied'));
+	assert.ok(renderMarkdown(result).includes('Some metadata could not be read'));
 });

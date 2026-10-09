@@ -19,11 +19,11 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) for c
 
 1. Explain that the assessment is read-only and first answers: what supported products and versions are installed, what customization solutions were found and what they overlap, what each product depends on, whether migration is needed, a None/Low/Medium/High effort rating, and the relevant GitHub guide. Detailed ranges remain available for implementation partners.
 2. Confirm a clean checkout of `https://github.com/microsoft/Nonprofits` and Node.js 22.
-3. Guide `init`, then `configure`. Configuration is interactive; don't ask the customer to edit JSON.
+3. Guide `init`, then `configure`. Configuration asks only for the Dataverse URL; don't ask the customer to edit JSON or choose advanced platform settings.
 4. Explain the approved metadata/count categories and obtain authorization before `collect`.
 5. Collection requires a human terminal and exact `ASSESS` confirmation for the selected environment.
 6. Guide the five-question local `review`; ask the short VE extension only when VE is selected.
-7. Guide `assess` and tell the customer to open `assessment.md`.
+7. Guide `assess` and tell the customer to open `assessment-<environment-name>.md`.
 8. Explain:
    - `already-at-target`: no product or data migration is required for alignment.
    - `ownership-transition`: optional work to leave PPAC servicing and self-manage GitHub builds.

@@ -55,8 +55,8 @@ Version equality alone doesn't prove alignment. Alignment requires a matching en
 ## 3. Customer workflow
 
 1. Initialize local assessment files from a clean `microsoft/Nonprofits` checkout.
-2. Configure the environment, intent, and read-only consent through the interactive local command.
-3. Confirm the exact environment and collect approved read-only evidence.
+2. Enter only the Dataverse environment URL through the interactive local command. The tool derives the assessment ID/name, uses automatic scope, and defaults same-identity products to alignment checking.
+3. Confirm the exact environment and approved categories by typing `ASSESS`; this records read-only consent and starts collection.
 4. Answer five local planning questions; answer the short VE extension only when VE is selected.
 5. Generate the local JSON and Markdown report.
 6. Review ranges and blockers with the implementation partner.
@@ -175,12 +175,7 @@ Shared work is counted once. Repeated rehearsals or retries are distinct occurre
 
 The tool calculates ranges deterministically. It doesn't ask an AI model to invent numbers.
 
-The report separates:
-
-- Person-effort
-- Dependency-path elapsed time
-- Production execution time
-- Potential downtime
+The customer report uses relative effort only: None, Low, Medium, High, or Review required. Detailed JSON separates person-effort, dependency-path elapsed time, production execution time, and potential downtime for implementation partners.
 
 Bundled values in `catalog/assumptions.json` are uncalibrated engineering assumptions. They aren't measured averages, commitments, or guarantees. Validate them with the implementation partner and a representative rehearsal.
 

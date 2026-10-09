@@ -53,6 +53,10 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	}
 	source.questionnaire.target = repository.target;
 	source.questionnaire.answers[0]!.basis = 'CUSTOMER-QUESTIONNAIRE-CANARY';
+	source.discovery.environment = {
+		name: 'Customer Environment',
+		dataverseVersion: '9.2.0.0',
+	};
 	const input = join(root, 'inventory.json');
 	await writeFile(input, JSON.stringify(source));
 	const output = join(root, 'report');
@@ -64,7 +68,7 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	assert.equal(run.stdout.startsWith(prefix), true);
 	assert.equal(await realpath(run.stdout.trim().slice(prefix.length)), await realpath(output));
 	assert.ok(!`${run.stdout}${run.stderr}`.includes('CUSTOMER-QUESTIONNAIRE-CANARY'));
-	const report = JSON.parse(await readFile(join(output, 'assessment.json'), 'utf8')) as {
+	const report = JSON.parse(await readFile(join(output, 'assessment-customer-environment.json'), 'utf8')) as {
 		status: string;
 		workItems: { estimateType: string | null }[];
 		combined: { id: string; total: unknown }[];
@@ -73,10 +77,12 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	assert.ok(report.combined.filter(item => item.id !== 'adverse-unscoped').every(item => item.total !== null));
 	assert.equal(report.combined.find(item => item.id === 'adverse-unscoped')!.total, null);
 	assert.ok(report.workItems.every(item => item.estimateType === 'uncalibrated-assumption'));
-	const markdown = await readFile(join(output, 'assessment.md'), 'utf8');
+	const markdown = await readFile(join(output, 'assessment-customer-environment.md'), 'utf8');
 	assert.ok(markdown.includes('## What is installed and what should you do?'));
-	assert.ok(markdown.includes('## Environment details'));
-	assert.ok(markdown.includes('Unavailable'));
+	assert.ok(markdown.includes('## Environment'));
+	assert.ok(markdown.includes('| Name | Customer Environment |'));
+	assert.ok(markdown.includes('| URL | https://synthetic.crm.dynamics.com |'));
+	assert.ok(markdown.includes('## What is installed and what should you do?'));
 });
 
 test('collection refuses non-TTY invocation before contacting an environment', async t => {

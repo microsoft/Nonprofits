@@ -18,8 +18,13 @@ import { selectAnswers } from './scope.js';
 import {
 	calibrateAssessment, CalibrationResultSchema, RehearsalObservationSchema, renderCalibrationMarkdown,
 } from './calibration.js';
+import { validateEnvironmentUrl } from './discovery.js';
 
 const json = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
+const reportSlug = (value: string): string => value.toLowerCase()
+	.replace(/[^a-z0-9._-]+/g, '-')
+	.replace(/^-+|-+$/g, '')
+	.slice(0, 80) || 'environment';
 interface CliRuntime {
 	targetOptions?: { refreshRemote?: boolean };
 }
@@ -139,74 +144,34 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		await verifyPublicTarget(values.repository, questionnaire.target, targetOptions);
 		const { createInterface } = await import('node:readline/promises');
 		const terminal = createInterface({ input: process.stdin, output: process.stdout });
-		const choose = async <T extends string>(
-			label: string,
-			options: ReadonlyArray<{ label: string; value: T }>,
-		): Promise<T> => {
-			while (true) {
-				console.log(`\n${label}`);
-				options.forEach((option, index) => console.log(`  ${index + 1}. ${option.label}`));
-				const answer = await terminal.question('Select a number: ');
-				const index = Number(answer) - 1;
-				if (Number.isInteger(index) && options[index]) {
-					return options[index].value;
-				}
-			}
-		};
 		try {
-			const assessmentId = (await terminal.question(`Assessment ID [${questionnaire.assessmentId}]: `)).trim()
-				|| questionnaire.assessmentId;
-			const alias = (await terminal.question(`Environment alias [${questionnaire.environment.alias}]: `)).trim()
-				|| questionnaire.environment.alias;
-			const url = (await terminal.question('Dataverse environment URL: ')).trim();
-			const type = await choose('Environment type?', [
-				{ label: 'Production', value: 'production' },
-				{ label: 'Sandbox', value: 'sandbox' },
-				{ label: 'Trial', value: 'trial' },
-				{ label: 'Developer', value: 'developer' },
-				{ label: 'Unknown', value: 'unknown' },
-			] as const);
-			const region = (await terminal.question('Region [unknown]: ')).trim() || 'unknown';
-			const managedEnvironment = await choose('Managed Environment?', [
-				{ label: 'Yes', value: 'yes' },
-				{ label: 'No', value: 'no' },
-				{ label: 'Unknown', value: 'unknown' },
-			] as const);
-			const accessRestriction = await choose('Environment access restriction?', [
-				{ label: 'Security group', value: 'security-group' },
-				{ label: 'Unrestricted', value: 'unrestricted' },
-				{ label: 'Unknown', value: 'unknown' },
-			] as const);
-			const sameIdentityIntent = await choose('For CDM and template apps, what is the goal?', [
-				{ label: 'Confirm alignment with the GitHub release', value: 'confirm-alignment' },
-				{ label: 'Leave PPAC servicing and self-manage GitHub builds', value: 'ownership-transition' },
-				{ label: 'Apply a newer GitHub release', value: 'apply-github-release' },
-			] as const);
-			const consent = await choose(
-				'Authorize the listed read-only metadata and aggregate-count categories for this environment?',
-				[
-					{ label: 'Yes, authorize read-only collection', value: 'yes' },
-					{ label: 'No', value: 'no' },
-				] as const,
-			);
-			if (consent !== 'yes') {
-				throw new Error('Read-only collection was not authorized.');
-			}
-			questionnaire.assessmentId = assessmentId;
-			questionnaire.environment = {
-				alias,
-				url,
-				type,
-				region,
-				managedEnvironment,
-				accessRestriction,
+			const environmentUrl = async (): Promise<string> => {
+				while (true) {
+					const value = (await terminal.question('Dataverse environment URL: ')).trim();
+					try {
+						return validateEnvironmentUrl(value);
+					} catch {
+						console.log('Enter a commercial Dataverse HTTPS origin such as https://example.crm.dynamics.com.');
+					}
+				}
 			};
-			questionnaire.consent.readOnly = true;
-			questionnaire.consent.confirmedAt = new Date().toISOString();
+			const url = await environmentUrl();
+			const host = new URL(url).hostname.split('.')[0]!.toLowerCase();
+			const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
+			questionnaire.assessmentId = `assessment-${host}-${date}`;
+			questionnaire.environment = {
+				alias: host,
+				url,
+				type: 'unknown',
+				region: 'unknown',
+				managedEnvironment: 'unknown',
+				accessRestriction: 'unknown',
+			};
+			questionnaire.consent.readOnly = false;
 			for (const answer of questionnaire.answers) {
 				answer.scope = 'auto';
 				answer.intent = ['cdm', 'fundraising', 'grants', 'outcomes'].includes(answer.family)
-					? sameIdentityIntent
+					? 'confirm-alignment'
 					: 'replace-with-github';
 			}
 			const configured = QuestionnaireSchema.parse(questionnaire);
@@ -325,9 +290,10 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		await verifyPublicTarget(values.repository, inventory.questionnaire.target, targetOptions);
 		const rules = values.rules ? await readLocalJson(values.rules) : DEFAULT_RULES;
 		const report = assess(inventory, rules);
+		const slug = reportSlug(report.environment);
 		const location = await writeLocalBundle(values.output, {
-			'assessment.json': json(report),
-			'assessment.md': renderMarkdown(report),
+			[`assessment-${slug}.json`]: json(report),
+			[`assessment-${slug}.md`]: renderMarkdown(report),
 		});
 		console.log(`Local assessment written: ${location}`);
 		return report.status === 'partial' ? 2 : 0;
@@ -338,8 +304,8 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		}
 		const questionnaire = QuestionnaireSchema.parse(await readLocalJson(values.input));
 		await verifyPublicTarget(values.repository, questionnaire.target, targetOptions);
-		if (!questionnaire.consent.readOnly || !questionnaire.consent.categories.includes('solutions')) {
-			throw new Error('Read-only consent is required.');
+		if (!questionnaire.consent.categories.includes('solutions')) {
+			throw new Error('Solution discovery category is required.');
 		}
 		const { collectSolutions, validateEnvironmentUrl } = await import('./discovery.js');
 		const { collectAssessmentDetails } = await import('./assessment-discovery.js');
@@ -377,7 +343,15 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				signal: controller.signal,
 				getToken: async () => (await credential.getToken(`${origin}/.default`)).token,
 			});
-			const inventory = InventorySchema.parse({ schemaVersion: '1.0', toolVersion: VERSION, questionnaire, discovery });
+			const authorizedQuestionnaire = structuredClone(questionnaire);
+			authorizedQuestionnaire.consent.readOnly = true;
+			authorizedQuestionnaire.consent.confirmedAt = new Date().toISOString();
+			const inventory = InventorySchema.parse({
+				schemaVersion: '1.0',
+				toolVersion: VERSION,
+				questionnaire: authorizedQuestionnaire,
+				discovery,
+			});
 			const location = await writeLocalBundle(values.output, { 'inventory.json': json(inventory) });
 			console.log(`Local inventory written: ${location}`);
 			return discovery.evidence.find(item => item.id === 'solutions')?.status === 'observed' ? 0 : 2;
