@@ -92,6 +92,14 @@ export const ComponentSummarySchema = z.strictObject({
 			componentCount: CountMetricSchema,
 		})),
 	})).optional(),
+	customizationComponents: z.array(z.strictObject({
+		type: z.number().int().nonnegative(),
+		objectId: GuidSchema,
+		name: z.string().trim().min(1).max(200),
+		nameSource: z.enum(['observed', 'identifier']),
+		customizationSolutions: z.array(IdentifierSchema).min(1),
+		productUniqueNames: z.array(IdentifierSchema).min(1),
+	})).optional(),
 	truncated: z.boolean(),
 });
 export const DependencySummarySchema = z.strictObject({
@@ -99,6 +107,19 @@ export const DependencySummarySchema = z.strictObject({
 	dependentReferences: CountMetricSchema,
 	scope: z.literal('direct-customization-overlaps').optional(),
 	candidateComponents: CountMetricSchema.optional(),
+	edges: z.array(z.strictObject({
+		requiredComponent: z.strictObject({
+			type: z.number().int().nonnegative(),
+			objectId: GuidSchema,
+			name: z.string().trim().min(1).max(200),
+		}),
+		dependentComponent: z.strictObject({
+			type: z.number().int().nonnegative(),
+			objectId: GuidSchema,
+			name: z.string().trim().min(1).max(200).nullable(),
+		}),
+		dependencyType: z.number().int().nonnegative(),
+	})).max(2_000).optional(),
 	truncated: z.boolean(),
 });
 export const IntegrationSummarySchema = z.strictObject({
@@ -115,6 +136,7 @@ export const CountSummarySchema = z.strictObject({
 		logicalName: IdentifierSchema,
 		count: CountMetricSchema,
 		accuracy: z.literal('snapshot-within-24-hours'),
+		products: z.array(IdentifierSchema).optional(),
 	})),
 	truncated: z.boolean(),
 });

@@ -9,7 +9,7 @@ import { InventorySchema } from '../src/contracts.js';
 import { assess } from '../src/engine.js';
 import { createRuleReviewDraft } from '../src/rule-review.js';
 import { DEFAULT_RULES } from '../src/routes.js';
-import { writeLocalBundle } from '../src/storage.js';
+import { writeLocalBundle, writeLocalFile } from '../src/storage.js';
 import { inventory, NOW } from './fixtures.js';
 import { createPublicRepository } from './repository-fixture.js';
 
@@ -132,6 +132,19 @@ test('local guided review refuses non-TTY invocation', async t => {
 	assert.equal(run.stdout, '');
 });
 
+test('single-run customer workflow refuses non-TTY invocation before creating output', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-run-refusal-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const output = join(root, 'visible-output');
+	const run = spawnSync(process.execPath, [
+		CLI, 'run', '--repository', repository.path, '--output', output,
+	], { encoding: 'utf8' });
+	assert.equal(run.status, 1);
+	assert.ok(run.stderr.includes('ASSESSMENT_FAILED'));
+	await assert.rejects(() => realpath(output));
+});
+
 test('finalize-rules converts only a completed local expert review', async t => {
 	const root = await mkdtemp(join(tmpdir(), 'nma-rules-'));
 	t.after(() => rm(root, { recursive: true, force: true }));
@@ -224,6 +237,11 @@ test('output refuses Git trees, relative paths, traversal names and collisions',
 	await writeLocalBundle(join(root, 'report'), { 'report.md': 'test' });
 	await assert.rejects(() => writeLocalBundle(join(root, 'report'), { 'report.md': 'replacement' }));
 	assert.equal(await readFile(join(root, 'report', 'report.md'), 'utf8'), 'test');
+	const visible = join(root, 'nonprofit-assessment-synthetic-20260929.md');
+	await writeLocalFile(visible, 'visible report');
+	await assert.rejects(() => writeLocalFile(visible, 'replacement'));
+	await assert.rejects(() => writeLocalFile(join(root, 'unsupported.txt'), 'test'));
+	assert.equal(await readFile(visible, 'utf8'), 'visible report');
 });
 
 test('template roundtrip does not loosen strict inventory validation', () => {

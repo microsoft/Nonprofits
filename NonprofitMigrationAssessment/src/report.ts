@@ -230,6 +230,11 @@ function customizationSignal(report: Assessment, family: Family): string {
 	return 'No direct component overlap found';
 }
 
+function productName(uniqueName: string): string {
+	const route = ROUTES.find(item => [item.source, item.target].includes(uniqueName));
+	return route ? FAMILY_NAMES[route.family] : uniqueName;
+}
+
 function actionFor(finding: Finding): string {
 	if (finding.code === 'target-version' || finding.code === 'compatibility-blocked') {
 		return 'Publish or select a supported GitHub target version, then reassess.';
@@ -415,6 +420,16 @@ export function renderMarkdown(report: Assessment): string {
 	const assessed = report.combined.find(item => item.id === 'assessed');
 	const customizationCandidates = component?.customizationCandidates?.filter(item =>
 		!isMicrosoftFirstPartyPublisher(item.publisher) && item.componentCount > 0) ?? [];
+	const customizationComponents = component?.customizationComponents ?? [];
+	const dependencyCounts = new Map<string, number>();
+	for (const edge of dependency?.edges ?? []) {
+		const id = edge.requiredComponent.objectId.toLowerCase();
+		dependencyCounts.set(id, (dependencyCounts.get(id) ?? 0) + 1);
+	}
+	const dataVolumes = [...(report.discoverySummary.counts?.tables ?? [])]
+		.filter(table => table.count > 0)
+		.sort((left, right) => right.count - left.count || left.logicalName.localeCompare(right.logicalName, 'en'))
+		.slice(0, 10);
 	const solutionInventoryAvailable = ['observed', 'partial'].includes(
 		report.evidence.find(item => item.id === 'solutions')?.status ?? 'unknown',
 	);
@@ -490,6 +505,17 @@ export function renderMarkdown(report: Assessment): string {
 			...(component?.truncated ? ['', `> **Partial scan:** ${customizationCandidates.length} custom or partner solution candidates are shown. At least one collection limit was reached, so additional solutions or components may exist.`] : []),
 			] : ['No custom or partner solution candidates were identified within the bounded collection scope.']),
 		'',
+		...(customizationComponents.length ? [
+			'### Named customization overlap components',
+			'',
+			'| Component | Type | Custom solution | Affects product | Dependent references |',
+			'| --- | --- | --- | --- | --- |',
+			...customizationComponents.map(item =>
+				`| ${text(item.name)}${item.nameSource === 'identifier' ? ' (identifier)' : ''} | ${componentType(item.type)} | ${item.customizationSolutions.map(text).join(', ')} | ${item.productUniqueNames.map(name => text(productName(name))).join(', ')} | ${dependencyCounts.get(item.objectId.toLowerCase()) ?? 0} |`),
+			'',
+			'Individual dependency edges, stable component IDs, and unresolved dependent-component identifiers remain in the detailed JSON.',
+			'',
+		] : []),
 		'## Technical appendix',
 		'',
 		'### Migration order',
@@ -526,7 +552,7 @@ export function renderMarkdown(report: Assessment): string {
 			`| Dependent references returned | ${dependency.dependentReferences} | Total references returned by ${dependency.scope === 'direct-customization-overlaps' ? 'overlap-component' : 'sampled'} lookups; not a list of unique dependency edges |`,
 			`| Coverage | ${dependency.truncated ? 'Partial — safety cap reached' : dependency.scope === 'direct-customization-overlaps' ? 'Complete for observed direct overlaps' : 'Bounded sample completed'} | ${dependency.truncated ? 'Some observed overlap components were not checked' : 'Dynamic or undiscoverable dependencies can still exist'} |`,
 			'',
-			'> This assessment does not retain individual source-to-target dependency records. Use a solution-aware technical review when exact dependency names are required.',
+			'> Individual dependency edges and stable component IDs are retained in the optional partner JSON. The customer report summarizes per-component reference counts.',
 		] : ['Dependency metadata was not available.']),
 		'',
 		'### Scoped technical signals',
@@ -549,6 +575,17 @@ export function renderMarkdown(report: Assessment): string {
 		...(report.routes.some(route => route.family === 've')
 			? [`| Volunteer Engagement sites | ${text(siteStatus(report))} |`]
 			: []),
+		'',
+		'### Related data volumes',
+		'',
+		...(dataVolumes.length ? [
+			'Largest non-empty related tables from the bounded snapshot count:',
+			'',
+			'| Table | Related product | Snapshot rows |',
+			'| --- | --- | --- |',
+			...dataVolumes.map(table =>
+				`| ${text(table.logicalName)} | ${table.products?.length ? table.products.map(name => text(productName(name))).join(', ') : 'Not attributed'} | ${table.count} |`),
+		] : ['No non-empty related table counts were available.']),
 		'',
 		'### Assessment cautions',
 		'',

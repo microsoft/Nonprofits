@@ -52,6 +52,7 @@ export async function writeLocalBundle(path: string, files: Record<string, strin
 				throw new LocalFileError();
 			}
 		}
+
 		const actual = join(parent, basename(destination));
 		try {
 			await lstat(actual);
@@ -61,6 +62,7 @@ export async function writeLocalBundle(path: string, files: Record<string, strin
 				throw error;
 			}
 		}
+
 		temporary = await mkdtemp(join(parent, `.${basename(destination)}-`));
 		await chmod(temporary, 0o700);
 		for (const [name, content] of Object.entries(files)) {
@@ -77,6 +79,45 @@ export async function writeLocalBundle(path: string, files: Record<string, strin
 	} catch {
 		if (temporary) {
 			await rm(temporary, { recursive: true, force: true }).catch(() => undefined);
+		}
+		throw new LocalFileError();
+	}
+}
+
+export async function writeLocalFile(path: string, content: string): Promise<string> {
+	let temporary: string | undefined;
+	try {
+		if (!isAbsolute(path) || path.startsWith('\\\\') || path.startsWith('//')) {
+			throw new LocalFileError();
+		}
+		const destination = resolve(path);
+		const parent = await realpath(dirname(destination));
+		await assertOutsideRepository(parent);
+		const name = basename(destination);
+		if (!/^[a-zA-Z0-9._-]+\.(md|json)$/.test(name)) {
+			throw new LocalFileError();
+		}
+		try {
+			await lstat(destination);
+			throw new LocalFileError();
+		} catch (error) {
+			if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
+				throw error;
+			}
+		}
+		temporary = join(parent, `.${name}.${process.pid}.${Date.now()}`);
+		const file = await open(temporary, 'wx', 0o600);
+		try {
+			await file.writeFile(content, 'utf8');
+		} finally {
+			await file.close();
+		}
+		await rename(temporary, destination);
+		temporary = undefined;
+		return destination;
+	} catch {
+		if (temporary) {
+			await rm(temporary, { force: true }).catch(() => undefined);
 		}
 		throw new LocalFileError();
 	}

@@ -16,6 +16,7 @@ const CONNECTION_REFERENCE_ID = '77777777-7777-4777-8777-777777777777';
 const PLUGIN_ASSEMBLY_ID = '88888888-8888-4888-8888-888888888888';
 const PLUGIN_STEP_ID = '99999999-9999-4999-8999-999999999999';
 const CUSTOM_PLUGIN_STEP_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+const DEPENDENT_ID = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 
 function baseDiscovery() {
 	return DiscoverySchema.parse({
@@ -110,7 +111,16 @@ test('detailed discovery summarizes approved environment metadata without record
 				});
 			}
 			if (url.pathname.includes('RetrieveDependentComponents')) {
-				return Response.json({ value: [{ dependencytype: 2, forbiddenName: 'ignored' }] });
+				const objectId = url.pathname.match(/ObjectId=([^,)]+)/)?.[1];
+				const componentType = Number(url.pathname.match(/ComponentType=(\d+)/)?.[1]);
+				return Response.json({ value: [{
+					requiredcomponentobjectid: objectId,
+					requiredcomponenttype: componentType,
+					dependentcomponentobjectid: DEPENDENT_ID,
+					dependentcomponenttype: 10,
+					dependencytype: 2,
+					forbiddenName: 'ignored',
+				}] });
 			}
 			if (url.pathname.includes('EntityDefinitions')) {
 				return Response.json({ LogicalName: 'msnfp_synthetictable', DisplayName: 'ignored' });
@@ -179,6 +189,35 @@ test('detailed discovery summarizes approved environment metadata without record
 			componentTypes: [{ type: 1, count: 1 }, { type: 91, count: 1 }],
 			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 2 }],
 		}],
+		customizationComponents: [{
+			type: 1,
+			objectId: TABLE_ID,
+			name: 'msnfp_synthetictable',
+			nameSource: 'observed',
+			customizationSolutions: ['PartnerManaged'],
+			productUniqueNames: ['NonprofitCore'],
+		}, {
+			type: 29,
+			objectId: WORKFLOW_ID,
+			name: 'Component type 29 (66666666)',
+			nameSource: 'identifier',
+			customizationSolutions: ['CustomerCustom'],
+			productUniqueNames: ['NonprofitCore'],
+		}, {
+			type: 61,
+			objectId: WEBRESOURCE_ID,
+			name: 'Component type 61 (44444444)',
+			nameSource: 'identifier',
+			customizationSolutions: ['CustomerCustom'],
+			productUniqueNames: ['NonprofitCore'],
+		}, {
+			type: 91,
+			objectId: PLUGIN_ASSEMBLY_ID,
+			name: 'Component type 91 (88888888)',
+			nameSource: 'identifier',
+			customizationSolutions: ['PartnerManaged'],
+			productUniqueNames: ['NonprofitCore'],
+		}],
 		truncated: false,
 	});
 	assert.deepEqual(result.dependencies, {
@@ -186,6 +225,55 @@ test('detailed discovery summarizes approved environment metadata without record
 		dependentReferences: 4,
 		scope: 'direct-customization-overlaps',
 		candidateComponents: 4,
+		edges: [{
+			requiredComponent: {
+				type: 1,
+				objectId: TABLE_ID,
+				name: 'msnfp_synthetictable',
+			},
+			dependentComponent: {
+				type: 10,
+				objectId: DEPENDENT_ID,
+				name: null,
+			},
+			dependencyType: 2,
+		}, {
+			requiredComponent: {
+				type: 29,
+				objectId: WORKFLOW_ID,
+				name: 'Component type 29 (66666666)',
+			},
+			dependentComponent: {
+				type: 10,
+				objectId: DEPENDENT_ID,
+				name: null,
+			},
+			dependencyType: 2,
+		}, {
+			requiredComponent: {
+				type: 61,
+				objectId: WEBRESOURCE_ID,
+				name: 'Component type 61 (44444444)',
+			},
+			dependentComponent: {
+				type: 10,
+				objectId: DEPENDENT_ID,
+				name: null,
+			},
+			dependencyType: 2,
+		}, {
+			requiredComponent: {
+				type: 91,
+				objectId: PLUGIN_ASSEMBLY_ID,
+				name: 'Component type 91 (88888888)',
+			},
+			dependentComponent: {
+				type: 10,
+				objectId: DEPENDENT_ID,
+				name: null,
+			},
+			dependencyType: 2,
+		}],
 		truncated: false,
 	});
 	assert.deepEqual(result.integrations, {
@@ -202,6 +290,7 @@ test('detailed discovery summarizes approved environment metadata without record
 			logicalName: 'msnfp_synthetictable',
 			count: 42,
 			accuracy: 'snapshot-within-24-hours',
+			products: ['NonprofitCore'],
 		}],
 		truncated: false,
 	});

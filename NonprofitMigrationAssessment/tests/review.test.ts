@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { assess } from '../src/engine.js';
-import { applyLocalReview } from '../src/review.js';
+import { applyLocalReview, deriveLocalReview } from '../src/review.js';
 import { renderMarkdown } from '../src/report.js';
 import { DEFAULT_RULES } from '../src/routes.js';
 import { inventory, NOW } from './fixtures.js';
@@ -29,6 +29,52 @@ test('short local review records operational readiness without inventing custom 
 		sandboxAndTests: 'ready',
 		maxInterruptionHours: 2,
 		reviewedAt: NOW.toISOString(),
+	});
+
+	test('evidence-derived review scopes work without customer planning answers', () => {
+		const input = inventory(['cdm', 'vm']);
+		input.discovery.components = {
+			relevantSolutions: 2,
+			relevantComponents: 10,
+			componentTypes: [],
+			unmanagedSolutions: 1,
+			analyzedUnmanagedSolutions: 1,
+			overlappingUnmanagedComponents: 1,
+			productSummaries: [],
+			customizationCandidates: [{
+				uniqueName: 'CustomerCustom',
+				managed: false,
+				publisher: 'Customer',
+				componentCount: 1,
+				componentTypes: [],
+				overlaps: [{ productUniqueName: 'VolunteerManagement', componentCount: 1 }],
+			}],
+			truncated: false,
+		};
+		input.discovery.integrations = {
+			workflows: 1,
+			connectionReferences: 0,
+			pluginAssemblies: 0,
+			pluginSteps: 0,
+			scope: 'selected-products-and-overlapping-customizations',
+			scopedSolutions: 3,
+			truncated: false,
+		};
+		input.discovery.evidence.push({
+			id: 'components', source: 'derived', status: 'observed', collectedAt: NOW.toISOString(),
+			collector: 'synthetic', scope: 'environment', inputs: ['solutions'], reason: 'Synthetic components.',
+		}, {
+			id: 'integrations', source: 'derived', status: 'observed', collectedAt: NOW.toISOString(),
+			collector: 'synthetic', scope: 'environment', inputs: ['components'], reason: 'Synthetic integrations.',
+		});
+		assert.deepEqual(deriveLocalReview(input, NOW), {
+			customization: 'bounded',
+			integrations: 'bounded',
+			ownerAvailability: 'unknown',
+			sandboxAndTests: 'unknown',
+			maxInterruptionHours: null,
+			reviewedAt: NOW.toISOString(),
+		});
 	});
 	assert.equal(reviewed.questionnaire.work.length, 0);
 	const result = assess(reviewed, DEFAULT_RULES, { now: NOW });

@@ -21,6 +21,47 @@ export const LocalReviewSchema = z.strictObject({
 });
 export type LocalReview = z.infer<typeof LocalReviewSchema>;
 
+export function deriveLocalReview(input: unknown, now = new Date()): LocalReview {
+	const inventory = InventorySchema.parse(input);
+	const componentEvidence = inventory.discovery.evidence.find(item => item.id === 'components');
+	const integrationEvidence = inventory.discovery.evidence.find(item => item.id === 'integrations');
+	const overlaps = inventory.discovery.components?.customizationCandidates
+		?.some(solution => solution.overlaps.length > 0) ?? false;
+	const integrationCount = inventory.discovery.integrations
+		? [
+			inventory.discovery.integrations.workflows,
+			inventory.discovery.integrations.connectionReferences,
+			inventory.discovery.integrations.pluginAssemblies,
+			inventory.discovery.integrations.pluginSteps,
+		].reduce<number>((total, value) => total + (value ?? 0), 0)
+		: null;
+	const selected = selectAnswers(inventory.questionnaire, inventory.discovery);
+	const veSelected = selected.some(answer => answer.family === 've');
+	const sites = inventory.discovery.sites;
+	return LocalReviewSchema.parse({
+		customization: ['observed', 'partial'].includes(componentEvidence?.status ?? '')
+			? overlaps ? 'bounded' : 'none'
+			: 'unknown',
+		integrations: ['observed', 'partial'].includes(integrationEvidence?.status ?? '')
+			? (integrationCount ?? 0) > 0 ? 'bounded' : 'none'
+			: 'unknown',
+		ownerAvailability: 'unknown',
+		sandboxAndTests: 'unknown',
+		maxInterruptionHours: null,
+		reviewedAt: now.toISOString(),
+		...(veSelected ? {
+			ve: {
+				source: (sites?.legacySites ?? 0) > 0 ? 'legacy'
+					: (sites?.enhancedSites ?? 0) > 0 ? 'target'
+						: 'unknown',
+				authenticationProviders: 'unknown',
+				languages: null,
+				customJourneys: 'unknown',
+			},
+		} : {}),
+	});
+}
+
 function migrationFamilies(inventory: Inventory): Family[] {
 	return selectAnswers(inventory.questionnaire, inventory.discovery)
 		.filter(answer => (answer.intent ?? (['vm', 've'].includes(answer.family)

@@ -19,11 +19,11 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) for c
 
 1. Explain that the assessment is read-only, AI-assisted, and must be validated before action. It begins with a direct executive recommendation, installed/in-scope supported products only, and a derived next-action checklist. Products not detected are omitted from customer-facing tables but remain represented in machine evidence. It then shows customization solutions and their overlap. Keep the customer metrics simple and separate: decision, decision confidence, provisional effort, and effort confidence. Put migration order, bounded dependency signals, solution-scoped integration component counts, metric definitions, and limitations in the technical appendix. Detailed ranges remain available for implementation partners in the generated `assessment-<environment-name>.json` file.
 2. Confirm a clean checkout of `https://github.com/microsoft/Nonprofits` and Node.js 22.
-3. Guide `init`, then `configure`. Configuration asks only for the Dataverse URL; don't ask the customer to edit JSON or choose advanced platform settings.
-4. Explain the approved metadata/count categories and obtain authorization before `collect`.
-5. Collection requires a human terminal and exact `ASSESS` confirmation for the selected environment.
-6. Guide the five-question local `review`; ask the short VE extension only when VE is selected.
-7. Guide `assess` and tell the customer to open `assessment-<environment-name>.md`.
+3. Guide the customer through `nonprofit-migration-assessment run --repository "<checkout>"`. Don't ask the customer to edit JSON, select intermediate paths, or choose advanced platform settings.
+4. Explain the approved metadata/count categories before the command's exact `ASSESS` confirmation.
+5. The customer `run` command derives customization and integration scope from evidence; don't ask the five technical review questions. It leaves owner, sandbox/test readiness, and interruption tolerance unknown.
+6. After completion, open the generated `nonprofit-assessment-<environment>-<date>.md` path in the editor. Mention `--partner-json` only when detailed machine evidence is needed.
+7. Use `init`, `configure`, `collect`, `review`, and `assess` only for partner automation, optional assumption refinement, or troubleshooting.
    - Don't ask additional questions to populate the executive recommendation or checklist; derive them from collected evidence and the existing short review.
 8. Explain:
    - `already-at-target`: no product or data migration is required for alignment.

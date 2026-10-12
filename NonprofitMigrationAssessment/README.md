@@ -31,6 +31,8 @@ The Markdown report shows:
 - Whether each product needs migration, needs review, or requires no action
 - An evidence-derived next-action checklist; no extra customer questionnaire is required
 - Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review
+- Named direct-overlap components, per-component dependency-reference counts, and bounded individual dependency edges in partner JSON
+- Product-attributed snapshot counts for the largest related non-empty tables
 - A visual product migration order plus bounded environment dependency signals and their collection limits
 - Prioritized direct and dependency blockers with the action needed to clear each one
 - A clear product decision with separate decision confidence, provisional effort, and effort confidence
@@ -59,7 +61,27 @@ npm run build
 
 ## Run the assessment
 
-Choose new local output folders outside Git repositories.
+Use the single customer command from a human terminal:
+
+```powershell
+nonprofit-migration-assessment run --repository "C:\path\to\Nonprofits"
+```
+
+The command:
+
+1. Asks only for the Dataverse environment URL.
+2. Shows the approved read-only categories and requires exact `ASSESS` confirmation.
+3. Derives bounded customization and integration scope from the collected solution evidence.
+4. Keeps intermediate files in one private operating-system temporary folder.
+5. Deletes the temporary folder when the command completes or fails.
+6. Writes `nonprofit-assessment-<environment>-<date>.md` to the user's Documents folder.
+7. Prints the final report path so Copilot can open it in the editor.
+
+Use `--output "C:\visible\folder"` to choose another existing or creatable folder. Add `--partner-json` to preserve the detailed JSON next to the Markdown report. If the filename already exists, the command adds a numeric suffix rather than overwriting it. The automatic run leaves owner, sandbox/test readiness, and interruption tolerance unknown rather than asking the customer to make technical planning choices.
+
+## Advanced staged workflow
+
+The low-level commands below remain available for partner automation, troubleshooting, and reviewed-rule workflows. Each output must use a new local folder outside Git repositories.
 
 ### 1. Initialize
 
@@ -109,7 +131,7 @@ It doesn't retrieve record contents, connection values, plug-in binaries, page c
 
 The default detailed-discovery budget is five minutes. The operation remains bounded and can be canceled.
 
-### 4. Answer five local review questions
+### 4. Optionally answer five partner review questions
 
 ```powershell
 nonprofit-migration-assessment review `
@@ -118,7 +140,7 @@ nonprofit-migration-assessment review `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-reviewed"
 ```
 
-The review asks:
+Use this optional staged command when an implementation partner wants to refine automatic assumptions. The review asks:
 
 1. Whether critical custom plug-ins, flows, or components exist
 2. Whether external integrations affect selected products

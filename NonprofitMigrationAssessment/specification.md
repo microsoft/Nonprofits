@@ -54,15 +54,15 @@ Version equality alone doesn't prove alignment. Alignment requires a matching en
 
 ## 3. Customer workflow
 
-1. Initialize local assessment files from a clean `microsoft/Nonprofits` checkout.
-2. Enter only the Dataverse environment URL through the interactive local command. The tool derives the assessment ID/name, uses automatic scope, and defaults same-identity products to alignment checking.
+1. Run one interactive `run` command from a clean `microsoft/Nonprofits` checkout.
+2. Enter only the Dataverse environment URL. The tool derives assessment identity, uses automatic scope, and defaults same-identity products to alignment checking.
 3. Confirm the exact environment and approved categories by typing `ASSESS`; this records read-only consent and starts collection.
-4. Answer five local planning questions; answer the short VE extension only when VE is selected.
-5. Generate the local JSON and Markdown report.
+4. Derive bounded customization/integration scope and VE site model from collected evidence. Leave owner, sandbox/test readiness, and interruption tolerance unknown.
+5. Receive one visible Markdown report in Documents or an explicitly selected output folder. Detailed JSON is optional.
 6. Review ranges and blockers with the implementation partner.
 7. Rehearse in a representative sandbox and compare observed results with the assessment.
 
-The customer doesn't need to edit JSON manually. JSON files are local machine-readable artifacts used between commands.
+The customer doesn't edit JSON, pass intermediate paths, or answer technical planning questions. Intermediate files remain in one private operating-system temporary directory and are deleted on success or failure. Low-level staged commands, including the five-question review, remain supported for partner automation, optional assumption refinement, and troubleshooting.
 
 ## 4. Assessment intent
 
@@ -203,7 +203,7 @@ Workflow, connection-reference, plug-in assembly, and plug-in-step counts are de
 
 The report states that it is AI-assisted and must be validated before action. Migration recommendations aren't described as mandatory.
 
-The detailed JSON contains machine evidence, file hashes, work dependencies, rule provenance, scenario reasons, and numeric planning ranges. The bounded collector summarizes environment dependency counts; it doesn't retain individual source-to-target dependency records.
+The detailed JSON contains machine evidence, file hashes, work dependencies, bounded individual Dataverse dependency edges, rule provenance, scenario reasons, and numeric planning ranges. The customer Markdown summarizes dependent-reference counts by named direct-overlap component.
 
 Assessment artifacts remain local by default. Optional sharing requires customer review and consent. Secrets and business-record contents must never be shared.
 

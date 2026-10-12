@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { lstat, mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { homedir, tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { pathToFileURL } from 'node:url';
 import { z } from 'zod';
@@ -10,10 +13,10 @@ import {
 import { assess } from './engine.js';
 import { DEFAULT_RULES, ROUTES } from './routes.js';
 import { renderMarkdown } from './report.js';
-import { readLocalJson, writeLocalBundle } from './storage.js';
+import { readLocalJson, writeLocalBundle, writeLocalFile } from './storage.js';
 import { resolvePublicTarget, verifyPublicTarget } from './target.js';
 import { createRuleReviewDraft, finalizeRuleReviewDraft } from './rule-review.js';
-import { applyLocalReview, LocalReviewSchema } from './review.js';
+import { applyLocalReview, deriveLocalReview, LocalReviewSchema } from './review.js';
 import { selectAnswers } from './scope.js';
 import {
 	calibrateAssessment, CalibrationResultSchema, RehearsalObservationSchema, renderCalibrationMarkdown,
@@ -27,6 +30,29 @@ const reportSlug = (value: string): string => value.toLowerCase()
 	.slice(0, 80) || 'environment';
 interface CliRuntime {
 	targetOptions?: { refreshRemote?: boolean };
+	quietCompletions?: boolean;
+}
+
+async function availableReportBase(directory: string, requested: string, includeJson: boolean): Promise<string> {
+	for (let index = 1; index <= 100; index++) {
+		const base = index === 1 ? requested : `${requested}-${index}`;
+		const paths = [join(directory, `${base}.md`), ...(includeJson ? [join(directory, `${base}.json`)] : [])];
+		const exists = await Promise.all(paths.map(async path => {
+			try {
+				await lstat(path);
+				return true;
+			} catch (error) {
+				if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+					return false;
+				}
+				throw error;
+			}
+		}));
+		if (exists.every(value => !value)) {
+			return base;
+		}
+	}
+	throw new Error('No available report filename was found.');
 }
 
 export async function main(args: string[], runtime: CliRuntime = {}): Promise<number> {
@@ -35,15 +61,17 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		options: {
 			input: { type: 'string' }, output: { type: 'string' }, rules: { type: 'string' },
 			repository: { type: 'string' }, rehearsal: { type: 'string' },
+			'partner-json': { type: 'boolean' },
 		},
 		allowPositionals: true, strict: true,
 	});
 	const command = positionals[0];
 	if (command === 'help' && positionals.length === 1) {
-		console.log('Commands: init --repository <microsoft/Nonprofits-checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master.');
+		console.log('Commands: run --repository <microsoft/Nonprofits-checkout> [--output <visible-folder>] [--partner-json] (recommended human workflow); init --repository <checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master.');
 		return 0;
 	}
-	if (positionals.length !== 1 || !values.output) {
+	if (positionals.length !== 1 || (command !== 'run' && !values.output)
+		|| (values['partner-json'] && command !== 'run')) {
 		throw new Error('Invalid command.');
 	}
 	if (command === 'finalize-rules') {
@@ -51,7 +79,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 			throw new Error('Invalid finalize-rules options.');
 		}
 		const rules = finalizeRuleReviewDraft(await readLocalJson(values.input));
-		const location = await writeLocalBundle(values.output, {
+		const location = await writeLocalBundle(values.output!, {
 			'rules.json': json(rules),
 			'rules.schema.json': json(z.toJSONSchema(RuleBookSchema)),
 		});
@@ -66,7 +94,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 			await readLocalJson(values.input),
 			await readLocalJson(values.rehearsal),
 		);
-		const location = await writeLocalBundle(values.output, {
+		const location = await writeLocalBundle(values.output!, {
 			'calibration.json': json(result),
 			'calibration.md': renderCalibrationMarkdown(result),
 			'calibration.schema.json': json(z.toJSONSchema(CalibrationResultSchema)),
@@ -78,6 +106,62 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		throw new Error('Public target repository is required.');
 	}
 	const targetOptions = runtime.targetOptions ?? {};
+	const completion = (message: string): void => {
+		if (!runtime.quietCompletions) {
+			console.log(message);
+		}
+	};
+	if (command === 'run') {
+		if (values.input || values.rules || values.rehearsal
+			|| !process.stdin.isTTY || !process.stdout.isTTY || process.env['AZURE_LOG_LEVEL']) {
+			throw new Error('Customer assessment requires an isolated human terminal without Azure SDK debug logging.');
+		}
+		const temporary = await mkdtemp(join(tmpdir(), 'nonprofit-assessment-'));
+		try {
+			const initialized = join(temporary, '1-initialized');
+			const configured = join(temporary, '2-configured');
+			const collected = join(temporary, '3-collected');
+			const nestedRuntime = { ...runtime, quietCompletions: true };
+			await main(['init', '--repository', values.repository, '--output', initialized], nestedRuntime);
+			await main([
+				'configure', '--repository', values.repository,
+				'--input', join(initialized, 'questionnaire.json'), '--output', configured,
+			], nestedRuntime);
+			await main([
+				'collect', '--repository', values.repository,
+				'--input', join(configured, 'questionnaire.json'), '--output', collected,
+			], nestedRuntime);
+			const collectedInventory = InventorySchema.parse(
+				await readLocalJson(join(collected, 'inventory.json')),
+			);
+			const inventory = applyLocalReview(
+				collectedInventory,
+				deriveLocalReview(collectedInventory),
+			);
+			await verifyPublicTarget(values.repository, inventory.questionnaire.target, targetOptions);
+			const report = assess(inventory, DEFAULT_RULES);
+			const outputDirectory = resolve(values.output ?? join(homedir(), 'Documents'));
+			await mkdir(outputDirectory, { recursive: true });
+			const date = report.assessedAt.slice(0, 10).replaceAll('-', '');
+			const base = await availableReportBase(
+				outputDirectory,
+				`nonprofit-assessment-${reportSlug(report.environment)}-${date}`,
+				values['partner-json'] ?? false,
+			);
+			const markdownPath = await writeLocalFile(
+				join(outputDirectory, `${base}.md`),
+				renderMarkdown(report),
+			);
+			if (values['partner-json']) {
+				await writeLocalFile(join(outputDirectory, `${base}.json`), json(report));
+			}
+			console.log(`Assessment report written: ${markdownPath}`);
+			console.log(`Open report: ${markdownPath}`);
+			return report.status === 'partial' ? 2 : 0;
+		} finally {
+			await rm(temporary, { recursive: true, force: true });
+		}
+	}
 	if (command === 'init') {
 		if (values.input || values.rules || values.rehearsal) {
 			throw new Error('Invalid init options.');
@@ -119,7 +203,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 			})),
 			work: [],
 		};
-		const location = await writeLocalBundle(values.output, {
+		const location = await writeLocalBundle(values.output!, {
 			'questionnaire.json': json(draft),
 			'questionnaire.schema.json': json(z.toJSONSchema(QuestionnaireSchema)),
 			'inventory.schema.json': json(z.toJSONSchema(InventorySchema)),
@@ -130,7 +214,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 			'rules-review.json': json(createRuleReviewDraft()),
 			'rehearsal.schema.json': json(z.toJSONSchema(RehearsalObservationSchema)),
 		});
-		console.log(`Local questionnaire template created: ${location}`);
+		completion(`Local questionnaire template created: ${location}`);
 		return 0;
 	}
 	if (!values.input) {
@@ -175,11 +259,11 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 					: 'replace-with-github';
 			}
 			const configured = QuestionnaireSchema.parse(questionnaire);
-			const location = await writeLocalBundle(values.output, {
+			const location = await writeLocalBundle(values.output!, {
 				'questionnaire.json': json(configured),
 				'questionnaire.schema.json': json(z.toJSONSchema(QuestionnaireSchema)),
 			});
-			console.log(`Configured local questionnaire written: ${location}`);
+			completion(`Configured local questionnaire written: ${location}`);
 			return 0;
 		} finally {
 			terminal.close();
@@ -271,12 +355,12 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				...(ve ? { ve } : {}),
 			});
 			const reviewed = applyLocalReview(inventory, review);
-			const location = await writeLocalBundle(values.output, {
+			const location = await writeLocalBundle(values.output!, {
 				'inventory.json': json(reviewed),
 				'local-review.json': json(review),
 				'local-review.schema.json': json(z.toJSONSchema(LocalReviewSchema)),
 			});
-			console.log(`Reviewed local inventory written: ${location}`);
+			completion(`Reviewed local inventory written: ${location}`);
 			return 0;
 		} finally {
 			terminal.close();
@@ -291,11 +375,11 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		const rules = values.rules ? await readLocalJson(values.rules) : DEFAULT_RULES;
 		const report = assess(inventory, rules);
 		const slug = reportSlug(report.environment);
-		const location = await writeLocalBundle(values.output, {
+		const location = await writeLocalBundle(values.output!, {
 			[`assessment-${slug}.json`]: json(report),
 			[`assessment-${slug}.md`]: renderMarkdown(report),
 		});
-		console.log(`Local assessment written: ${location}`);
+		completion(`Local assessment written: ${location}`);
 		return report.status === 'partial' ? 2 : 0;
 	}
 	if (command === 'collect') {
@@ -352,8 +436,8 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				questionnaire: authorizedQuestionnaire,
 				discovery,
 			});
-			const location = await writeLocalBundle(values.output, { 'inventory.json': json(inventory) });
-			console.log(`Local inventory written: ${location}`);
+			const location = await writeLocalBundle(values.output!, { 'inventory.json': json(inventory) });
+			completion(`Local inventory written: ${location}`);
 			return discovery.evidence.find(item => item.id === 'solutions')?.status === 'observed' ? 0 : 2;
 		} finally {
 			process.removeListener('SIGINT', cancel);

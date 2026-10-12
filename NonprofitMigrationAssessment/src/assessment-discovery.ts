@@ -13,6 +13,7 @@ const TOTAL_BYTES = 8 * 1024 * 1024;
 const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 100;
+const MAX_DEPENDENCY_EDGES = 2_000;
 const MAX_COUNT_TABLES = 50;
 const INTEGRATION_COMPONENT_TYPES = new Set([29, 91, 92, 371]);
 
@@ -30,9 +31,20 @@ const ComponentPageSchema = z.object({
 	'@odata.nextLink': z.unknown().optional(),
 });
 const DependencyPageSchema = z.object({
-	value: z.array(z.unknown()).max(500),
+	value: z.array(z.object({
+		requiredcomponentobjectid: z.string().regex(
+			/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+		),
+		requiredcomponenttype: z.number().int().nonnegative(),
+		dependentcomponentobjectid: z.string().regex(
+			/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+		),
+		dependentcomponenttype: z.number().int().nonnegative(),
+		dependencytype: z.number().int().nonnegative(),
+	})).max(500),
 	'@odata.nextLink': z.unknown().optional(),
 });
+const NamedComponentSchema = z.object({ name: z.string().trim().min(1).max(200) });
 const CountResponseSchema = z.object({
 	'@odata.count': z.number().int().nonnegative(),
 	value: z.array(z.unknown()).max(1),
@@ -108,6 +120,37 @@ function replaceEvidence(items: Evidence[], item: Evidence): void {
 	} else {
 		items.push(item);
 	}
+}
+
+function fallbackComponentName(type: number, objectId: string): string {
+	return `Component type ${type} (${objectId.slice(0, 8)})`;
+}
+
+async function resolveComponentName(
+	context: RequestContext,
+	component: { componenttype: number; objectid: string },
+): Promise<{ name: string; source: 'observed' | 'identifier' }> {
+	try {
+		if (component.componenttype === 1) {
+			const definition = EntityDefinitionSchema.parse(await getJson(context,
+				apiUrl(context.origin, `EntityDefinitions(${component.objectid})`, { '$select': 'LogicalName' })));
+			return { name: definition.LogicalName, source: 'observed' };
+		}
+		const entitySet = component.componenttype === 26 ? 'savedqueries'
+			: component.componenttype === 60 ? 'systemforms'
+				: null;
+		if (entitySet) {
+			const named = NamedComponentSchema.parse(await getJson(context,
+				apiUrl(context.origin, `${entitySet}(${component.objectid})`, { '$select': 'name' })));
+			return { name: named.name, source: 'observed' };
+		}
+	} catch (error) {
+		if (!(error instanceof RequestFailure
+			&& ['not-applicable', 'access-denied'].includes(error.status))) {
+			throw error;
+		}
+	}
+	return { name: fallbackComponentName(component.componenttype, component.objectid), source: 'identifier' };
 }
 
 function apiUrl(origin: string, path: string, parameters: Record<string, string> = {}): string {
@@ -269,7 +312,8 @@ async function collectComponents(
 	relevant: { componenttype: number; objectid: string | null }[];
 	integrations: { componenttype: number; objectid: string | null }[];
 	integrationSolutions: number;
-	dependencyCandidates: { componenttype: number; objectid: string | null }[];
+	dependencyCandidates: { componenttype: number; objectid: string; name: string }[];
+	tableProducts: Map<string, Set<string>>;
 }> {
 	const relevantSolutions = discovery.solutions
 		.filter(solution => relevantNames.has(solution.uniqueName.toLowerCase()) && solution.solutionId);
@@ -283,13 +327,18 @@ async function collectComponents(
 			&& !isMicrosoftFirstPartyPublisher(solution.publisher));
 	const relevant: { componenttype: number; objectid: string | null }[] = [];
 	const integrationComponents = new Map<string, { componenttype: number; objectid: string | null }>();
-	const dependencyCandidates = new Map<string, { componenttype: number; objectid: string | null }>();
+	const overlapDetails = new Map<string, {
+		item: { componenttype: number; objectid: string };
+		customizationSolutions: Set<string>;
+		productUniqueNames: Set<string>;
+	}>();
 	const addIntegrations = (items: { componenttype: number; objectid: string | null }[]): void => {
 		for (const item of items.filter(candidate => INTEGRATION_COMPONENT_TYPES.has(candidate.componenttype))) {
 			integrationComponents.set(`${item.componenttype}:${item.objectid ?? 'unknown'}`, item);
 		}
 	};
 	const productKeys = new Map<string, Set<string>>();
+	const tableProducts = new Map<string, Set<string>>();
 	const componentTypes = new Map<number, number>();
 	let truncated = relevantSolutions.length > MAX_RELEVANT_SOLUTIONS;
 	for (const solution of relevantSolutions.slice(0, MAX_RELEVANT_SOLUTIONS)) {
@@ -307,6 +356,11 @@ async function collectComponents(
 			componentTypes.set(item.componenttype, (componentTypes.get(item.componenttype) ?? 0) + 1);
 			if (item.objectid !== null) {
 				keys.add(`${item.componenttype}:${item.objectid}`);
+				if (item.componenttype === 1) {
+					const products = tableProducts.get(item.objectid) ?? new Set<string>();
+					products.add(solution.uniqueName);
+					tableProducts.set(item.objectid, products);
+				}
 			}
 		}
 		addIntegrations(parsed.value);
@@ -351,7 +405,14 @@ async function collectComponents(
 			}
 			for (const [product, keys] of productKeys) {
 				if (keys.has(key)) {
-					dependencyCandidates.set(key, item);
+					const detail = overlapDetails.get(key) ?? {
+						item: { componenttype: item.componenttype, objectid: item.objectid! },
+						customizationSolutions: new Set<string>(),
+						productUniqueNames: new Set<string>(),
+					};
+					detail.customizationSolutions.add(solution.uniqueName);
+					detail.productUniqueNames.add(product);
+					overlapDetails.set(key, detail);
 					overlapsByProduct.set(product, (overlapsByProduct.get(product) ?? 0) + 1);
 					const names = productCustomizationSolutions.get(product) ?? new Set<string>();
 					names.add(solution.uniqueName);
@@ -377,6 +438,21 @@ async function collectComponents(
 			addIntegrations(parsed.value);
 		}
 	}
+	const customizationComponents = [];
+	for (const detail of [...overlapDetails.values()]
+		.sort((left, right) => left.item.componenttype - right.item.componenttype
+			|| left.item.objectid.localeCompare(right.item.objectid, 'en'))
+		.slice(0, MAX_DEPENDENCY_COMPONENTS)) {
+		const resolved = await resolveComponentName(context, detail.item);
+		customizationComponents.push({
+			type: detail.item.componenttype,
+			objectId: detail.item.objectid,
+			name: resolved.name,
+			nameSource: resolved.source,
+			customizationSolutions: [...detail.customizationSolutions].sort(),
+			productUniqueNames: [...detail.productUniqueNames].sort(),
+		});
+	}
 	return {
 		summary: ComponentSummarySchema.parse({
 			relevantSolutions: relevantSolutions.length,
@@ -394,39 +470,71 @@ async function collectComponents(
 					customizationSolutions: [...(productCustomizationSolutions.get(uniqueName) ?? [])].sort(),
 				})),
 				customizationCandidates: candidateSummaries,
+				customizationComponents,
 				truncated,
 		}),
 		relevant,
 		integrations: [...integrationComponents.values()],
 		integrationSolutions: relevantSolutions.length + overlappingCandidateSolutions,
-		dependencyCandidates: [...dependencyCandidates.values()],
+		dependencyCandidates: customizationComponents.map(component => ({
+			componenttype: component.type,
+			objectid: component.objectId,
+			name: component.name,
+		})),
+		tableProducts,
 	};
 }
 
 async function collectDependencies(
 	context: RequestContext,
-	components: { componenttype: number; objectid: string | null }[],
+	components: { componenttype: number; objectid: string; name: string }[],
 ): Promise<z.infer<typeof DependencySummarySchema>> {
 	const distinct = [...new Map(components
-		.filter((item): item is { componenttype: number; objectid: string } => item.objectid !== null)
 		.map(item => [`${item.componenttype}:${item.objectid}`, item])).values()]
 		.sort((left, right) => left.componenttype - right.componenttype
 			|| left.objectid.localeCompare(right.objectid, 'en'));
+	const componentNames = new Map(distinct.map(item =>
+		[`${item.componenttype}:${item.objectid}`, item.name]));
 	const candidates = distinct.slice(0, MAX_DEPENDENCY_COMPONENTS);
 	let dependentReferences = 0;
 	let truncated = distinct.length > candidates.length;
+	const edges: z.infer<typeof DependencySummarySchema>['edges'] = [];
 	for (const component of candidates) {
 		const parsed = DependencyPageSchema.parse(await getJson(context,
 			apiUrl(context.origin,
 				`RetrieveDependentComponents(ObjectId=${component.objectid},ComponentType=${component.componenttype})`)));
 		dependentReferences += parsed.value.length;
 		truncated ||= parsed['@odata.nextLink'] !== undefined;
+		for (const edge of parsed.value) {
+			if (edges.length >= MAX_DEPENDENCY_EDGES) {
+				truncated = true;
+				break;
+			}
+			edges.push({
+				requiredComponent: {
+					type: edge.requiredcomponenttype,
+					objectId: edge.requiredcomponentobjectid,
+					name: componentNames.get(
+						`${edge.requiredcomponenttype}:${edge.requiredcomponentobjectid}`,
+					) ?? fallbackComponentName(edge.requiredcomponenttype, edge.requiredcomponentobjectid),
+				},
+				dependentComponent: {
+					type: edge.dependentcomponenttype,
+					objectId: edge.dependentcomponentobjectid,
+					name: componentNames.get(
+						`${edge.dependentcomponenttype}:${edge.dependentcomponentobjectid}`,
+					) ?? null,
+				},
+				dependencyType: edge.dependencytype,
+			});
+		}
 	}
 	return DependencySummarySchema.parse({
 		checkedComponents: candidates.length,
 		dependentReferences,
 		scope: 'direct-customization-overlaps',
 		candidateComponents: distinct.length,
+		edges,
 		truncated,
 	});
 }
@@ -451,18 +559,19 @@ function collectIntegrations(
 async function collectCounts(
 	context: RequestContext,
 	components: { componenttype: number; objectid: string | null }[],
+	tableProducts: Map<string, Set<string>>,
 ): Promise<z.infer<typeof CountSummarySchema>> {
 	const metadataIds = [...new Set(components
 		.filter(item => item.componenttype === 1 && item.objectid !== null)
 		.map(item => item.objectid!))];
 	const selected = metadataIds.slice(0, MAX_COUNT_TABLES);
-	const names: string[] = [];
+	const resolvedTables: Array<{ id: string; logicalName: string }> = [];
 	for (const id of selected) {
 		try {
 			const definition = EntityDefinitionSchema.parse(await getJson(context,
 				apiUrl(context.origin, `EntityDefinitions(${id})`, { '$select': 'LogicalName' })));
 			if (/^[a-zA-Z0-9][a-zA-Z0-9_]{0,99}$/.test(definition.LogicalName)) {
-				names.push(definition.LogicalName);
+				resolvedTables.push({ id, logicalName: definition.LogicalName });
 			}
 		} catch (error) {
 			if (!(error instanceof RequestFailure && error.status === 'not-applicable')) {
@@ -470,7 +579,8 @@ async function collectCounts(
 			}
 		}
 	}
-	if (names.length === 0) {
+	const names = resolvedTables.map(item => item.logicalName);
+	if (resolvedTables.length === 0) {
 		return CountSummarySchema.parse({ tables: [], truncated: metadataIds.length > selected.length });
 	}
 	const parameter = `['${names.join("','")}']`;
@@ -484,10 +594,11 @@ async function collectCounts(
 		}
 	}
 	return CountSummarySchema.parse({
-		tables: names.filter(name => values.has(name)).map(logicalName => ({
-			logicalName,
-			count: values.get(logicalName)!,
+		tables: resolvedTables.filter(table => values.has(table.logicalName)).map(table => ({
+			logicalName: table.logicalName,
+			count: values.get(table.logicalName)!,
 			accuracy: 'snapshot-within-24-hours',
+			products: [...(tableProducts.get(table.id) ?? [])].sort(),
 		})),
 		truncated: metadataIds.length > selected.length || values.size !== names.length,
 	});
@@ -641,7 +752,7 @@ export async function collectAssessmentDetails(
 				if (!componentData) {
 					throw new RequestFailure('No relevant table component identifiers were available.', 'not-applicable');
 				}
-				result.counts = await collectCounts(context, componentData.relevant);
+				result.counts = await collectCounts(context, componentData.relevant, componentData.tableProducts);
 			}, 'Relevant table counts were read from the Dataverse snapshot count function.');
 			if (result.counts?.truncated) {
 				replaceEvidence(result.evidence, evidence('counts', 'partial', result.collectedAt,
