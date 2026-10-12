@@ -78,11 +78,10 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	assert.equal(report.combined.find(item => item.id === 'adverse-unscoped')!.total, null);
 	assert.ok(report.workItems.every(item => item.estimateType === 'uncalibrated-assumption'));
 	const markdown = await readFile(join(output, 'assessment-customer-environment.md'), 'utf8');
-	assert.ok(markdown.includes('## What is installed and what should you do?'));
-	assert.ok(markdown.includes('## Environment'));
-	assert.ok(markdown.includes('| Name | Customer Environment |'));
+	assert.ok(markdown.includes('## Supported nonprofit products and recommendations'));
+	assert.ok(markdown.includes('## Executive decision'));
+	assert.ok(markdown.includes('| Environment name | Customer Environment |'));
 	assert.ok(markdown.includes('| URL | https://synthetic.crm.dynamics.com |'));
-	assert.ok(markdown.includes('## What is installed and what should you do?'));
 });
 
 test('collection refuses non-TTY invocation before contacting an environment', async t => {
