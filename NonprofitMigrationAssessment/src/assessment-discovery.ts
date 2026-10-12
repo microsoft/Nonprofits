@@ -14,6 +14,7 @@ const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 25;
 const MAX_COUNT_TABLES = 50;
+const INTEGRATION_COMPONENT_TYPES = new Set([29, 91, 92, 371]);
 
 const VersionResponseSchema = z.object({ Version: z.string() });
 const OrganizationPageSchema = z.object({
@@ -266,6 +267,8 @@ async function collectComponents(
 ): Promise<{
 	summary: z.infer<typeof ComponentSummarySchema>;
 	relevant: { componenttype: number; objectid: string | null }[];
+	integrations: { componenttype: number; objectid: string | null }[];
+	integrationSolutions: number;
 }> {
 	const relevantSolutions = discovery.solutions
 		.filter(solution => relevantNames.has(solution.uniqueName.toLowerCase()) && solution.solutionId);
@@ -278,6 +281,12 @@ async function collectComponents(
 			&& !['active', 'default', 'system'].includes(solution.uniqueName.toLowerCase())
 			&& !isMicrosoftFirstPartyPublisher(solution.publisher));
 	const relevant: { componenttype: number; objectid: string | null }[] = [];
+	const integrationComponents = new Map<string, { componenttype: number; objectid: string | null }>();
+	const addIntegrations = (items: { componenttype: number; objectid: string | null }[]): void => {
+		for (const item of items.filter(candidate => INTEGRATION_COMPONENT_TYPES.has(candidate.componenttype))) {
+			integrationComponents.set(`${item.componenttype}:${item.objectid ?? 'unknown'}`, item);
+		}
+	};
 	const productKeys = new Map<string, Set<string>>();
 	const componentTypes = new Map<number, number>();
 	let truncated = relevantSolutions.length > MAX_RELEVANT_SOLUTIONS;
@@ -298,6 +307,7 @@ async function collectComponents(
 				keys.add(`${item.componenttype}:${item.objectid}`);
 			}
 		}
+		addIntegrations(parsed.value);
 		productKeys.set(solution.uniqueName, keys);
 	}
 	const relevantKeys = new Set(relevant
@@ -316,6 +326,7 @@ async function collectComponents(
 	}> = [];
 	const productCustomizationSolutions = new Map<string, Set<string>>();
 	const productOverlapCounts = new Map<string, number>();
+	let overlappingCandidateSolutions = 0;
 	for (const solution of analyzedCandidates) {
 		const parsed = ComponentPageSchema.parse(await getJson(context,
 			apiUrl(context.origin, 'solutioncomponents', {
@@ -358,6 +369,10 @@ async function collectComponents(
 				.map(([productUniqueName, componentCount]) => ({ productUniqueName, componentCount }))
 				.sort((left, right) => left.productUniqueName.localeCompare(right.productUniqueName, 'en')),
 		});
+		if (overlapsByProduct.size > 0) {
+			overlappingCandidateSolutions++;
+			addIntegrations(parsed.value);
+		}
 	}
 	return {
 		summary: ComponentSummarySchema.parse({
@@ -379,6 +394,8 @@ async function collectComponents(
 				truncated,
 		}),
 		relevant,
+		integrations: [...integrationComponents.values()],
+		integrationSolutions: relevantSolutions.length + overlappingCandidateSolutions,
 	};
 }
 
@@ -408,17 +425,20 @@ async function collectDependencies(
 	});
 }
 
-async function collectIntegrations(context: RequestContext): Promise<z.infer<typeof IntegrationSummarySchema>> {
-	const workflows = await countEntitySet(context, 'workflows', 'workflowid');
-	const connectionReferences = await countEntitySet(context, 'connectionreferences', 'connectionreferenceid');
-	const pluginAssemblies = await countEntitySet(context, 'pluginassemblies', 'pluginassemblyid');
-	const pluginSteps = await countEntitySet(context, 'sdkmessageprocessingsteps', 'sdkmessageprocessingstepid');
+function collectIntegrations(
+	componentData: Awaited<ReturnType<typeof collectComponents>>,
+): z.infer<typeof IntegrationSummarySchema> {
+	const count = (type: number): number =>
+		componentData.integrations.filter(item => item.componenttype === type).length;
 	return IntegrationSummarySchema.parse({
-		workflows: workflows.count,
-		connectionReferences: connectionReferences.count,
-		pluginAssemblies: pluginAssemblies.count,
-		pluginSteps: pluginSteps.count,
-		truncated: [workflows, connectionReferences, pluginAssemblies, pluginSteps].some(item => item.truncated),
+		workflows: count(29),
+		connectionReferences: count(371),
+		pluginAssemblies: count(91),
+		pluginSteps: count(92),
+		scope: 'selected-products-and-overlapping-customizations',
+		scopedSolutions: componentData.integrationSolutions,
+		truncated: componentData.summary.truncated
+			|| componentData.integrations.some(item => item.objectid === null),
 	});
 }
 
@@ -590,12 +610,21 @@ export async function collectAssessmentDetails(
 					'Dependency discovery inspected a bounded subset of relevant components.', ['components']));
 			}
 		}
-		await run('integrations', [], async () => {
-			result.integrations = await collectIntegrations(context);
-		}, 'Environment-wide automation and integration registration counts were summarized.');
-		if (result.integrations?.truncated) {
-			replaceEvidence(result.evidence, evidence('integrations', 'partial', result.collectedAt,
-				'One or more registration counts reached the Dataverse 5,000-row OData count limit.'));
+		if (selected('integrations') && !selected('components')) {
+			replaceEvidence(result.evidence, evidence('integrations', 'unknown', result.collectedAt,
+				'Scoped integration discovery requires consent for component metadata.', ['components']));
+		} else {
+			await run('integrations', ['components'], async () => {
+				if (!componentData) {
+					throw new RequestFailure('No relevant solution component evidence was available.', 'not-applicable');
+				}
+				result.integrations = collectIntegrations(componentData);
+			}, 'Workflow, connection-reference, and plug-in counts were derived from selected product and overlapping customization solution components.');
+			if (result.integrations?.truncated) {
+				replaceEvidence(result.evidence, evidence('integrations', 'partial', result.collectedAt,
+					'Scoped integration evidence may be incomplete because component discovery reached a limit.',
+					['components']));
+			}
 		}
 		if (selected('counts') && !selected('components')) {
 			replaceEvidence(result.evidence, evidence('counts', 'unknown', result.collectedAt,

@@ -104,6 +104,8 @@ export const IntegrationSummarySchema = z.strictObject({
 	connectionReferences: CountMetricSchema.nullable(),
 	pluginAssemblies: CountMetricSchema.nullable(),
 	pluginSteps: CountMetricSchema.nullable(),
+	scope: z.literal('selected-products-and-overlapping-customizations').optional(),
+	scopedSolutions: CountMetricSchema.optional(),
 	truncated: z.boolean(),
 });
 export const CountSummarySchema = z.strictObject({

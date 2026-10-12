@@ -437,7 +437,7 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	assert.ok(markdown.includes('### Migration order'));
 	assert.ok(markdown.includes('### Recommended sequence'));
 	assert.ok(markdown.includes('### Observed environment dependency signal'));
-	assert.ok(markdown.includes('### Environment-wide technical signals'));
+	assert.ok(markdown.includes('### Scoped technical signals'));
 	assert.ok(markdown.includes('Product-scoped plug-in assemblies and steps'));
 	assert.ok(!markdown.includes('| Plug-in steps |'));
 	assert.ok(markdown.includes('### Metric definitions'));

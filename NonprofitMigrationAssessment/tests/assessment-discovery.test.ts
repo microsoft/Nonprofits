@@ -11,6 +11,11 @@ const CUSTOM_ID = '22222222-2222-4222-8222-222222222222';
 const PARTNER_ID = '55555555-5555-4555-8555-555555555555';
 const TABLE_ID = '33333333-3333-f333-8333-333333333333';
 const WEBRESOURCE_ID = '44444444-4444-4444-8444-444444444444';
+const WORKFLOW_ID = '66666666-6666-4666-8666-666666666666';
+const CONNECTION_REFERENCE_ID = '77777777-7777-4777-8777-777777777777';
+const PLUGIN_ASSEMBLY_ID = '88888888-8888-4888-8888-888888888888';
+const PLUGIN_STEP_ID = '99999999-9999-4999-8999-999999999999';
+const CUSTOM_PLUGIN_STEP_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 
 function baseDiscovery() {
 	return DiscoverySchema.parse({
@@ -87,10 +92,21 @@ test('detailed discovery summarizes approved environment metadata without record
 						? [
 							{ componenttype: 1, objectid: TABLE_ID, forbiddenContent: 'ignored' },
 							{ componenttype: 61, objectid: WEBRESOURCE_ID },
+							{ componenttype: 29, objectid: WORKFLOW_ID },
+							{ componenttype: 371, objectid: CONNECTION_REFERENCE_ID },
+							{ componenttype: 91, objectid: PLUGIN_ASSEMBLY_ID },
+							{ componenttype: 92, objectid: PLUGIN_STEP_ID },
 						]
 						: filter.includes(CUSTOM_ID)
-							? [{ componenttype: 61, objectid: WEBRESOURCE_ID }]
-							: [{ componenttype: 1, objectid: TABLE_ID }],
+							? [
+								{ componenttype: 61, objectid: WEBRESOURCE_ID },
+								{ componenttype: 29, objectid: WORKFLOW_ID },
+								{ componenttype: 92, objectid: CUSTOM_PLUGIN_STEP_ID },
+							]
+							: [
+								{ componenttype: 1, objectid: TABLE_ID },
+								{ componenttype: 91, objectid: PLUGIN_ASSEMBLY_ID },
+							],
 				});
 			}
 			if (url.pathname.includes('RetrieveDependentComponents')) {
@@ -108,10 +124,6 @@ test('detailed discovery summarizes approved environment metadata without record
 				});
 			}
 			const counts: Record<string, number> = {
-				workflows: 7,
-				connectionreferences: 3,
-				pluginassemblies: 2,
-				sdkmessageprocessingsteps: 5,
 				adx_websites: 1,
 				mspp_websites: 0,
 			};
@@ -130,44 +142,57 @@ test('detailed discovery summarizes approved environment metadata without record
 	});
 	assert.deepEqual(result.components, {
 		relevantSolutions: 1,
-		relevantComponents: 2,
-		componentTypes: [{ type: 1, count: 1 }, { type: 61, count: 1 }],
+		relevantComponents: 6,
+		componentTypes: [
+			{ type: 1, count: 1 },
+			{ type: 29, count: 1 },
+			{ type: 61, count: 1 },
+			{ type: 91, count: 1 },
+			{ type: 92, count: 1 },
+			{ type: 371, count: 1 },
+		],
 		unmanagedSolutions: 1,
 		analyzedUnmanagedSolutions: 1,
-		overlappingUnmanagedComponents: 1,
+		overlappingUnmanagedComponents: 2,
 		productSummaries: [{
 			uniqueName: 'NonprofitCore',
-			componentCount: 2,
-			overlappingCustomizationComponents: 2,
+			componentCount: 6,
+			overlappingCustomizationComponents: 4,
 			customizationSolutions: ['CustomerCustom', 'PartnerManaged'],
 		}],
 		customizationCandidates: [{
 			uniqueName: 'CustomerCustom',
 			managed: false,
 			publisher: 'Customer',
-			componentCount: 1,
-			componentTypes: [{ type: 61, count: 1 }],
-			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
+			componentCount: 3,
+			componentTypes: [
+				{ type: 29, count: 1 },
+				{ type: 61, count: 1 },
+				{ type: 92, count: 1 },
+			],
+			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 2 }],
 		}, {
 			uniqueName: 'PartnerManaged',
 			managed: true,
 			publisher: 'PartnerPublisher',
-			componentCount: 1,
-			componentTypes: [{ type: 1, count: 1 }],
-			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }],
+			componentCount: 2,
+			componentTypes: [{ type: 1, count: 1 }, { type: 91, count: 1 }],
+			overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 2 }],
 		}],
 		truncated: false,
 	});
 	assert.deepEqual(result.dependencies, {
-		checkedComponents: 2,
-		dependentReferences: 2,
+		checkedComponents: 6,
+		dependentReferences: 6,
 		truncated: false,
 	});
 	assert.deepEqual(result.integrations, {
-		workflows: 7,
-		connectionReferences: 3,
-		pluginAssemblies: 2,
-		pluginSteps: 5,
+		workflows: 1,
+		connectionReferences: 1,
+		pluginAssemblies: 1,
+		pluginSteps: 2,
+		scope: 'selected-products-and-overlapping-customizations',
+		scopedSolutions: 3,
 		truncated: false,
 	});
 	assert.deepEqual(result.counts, {
@@ -183,6 +208,7 @@ test('detailed discovery summarizes approved environment metadata without record
 		result.evidence.find(item => item.id === category)?.status === 'observed'));
 	assert.ok(!JSON.stringify(result).includes('forbidden'));
 	assert.ok(calls.length >= 13);
+	assert.equal(calls.some(call => /\/(workflows|connectionreferences|pluginassemblies|sdkmessageprocessingsteps)\?/.test(call)), false);
 });
 
 test('unconsented detail categories remain explicitly not collected', async () => {
@@ -216,15 +242,19 @@ test('detail access denial is recorded without exposing response content', async
 	assert.ok(!JSON.stringify(result).includes('SYNTHETIC_SECRET_CANARY'));
 });
 
-test('capped integration counts remain useful partial evidence', async () => {
+test('scoped integration evidence inherits component collection limits', async () => {
 	const result = await collectAssessmentDetails(baseDiscovery(), {
 		environmentUrl: ORIGIN,
 		consent: true,
-		categories: ['solutions', 'integrations'],
+		categories: ['solutions', 'components', 'integrations'],
 		relevantSolutionNames: ['NonprofitCore'],
 		getToken: async () => TOKEN,
-		fetch: async () => Response.json({ '@odata.count': 5000, value: [] }),
+		fetch: async () => Response.json({
+			value: [],
+			'@odata.nextLink': `${ORIGIN}/api/data/v9.2/solutioncomponents?$skiptoken=synthetic`,
+		}),
 	});
 	assert.equal(result.integrations?.truncated, true);
+	assert.equal(result.integrations?.scope, 'selected-products-and-overlapping-customizations');
 	assert.equal(result.evidence.find(item => item.id === 'integrations')?.status, 'partial');
 });

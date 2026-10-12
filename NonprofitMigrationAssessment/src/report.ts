@@ -160,6 +160,7 @@ function componentType(type: number): string {
 		90: 'Plug-in types',
 		91: 'Plug-in assemblies',
 		92: 'Plug-in steps',
+		371: 'Connection references',
 		380: 'Environment variable definitions',
 		381: 'Environment variable values',
 	}[type] ?? 'Other platform components';
@@ -394,7 +395,9 @@ function nextActions(
 		actions.push('Complete a named dependency review for the components in migration scope.');
 	}
 	if (report.evidence.find(item => item.id === 'integrations')?.status === 'partial') {
-		actions.push('Identify which workflows, connection references, and plug-ins belong to the nonprofit migration scope and assign owners.');
+		actions.push(report.discoverySummary.integrations?.scope === 'selected-products-and-overlapping-customizations'
+			? 'Review the scoped workflows, connection references, and plug-ins and assign owners.'
+			: 'Identify which workflows, connection references, and plug-ins belong to the nonprofit migration scope and assign owners.');
 	}
 	if (interruptionRisk) {
 		const constraint = report.operations?.maxInterruptionHours === 0
@@ -521,14 +524,22 @@ export function renderMarkdown(report: Assessment): string {
 			'> This assessment does not retain individual source-to-target dependency records. Use a solution-aware technical review when exact dependency names are required.',
 		] : ['Dependency metadata was not available.']),
 		'',
-		'### Environment-wide technical signals',
+		'### Scoped technical signals',
 		'',
-		'These counts describe the environment. They are not all automatically part of the nonprofit migration scope.',
+		'Integration counts are limited to installed nonprofit solutions and custom solutions that directly overlap them. Relevant table counts use the same selected-product component evidence.',
 		'',
 		'| Signal | Result |',
 		'| --- | --- |',
-		'| Product-scoped workflows and connection references | Not yet attributed; environment-wide counts remain in the detailed JSON |',
-		'| Product-scoped plug-in assemblies and steps | Not yet attributed; environment-wide counts remain in the detailed JSON |',
+		...(report.discoverySummary.integrations?.scope === 'selected-products-and-overlapping-customizations' ? [
+			`| Scoped solutions | ${report.discoverySummary.integrations.scopedSolutions ?? 'Not available'} installed product and overlapping customization solutions |`,
+			`| Scoped workflows | ${report.discoverySummary.integrations.workflows ?? 'Not available'} |`,
+			`| Scoped connection references | ${report.discoverySummary.integrations.connectionReferences ?? 'Not available'} |`,
+			`| Scoped plug-in assemblies | ${report.discoverySummary.integrations.pluginAssemblies ?? 'Not available'} |`,
+			`| Scoped plug-in steps | ${report.discoverySummary.integrations.pluginSteps ?? 'Not available'} |`,
+		] : [
+			'| Product-scoped workflows and connection references | Not yet attributed; environment-wide counts remain in the detailed JSON |',
+			'| Product-scoped plug-in assemblies and steps | Not yet attributed; environment-wide counts remain in the detailed JSON |',
+		]),
 		`| Relevant tables counted | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
 		...(report.routes.some(route => route.family === 've')
 			? [`| Volunteer Engagement sites | ${text(siteStatus(report))} |`]

@@ -98,7 +98,7 @@ The customer approves categories before collection.
 | Solutions | Identity, version, managed state, publisher, and current publisher prefix |
 | Components | Relevant component-type counts and bounded unmanaged overlap |
 | Dependencies | Deterministic bounded dependent-component sample |
-| Integrations | Counts of workflows, connection references, plug-in assemblies, and steps |
+| Integrations | Deduplicated workflow, connection-reference, plug-in assembly, and step component counts from selected products and directly overlapping custom solutions |
 | Data scale | Aggregate counts for bounded relevant tables |
 | Sites | Legacy and enhanced Power Pages site counts |
 
@@ -194,14 +194,14 @@ The concise Markdown report contains:
 3. A plain-language decision and separate decision confidence, provisional relative effort, and effort confidence per product
 4. An evidence-derived next-action checklist without additional customer questions
 5. Custom/partner solution details, component-type summaries, direct product overlap, and why each candidate needs review
-6. A technical appendix containing migration order, bounded dependency evidence, environment-wide technical signals, cautions, metric definitions, and limitations
+6. A technical appendix containing migration order, bounded dependency evidence, solution-scoped technical signals, cautions, metric definitions, and limitations
 7. Public migration-guide links
 
 The report defines each metric. Decision confidence describes certainty in the recommended action based on observed version or site evidence. Effort confidence describes reliability of the relative effort rating and is not presented for products with no migration effort.
 
-Environment-wide workflow, connection-reference, plug-in, and table counts are explicitly labeled as signals rather than migration scope. Technical component type identifiers remain in JSON; the Markdown uses customer-readable labels.
+Workflow, connection-reference, plug-in assembly, and plug-in-step counts are derived from deduplicated solution components in selected products and directly overlapping custom solutions. The collector doesn't issue environment-wide count requests for these categories. Technical component type identifiers remain in JSON; the Markdown uses customer-readable labels.
 
-The report states that it is AI-assisted and must be validated before action. Migration recommendations aren't described as mandatory. Environment-wide integration and plug-in totals remain in JSON until they can be attributed to supported nonprofit products.
+The report states that it is AI-assisted and must be validated before action. Migration recommendations aren't described as mandatory.
 
 The detailed JSON contains machine evidence, file hashes, work dependencies, rule provenance, scenario reasons, and numeric planning ranges. The bounded collector summarizes environment dependency counts; it doesn't retain individual source-to-target dependency records.
 

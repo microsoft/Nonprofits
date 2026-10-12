@@ -38,7 +38,7 @@ The Markdown report shows:
 - GitHub migration-guide links
 - Blockers, missing information, and next actions
 
-The first sections are customer-focused. Dependency samples, product-attribution gaps, metric definitions, and limitations are grouped in a technical appendix. Environment-wide integration totals remain only in detailed JSON because they aren't automatically nonprofit migration scope. Detailed numeric ranges and machine evidence remain in JSON for implementation partners. The customer-facing Markdown uses relative effort only.
+The first sections are customer-focused. Dependency samples, scoped integration signals, metric definitions, and limitations are grouped in a technical appendix. Workflow, connection-reference, plug-in assembly, and plug-in-step counts are derived from installed nonprofit solutions and directly overlapping custom solutions rather than environment-wide entity counts. Detailed numeric ranges and machine evidence remain in JSON for implementation partners. The customer-facing Markdown uses relative effort only.
 
 Ranges are automatically calculated by deterministic rules. Bundled defaults are uncalibrated engineering assumptions, not guarantees or measured averages. Validate the result with your implementation partner and a representative rehearsal.
 
@@ -101,7 +101,7 @@ The collector uses allowlisted reads for:
 - Solution identity, version, managed state, and publisher
 - Relevant solution-component counts and unmanaged overlap
 - A deterministic bounded dependency sample
-- Workflow, connection-reference, plug-in assembly, and step counts
+- Workflow, connection-reference, plug-in assembly, and step counts scoped through selected and overlapping solution components
 - Aggregate counts for relevant tables
 - Legacy and enhanced Power Pages site counts
 
