@@ -26,9 +26,8 @@ The skill guides the local commands, explains consent and limitations, and helps
 The Markdown report shows:
 
 - A direct executive recommendation and evidence date
-- All six supported products, including products not detected
-- Installed supported solutions and versions
-- Total solution inventory breadth and supported products not detected
+- Installed supported products and versions only; products not detected are omitted from customer tables
+- Total solution inventory breadth
 - Whether each product needs migration, needs review, or requires no action
 - An evidence-derived next-action checklist; no extra customer questionnaire is required
 - Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review

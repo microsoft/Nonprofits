@@ -190,7 +190,7 @@ When critical work remains unresolved, the report shows the known planning subto
 The concise Markdown report contains:
 
 1. A direct executive recommendation with environment identity, evidence date, inventory breadth, overall effort, and effort confidence
-2. An all-product table covering every supported product, including products not detected
+2. A product table containing only installed or otherwise in-scope supported products; products not detected are omitted from customer-facing tables
 3. A plain-language decision and separate decision confidence, provisional relative effort, and effort confidence per product
 4. An evidence-derived next-action checklist without additional customer questions
 5. Custom/partner solution details, component-type summaries, direct product overlap, and why each candidate needs review

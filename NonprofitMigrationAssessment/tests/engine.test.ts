@@ -487,7 +487,7 @@ test('customer Markdown distinguishes missing customization detail from no compo
 	assert.ok(markdown.includes('Target managed solution metadata is missing'));
 });
 
-test('customer Markdown reports inventory breadth and excludes VE when site capability is absent', () => {
+test('customer Markdown omits products not detected from every table', () => {
 	const input = inventory(['cdm', 've']);
 	const ve = input.questionnaire.answers.find(answer => answer.family === 've')!;
 	ve.scope = 'auto';
@@ -511,11 +511,12 @@ test('customer Markdown reports inventory breadth and excludes VE when site capa
 	});
 	const markdown = renderMarkdown(assess(input, DEFAULT_RULES, { now: NOW }));
 	assert.ok(markdown.includes('| Solutions inventoried | 2 |'));
-	assert.ok(markdown.includes('| Fundraising | Not detected |'));
-	assert.ok(markdown.includes('| Grant Management | Not detected |'));
-	assert.ok(markdown.includes('| Outcome Management | Not detected |'));
-	assert.ok(markdown.includes('| Volunteer Management | Not detected |'));
-	assert.ok(markdown.includes('| Volunteer Engagement | Not detected |'));
+	assert.ok(!markdown.includes('| Fundraising |'));
+	assert.ok(!markdown.includes('| Grant Management |'));
+	assert.ok(!markdown.includes('| Outcome Management |'));
+	assert.ok(!markdown.includes('| Volunteer Management |'));
+	assert.ok(!markdown.includes('| Volunteer Engagement |'));
+	assert.ok(!markdown.includes('Volunteer Engagement sites'));
 	assert.ok(!markdown.includes('Confirm whether migration is needed'));
 	assert.ok(!markdown.includes('Site not observed'));
 });

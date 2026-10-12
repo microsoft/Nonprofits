@@ -1,5 +1,5 @@
 import { type Assessment, type Family, type Finding } from './contracts.js';
-import { guideUrl, ROUTES } from './routes.js';
+import { ROUTES } from './routes.js';
 import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 
 const FAMILY_NAMES: Record<Family, string> = {
@@ -331,25 +331,6 @@ function dependencyDiagram(report: Assessment): string[] {
 	];
 }
 
-function absentSupportedProducts(report: Assessment, solutionInventoryAvailable: boolean): string[] {
-	if (!solutionInventoryAvailable) {
-		return [];
-	}
-	const selected = new Set(report.routes.map(route => route.family));
-	const absent = ROUTES
-		.filter(route => route.family !== 've' && !selected.has(route.family))
-		.map(route => FAMILY_NAMES[route.family]);
-	const sites = report.discoverySummary.sites;
-	const sitesObserved = ['observed', 'partial'].includes(
-		report.evidence.find(item => item.id === 'sites')?.status ?? '',
-	);
-	if (!selected.has('ve') && sitesObserved && sites
-		&& [null, 0].includes(sites.legacySites) && [null, 0].includes(sites.enhancedSites)) {
-		absent.push(FAMILY_NAMES.ve);
-	}
-	return absent;
-}
-
 function migrationSequence(report: Assessment): string[] {
 	return report.routes.map(route => {
 		const product = FAMILY_NAMES[route.family];
@@ -385,22 +366,9 @@ function executiveRecommendation(report: Assessment): string {
 	return parts.length ? parts.join(' ') : 'Review the product decisions below.';
 }
 
-function customerProductRows(
-	report: Assessment,
-	solutionInventoryAvailable: boolean,
-	absentProducts: string[],
-): string[] {
-	return ROUTES.map(definition => {
-		const route = report.routes.find(item => item.family === definition.family);
-		if (route) {
-			return `| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`;
-		}
-		const absent = absentProducts.includes(FAMILY_NAMES[definition.family]);
-		const installed = absent ? 'Not detected' : definition.family === 've' ? siteStatus(report)
-			: solutionInventoryAvailable ? 'Not detected' : 'Status unavailable';
-		const decision = absent ? 'No migration required — product not detected' : 'Confirm product presence';
-		return `| ${text(FAMILY_NAMES[definition.family])} | ${installed} | ${targetVersion(report, definition.family)} | ${decision} | ${absent ? 'High' : 'Low'} | ${absent ? 'None' : 'Review required'} | ${absent ? 'Not applicable' : 'Not estimable'} | [Guide](${guideUrl(definition, report.target.commit)}) |`;
-	});
+function customerProductRows(report: Assessment): string[] {
+	return report.routes.map(route =>
+		`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`);
 }
 
 function nextActions(
@@ -447,7 +415,6 @@ export function renderMarkdown(report: Assessment): string {
 	const solutionInventoryAvailable = ['observed', 'partial'].includes(
 		report.evidence.find(item => item.id === 'solutions')?.status ?? 'unknown',
 	);
-	const absentProducts = absentSupportedProducts(report, solutionInventoryAvailable);
 	const nonBlockingFindings = report.findings.filter(item => !item.blocking
 		&& !['already-aligned', 'not-installed'].includes(item.code));
 	const interruptionRisk = report.operations?.maxInterruptionHours !== null
@@ -458,7 +425,7 @@ export function renderMarkdown(report: Assessment): string {
 	const accessLimited = report.evidence.some(item => item.status === 'access-denied');
 	const solutionEvidenceDate = report.evidence.find(item => item.id === 'solutions')?.collectedAt;
 	const actions = nextActions(report, interruptionRisk);
-	const productRows = customerProductRows(report, solutionInventoryAvailable, absentProducts);
+	const productRows = customerProductRows(report);
 	const output = [
 		'# Nonprofit migration assessment',
 		'',
@@ -563,7 +530,9 @@ export function renderMarkdown(report: Assessment): string {
 		'| Product-scoped workflows and connection references | Not yet attributed; environment-wide counts remain in the detailed JSON |',
 		'| Product-scoped plug-in assemblies and steps | Not yet attributed; environment-wide counts remain in the detailed JSON |',
 		`| Relevant tables counted | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
-		`| Volunteer Engagement sites | ${text(siteStatus(report))} |`,
+		...(report.routes.some(route => route.family === 've')
+			? [`| Volunteer Engagement sites | ${text(siteStatus(report))} |`]
+			: []),
 		'',
 		'### Assessment cautions',
 		'',
