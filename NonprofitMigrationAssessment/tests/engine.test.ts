@@ -258,7 +258,9 @@ test('alignment intent produces no migration work for equivalent releases', () =
 	assert.deepEqual(result.routes[0]!.scenarios.find(item => item.id === 'assessed')!.total,
 		{ min: 0, max: 0, unit: 'person-hours' });
 	assert.equal(result.workItems.length, 0);
-	assert.ok(renderMarkdown(result).includes('No migration required'));
+	const markdown = renderMarkdown(result);
+	assert.ok(markdown.includes('No migration required'));
+	assert.ok(markdown.includes('| No action — already aligned | High | None | Not applicable |'));
 });
 
 test('already-aligned CDM satisfies the Volunteer Management prerequisite', () => {
@@ -405,7 +407,10 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	assert.ok(markdown.includes('## Customization solutions'));
 	assert.ok(markdown.includes('## Environment'));
 	assert.ok(markdown.includes('| Provisional overall effort |'));
-	assert.ok(markdown.includes('| Assessment confidence |'));
+	assert.ok(markdown.includes('| Overall effort confidence |'));
+	assert.ok(markdown.includes('## How to read the metrics'));
+	assert.ok(markdown.includes('| Decision confidence |'));
+	assert.ok(markdown.includes('| Effort confidence |'));
 	assert.ok(markdown.includes('### Why these effort ratings?'));
 	assert.ok(markdown.includes('```mermaid'));
 	assert.ok(markdown.includes('### Product migration order'));
@@ -415,7 +420,7 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	assert.ok(markdown.includes('NonprofitCore 2.0.0.0'));
 	assert.ok(markdown.includes('NonprofitCore 3.0.0.0'));
 	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | Forms: 1, Scripts/web resources: 2 | NonprofitCore (1) | Direct overlap found; validate behavior and deployment order |'));
-	assert.ok(markdown.includes('| Medium | Low | [Guide]('));
+	assert.ok(markdown.includes('| High | Medium | Low | [Guide]('));
 	assert.ok(markdown.includes('Detailed ranges, evidence, hashes, and technical reasons'));
 	assert.ok(!markdown.includes('0-0 person-hours'));
 	assert.ok(!markdown.includes('### shared.preparation'));

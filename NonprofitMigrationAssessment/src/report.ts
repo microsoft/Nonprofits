@@ -46,6 +46,13 @@ function effortSummary(route: Assessment['routes'][number]): string {
 	return 'Review required';
 }
 
+function effortDisplay(route: Assessment['routes'][number]): string {
+	const effort = effortSummary(route);
+	return route.family === 've' && !['None', 'Review required'].includes(effort)
+		? `${effort} if migration is required`
+		: effort;
+}
+
 function confidence(value: Assessment['routes'][number]['confidence']): string {
 	return {
 		low: 'Low',
@@ -54,40 +61,48 @@ function confidence(value: Assessment['routes'][number]['confidence']): string {
 	}[value];
 }
 
-function overallConfidence(report: Assessment): string {
-	if (report.routes.some(route => route.confidence === 'not-estimable')) {
+function effortConfidence(route: Assessment['routes'][number]): string {
+	return route.effortBand === 'none' ? 'Not applicable' : confidence(route.confidence);
+}
+
+function overallEffortConfidence(report: Assessment): string {
+	const migrationRoutes = report.routes.filter(route => route.effortBand !== 'none');
+	if (migrationRoutes.length === 0) {
+		return 'Not applicable';
+	}
+	if (migrationRoutes.some(route => route.confidence === 'not-estimable')) {
 		return 'Not estimable';
 	}
-	return report.routes.some(route => route.confidence === 'low') ? 'Low' : 'Medium';
+	return migrationRoutes.some(route => route.confidence === 'low') ? 'Low' : 'Medium';
 }
 
-function decisionStatus(route: Assessment['routes'][number]): string {
-	return {
-		'already-at-target': 'Aligned',
-		eligible: 'Planning available',
-		blocked: 'Blocked',
-		unsupported: 'Unsupported',
-		'insufficient-evidence': 'Review required',
-		'not-installed': 'Not installed',
-	}[route.status];
-}
-
-function complexity(value: Assessment['routes'][number]['complexity']['level']): string {
-	return value === 'likely-standard' ? 'Likely standard'
-		: `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+function decisionConfidence(report: Assessment, route: Assessment['routes'][number]): string {
+	const solutionsObserved = report.evidence.find(item => item.id === 'solutions')?.status === 'observed';
+	if (route.family === 've') {
+		const sitesObserved = report.evidence.find(item => item.id === 'sites')?.status === 'observed';
+		return sitesObserved && report.discoverySummary.sites?.legacySites !== null ? 'High' : 'Low';
+	}
+	if (solutionsObserved && ['already-at-target', 'not-installed'].includes(route.status)) {
+		return 'High';
+	}
+	if (solutionsObserved && route.status === 'eligible') {
+		return 'High';
+	}
+	return route.status === 'insufficient-evidence' ? 'Low' : 'Medium';
 }
 
 function planningBasis(report: Assessment, route: Assessment['routes'][number]): string {
 	if (route.status === 'already-at-target') {
-		return 'No migration effort; regression-test overlapping customizations.';
+		return 'Installed and GitHub versions match the approved release mapping. Regression-test overlapping customizations.';
 	}
-	const reasons = route.complexity.reasons
-		.filter(reason => !reason.includes('unmanaged component overlap signal'));
 	const overlap = customizationSignal(report, route.family);
 	if (route.family === 've') {
-		return `Applicability must be confirmed. ${reasons.join(' ')} ${overlap}.`;
+		return `${siteStatus(report)}. Effort applies only if a legacy site must be migrated.`;
 	}
-	return `${reasons.join(' ')} ${overlap}.`;
+	if (route.family === 'vm' && route.status === 'eligible') {
+		return `Legacy Volunteer Management must be replaced by a different GitHub solution. ${overlap}.`;
+	}
+	return `${recommendation(report, route)}. ${overlap}.`;
 }
 
 function cautionMessage(finding: Finding): string {
@@ -157,7 +172,7 @@ function componentBreakdown(
 		: componentCount > 0 ? 'Not captured in this inventory' : 'No components';
 }
 
-function recommendation(route: Assessment['routes'][number]): string {
+function recommendation(report: Assessment, route: Assessment['routes'][number]): string {
 	if (route.status === 'already-at-target') {
 		return 'No action — already aligned';
 	}
@@ -165,6 +180,9 @@ function recommendation(route: Assessment['routes'][number]): string {
 		return 'No action — not installed';
 	}
 	if (route.status === 'eligible') {
+		if (route.family === 've' && report.discoverySummary.sites?.legacySites === null) {
+			return 'Confirm whether migration is needed';
+		}
 		return route.intent === 'ownership-transition' ? 'Optional ownership transition'
 			: route.intent === 'apply-github-release' ? 'Update to GitHub release'
 				: 'Migrate to GitHub solution';
@@ -280,7 +298,7 @@ function dependencyDiagram(report: Assessment): string[] {
 			? 'ready'
 			: ['blocked', 'unsupported'].includes(route.status) ? 'blocked' : 'review';
 		classes.set(className, [...(classes.get(className) ?? []), route.family]);
-		return `  ${route.family}["${FAMILY_NAMES[route.family]}<br/>${effortSummary(route)}"]`;
+		return `  ${route.family}["${FAMILY_NAMES[route.family]}<br/>${effortDisplay(route)}"]`;
 	});
 	const edges = report.routes.flatMap(route => {
 		const definition = ROUTES.find(item => item.family === route.family)!;
@@ -334,7 +352,7 @@ function migrationSequence(report: Assessment): string[] {
 			return `Confirm whether **${product}** is applicable (${siteStatus(report)}). If required, migrate it after CDM for Nonprofits and Volunteer Management.`;
 		}
 		const prerequisite = dependencies(route.family);
-		return `${recommendation(route)} for **${product}**${prerequisite === 'None' ? '' : ` after ${prerequisite}`}, then validate its customizations and integrations.`;
+		return `${recommendation(report, route)} for **${product}**${prerequisite === 'None' ? '' : ` after ${prerequisite}`}, then validate its customizations and integrations.`;
 	});
 }
 
@@ -375,14 +393,23 @@ export function renderMarkdown(report: Assessment): string {
 		`| Supported nonprofit products detected | ${report.installedSolutions.length} |`,
 		`| Overall recommendation | ${noMigrationRequired ? 'No migration required' : findings.length ? 'Review identified items before migration' : 'Migration planning available'} |`,
 		`| Provisional overall effort | ${overallEffort(report)} |`,
-		`| Assessment confidence | ${overallConfidence(report)} |`,
+		`| Overall effort confidence | ${overallEffortConfidence(report)} |`,
+		'',
+		'## How to read the metrics',
+		'',
+		'| Metric | Meaning |',
+		'| --- | --- |',
+		'| Decision | What the customer should do for the product. |',
+		'| Decision confidence | How certain the observed product version or site evidence makes that decision. |',
+		'| Provisional effort | Relative migration work: None, Low, Medium, or High. It is not a time estimate. |',
+		'| Effort confidence | How reliable the effort rating is. It does not describe confidence in the installed version. |',
 		'',
 		'## What is installed and what should you do?',
 		'',
-		'| Product | Installed solution / version | GitHub target / version | Customization signal | Recommended action | Decision status | Provisional effort | Confidence | GitHub |',
-		'| --- | --- | --- | --- | --- | --- | --- | --- | --- |',
+		'| Product | Installed solution / version | GitHub target / version | Decision | Decision confidence | Provisional effort | Effort confidence | GitHub |',
+		'| --- | --- | --- | --- | --- | --- | --- | --- |',
 		...report.routes.map(route =>
-			`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${customizationSignal(report, route.family)} | ${text(recommendation(route))} | ${decisionStatus(route)} | ${effortSummary(route)} | ${confidence(route.confidence)} | [Guide](${route.guide}) |`),
+			`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`),
 		'',
 		...(absentProducts.length
 			? [`**Supported products not detected:** ${absentProducts.map(text).join(', ')}.`]
@@ -390,10 +417,10 @@ export function renderMarkdown(report: Assessment): string {
 		'',
 		'### Why these effort ratings?',
 		'',
-		'| Product | Complexity | Provisional effort | Confidence | Planning basis |',
-		'| --- | --- | --- | --- | --- |',
+		'| Product | Provisional effort | Effort confidence | Why |',
+		'| --- | --- | --- | --- |',
 		...report.routes.map(route => {
-			return `| ${text(FAMILY_NAMES[route.family])} | ${complexity(route.complexity.level)} | ${effortSummary(route)} | ${confidence(route.confidence)} | ${text(planningBasis(report, route))} |`;
+			return `| ${text(FAMILY_NAMES[route.family])} | ${effortDisplay(route)} | ${effortConfidence(route)} | ${text(planningBasis(report, route))} |`;
 		}),
 		'',
 		'## Customization solutions',
@@ -431,7 +458,7 @@ export function renderMarkdown(report: Assessment): string {
 		'',
 		...nonBlockingFindings.map(finding =>
 			`- **${finding.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(cautionMessage(finding))}`),
-		...(report.routes.some(route => route.confidence === 'low')
+		...(report.routes.some(route => route.effortBand !== 'none' && route.confidence === 'low')
 			? ['- Effort ratings have low confidence and should be validated in a representative sandbox.']
 			: []),
 		...(report.evidence.filter(item => item.status === 'partial').map(item =>
