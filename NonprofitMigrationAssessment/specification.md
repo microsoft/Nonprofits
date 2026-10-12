@@ -86,6 +86,8 @@ VM changes solution identity. Version numbers aren't compared across `VolunteerM
 
 VE changes the Power Pages site. The assessment considers source model, CDM/VM prerequisites, authentication-provider count, languages, custom journeys, validation, cutover, and rollback. It doesn't retrieve page content, scripts, credentials, or a full site export.
 
+VE is a site migration, not an installed Dataverse solution. Automatic scope excludes VE when the site check is observed and neither a legacy-site capability/site nor an enhanced site is present. Denied, partial, or uncollected site evidence keeps VE visible for confirmation rather than treating it as absent.
+
 ## 5. Read-only evidence
 
 The customer approves categories before collection.

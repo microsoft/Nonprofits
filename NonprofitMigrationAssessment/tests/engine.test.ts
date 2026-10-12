@@ -224,7 +224,7 @@ test('automatic scope includes installed products and excludes unconfirmed VE', 
 	assert.deepEqual(result.routes.map(route => route.family), ['cdm', 'fundraising', 'grants', 'outcomes', 'vm']);
 });
 
-test('automatic scope keeps VE visible when site absence cannot be confirmed', () => {
+test('automatic scope excludes VE when legacy capability is absent and enhanced count is zero', () => {
 	const input = inventory(['cdm', 'vm', 've']);
 	const ve = input.questionnaire.answers.find(answer => answer.family === 've')!;
 	ve.scope = 'auto';
@@ -239,6 +239,25 @@ test('automatic scope keeps VE visible when site absence cannot be confirmed', (
 		scope: 'environment',
 		inputs: [],
 		reason: 'Legacy capability unavailable.',
+	});
+	const result = assess(input, DEFAULT_RULES, { now: NOW });
+	assert.equal(result.routes.some(route => route.family === 've'), false);
+});
+
+test('automatic scope keeps VE visible when site metadata access is denied', () => {
+	const input = inventory(['cdm', 'vm', 've']);
+	const ve = input.questionnaire.answers.find(answer => answer.family === 've')!;
+	ve.scope = 'auto';
+	ve.veSource = 'unknown';
+	input.discovery.evidence.push({
+		id: 'sites',
+		source: 'observed',
+		status: 'access-denied',
+		collectedAt: NOW.toISOString(),
+		collector: 'synthetic',
+		scope: 'environment',
+		inputs: [],
+		reason: 'Synthetic denied site evidence.',
 	});
 	const result = assess(input, DEFAULT_RULES, { now: NOW });
 	assert.equal(result.routes.some(route => route.family === 've'), true);
@@ -468,8 +487,10 @@ test('customer Markdown distinguishes missing customization detail from no compo
 	assert.ok(markdown.includes('Target managed solution metadata is missing'));
 });
 
-test('customer Markdown reports inventory breadth, absent products, confidence, and unavailable VE site state', () => {
+test('customer Markdown reports inventory breadth and excludes VE when site capability is absent', () => {
 	const input = inventory(['cdm', 've']);
+	const ve = input.questionnaire.answers.find(answer => answer.family === 've')!;
+	ve.scope = 'auto';
 	input.discovery.solutions.push({
 		uniqueName: 'UnrelatedPlatformSolution',
 		version: '1.0.0.0',
@@ -494,7 +515,8 @@ test('customer Markdown reports inventory breadth, absent products, confidence, 
 	assert.ok(markdown.includes('| Grant Management | Not detected |'));
 	assert.ok(markdown.includes('| Outcome Management | Not detected |'));
 	assert.ok(markdown.includes('| Volunteer Management | Not detected |'));
-	assert.ok(markdown.includes('Legacy site status unavailable; no enhanced site observed'));
+	assert.ok(markdown.includes('| Volunteer Engagement | Not detected |'));
+	assert.ok(!markdown.includes('Confirm whether migration is needed'));
 	assert.ok(!markdown.includes('Site not observed'));
 });
 

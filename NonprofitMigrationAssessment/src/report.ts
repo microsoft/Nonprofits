@@ -135,10 +135,10 @@ function siteStatus(report: Assessment): string {
 		return 'Site status unavailable';
 	}
 	const legacy = sites.legacySites === null
-		? 'Legacy site status unavailable'
+		? 'No legacy site capability detected'
 		: sites.legacySites === 0 ? 'No legacy site observed' : `${sites.legacySites} legacy site(s) observed`;
 	const enhanced = sites.enhancedSites === null
-		? 'enhanced site status unavailable'
+		? 'no enhanced site capability detected'
 		: sites.enhancedSites === 0 ? 'no enhanced site observed' : `${sites.enhancedSites} enhanced site(s) observed`;
 	return `${legacy}; ${enhanced}`;
 }
@@ -343,7 +343,8 @@ function absentSupportedProducts(report: Assessment, solutionInventoryAvailable:
 	const sitesObserved = ['observed', 'partial'].includes(
 		report.evidence.find(item => item.id === 'sites')?.status ?? '',
 	);
-	if (!selected.has('ve') && sitesObserved && sites?.legacySites === 0 && sites.enhancedSites === 0) {
+	if (!selected.has('ve') && sitesObserved && sites
+		&& [null, 0].includes(sites.legacySites) && [null, 0].includes(sites.enhancedSites)) {
 		absent.push(FAMILY_NAMES.ve);
 	}
 	return absent;
@@ -395,7 +396,7 @@ function customerProductRows(
 			return `| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`;
 		}
 		const absent = absentProducts.includes(FAMILY_NAMES[definition.family]);
-		const installed = definition.family === 've' ? siteStatus(report)
+		const installed = absent ? 'Not detected' : definition.family === 've' ? siteStatus(report)
 			: solutionInventoryAvailable ? 'Not detected' : 'Status unavailable';
 		const decision = absent ? 'No migration required — product not detected' : 'Confirm product presence';
 		return `| ${text(FAMILY_NAMES[definition.family])} | ${installed} | ${targetVersion(report, definition.family)} | ${decision} | ${absent ? 'High' : 'Low'} | ${absent ? 'None' : 'Review required'} | ${absent ? 'Not applicable' : 'Not estimable'} | [Guide](${guideUrl(definition, report.target.commit)}) |`;

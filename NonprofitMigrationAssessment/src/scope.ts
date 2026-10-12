@@ -14,16 +14,20 @@ export function selectAnswers(
 		}
 		const route = ROUTES.find(item => item.family === answer.family)!;
 		if (answer.family === 've') {
+			const siteEvidence = discovery.evidence.find(item => item.id === 'sites');
+			const absenceConfirmed = siteEvidence?.status === 'observed'
+				&& discovery.sites !== undefined
+				&& [null, 0].includes(discovery.sites.legacySites)
+				&& [null, 0].includes(discovery.sites.enhancedSites);
+			if (absenceConfirmed) {
+				return false;
+			}
 			if (answer.veSource === 'legacy' || answer.veSource === 'target'
 				|| (discovery.sites?.legacySites ?? 0) > 0
 				|| (discovery.sites?.enhancedSites ?? 0) > 0) {
 				return true;
 			}
-			const siteEvidence = discovery.evidence.find(item => item.id === 'sites');
-			const absenceConfirmed = siteEvidence?.status === 'observed'
-				&& discovery.sites?.legacySites === 0
-				&& discovery.sites.enhancedSites === 0;
-			return !absenceConfirmed;
+			return true;
 		}
 		return discovery.solutions.some(solution =>
 			[route.source, route.target].some(name =>
