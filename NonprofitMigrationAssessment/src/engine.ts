@@ -343,6 +343,9 @@ export function assess(
 			managedEnvironment: q.environment.managedEnvironment ?? 'unknown',
 			accessRestriction: q.environment.accessRestriction ?? 'unknown',
 			dataverseVersion: discovery.environment?.dataverseVersion ?? null,
+			solutionInventoryCount: ['observed', 'partial'].includes(
+				discovery.evidence.find(item => item.id === 'solutions')?.status ?? '',
+			) ? discovery.solutions.length : null,
 		},
 		installedSolutions: discovery.solutions.filter(solution => selectedAnswers.some(answer => {
 			const route = ROUTES.find(item => item.family === answer.family)!;

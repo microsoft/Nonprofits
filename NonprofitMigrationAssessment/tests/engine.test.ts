@@ -404,13 +404,18 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	assert.ok(markdown.includes('## What is installed and what should you do?'));
 	assert.ok(markdown.includes('## Customization solutions'));
 	assert.ok(markdown.includes('## Environment'));
+	assert.ok(markdown.includes('| Provisional overall effort |'));
+	assert.ok(markdown.includes('| Assessment confidence |'));
+	assert.ok(markdown.includes('### Why these effort ratings?'));
 	assert.ok(markdown.includes('```mermaid'));
 	assert.ok(markdown.includes('### Product migration order'));
+	assert.ok(markdown.includes('### Recommended sequence'));
 	assert.ok(markdown.includes('### Observed environment dependency signal'));
+	assert.ok(markdown.includes('### Other collected signals'));
 	assert.ok(markdown.includes('NonprofitCore 2.0.0.0'));
 	assert.ok(markdown.includes('NonprofitCore 3.0.0.0'));
 	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | Forms: 1, Scripts/web resources: 2 | NonprofitCore (1) | Direct overlap found; validate behavior and deployment order |'));
-	assert.ok(markdown.includes('| Medium | [Guide]('));
+	assert.ok(markdown.includes('| Medium | Low | [Guide]('));
 	assert.ok(markdown.includes('Detailed ranges, evidence, hashes, and technical reasons'));
 	assert.ok(!markdown.includes('0-0 person-hours'));
 	assert.ok(!markdown.includes('### shared.preparation'));
@@ -448,8 +453,35 @@ test('customer Markdown distinguishes missing customization detail from no compo
 	assert.ok(markdown.includes('25 | Deterministic bounded sample'));
 	assert.ok(markdown.includes('809 | Total references returned'));
 	assert.ok(markdown.includes('Partial — collection limit reached'));
-	assert.ok(markdown.includes('Additional customization solutions or components may exist'));
+	assert.ok(markdown.includes('additional solutions or components may exist'));
 	assert.ok(markdown.includes('| # | Scope | Type | Blocker | Required action |'));
+});
+
+test('customer Markdown reports inventory breadth, absent products, confidence, and unavailable VE site state', () => {
+	const input = inventory(['cdm', 've']);
+	input.discovery.solutions.push({
+		uniqueName: 'UnrelatedPlatformSolution',
+		version: '1.0.0.0',
+		managed: true,
+		publisher: 'Platform',
+		publisherPrefix: 'platform',
+	});
+	input.discovery.sites = { legacySites: null, enhancedSites: 0, truncated: false };
+	input.discovery.evidence.push({
+		id: 'sites',
+		source: 'observed',
+		status: 'observed',
+		collectedAt: NOW.toISOString(),
+		collector: 'synthetic',
+		scope: 'environment',
+		inputs: [],
+		reason: 'Synthetic site evidence.',
+	});
+	const markdown = renderMarkdown(assess(input, DEFAULT_RULES, { now: NOW }));
+	assert.ok(markdown.includes('| Solutions inventoried | 2 |'));
+	assert.ok(markdown.includes('Supported products not detected:** Fundraising, Grant Management, Outcome Management, Volunteer Management.'));
+	assert.ok(markdown.includes('Legacy site status unavailable; no enhanced site observed'));
+	assert.ok(!markdown.includes('Site not observed'));
 });
 
 test('declared work for an absent solution is a scope conflict, not a zero-work success', () => {

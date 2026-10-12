@@ -187,13 +187,13 @@ When critical work remains unresolved, the report shows the known planning subto
 
 The concise Markdown report contains:
 
-1. Environment name, URL, and overall recommendation
-2. Installed solution and target-version table
-3. Simple required action and relative effort per product
+1. Environment name, URL, Dataverse version, solution inventory breadth, and overall recommendation
+2. Installed solution and target-version table plus supported products not detected
+3. Required action, decision status, provisional relative effort, complexity, and confidence per product
 4. Custom/partner solution details, component-type summaries, direct product overlap, and why each candidate needs review
-5. Prioritized direct and dependency blockers with next actions
-6. A visual product migration order and a supporting dependency table
-7. Bounded environment dependency signals with explicit collection limitations
+5. Prioritized direct and dependency blockers, non-blocking cautions, and next actions
+6. A visual product migration order, supporting dependency table, and recommended sequence
+7. Bounded dependency, integration, table-count, and site signals with explicit collection limitations
 8. Public migration-guide links
 9. Short customer-facing notes
 

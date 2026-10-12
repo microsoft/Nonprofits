@@ -26,11 +26,13 @@ The skill guides the local commands, explains consent and limitations, and helps
 The Markdown report shows:
 
 - Installed supported solutions and versions
+- Total solution inventory breadth and supported products not detected
 - Whether each product needs migration, needs review, or requires no action
 - Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review
 - A visual product migration order plus bounded environment dependency signals and their collection limits
 - Prioritized direct and dependency blockers with the action needed to clear each one
-- A simple per-product effort rating: None, Low, Medium, High, or Review required
+- A provisional per-product effort rating, separate decision status, complexity, and confidence
+- A recommended sequence, integration/count signals, site applicability, and readable cautions
 - GitHub migration-guide links
 - Blockers, missing information, and next actions
 

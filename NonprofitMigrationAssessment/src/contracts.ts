@@ -431,6 +431,7 @@ export interface Assessment {
 		managedEnvironment: 'yes' | 'no' | 'unknown';
 		accessRestriction: 'security-group' | 'unrestricted' | 'unknown';
 		dataverseVersion: string | null;
+		solutionInventoryCount: number | null;
 	};
 	installedSolutions: Solution[];
 	discoverySummary: {
@@ -508,6 +509,7 @@ export const AssessmentSchema: z.ZodType<Assessment> = z.strictObject({
 		managedEnvironment: z.enum(['yes', 'no', 'unknown']),
 		accessRestriction: z.enum(['security-group', 'unrestricted', 'unknown']),
 		dataverseVersion: ObservedVersionSchema.nullable(),
+		solutionInventoryCount: CountMetricSchema.nullable(),
 	}),
 	installedSolutions: z.array(SolutionSchema),
 	discoverySummary: z.strictObject({

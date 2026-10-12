@@ -17,7 +17,7 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) for c
 
 ## Customer experience
 
-1. Explain that the assessment is read-only and first answers: what supported products and versions are installed, what customization solutions were found and what they overlap, the visual product migration order and bounded dependency signal, prioritized blockers, whether migration is needed, a None/Low/Medium/High effort rating, and the relevant GitHub guide. Detailed ranges remain available for implementation partners.
+1. Explain that the assessment is read-only and first answers: how many solutions were inventoried; which supported products are installed or not detected; what customization solutions were found and what they overlap; the visual product migration order and bounded dependency signal; prioritized blockers and cautions; whether migration is needed; separate provisional effort, decision status, complexity, and confidence; and the relevant GitHub guide. Detailed ranges remain available for implementation partners.
 2. Confirm a clean checkout of `https://github.com/microsoft/Nonprofits` and Node.js 22.
 3. Guide `init`, then `configure`. Configuration asks only for the Dataverse URL; don't ask the customer to edit JSON or choose advanced platform settings.
 4. Explain the approved metadata/count categories and obtain authorization before `collect`.
