@@ -97,7 +97,7 @@ The customer approves categories before collection.
 | Environment | Dataverse version |
 | Solutions | Identity, version, managed state, publisher, and current publisher prefix |
 | Components | Relevant component-type counts and bounded unmanaged overlap |
-| Dependencies | Deterministic bounded dependent-component sample |
+| Dependencies | Deduplicated dependent-component lookups for direct customization overlaps, capped at 100 components |
 | Integrations | Deduplicated workflow, connection-reference, plug-in assembly, and step component counts from selected products and directly overlapping custom solutions |
 | Data scale | Aggregate counts for bounded relevant tables |
 | Sites | Legacy and enhanced Power Pages site counts |
@@ -225,7 +225,7 @@ Assessment artifacts remain local by default. Optional sharing requires customer
 - Commercial Dataverse URLs are supported.
 - Sovereign clouds and on-premises endpoints aren't currently supported.
 - Metadata can't establish arbitrary custom-code behavior.
-- Dependency and table discovery use documented deterministic caps.
+- Direct customization-overlap dependency discovery is capped at 100 components; table discovery also uses a documented deterministic cap.
 - Environment-wide automation counts can include unrelated platform registrations.
 - Scheduling ranges don't place work into individual calendars, approval lead times, or change windows.
 - A representative sandbox rehearsal remains the best validation of execution time and downtime.

@@ -182,8 +182,10 @@ test('detailed discovery summarizes approved environment metadata without record
 		truncated: false,
 	});
 	assert.deepEqual(result.dependencies, {
-		checkedComponents: 6,
-		dependentReferences: 6,
+		checkedComponents: 4,
+		dependentReferences: 4,
+		scope: 'direct-customization-overlaps',
+		candidateComponents: 4,
 		truncated: false,
 	});
 	assert.deepEqual(result.integrations, {

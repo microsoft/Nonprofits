@@ -97,6 +97,8 @@ export const ComponentSummarySchema = z.strictObject({
 export const DependencySummarySchema = z.strictObject({
 	checkedComponents: CountMetricSchema,
 	dependentReferences: CountMetricSchema,
+	scope: z.literal('direct-customization-overlaps').optional(),
+	candidateComponents: CountMetricSchema.optional(),
 	truncated: z.boolean(),
 });
 export const IntegrationSummarySchema = z.strictObject({

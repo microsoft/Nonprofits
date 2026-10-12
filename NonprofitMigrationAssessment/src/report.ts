@@ -517,9 +517,14 @@ export function renderMarkdown(report: Assessment): string {
 		...(dependency ? [
 			'| Signal | Result | What it means |',
 			'| --- | --- | --- |',
-			`| Components checked | ${dependency.checkedComponents} | Deterministic bounded sample of supported-product components |`,
-			`| Dependent references returned | ${dependency.dependentReferences} | Total references returned by sampled lookups; not a list of unique dependency edges |`,
-			`| Coverage | ${dependency.truncated ? 'Partial — collection limit reached' : 'Bounded sample completed'} | ${dependency.truncated ? 'More dependencies may exist' : 'Dynamic or undiscoverable dependencies may still exist'} |`,
+			...(dependency.scope === 'direct-customization-overlaps' ? [
+				`| Direct customization-overlap components found | ${dependency.candidateComponents ?? 'Not available'} | Components shared by an installed nonprofit solution and a custom/partner solution |`,
+				`| Overlap components checked | ${dependency.checkedComponents} | Dependency lookup was limited to the observed overlap components |`,
+			] : [
+				`| Components checked | ${dependency.checkedComponents} | Deterministic bounded sample of supported-product components |`,
+			]),
+			`| Dependent references returned | ${dependency.dependentReferences} | Total references returned by ${dependency.scope === 'direct-customization-overlaps' ? 'overlap-component' : 'sampled'} lookups; not a list of unique dependency edges |`,
+			`| Coverage | ${dependency.truncated ? 'Partial — safety cap reached' : dependency.scope === 'direct-customization-overlaps' ? 'Complete for observed direct overlaps' : 'Bounded sample completed'} | ${dependency.truncated ? 'Some observed overlap components were not checked' : 'Dynamic or undiscoverable dependencies can still exist'} |`,
 			'',
 			'> This assessment does not retain individual source-to-target dependency records. Use a solution-aware technical review when exact dependency names are required.',
 		] : ['Dependency metadata was not available.']),

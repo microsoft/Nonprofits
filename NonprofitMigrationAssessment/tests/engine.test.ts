@@ -481,7 +481,7 @@ test('customer Markdown distinguishes missing customization detail from no compo
 	assert.ok(markdown.includes('Not captured in this inventory'));
 	assert.ok(markdown.includes('25 | Deterministic bounded sample'));
 	assert.ok(markdown.includes('809 | Total references returned'));
-	assert.ok(markdown.includes('Partial — collection limit reached'));
+	assert.ok(markdown.includes('Partial — safety cap reached'));
 	assert.ok(markdown.includes('additional solutions or components may exist'));
 	assert.ok(markdown.includes('### Assessment cautions'));
 	assert.ok(markdown.includes('Target managed solution metadata is missing'));

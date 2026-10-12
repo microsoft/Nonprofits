@@ -12,7 +12,7 @@ const RESPONSE_BYTES = 512 * 1024;
 const TOTAL_BYTES = 8 * 1024 * 1024;
 const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
-const MAX_DEPENDENCY_COMPONENTS = 25;
+const MAX_DEPENDENCY_COMPONENTS = 100;
 const MAX_COUNT_TABLES = 50;
 const INTEGRATION_COMPONENT_TYPES = new Set([29, 91, 92, 371]);
 
@@ -269,6 +269,7 @@ async function collectComponents(
 	relevant: { componenttype: number; objectid: string | null }[];
 	integrations: { componenttype: number; objectid: string | null }[];
 	integrationSolutions: number;
+	dependencyCandidates: { componenttype: number; objectid: string | null }[];
 }> {
 	const relevantSolutions = discovery.solutions
 		.filter(solution => relevantNames.has(solution.uniqueName.toLowerCase()) && solution.solutionId);
@@ -282,6 +283,7 @@ async function collectComponents(
 			&& !isMicrosoftFirstPartyPublisher(solution.publisher));
 	const relevant: { componenttype: number; objectid: string | null }[] = [];
 	const integrationComponents = new Map<string, { componenttype: number; objectid: string | null }>();
+	const dependencyCandidates = new Map<string, { componenttype: number; objectid: string | null }>();
 	const addIntegrations = (items: { componenttype: number; objectid: string | null }[]): void => {
 		for (const item of items.filter(candidate => INTEGRATION_COMPONENT_TYPES.has(candidate.componenttype))) {
 			integrationComponents.set(`${item.componenttype}:${item.objectid ?? 'unknown'}`, item);
@@ -349,6 +351,7 @@ async function collectComponents(
 			}
 			for (const [product, keys] of productKeys) {
 				if (keys.has(key)) {
+					dependencyCandidates.set(key, item);
 					overlapsByProduct.set(product, (overlapsByProduct.get(product) ?? 0) + 1);
 					const names = productCustomizationSolutions.get(product) ?? new Set<string>();
 					names.add(solution.uniqueName);
@@ -396,6 +399,7 @@ async function collectComponents(
 		relevant,
 		integrations: [...integrationComponents.values()],
 		integrationSolutions: relevantSolutions.length + overlappingCandidateSolutions,
+		dependencyCandidates: [...dependencyCandidates.values()],
 	};
 }
 
@@ -421,6 +425,8 @@ async function collectDependencies(
 	return DependencySummarySchema.parse({
 		checkedComponents: candidates.length,
 		dependentReferences,
+		scope: 'direct-customization-overlaps',
+		candidateComponents: distinct.length,
 		truncated,
 	});
 }
@@ -600,14 +606,15 @@ export async function collectAssessmentDetails(
 				'Dependency discovery requires consent for component metadata.', ['components']));
 		} else {
 			await run('dependencies', ['components'], async () => {
-				if (!componentData || componentData.relevant.length === 0) {
-					throw new RequestFailure('No relevant component identifiers were available.', 'not-applicable');
+				if (!componentData) {
+					throw new RequestFailure('No relevant solution component evidence was available.', 'not-applicable');
 				}
-				result.dependencies = await collectDependencies(context, componentData.relevant);
-			}, 'Direct dependent-component references were summarized within the request cap.');
+				result.dependencies = await collectDependencies(context, componentData.dependencyCandidates);
+			}, 'Dependencies were inspected for components directly shared by selected products and customization solutions.');
 			if (result.dependencies?.truncated) {
 				replaceEvidence(result.evidence, evidence('dependencies', 'partial', result.collectedAt,
-					'Dependency discovery inspected a bounded subset of relevant components.', ['components']));
+					'Not all observed customization-overlap components could be inspected within the safety cap.',
+					['components']));
 			}
 		}
 		if (selected('integrations') && !selected('components')) {

@@ -100,7 +100,7 @@ The collector uses allowlisted reads for:
 - Dataverse version
 - Solution identity, version, managed state, and publisher
 - Relevant solution-component counts and unmanaged overlap
-- A deterministic bounded dependency sample
+- Dependency lookups for component IDs directly shared by selected nonprofit products and custom/partner solutions, capped at 100
 - Workflow, connection-reference, plug-in assembly, and step counts scoped through selected and overlapping solution components
 - Aggregate counts for relevant tables
 - Legacy and enhanced Power Pages site counts
@@ -185,7 +185,7 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 
 - Commercial Dataverse URLs are supported; sovereign clouds and on-premises endpoints aren't currently supported.
 - Metadata can't prove arbitrary custom-code behavior or the absence of dynamic/external dependencies.
-- Dependency and table discovery use documented deterministic caps.
+- Direct customization-overlap dependency discovery is capped at 100 components; table discovery also uses a documented deterministic cap.
 - Environment-wide automation counts can include registrations unrelated to selected products.
 - Scheduling ranges don't place tasks into individual calendars or approval windows.
 - A representative sandbox rehearsal remains the best validation of timing and downtime.
