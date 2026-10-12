@@ -187,17 +187,17 @@ When critical work remains unresolved, the report shows the known planning subto
 
 The concise Markdown report contains:
 
-1. Environment name, URL, Dataverse version, solution inventory breadth, and overall recommendation
-2. Installed solution and target-version table plus supported products not detected
+1. A direct executive recommendation with environment identity, evidence date, inventory breadth, overall effort, and effort confidence
+2. An all-product table covering every supported product, including products not detected
 3. A plain-language decision and separate decision confidence, provisional relative effort, and effort confidence per product
-4. Custom/partner solution details, component-type summaries, direct product overlap, and why each candidate needs review
-5. Prioritized direct and dependency blockers, non-blocking cautions, and next actions
-6. A visual product migration order, supporting dependency table, and recommended sequence
-7. Bounded dependency, integration, table-count, and site signals with explicit collection limitations
-8. Public migration-guide links
-9. Short customer-facing notes
+4. An evidence-derived next-action checklist and readiness table without additional customer questions
+5. Custom/partner solution details, component-type summaries, direct product overlap, and why each candidate needs review
+6. A technical appendix containing migration order, bounded dependency evidence, environment-wide technical signals, cautions, metric definitions, and limitations
+7. Public migration-guide links
 
 The report defines each metric. Decision confidence describes certainty in the recommended action based on observed version or site evidence. Effort confidence describes reliability of the relative effort rating and is not presented for products with no migration effort.
+
+Environment-wide workflow, connection-reference, plug-in, and table counts are explicitly labeled as signals rather than migration scope. Technical component type identifiers remain in JSON; the Markdown uses customer-readable labels.
 
 The detailed JSON contains machine evidence, file hashes, work dependencies, rule provenance, scenario reasons, and numeric planning ranges. The bounded collector summarizes environment dependency counts; it doesn't retain individual source-to-target dependency records.
 

@@ -17,13 +17,14 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) for c
 
 ## Customer experience
 
-1. Explain that the assessment is read-only and first answers: how many solutions were inventoried; which supported products are installed or not detected; what customization solutions were found and what they overlap; the visual product migration order and bounded dependency signal; prioritized blockers and cautions; and the relevant GitHub guide. Keep the customer metrics simple and separate: decision, decision confidence, provisional effort, and effort confidence. Detailed ranges remain available for implementation partners.
+1. Explain that the assessment is read-only and begins with a direct executive recommendation, all six supported products, a derived next-action checklist, and readiness. It then shows customization solutions and their overlap. Keep the customer metrics simple and separate: decision, decision confidence, provisional effort, and effort confidence. Put migration order, bounded dependency signals, environment-wide counts, metric definitions, and limitations in the technical appendix. Detailed ranges remain available for implementation partners.
 2. Confirm a clean checkout of `https://github.com/microsoft/Nonprofits` and Node.js 22.
 3. Guide `init`, then `configure`. Configuration asks only for the Dataverse URL; don't ask the customer to edit JSON or choose advanced platform settings.
 4. Explain the approved metadata/count categories and obtain authorization before `collect`.
 5. Collection requires a human terminal and exact `ASSESS` confirmation for the selected environment.
 6. Guide the five-question local `review`; ask the short VE extension only when VE is selected.
 7. Guide `assess` and tell the customer to open `assessment-<environment-name>.md`.
+   - Don't ask additional questions to populate the executive recommendation or checklist; derive them from collected evidence and the existing short review.
 8. Explain:
    - `already-at-target`: no product or data migration is required for alignment.
    - `ownership-transition`: optional work to leave PPAC servicing and self-manage GitHub builds.

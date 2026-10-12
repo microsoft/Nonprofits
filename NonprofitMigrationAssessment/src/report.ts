@@ -1,5 +1,5 @@
 import { type Assessment, type Family, type Finding } from './contracts.js';
-import { ROUTES } from './routes.js';
+import { guideUrl, ROUTES } from './routes.js';
 import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 
 const FAMILY_NAMES: Record<Family, string> = {
@@ -160,21 +160,31 @@ function componentType(type: number): string {
 		90: 'Plug-in types',
 		91: 'Plug-in assemblies',
 		92: 'Plug-in steps',
-	}[type] ?? `Other (${type})`;
+		380: 'Environment variable definitions',
+		381: 'Environment variable values',
+	}[type] ?? 'Other platform components';
 }
 
 function componentBreakdown(
 	types: Array<{ type: number; count: number }>,
 	componentCount: number,
 ): string {
-	return types.length
-		? types.map(item => `${componentType(item.type)}: ${item.count}`).join(', ')
-		: componentCount > 0 ? 'Not captured in this inventory' : 'No components';
+	if (!types.length) {
+		return componentCount > 0 ? 'Not captured in this inventory' : 'No components';
+	}
+	const totals = new Map<string, number>();
+	for (const item of types) {
+		const label = componentType(item.type);
+		totals.set(label, (totals.get(label) ?? 0) + item.count);
+	}
+	return [...totals].map(([label, count]) => `${label}: ${count}`).join(', ');
 }
 
 function recommendation(report: Assessment, route: Assessment['routes'][number]): string {
 	if (route.status === 'already-at-target') {
-		return 'No action — already aligned';
+		return customizationSignal(report, route.family).includes('overlapping component')
+			? 'No migration required; regression test customizations'
+			: 'No migration required';
 	}
 	if (route.status === 'not-installed') {
 		return 'No action — not installed';
@@ -356,13 +366,81 @@ function migrationSequence(report: Assessment): string[] {
 	});
 }
 
+function executiveRecommendation(report: Assessment): string {
+	const aligned = report.routes
+		.filter(route => route.status === 'already-at-target')
+		.map(route => FAMILY_NAMES[route.family]);
+	const confirm = report.routes
+		.filter(route => route.family === 've' && decisionConfidence(report, route) === 'Low')
+		.map(route => FAMILY_NAMES[route.family]);
+	const migrate = report.routes
+		.filter(route => route.status === 'eligible' && !confirm.includes(FAMILY_NAMES[route.family]))
+		.map(route => FAMILY_NAMES[route.family]);
+	const parts = [
+		migrate.length ? `Migrate ${migrate.join(' and ')}.` : '',
+		confirm.length ? `Confirm whether ${confirm.join(' and ')} is present before planning migration.` : '',
+		aligned.length ? `No migration is required for ${aligned.join(' and ')}.` : '',
+	].filter(Boolean);
+	return parts.length ? parts.join(' ') : 'Review the product decisions below.';
+}
+
+function customerProductRows(
+	report: Assessment,
+	solutionInventoryAvailable: boolean,
+	absentProducts: string[],
+): string[] {
+	return ROUTES.map(definition => {
+		const route = report.routes.find(item => item.family === definition.family);
+		if (route) {
+			return `| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`;
+		}
+		const absent = absentProducts.includes(FAMILY_NAMES[definition.family]);
+		const installed = definition.family === 've' ? siteStatus(report)
+			: solutionInventoryAvailable ? 'Not detected' : 'Status unavailable';
+		const decision = absent ? 'No migration required — product not detected' : 'Confirm product presence';
+		return `| ${text(FAMILY_NAMES[definition.family])} | ${installed} | ${targetVersion(report, definition.family)} | ${decision} | ${absent ? 'High' : 'Low'} | ${absent ? 'None' : 'Review required'} | ${absent ? 'Not applicable' : 'Not estimable'} | [Guide](${guideUrl(definition, report.target.commit)}) |`;
+	});
+}
+
+function nextActions(
+	report: Assessment,
+	interruptionRisk: boolean | null,
+): string[] {
+	const actions: string[] = [];
+	const alignedWithOverlap = report.routes
+		.filter(route => route.status === 'already-at-target'
+			&& customizationSignal(report, route.family).includes('overlapping component'))
+		.map(route => FAMILY_NAMES[route.family]);
+	if (alignedWithOverlap.length) {
+		actions.push(`Regression-test the customizations affecting ${alignedWithOverlap.join(' and ')}; no product migration is required.`);
+	}
+	for (const route of report.routes.filter(item => item.status === 'eligible' && item.family !== 've')) {
+		actions.push(`Rehearse the ${FAMILY_NAMES[route.family]} migration in the representative sandbox and validate its customizations and integrations.`);
+	}
+	const ve = report.routes.find(route => route.family === 've');
+	if (ve && decisionConfidence(report, ve) === 'Low') {
+		actions.push('Confirm whether a legacy Volunteer Engagement site exists before including it in migration scope.');
+	}
+	if (report.evidence.find(item => item.id === 'dependencies')?.status === 'partial') {
+		actions.push('Complete a named dependency review for the components in migration scope.');
+	}
+	if (report.evidence.find(item => item.id === 'integrations')?.status === 'partial') {
+		actions.push('Identify which workflows, connection references, and plug-ins belong to the nonprofit migration scope and assign owners.');
+	}
+	if (interruptionRisk) {
+		const constraint = report.operations?.maxInterruptionHours === 0
+			? 'requested zero-interruption target'
+			: 'stated interruption limit';
+		actions.push(`Agree a cutover approach because the ${constraint} is not supported by the current assumptions.`);
+	}
+	return [...new Set(actions)];
+}
+
 export function renderMarkdown(report: Assessment): string {
 	const component = report.discoverySummary.components;
 	const dependency = report.discoverySummary.dependencies;
 	const findings = groupedFindings(report);
 	const assessed = report.combined.find(item => item.id === 'assessed');
-	const noMigrationRequired = report.routes.length > 0
-		&& report.routes.every(route => ['already-at-target', 'not-installed'].includes(route.status));
 	const customizationCandidates = component?.customizationCandidates?.filter(item =>
 		!isMicrosoftFirstPartyPublisher(item.publisher) && item.componentCount > 0) ?? [];
 	const solutionInventoryAvailable = ['observed', 'partial'].includes(
@@ -373,47 +451,39 @@ export function renderMarkdown(report: Assessment): string {
 		&& !['already-aligned', 'not-installed'].includes(item.code));
 	const interruptionRisk = report.operations?.maxInterruptionHours !== null
 		&& report.operations?.maxInterruptionHours !== undefined
-		&& assessed?.downtime
+		&& assessed?.downtime !== null
+		&& assessed?.downtime !== undefined
 		&& assessed.downtime.max > report.operations.maxInterruptionHours;
 	const accessLimited = report.evidence.some(item => item.status === 'access-denied');
+	const solutionEvidenceDate = report.evidence.find(item => item.id === 'solutions')?.collectedAt;
+	const actions = nextActions(report, interruptionRisk);
+	const productRows = customerProductRows(report, solutionInventoryAvailable, absentProducts);
 	const output = [
 		'# Nonprofit migration assessment',
 		'',
 		'> This report summarizes installed nonprofit products, customizations, dependencies, and recommended next steps.',
 		'> The assessment only reads metadata and does not change the environment.',
 		'',
-		'## Environment',
+		'## Executive decision',
 		'',
 		'| Property | Value |',
 		'| --- | --- |',
 		`| Name | ${text(report.environment)} |`,
 		`| URL | ${text(report.environmentUrl)} |`,
 		`| Dataverse version | ${text(report.environmentProfile.dataverseVersion ?? 'Not available')} |`,
+		`| Evidence collected | ${text(solutionEvidenceDate?.slice(0, 10) ?? 'Not available')} |`,
 		`| Solutions inventoried | ${report.environmentProfile.solutionInventoryCount ?? 'Not available'} |`,
-		`| Supported nonprofit products detected | ${report.installedSolutions.length} |`,
-		`| Overall recommendation | ${noMigrationRequired ? 'No migration required' : findings.length ? 'Review identified items before migration' : 'Migration planning available'} |`,
+		`| Recommendation | ${text(executiveRecommendation(report))} |`,
 		`| Provisional overall effort | ${overallEffort(report)} |`,
 		`| Overall effort confidence | ${overallEffortConfidence(report)} |`,
 		'',
-		'## How to read the metrics',
-		'',
-		'| Metric | Meaning |',
-		'| --- | --- |',
-		'| Decision | What the customer should do for the product. |',
-		'| Decision confidence | How certain the observed product version or site evidence makes that decision. |',
-		'| Provisional effort | Relative migration work: None, Low, Medium, or High. It is not a time estimate. |',
-		'| Effort confidence | How reliable the effort rating is. It does not describe confidence in the installed version. |',
-		'',
 		'## What is installed and what should you do?',
+		'',
+		'Decision confidence describes certainty in the action. Effort confidence describes only the reliability of the relative effort rating.',
 		'',
 		'| Product | Installed solution / version | GitHub target / version | Decision | Decision confidence | Provisional effort | Effort confidence | GitHub |',
 		'| --- | --- | --- | --- | --- | --- | --- | --- |',
-		...report.routes.map(route =>
-			`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`),
-		'',
-		...(absentProducts.length
-			? [`**Supported products not detected:** ${absentProducts.map(text).join(', ')}.`]
-			: []),
+		...productRows,
 		'',
 		'### Why these effort ratings?',
 		'',
@@ -422,6 +492,21 @@ export function renderMarkdown(report: Assessment): string {
 		...report.routes.map(route => {
 			return `| ${text(FAMILY_NAMES[route.family])} | ${effortDisplay(route)} | ${effortConfidence(route)} | ${text(planningBasis(report, route))} |`;
 		}),
+		'',
+		'## What to do next',
+		'',
+		...(actions.length ? actions.map(action => `- [ ] ${action}`) : ['- [x] No migration actions were identified.']),
+		'',
+		'### Readiness',
+		'',
+		'| Area | Status | Meaning |',
+		'| --- | --- | --- |',
+		`| Accountable owner | ${report.operations?.ownerAvailability === 'available' ? 'Ready' : report.operations?.ownerAvailability ?? 'Unknown'} | ${report.operations?.ownerAvailability === 'available' ? 'An owner is available for the reviewed migration scope.' : 'Confirm an accountable owner.'} |`,
+		`| Representative sandbox and tests | ${report.operations?.sandboxAndTests === 'ready' ? 'Ready' : report.operations?.sandboxAndTests ?? 'Unknown'} | ${report.operations?.sandboxAndTests === 'ready' ? 'A rehearsal can be planned.' : 'Complete sandbox and test preparation.'} |`,
+		`| Dependency review | ${report.evidence.find(item => item.id === 'dependencies')?.status === 'observed' ? 'Ready' : 'Partial'} | Exact named dependencies still require technical review. |`,
+		`| Integration review | ${report.evidence.find(item => item.id === 'integrations')?.status === 'observed' ? 'Ready' : 'Partial'} | Environment counts must be attributed to the nonprofit scope. |`,
+		`| Volunteer Engagement applicability | ${report.routes.some(route => route.family === 've' && decisionConfidence(report, route) === 'Low') ? 'Open' : 'Confirmed'} | ${text(siteStatus(report))}. |`,
+		`| Cutover constraint | ${interruptionRisk ? 'At risk' : 'No conflict observed'} | ${interruptionRisk ? `The ${report.operations?.maxInterruptionHours === 0 ? 'requested zero-interruption target' : 'stated interruption limit'} needs mitigation or approval.` : 'No conflict was found in the current assumptions.'} |`,
 		'',
 		'## Customization solutions',
 		'',
@@ -444,33 +529,9 @@ export function renderMarkdown(report: Assessment): string {
 			...(component?.truncated ? ['', `> **Partial scan:** ${customizationCandidates.length} custom or partner solution candidates are shown. At least one collection limit was reached, so additional solutions or components may exist.`] : []),
 			] : ['No custom or partner solution candidates were identified within the bounded collection scope.']),
 		'',
-		'## Blockers, cautions, and next actions',
+		'## Technical appendix',
 		'',
-		...(findings.length ? [
-			'Resolve the blockers from top to bottom. Dependency blockers clear only after their prerequisite product is resolved.',
-			'',
-			'| # | Scope | Type | Blocker | Required action |',
-			'| --- | --- | --- | --- | --- |',
-			...findings.map((item, index) => `| ${index + 1} | ${item.families.map(family => text(FAMILY_NAMES[family])).join(', ')} | ${item.derived ? 'Dependency' : 'Direct'} | ${text(item.message)} | ${text(item.action)} |`),
-		] : ['No blocking findings were produced. Review limitations before migration approval.']),
-		'',
-		'### Important cautions',
-		'',
-		...nonBlockingFindings.map(finding =>
-			`- **${finding.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(cautionMessage(finding))}`),
-		...(report.routes.some(route => route.effortBand !== 'none' && route.confidence === 'low')
-			? ['- Effort ratings have low confidence and should be validated in a representative sandbox.']
-			: []),
-		...(report.evidence.filter(item => item.status === 'partial').map(item =>
-			`- **${text(item.id)}:** ${text(item.reason)}`)),
-		...(report.routes.some(route => route.family === 've')
-			? [`- **Volunteer Engagement applicability:** ${text(siteStatus(report))}. Confirm the legacy site before planning a VE migration.`]
-			: []),
-		...(interruptionRisk ? ['- The estimated downtime may exceed the stated interruption limit. Plan a rehearsal or cutover mitigation.'] : []),
-		'',
-		'## Dependencies',
-		'',
-		'### Product migration order',
+		'### Migration order',
 		'',
 		...dependencyDiagram(report),
 		'',
@@ -502,7 +563,9 @@ export function renderMarkdown(report: Assessment): string {
 			'> This assessment does not retain individual source-to-target dependency records. Use a solution-aware technical review when exact dependency names are required.',
 		] : ['Dependency metadata was not available.']),
 		'',
-		'### Other collected signals',
+		'### Environment-wide technical signals',
+		'',
+		'These counts describe the environment. They are not all automatically part of the nonprofit migration scope.',
 		'',
 		'| Signal | Result |',
 		'| --- | --- |',
@@ -512,6 +575,25 @@ export function renderMarkdown(report: Assessment): string {
 		`| Plug-in steps | ${report.discoverySummary.integrations?.pluginSteps ?? 'Not available'}${report.discoverySummary.integrations?.truncated ? ' (at least one integration count reached its limit)' : ''} |`,
 		`| Relevant tables counted | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
 		`| Volunteer Engagement sites | ${text(siteStatus(report))} |`,
+		'',
+		'### Assessment cautions',
+		'',
+		...(findings.length ? findings.map((item, index) =>
+			`${index + 1}. **${item.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(item.message)} ${text(item.action)}`)
+			: ['No blocking route findings were produced.']),
+		...nonBlockingFindings.map(finding =>
+			`- **${finding.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(cautionMessage(finding))}`),
+		...(report.evidence.filter(item => item.status === 'partial').map(item =>
+			`- **${text(item.id)}:** ${text(item.reason)}`)),
+		'',
+		'### Metric definitions',
+		'',
+		'| Metric | Meaning |',
+		'| --- | --- |',
+		'| Decision | What the customer should do for the product. |',
+		'| Decision confidence | How certain the observed product version or site evidence makes that decision. |',
+		'| Provisional effort | Relative migration work: None, Low, Medium, or High. It is not a time estimate. |',
+		'| Effort confidence | How reliable the effort rating is. It does not describe confidence in the installed version. |',
 		'',
 		'## Notes',
 		'',

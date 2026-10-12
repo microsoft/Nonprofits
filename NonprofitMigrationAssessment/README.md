@@ -25,9 +25,12 @@ The skill guides the local commands, explains consent and limitations, and helps
 
 The Markdown report shows:
 
+- A direct executive recommendation and evidence date
+- All six supported products, including products not detected
 - Installed supported solutions and versions
 - Total solution inventory breadth and supported products not detected
 - Whether each product needs migration, needs review, or requires no action
+- An evidence-derived next-action checklist and readiness table; no extra customer questionnaire is required
 - Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review
 - A visual product migration order plus bounded environment dependency signals and their collection limits
 - Prioritized direct and dependency blockers with the action needed to clear each one
@@ -36,7 +39,7 @@ The Markdown report shows:
 - GitHub migration-guide links
 - Blockers, missing information, and next actions
 
-Detailed numeric ranges and technical evidence remain in JSON for implementation partners. The customer-facing Markdown uses relative effort only.
+The first sections are customer-focused. Dependency samples, environment-wide counts, metric definitions, and limitations are grouped in a technical appendix. Detailed numeric ranges and machine evidence remain in JSON for implementation partners. The customer-facing Markdown uses relative effort only.
 
 Ranges are automatically calculated by deterministic rules. Bundled defaults are uncalibrated engineering assumptions, not guarantees or measured averages. Validate the result with your implementation partner and a representative rehearsal.
 

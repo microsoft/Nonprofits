@@ -52,7 +52,7 @@ test('observed no-overlap evidence yields a likely-standard assumption range wit
 		{ min: 46, max: 92, unit: 'person-hours' });
 	assert.ok(result.findings.some(item => item.code === 'assumption-based' && !item.blocking));
 	const markdown = renderMarkdown(result);
-	assert.ok(markdown.includes('## Dependencies'));
+	assert.ok(markdown.includes('## Technical appendix'));
 	assert.ok(markdown.includes('Bundled uncalibrated engineering assumptions'));
 });
 
@@ -260,7 +260,7 @@ test('alignment intent produces no migration work for equivalent releases', () =
 	assert.equal(result.workItems.length, 0);
 	const markdown = renderMarkdown(result);
 	assert.ok(markdown.includes('No migration required'));
-	assert.ok(markdown.includes('| No action — already aligned | High | None | Not applicable |'));
+	assert.ok(markdown.includes('| No migration required | High | None | Not applicable |'));
 });
 
 test('already-aligned CDM satisfies the Volunteer Management prerequisite', () => {
@@ -405,18 +405,20 @@ test('customer Markdown is concise, shows source-to-target versions, and never r
 	const markdown = renderMarkdown(result);
 	assert.ok(markdown.includes('## What is installed and what should you do?'));
 	assert.ok(markdown.includes('## Customization solutions'));
-	assert.ok(markdown.includes('## Environment'));
+	assert.ok(markdown.includes('## Executive decision'));
 	assert.ok(markdown.includes('| Provisional overall effort |'));
 	assert.ok(markdown.includes('| Overall effort confidence |'));
-	assert.ok(markdown.includes('## How to read the metrics'));
+	assert.ok(markdown.includes('## What to do next'));
+	assert.ok(markdown.includes('### Readiness'));
 	assert.ok(markdown.includes('| Decision confidence |'));
 	assert.ok(markdown.includes('| Effort confidence |'));
 	assert.ok(markdown.includes('### Why these effort ratings?'));
 	assert.ok(markdown.includes('```mermaid'));
-	assert.ok(markdown.includes('### Product migration order'));
+	assert.ok(markdown.includes('### Migration order'));
 	assert.ok(markdown.includes('### Recommended sequence'));
 	assert.ok(markdown.includes('### Observed environment dependency signal'));
-	assert.ok(markdown.includes('### Other collected signals'));
+	assert.ok(markdown.includes('### Environment-wide technical signals'));
+	assert.ok(markdown.includes('### Metric definitions'));
 	assert.ok(markdown.includes('NonprofitCore 2.0.0.0'));
 	assert.ok(markdown.includes('NonprofitCore 3.0.0.0'));
 	assert.ok(markdown.includes('| CustomerCustom | Unmanaged | Customer | 3 | Forms: 1, Scripts/web resources: 2 | NonprofitCore (1) | Direct overlap found; validate behavior and deployment order |'));
@@ -459,7 +461,8 @@ test('customer Markdown distinguishes missing customization detail from no compo
 	assert.ok(markdown.includes('809 | Total references returned'));
 	assert.ok(markdown.includes('Partial — collection limit reached'));
 	assert.ok(markdown.includes('additional solutions or components may exist'));
-	assert.ok(markdown.includes('| # | Scope | Type | Blocker | Required action |'));
+	assert.ok(markdown.includes('### Assessment cautions'));
+	assert.ok(markdown.includes('Target managed solution metadata is missing'));
 });
 
 test('customer Markdown reports inventory breadth, absent products, confidence, and unavailable VE site state', () => {
@@ -484,7 +487,10 @@ test('customer Markdown reports inventory breadth, absent products, confidence, 
 	});
 	const markdown = renderMarkdown(assess(input, DEFAULT_RULES, { now: NOW }));
 	assert.ok(markdown.includes('| Solutions inventoried | 2 |'));
-	assert.ok(markdown.includes('Supported products not detected:** Fundraising, Grant Management, Outcome Management, Volunteer Management.'));
+	assert.ok(markdown.includes('| Fundraising | Not detected |'));
+	assert.ok(markdown.includes('| Grant Management | Not detected |'));
+	assert.ok(markdown.includes('| Outcome Management | Not detected |'));
+	assert.ok(markdown.includes('| Volunteer Management | Not detected |'));
 	assert.ok(markdown.includes('Legacy site status unavailable; no enhanced site observed'));
 	assert.ok(!markdown.includes('Site not observed'));
 });
