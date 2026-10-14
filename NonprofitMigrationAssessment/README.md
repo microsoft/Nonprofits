@@ -17,9 +17,9 @@ The assessment is read-only. It does not import, upgrade, delete, publish, deplo
 
 Open this repository in VS Code with GitHub Copilot and enter:
 
-> Assess my nonprofit environment for migration to the solutions in this GitHub repository. Guide me through the local read-only workflow and explain the final report.
+> Assess my nonprofit environment for migration to the solutions in this GitHub repository. Help me pick the environment, then run the read-only assessment and explain the final report.
 
-The skill guides the local commands, explains consent and limitations, and helps interpret the result. Environment-specific inputs and reports remain local by default.
+The skill lists the environments you can access, asks you to pick one, explains what it reads, and runs the assessment after you approve in chat. Environment-specific inventories and reports remain local by default.
 
 ## What you receive
 
@@ -63,22 +63,35 @@ npm ci
 
 ## Run the assessment
 
-Use the single customer command from a human terminal:
+In GitHub Copilot, the skill runs these steps for you and asks for your choices in chat. The same commands work in a terminal.
 
-```powershell
-npm start -- run --repository "C:\path\to\Nonprofits"
-```
+1. List the Dataverse environments you can access:
+
+   ```powershell
+   npm.cmd start -- environments
+   ```
+
+   The list comes from the Power Platform global discovery service and shows each environment's name, URL, region, and whether you're a System Administrator. Only commercial Dataverse environments are listed.
+
+2. Pick an environment and approve the read-only assessment. Copilot explains what will be read and asks you to confirm in chat, then runs:
+
+   ```powershell
+   npm.cmd start -- run --repository "C:\path\to\Nonprofits" --environment "https://contoso.crm.dynamics.com" --confirm-read-only
+   ```
+
+   `--confirm-read-only` records that the customer approved the read-only scope; pass it only after that approval. Without `--environment` and `--confirm-read-only`, the command asks for the environment URL and a yes/no confirmation in the terminal instead.
+
+> [!NOTE]
+> In PowerShell, use `npm.cmd` rather than `npm` so that the `--` separator reaches the assessment. In bash, zsh, or Command Prompt, `npm start -- …` works.
 
 The command:
 
-1. Asks only for the Dataverse environment URL.
-2. Shows the approved read-only categories and requires exact `ASSESS` confirmation.
-3. Derives bounded customization and integration scope from the collected solution evidence.
-4. Keeps intermediate files in one private operating-system temporary folder.
-5. Deletes the temporary folder when the command completes or fails.
-6. Writes `nonprofit-assessment-<environment>-<date>.md` to the user's Documents folder.
-7. Prints the final report path so Copilot can open it in the editor.
-
+1. Reads only the approved metadata and record-count categories listed in [What the assessment reads](#what-the-assessment-reads).
+2. Derives bounded customization and integration scope from the collected solution evidence.
+3. Keeps intermediate files in one private operating-system temporary folder.
+4. Deletes the temporary folder when the command completes or fails.
+5. Writes `nonprofit-assessment-<environment>-<date>.md` to the user's Documents folder.
+6. Prints the final report path so Copilot can open it in the editor.
 Use `--output "C:\visible\folder"` to choose another existing or creatable folder. Add `--partner-json` to preserve the detailed JSON next to the Markdown report. If the filename already exists, the command adds a numeric suffix rather than overwriting it. The automatic run leaves owner and sandbox/test readiness unknown rather than asking the customer to make technical planning choices.
 
 ## Advanced staged workflow
@@ -88,36 +101,36 @@ The low-level commands below remain available for partner automation, troublesho
 ### 1. Initialize
 
 ```powershell
-npm start -- init `
+npm.cmd start -- init `
   --repository "C:\path\to\Nonprofits" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-input"
 ```
 
 `init` fetches `origin/master`, pins the target commit, and creates local schemas and configuration files. Local-only target commits are rejected.
 
-### 2. Configure interactively
+### 2. Configure the environment
 
 ```powershell
-npm start -- configure `
+npm.cmd start -- configure `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-input\questionnaire.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-configured"
 ```
 
-The command asks only for the Dataverse environment URL. It derives the local assessment ID and environment alias, uses automatic product scope, and defaults CDM/template apps to alignment checking. Typing `ASSESS` in the next step records read-only consent.
+Add `--environment "https://contoso.crm.dynamics.com"` to skip the prompt; otherwise the command asks for the Dataverse environment URL. It derives the local assessment ID and environment alias, uses automatic product scope, and defaults CDM/template apps to alignment checking. Confirming the next step records read-only consent.
 
 The generated `questionnaire.json` is a local machine-readable input. Customers don't need to edit it manually.
 
 ### 3. Collect read-only evidence
 
 ```powershell
-npm start -- collect `
+npm.cmd start -- collect `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-configured\questionnaire.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-inventory"
 ```
 
-The terminal displays the environment and approved categories and requires typing `ASSESS` before authentication.
+The terminal displays the environment and approved categories and asks for a yes/no confirmation before authentication. Add `--environment "<url>" --confirm-read-only` instead when the customer already approved the read-only scope for that environment, for example in Copilot chat; the command refuses to run if the URL doesn't match the configured environment.
 
 The collector uses allowlisted reads for:
 
@@ -139,7 +152,7 @@ The default detailed-discovery budget is five minutes. The operation remains bou
 ### 4. Optionally answer four partner review questions
 
 ```powershell
-npm start -- review `
+npm.cmd start -- review `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-inventory\inventory.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-reviewed"
@@ -157,7 +170,7 @@ When Volunteer Engagement is selected, it also asks for site model, authenticati
 ### 5. Generate the report
 
 ```powershell
-npm start -- assess `
+npm.cmd start -- assess `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-reviewed\inventory.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-report"
@@ -226,7 +239,7 @@ The assessment never reads:
 ## Privacy and local files
 
 - Assessment inputs and outputs stay local by default.
-- The CLI emits only completion status and local output paths.
+- The CLI emits only the environment list (for `environments`), a progress line with the selected environment URL, completion status, and local output paths.
 - Don't commit questionnaires, inventories, reports, or logs.
 - Don't paste credentials, tokens, connection strings, certificates, or business-record contents into Copilot or local input files.
 - Review and minimize any report before optional sharing.

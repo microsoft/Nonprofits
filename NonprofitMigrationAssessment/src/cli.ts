@@ -28,6 +28,17 @@ interface CliRuntime {
 	quietCompletions?: boolean;
 }
 
+// Fixed guidance text only; never include customer values, tokens, or server responses.
+class GuidanceError extends Error {}
+
+function environmentOrigin(value: string): string {
+	try {
+		return validateEnvironmentUrl(value);
+	} catch {
+		throw new GuidanceError('Use a commercial Dataverse environment URL such as https://contoso.crm.dynamics.com.');
+	}
+}
+
 async function availableReportBase(directory: string, requested: string, includeJson: boolean): Promise<string> {
 	for (let index = 1; index <= 100; index++) {
 		const base = index === 1 ? requested : `${requested}-${index}`;
@@ -56,17 +67,45 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		options: {
 			input: { type: 'string' }, output: { type: 'string' },
 			repository: { type: 'string' },
+			environment: { type: 'string' },
+			'confirm-read-only': { type: 'boolean' },
 			'partner-json': { type: 'boolean' },
 		},
 		allowPositionals: true, strict: true,
 	});
 	const command = positionals[0];
 	if (command === 'help' && positionals.length === 1) {
-		console.log('Commands: run --repository <microsoft/Nonprofits-checkout> [--output <visible-folder>] [--partner-json] (recommended human workflow); init --repository <checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder>. Production target commands fetch origin/master.');
+		console.log('Commands: environments (lists Dataverse environments you can access); run --repository <microsoft/Nonprofits-checkout> [--environment <url> --confirm-read-only] [--output <visible-folder>] [--partner-json] (recommended workflow; pass --confirm-read-only only after the customer approves the read-only scope); init --repository <checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> [--environment <url>]; collect --repository <checkout> --input <questionnaire.json> --output <new-folder> [--environment <url> --confirm-read-only]; review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder>. Production target commands fetch origin/master.');
+		return 0;
+	}
+	if (command === 'environments' && positionals.length === 1) {
+		if (Object.values(values).some(value => value !== undefined)) {
+			throw new Error('Invalid command.');
+		}
+		if (process.env['AZURE_LOG_LEVEL']) {
+			throw new Error('Listing environments requires Azure SDK debug logging to be off.');
+		}
+		const { AzureCliCredential } = await import('@azure/identity');
+		const { GLOBAL_DISCOVERY_ORIGIN, formatEnvironmentList, listEnvironments } = await import('./environments.js');
+		const credential = new AzureCliCredential({ processTimeoutInMs: 30000 });
+		let listings: Awaited<ReturnType<typeof listEnvironments>>;
+		try {
+			listings = await listEnvironments({
+				getToken: async () => (await credential.getToken(`${GLOBAL_DISCOVERY_ORIGIN}/.default`)).token,
+			});
+		} catch (error) {
+			throw new GuidanceError(error instanceof Error && error.message.length < 200
+				? error.message
+				: 'The environment list could not be retrieved.');
+		}
+		console.log(formatEnvironmentList(listings));
 		return 0;
 	}
 	if (positionals.length !== 1 || (command !== 'run' && !values.output)
-		|| (values['partner-json'] && command !== 'run')) {
+		|| (values['partner-json'] && command !== 'run')
+		|| (values.environment !== undefined && !['run', 'configure', 'collect'].includes(command ?? ''))
+		|| (values['confirm-read-only'] && !['run', 'collect'].includes(command ?? ''))
+		|| (values['confirm-read-only'] && values.environment === undefined)) {
 		throw new Error('Invalid command.');
 	}
 	if (!values.repository) {
@@ -79,9 +118,14 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		}
 	};
 	if (command === 'run') {
-		if (values.input
-			|| !process.stdin.isTTY || !process.stdout.isTTY || process.env['AZURE_LOG_LEVEL']) {
-			throw new Error('Customer assessment requires an isolated human terminal without Azure SDK debug logging.');
+		// Copilot passes the environment and --confirm-read-only after the customer approves in chat; otherwise the terminal asks.
+		const conversational = values.environment !== undefined && values['confirm-read-only'] === true;
+		if (values.input || process.env['AZURE_LOG_LEVEL']
+			|| (!conversational && (!process.stdin.isTTY || !process.stdout.isTTY))) {
+			throw new GuidanceError('Run in an interactive terminal, or pass --environment <url> with --confirm-read-only after the customer approves the read-only assessment. Azure SDK debug logging must be off.');
+		}
+		if (values.environment !== undefined) {
+			environmentOrigin(values.environment);
 		}
 		const temporary = await mkdtemp(join(tmpdir(), 'nonprofit-assessment-'));
 		try {
@@ -93,10 +137,12 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 			await main([
 				'configure', '--repository', values.repository,
 				'--input', join(initialized, 'questionnaire.json'), '--output', configured,
+				...(values.environment !== undefined ? ['--environment', values.environment] : []),
 			], nestedRuntime);
 			await main([
 				'collect', '--repository', values.repository,
 				'--input', join(configured, 'questionnaire.json'), '--output', collected,
+				...(values['confirm-read-only'] ? ['--confirm-read-only', '--environment', values.environment!] : []),
 			], nestedRuntime);
 			const collectedInventory = InventorySchema.parse(
 				await readLocalJson(join(collected, 'inventory.json')),
@@ -182,15 +228,15 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		throw new Error('Local input is required.');
 	}
 	if (command === 'configure') {
-		if (!process.stdin.isTTY || !process.stdout.isTTY) {
-			throw new Error('Local configuration requires an isolated human terminal.');
+		if (values.environment === undefined && (!process.stdin.isTTY || !process.stdout.isTTY)) {
+			throw new Error('Local configuration requires --environment or an interactive terminal.');
 		}
 		const questionnaire = QuestionnaireSchema.parse(await readLocalJson(values.input));
 		await verifyPublicTarget(values.repository, questionnaire.target, targetOptions);
-		const { createInterface } = await import('node:readline/promises');
-		const terminal = createInterface({ input: process.stdin, output: process.stdout });
-		try {
-			const environmentUrl = async (): Promise<string> => {
+		const promptEnvironmentUrl = async (): Promise<string> => {
+			const { createInterface } = await import('node:readline/promises');
+			const terminal = createInterface({ input: process.stdin, output: process.stdout });
+			try {
 				while (true) {
 					const value = (await terminal.question('Dataverse environment URL: ')).trim();
 					try {
@@ -199,36 +245,38 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 						console.log('Enter a commercial Dataverse HTTPS origin such as https://example.crm.dynamics.com.');
 					}
 				}
-			};
-			const url = await environmentUrl();
-			const host = new URL(url).hostname.split('.')[0]!.toLowerCase();
-			const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
-			questionnaire.assessmentId = `assessment-${host}-${date}`;
-			questionnaire.environment = {
-				alias: host,
-				url,
-				type: 'unknown',
-				region: 'unknown',
-				managedEnvironment: 'unknown',
-				accessRestriction: 'unknown',
-			};
-			questionnaire.consent.readOnly = false;
-			for (const answer of questionnaire.answers) {
-				answer.scope = 'auto';
-				answer.intent = ['cdm', 'fundraising', 'grants', 'outcomes'].includes(answer.family)
-					? 'confirm-alignment'
-					: 'replace-with-github';
+			} finally {
+				terminal.close();
 			}
-			const configured = QuestionnaireSchema.parse(questionnaire);
-			const location = await writeLocalBundle(values.output!, {
-				'questionnaire.json': json(configured),
-				'questionnaire.schema.json': json(z.toJSONSchema(QuestionnaireSchema)),
-			});
-			completion(`Configured local questionnaire written: ${location}`);
-			return 0;
-		} finally {
-			terminal.close();
+		};
+		const url = values.environment !== undefined
+			? environmentOrigin(values.environment)
+			: await promptEnvironmentUrl();
+		const host = new URL(url).hostname.split('.')[0]!.toLowerCase();
+		const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
+		questionnaire.assessmentId = `assessment-${host}-${date}`;
+		questionnaire.environment = {
+			alias: host,
+			url,
+			type: 'unknown',
+			region: 'unknown',
+			managedEnvironment: 'unknown',
+			accessRestriction: 'unknown',
+		};
+		questionnaire.consent.readOnly = false;
+		for (const answer of questionnaire.answers) {
+			answer.scope = 'auto';
+			answer.intent = ['cdm', 'fundraising', 'grants', 'outcomes'].includes(answer.family)
+				? 'confirm-alignment'
+				: 'replace-with-github';
 		}
+		const configured = QuestionnaireSchema.parse(questionnaire);
+		const location = await writeLocalBundle(values.output!, {
+			'questionnaire.json': json(configured),
+			'questionnaire.schema.json': json(z.toJSONSchema(QuestionnaireSchema)),
+		});
+		completion(`Configured local questionnaire written: ${location}`);
+		return 0;
 	}
 	if (command === 'review') {
 		if (!process.stdin.isTTY || !process.stdout.isTTY) {
@@ -332,8 +380,9 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		return report.status === 'partial' ? 2 : 0;
 	}
 	if (command === 'collect') {
-		if (!process.stdin.isTTY || !process.stdout.isTTY || process.env['AZURE_LOG_LEVEL']) {
-			throw new Error('Collection requires an isolated human terminal without Azure SDK debug logging.');
+		const confirmed = values['confirm-read-only'] === true;
+		if (process.env['AZURE_LOG_LEVEL'] || (!confirmed && (!process.stdin.isTTY || !process.stdout.isTTY))) {
+			throw new GuidanceError('Collection requires --confirm-read-only after the customer approves, or an interactive terminal. Azure SDK debug logging must be off.');
 		}
 		const questionnaire = QuestionnaireSchema.parse(await readLocalJson(values.input));
 		await verifyPublicTarget(values.repository, questionnaire.target, targetOptions);
@@ -343,19 +392,29 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		const { collectSolutions, validateEnvironmentUrl } = await import('./discovery.js');
 		const { collectAssessmentDetails } = await import('./assessment-discovery.js');
 		const origin = validateEnvironmentUrl(questionnaire.environment.url);
-		const { createInterface } = await import('node:readline/promises');
-		const terminal = createInterface({ input: process.stdin, output: process.stdout });
-		try {
-			const categories = questionnaire.consent.categories.join(', ');
-			const answer = await terminal.question(`Read approved metadata/count categories (${categories}) from ${origin}. No changes, record contents, secrets, or uploads. Type ASSESS to confirm: `);
-			if (answer !== 'ASSESS') {
-				throw new Error('Collection was not confirmed.');
+		// Approval given in chat names one environment; it must match the questionnaire before anything is read.
+		if (confirmed && environmentOrigin(values.environment!) !== origin) {
+			throw new GuidanceError('The approved environment doesn\'t match the configured environment. Nothing was read.');
+		}
+		if (!confirmed) {
+			const { createInterface } = await import('node:readline/promises');
+			const terminal = createInterface({ input: process.stdin, output: process.stdout });
+			try {
+				console.log(`This assessment reads metadata and record counts (${questionnaire.consent.categories.join(', ')}) from ${origin}.`);
+				console.log('It doesn\'t change the environment, read record contents or secrets, or upload anything.');
+				const answer = (await terminal.question('Continue with this read-only assessment? [y/N] ')).trim().toLowerCase();
+				if (!['y', 'yes'].includes(answer)) {
+					throw new GuidanceError('The read-only assessment was not confirmed, so nothing was read.');
+				}
+			} finally {
+				terminal.close();
 			}
-		} finally {
-			terminal.close();
 		}
 		const { AzureCliCredential } = await import('@azure/identity');
 		const credential = new AzureCliCredential({ processTimeoutInMs: 30000 });
+		if (confirmed) {
+			console.log(`Reading metadata from ${origin}. This usually takes under a minute.`);
+		}
 		const controller = new AbortController();
 		const cancel = (): void => controller.abort();
 		process.once('SIGINT', cancel);
@@ -405,7 +464,9 @@ export async function execute(args: string[], runtime: CliRuntime = {}): Promise
 		// Do not leak local values, auth errors, server bodies, or Zod input details to a host.
 		console.error(error instanceof z.ZodError
 			? 'INPUT_INVALID: Local input violates the strict schema or cross-field rules. Review the local schema and README.'
-			: 'ASSESSMENT_FAILED: Check command, local paths, consent, terminal isolation, and prerequisites in README. No report completion is claimed.');
+			: error instanceof GuidanceError
+				? `ASSESSMENT_FAILED: ${error.message}`
+				: 'ASSESSMENT_FAILED: Check command, local paths, consent, terminal isolation, and prerequisites in README. No report completion is claimed.');
 		process.exitCode = 1;
 	}
 }

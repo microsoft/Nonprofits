@@ -179,3 +179,93 @@ test('output refuses Git trees, relative paths, traversal names and collisions',
 test('template roundtrip does not loosen strict inventory validation', () => {
 	assert.deepEqual(InventorySchema.parse(inventory()), inventory());
 });
+
+test('conversational run validates consent flags and the environment URL before creating output', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-run-flags-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const output = join(root, 'visible-output');
+	const missingEnvironment = spawnSync(process.execPath, [
+		CLI, 'run', '--repository', repository.path, '--confirm-read-only', '--output', output,
+	], { encoding: 'utf8' });
+	assert.equal(missingEnvironment.status, 1);
+	const invalidUrl = spawnSync(process.execPath, [
+		CLI, 'run', '--repository', repository.path, '--environment', 'https://contoso.example.com',
+		'--confirm-read-only', '--output', output,
+	], { encoding: 'utf8' });
+	assert.equal(invalidUrl.status, 1);
+	assert.match(invalidUrl.stderr, /ASSESSMENT_FAILED: Use a commercial Dataverse environment URL/);
+	const unconfirmed = spawnSync(process.execPath, [
+		CLI, 'run', '--repository', repository.path, '--environment', 'https://contoso.crm.dynamics.com', '--output', output,
+	], { encoding: 'utf8' });
+	assert.equal(unconfirmed.status, 1);
+	assert.match(unconfirmed.stderr, /--confirm-read-only after the customer approves/);
+	await assert.rejects(() => realpath(output));
+	const wrongCommand = spawnSync(process.execPath, [
+		CLI, 'assess', '--repository', repository.path, '--input', join(root, 'x.json'), '--output', output, '--environment', 'https://contoso.crm.dynamics.com',
+	], { encoding: 'utf8' });
+	assert.equal(wrongCommand.status, 1);
+});
+
+test('configuration accepts an environment URL without a terminal', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-configure-environment-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const path = join(root, 'questionnaire.json');
+	const questionnaire = inventory().questionnaire;
+	questionnaire.target = repository.target;
+	await writeFile(path, JSON.stringify(questionnaire));
+	const output = join(root, 'configured');
+	const run = spawnSync(process.execPath, [
+		CLI, 'configure', '--repository', repository.path, '--input', path, '--output', output,
+		'--environment', 'https://contoso.crm.dynamics.com/',
+	], { encoding: 'utf8' });
+	assert.equal(run.status, 0, run.stderr);
+	const configured = JSON.parse(await readFile(join(output, 'questionnaire.json'), 'utf8')) as {
+		environment: { url: string; alias: string };
+		consent: { readOnly: boolean };
+	};
+	assert.equal(configured.environment.url, 'https://contoso.crm.dynamics.com');
+	assert.equal(configured.environment.alias, 'contoso');
+	assert.equal(configured.consent.readOnly, false);
+});
+
+test('collection with read-only confirmation still refuses Azure SDK debug logging', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-collect-logging-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const path = join(root, 'questionnaire.json');
+	const questionnaire = inventory().questionnaire;
+	questionnaire.target = repository.target;
+	await writeFile(path, JSON.stringify(questionnaire));
+	const run = spawnSync(process.execPath, [
+		CLI, 'collect', '--repository', repository.path, '--input', path, '--output', join(root, 'inventory'),
+		'--environment', 'https://synthetic.crm.dynamics.com', '--confirm-read-only',
+	], { encoding: 'utf8', env: { ...process.env, AZURE_LOG_LEVEL: 'verbose' } });
+	assert.equal(run.status, 1);
+	assert.match(run.stderr, /Azure SDK debug logging must be off/);
+	assert.equal(run.stdout, '');
+});
+
+test('collection with read-only confirmation refuses a different environment before reading', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-collect-mismatch-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const path = join(root, 'questionnaire.json');
+	const questionnaire = inventory().questionnaire;
+	questionnaire.target = repository.target;
+	await writeFile(path, JSON.stringify(questionnaire));
+	const output = join(root, 'inventory');
+	const mismatch = spawnSync(process.execPath, [
+		CLI, 'collect', '--repository', repository.path, '--input', path, '--output', output,
+		'--environment', 'https://other.crm.dynamics.com', '--confirm-read-only',
+	], { encoding: 'utf8' });
+	assert.equal(mismatch.status, 1);
+	assert.match(mismatch.stderr, /doesn't match the configured environment/);
+	assert.equal(mismatch.stdout, '');
+	const unbound = spawnSync(process.execPath, [
+		CLI, 'collect', '--repository', repository.path, '--input', path, '--output', output, '--confirm-read-only',
+	], { encoding: 'utf8' });
+	assert.equal(unbound.status, 1);
+	await assert.rejects(() => realpath(output));
+});
