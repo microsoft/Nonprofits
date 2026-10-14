@@ -30,8 +30,9 @@ The Markdown report shows:
 - Total solution inventory breadth
 - Whether each product needs migration, needs review, or requires no action
 - An evidence-derived next-action checklist; no extra customer questionnaire is required
+- Named customizations for each installed Microsoft nonprofit solution: added or changed columns, relationships, views, charts, and forms, whether each change is unmanaged in the environment or comes from a managed partner solution, and which solution contains it
 - Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review
-- Named direct-overlap components, per-component dependency-reference counts, and bounded individual dependency edges in partner JSON
+- Per-component dependency-reference counts for directly shared components, and bounded individual dependency edges in partner JSON
 - Product-attributed snapshot counts for the largest related non-empty tables
 - A visual product migration order plus bounded environment dependency signals and their collection limits
 - Prioritized direct and dependency blockers with the action needed to clear each one
@@ -123,6 +124,8 @@ The collector uses allowlisted reads for:
 - Dataverse version
 - Solution identity, version, managed state, and publisher
 - Relevant solution-component counts and unmanaged overlap
+- Solution component summaries for each nonprofit table, to list unmanaged (Active layer) changes and components added or changed by custom or partner solutions
+- Solution layer stacks for changed components, to tell whether a change adds a new component or changes a Microsoft component (form stacks larger than the response cap are skipped)
 - Dependency lookups for component IDs directly shared by selected nonprofit products and custom/partner solutions, capped at 100
 - Workflow, connection-reference, plug-in assembly, and step counts scoped through selected and overlapping solution components
 - Aggregate counts for relevant tables
@@ -185,6 +188,7 @@ The customer report uses `None`, `Low`, `Medium`, `High`, or `Review required`. 
 | Environment | Dataverse version and environment name |
 | Solutions | Name, version, managed state, and publisher |
 | Components | Component types of nonprofit solutions and related custom solutions |
+| Customizations | Solution component summaries and solution layers for nonprofit tables: names, types, managed state, and which solution layer changed them |
 | Dependencies | Dataverse dependency records for customized nonprofit components |
 | Integrations | Workflows, connection references, and plug-ins inside related solutions |
 | Data scale | Record counts for related tables |
@@ -222,6 +226,7 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 - Commercial Dataverse URLs are supported; sovereign clouds and on-premises endpoints aren't currently supported.
 - Metadata can't prove arbitrary custom-code behavior or the absence of dynamic/external dependencies.
 - Direct customization-overlap dependency discovery is capped at 100 components; table discovery also uses a documented deterministic cap.
+- Customization discovery checks up to 200 nonprofit tables and 60 partner-extended tables. On shared Dataverse tables such as Account and Contact, only changes to components that a nonprofit solution brings are listed. When a form's layer stack is too large to read, the change is shown as "Added or changed".
 - Environment-wide automation counts can include registrations unrelated to selected products.
 - A representative sandbox rehearsal remains the best validation of migration effort and cutover timing.
 

@@ -24,8 +24,9 @@ export function deriveLocalReview(input: unknown, now = new Date()): LocalReview
 	const inventory = InventorySchema.parse(input);
 	const componentEvidence = inventory.discovery.evidence.find(item => item.id === 'components');
 	const integrationEvidence = inventory.discovery.evidence.find(item => item.id === 'integrations');
-	const overlaps = inventory.discovery.components?.customizationCandidates
-		?.some(solution => solution.overlaps.length > 0) ?? false;
+	const overlaps = (inventory.discovery.components?.customizationCandidates
+		?.some(solution => solution.overlaps.length > 0) ?? false)
+		|| (inventory.discovery.components?.layerCustomizations?.length ?? 0) > 0;
 	const integrationCount = inventory.discovery.integrations
 		? [
 			inventory.discovery.integrations.workflows,

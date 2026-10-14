@@ -470,3 +470,115 @@ test('customer Markdown omits products not detected from every table', () => {
 	assert.ok(!markdown.includes('Confirm whether migration is needed'));
 	assert.ok(!markdown.includes('Site not observed'));
 });
+
+test('customer Markdown lists named customizations per Microsoft solution with layer and coverage', () => {
+	const input = inventory(['cdm', 'vm']);
+	observeComponents(input, 0);
+	const components = input.discovery.components!;
+	components.customizationCandidates = [{
+		uniqueName: 'PartnerManaged',
+		managed: true,
+		publisher: 'PartnerPublisher',
+		componentCount: 2,
+		componentTypes: [],
+		overlaps: [],
+	}];
+	const base = { productUniqueNames: ['NonprofitCore'], displayName: null, relatedTable: null, solutions: [] as string[] };
+	components.layerCustomizations = [{
+		...base,
+		table: 'msnfp_transaction',
+		tableDisplayName: 'Transaction',
+		type: 2,
+		objectId: '21212121-2121-4121-8121-212121212121',
+		name: 'cnto_legacyreceiptnumber',
+		displayName: 'Legacy Receipt Number',
+		change: 'added',
+		layer: 'active',
+	}, {
+		...base,
+		table: 'msnfp_transaction',
+		tableDisplayName: 'Transaction',
+		type: 60,
+		objectId: '23232323-2323-4323-8323-232323232323',
+		name: 'Transaction <main>',
+		change: 'modified',
+		layer: 'managed-solution',
+		solutions: ['PartnerManaged'],
+	}, {
+		...base,
+		table: 'sifund_appeal',
+		tableDisplayName: 'Appeal',
+		type: 10,
+		objectId: '24242424-2424-4424-8424-242424242424',
+		name: 'cnto_AppealId_sifund_appeal',
+		displayName: 'cnto_AppealId_sifund_appeal',
+		change: 'added',
+		layer: 'active',
+		solutions: ['CustomerCustom'],
+		relatedTable: 'Donor Event',
+	}];
+	components.layerScan = {
+		status: 'complete',
+		productTables: 90,
+		checkedTables: 90,
+		solutionTables: 5,
+		checkedSolutionTables: 5,
+	};
+	const result = assess(input, { now: NOW });
+	const cdm = result.routes.find(route => route.family === 'cdm')!;
+	const vm = result.routes.find(route => route.family === 'vm')!;
+	assert.equal(cdm.complexity.level, 'moderate');
+	assert.ok(cdm.complexity.reasons.includes('3 customization(s) were found on this product\'s components.'));
+	assert.ok(!['moderate', 'heavy'].includes(vm.complexity.level));
+	const markdown = renderMarkdown(result);
+	assert.ok(markdown.indexOf('## Customizations in Microsoft nonprofit solutions') < markdown.indexOf('## Customization solutions'));
+	assert.ok(markdown.includes('**Coverage:** Checked 90 of 90 nonprofit tables for unmanaged changes and 5 of 5 tables extended by custom or partner solutions.'));
+	assert.ok(markdown.includes('**Summary:** 3 customization(s): 2 added, 1 changed.'));
+	assert.ok(markdown.includes('| Transaction (msnfp&#95;transaction) | Legacy Receipt Number (cnto&#95;legacyreceiptnumber) | Column | Added | Unmanaged change in this environment | Not checked |'));
+	assert.ok(markdown.includes('| Form | Changed | Managed solution PartnerManaged (PartnerPublisher) |'));
+	assert.ok(markdown.includes('related table: Donor Event | Relationship | Added | Unmanaged change in this environment; also in CustomerCustom |'));
+	assert.ok(markdown.includes('Transaction &#60;main&#62;'));
+	assert.ok(!markdown.includes('<main>'));
+	assert.ok(markdown.includes('No customizations were found on this product\'s components.'));
+	assert.ok(markdown.includes('3 named customization(s) found (2 added, 1 changed)'));
+	assert.ok(!markdown.includes('### Named customization overlap components'));
+});
+
+test('aligned products ask for regression tests only when named customizations exist', () => {
+	const input = inventory(['cdm']);
+	input.questionnaire.answers[0]!.intent = 'confirm-alignment';
+	input.discovery.solutions[0]!.version = '3.1.3.4';
+	input.questionnaire.target.solutions[0]!.version = '3.1.3.4';
+	observeComponents(input, 0);
+	input.discovery.components!.layerScan = {
+		status: 'complete',
+		productTables: 1,
+		checkedTables: 1,
+		solutionTables: 0,
+		checkedSolutionTables: 0,
+	};
+	input.discovery.components!.layerCustomizations = [];
+	const clean = renderMarkdown(assess(input, { now: NOW }));
+	assert.ok(clean.includes('| No migration required | High | None |'));
+	assert.ok(clean.includes('No customizations were found on this product\'s components.'));
+	assert.ok(clean.includes('1. No migration for **CDM for Nonprofits**.\n'));
+	assert.ok(!clean.includes('Regression-test'));
+	input.discovery.components!.layerCustomizations = [{
+		productUniqueNames: ['NonprofitCore'],
+		table: 'msnfp_transaction',
+		tableDisplayName: 'Transaction',
+		type: 60,
+		objectId: '25252525-2525-4525-8525-252525252525',
+		name: 'Transaction',
+		displayName: null,
+		change: 'modified',
+		layer: 'active',
+		solutions: [],
+		relatedTable: null,
+	}];
+	const customized = renderMarkdown(assess(input, { now: NOW }));
+	assert.ok(customized.includes('| No migration required; regression test customizations | High | None |'));
+	assert.ok(customized.includes('Regression-test customizations: 1 named customization(s) found (0 added, 1 changed)'));
+	assert.ok(customized.includes('Regression-test the customizations affecting CDM for Nonprofits'));
+	assert.ok(customized.includes('No migration for **CDM for Nonprofits**. Regression-test its customizations.'));
+});

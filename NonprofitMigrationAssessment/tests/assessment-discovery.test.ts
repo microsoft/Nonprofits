@@ -125,6 +125,9 @@ test('detailed discovery summarizes approved environment metadata without record
 			if (url.pathname.includes('EntityDefinitions')) {
 				return Response.json({ LogicalName: 'msnfp_synthetictable', DisplayName: 'ignored' });
 			}
+			if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries')) {
+				return Response.json({ value: [] });
+			}
 			if (url.pathname.includes('RetrieveTotalRecordCount')) {
 				return Response.json({
 					EntityRecordCountCollection: {
@@ -218,6 +221,62 @@ test('detailed discovery summarizes approved environment metadata without record
 			customizationSolutions: ['PartnerManaged'],
 			productUniqueNames: ['NonprofitCore'],
 		}],
+		layerCustomizations: [{
+			productUniqueNames: ['NonprofitCore'],
+			table: null,
+			tableDisplayName: null,
+			type: 29,
+			objectId: WORKFLOW_ID,
+			name: 'Component type 29 (66666666)',
+			displayName: null,
+			change: 'modified',
+			layer: 'active',
+			solutions: ['CustomerCustom'],
+			relatedTable: null,
+		}, {
+			productUniqueNames: ['NonprofitCore'],
+			table: null,
+			tableDisplayName: null,
+			type: 61,
+			objectId: WEBRESOURCE_ID,
+			name: 'Component type 61 (44444444)',
+			displayName: null,
+			change: 'modified',
+			layer: 'active',
+			solutions: ['CustomerCustom'],
+			relatedTable: null,
+		}, {
+			productUniqueNames: ['NonprofitCore'],
+			table: null,
+			tableDisplayName: null,
+			type: 91,
+			objectId: PLUGIN_ASSEMBLY_ID,
+			name: 'Component type 91 (88888888)',
+			displayName: null,
+			change: 'modified',
+			layer: 'managed-solution',
+			solutions: ['PartnerManaged'],
+			relatedTable: null,
+		}, {
+			productUniqueNames: ['NonprofitCore'],
+			table: 'msnfp_synthetictable',
+			tableDisplayName: null,
+			type: 1,
+			objectId: TABLE_ID,
+			name: 'msnfp_synthetictable',
+			displayName: null,
+			change: 'modified',
+			layer: 'managed-solution',
+			solutions: ['PartnerManaged'],
+			relatedTable: null,
+		}],
+		layerScan: {
+			status: 'complete',
+			productTables: 0,
+			checkedTables: 0,
+			solutionTables: 0,
+			checkedSolutionTables: 0,
+		},
 		truncated: false,
 	});
 	assert.deepEqual(result.dependencies, {
@@ -348,4 +407,220 @@ test('scoped integration evidence inherits component collection limits', async (
 	assert.equal(result.integrations?.truncated, true);
 	assert.equal(result.integrations?.scope, 'selected-products-and-overlapping-customizations');
 	assert.equal(result.evidence.find(item => item.id === 'integrations')?.status, 'partial');
+});
+
+const FORM_ID = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+const ACTIVE_COLUMN_ID = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+const PLATFORM_COLUMN_ID = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
+const HELPER_COLUMN_ID = 'ffffffff-ffff-4fff-8fff-ffffffffffff';
+const RELATIONSHIP_ID = '12121212-1212-4212-8212-121212121212';
+const PARTNER_COLUMN_ID = '13131313-1313-4313-8313-131313131313';
+const PARTNER_CHANGED_COLUMN_ID = '14141414-1414-4414-8414-141414141414';
+const UNLISTED_COLUMN_ID = '15151515-1515-4515-8515-151515151515';
+const DEFAULT_SOLUTION_ID = 'fd140aaf-4df4-11dd-bd17-0019b9312238';
+
+function summaryRow(
+	type: number,
+	objectId: string,
+	name: string,
+	displayName: string | null,
+	flags: { custom?: boolean | string | null; managed?: boolean | string; active?: boolean | string; related?: string },
+) {
+	return {
+		msdyn_componenttype: type,
+		msdyn_objectid: objectId,
+		msdyn_name: name,
+		msdyn_displayname: displayName,
+		msdyn_iscustom: flags.custom ?? null,
+		msdyn_ismanaged: flags.managed ?? true,
+		msdyn_hasactivecustomization: flags.active ?? false,
+		msdyn_relatedentity: flags.related ?? '',
+		msdyn_componentjson: 'SYNTHETIC_DEFINITION_CANARY',
+	};
+}
+
+const CONTACT_ID = '16161616-1616-4616-8616-161616161616';
+const CONTACT_FORM_ID = '17171717-1717-4717-8717-171717171717';
+const CONTACT_COLUMN_ID = '18181818-1818-4818-8818-181818181818';
+
+function layerFetch(calls: string[], oversizedForm: boolean, partnerTableBehavior = 2): typeof globalThis.fetch {
+	return async input => {
+		const url = new URL(String(input));
+		const filter = url.searchParams.get('$filter') ?? '';
+		calls.push(`${url.pathname.split('/').at(-1)} ${filter}`);
+		if (url.pathname.endsWith('/solutioncomponents')) {
+			return Response.json({
+				value: filter.includes(RELEVANT_ID)
+					? [
+						{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 0 },
+						{ componenttype: 1, objectid: CONTACT_ID, rootcomponentbehavior: 2 },
+					]
+					: filter.includes(PARTNER_ID)
+						? [
+							{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: partnerTableBehavior },
+							{ componenttype: 2, objectid: PARTNER_COLUMN_ID },
+							{ componenttype: 2, objectid: PARTNER_CHANGED_COLUMN_ID },
+							{ componenttype: 60, objectid: FORM_ID.toUpperCase() },
+						]
+						: [{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 2 }, { componenttype: 2, objectid: ACTIVE_COLUMN_ID }],
+			});
+		}
+		if (url.pathname.includes('EntityDefinitions')) {
+			return Response.json({ LogicalName: 'msnfp_synthetictable' });
+		}
+		if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries')) {
+			if (filter === `msdyn_solutionid eq ${RELEVANT_ID}`) {
+				return Response.json({ value: [
+					summaryRow(1, TABLE_ID, 'msnfp_synthetictable', 'Synthetic Table', { custom: true }),
+					summaryRow(1, CONTACT_ID, 'contact', 'Contact', { custom: false }),
+					summaryRow(61, WEBRESOURCE_ID, 'msnfp_/main.js', 'Main script', { active: true }),
+				] });
+			}
+			if (filter.includes(DEFAULT_SOLUTION_ID) && filter.includes('\'contact\'')) {
+				assert.match(filter, /msdyn_ismanaged eq 'true'/);
+				assert.doesNotMatch(filter, /msdyn_componenttype eq 10/);
+				return Response.json({ value: [
+					summaryRow(60, CONTACT_FORM_ID, 'Donor', 'Donor', { active: true }),
+					summaryRow(2, CONTACT_COLUMN_ID, 'cus_unrelated', 'Unrelated', { custom: true, managed: false, active: true }),
+				] });
+			}
+			if (filter.includes(DEFAULT_SOLUTION_ID)) {
+				assert.match(filter, /msdyn_primaryentityname eq 'msnfp_synthetictable'/);
+				assert.match(filter, /msdyn_hasactivecustomization eq 'true'/);
+				return Response.json({ value: [
+					summaryRow(2, ACTIVE_COLUMN_ID, 'cus_extra', 'Extra', { custom: 'True', managed: 'False', active: 'True' }),
+					summaryRow(2, PLATFORM_COLUMN_ID, 'createdby', 'Created By', { custom: false, managed: false, active: true }),
+					summaryRow(2, HELPER_COLUMN_ID, 'entityimageid', null, { custom: true, managed: false, active: true }),
+					summaryRow(10, RELATIONSHIP_ID, 'cus_table_msnfp', 'cus_table_msnfp', {
+						custom: true, managed: false, active: true, related: 'Customer Table',
+					}),
+					summaryRow(60, FORM_ID, 'Main', 'Main', { active: true }),
+				] });
+			}
+			if (filter.includes(PARTNER_ID)) {
+				return Response.json({ value: [
+					summaryRow(2, PARTNER_COLUMN_ID, 'partner_score', 'Score', { custom: true }),
+					summaryRow(2, PARTNER_CHANGED_COLUMN_ID, 'msnfp_amount', 'Amount', { custom: true }),
+					summaryRow(2, UNLISTED_COLUMN_ID, 'msnfp_unlisted', 'Unlisted', { custom: true }),
+					summaryRow(60, FORM_ID, 'Main', 'Main', {}),
+				] });
+			}
+		}
+		if (url.pathname.endsWith('/msdyn_componentlayers')) {
+			const layers = (...names: string[]) => Response.json({
+				value: names.map((name, index) => ({ msdyn_solutionname: name, msdyn_order: index + 1 })).reverse(),
+			});
+			if (filter.includes(FORM_ID)) {
+				assert.match(filter, /msdyn_solutioncomponentname eq 'SystemForm'/);
+				return oversizedForm
+					? Response.json({ value: [], padding: 'x'.repeat(600 * 1024) })
+					: layers('NonprofitCore', 'PartnerManaged', 'Active');
+			}
+			if (filter.includes(CONTACT_FORM_ID)) {
+				return layers('System', 'NonprofitCore', 'Active');
+			}
+			assert.match(filter, /msdyn_solutioncomponentname eq 'Attribute'/);
+			return filter.includes(PARTNER_CHANGED_COLUMN_ID)
+				? layers('NonprofitCore', 'PartnerManaged', 'Active')
+				: layers('PartnerManaged');
+		}
+		return Response.json({}, { status: 404 });
+	};
+}
+
+function layerRows(result: Awaited<ReturnType<typeof collectAssessmentDetails>>) {
+	return result.components?.layerCustomizations?.map(item =>
+		[item.table, item.type, item.name, item.change, item.layer, item.solutions.join(','), item.relatedTable]);
+}
+
+test('layer discovery names Active-layer and partner customizations per nonprofit table', async () => {
+	const calls: string[] = [];
+	const result = await collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: layerFetch(calls, false),
+	});
+
+	assert.deepEqual(result.components?.layerScan, {
+		status: 'complete',
+		productTables: 2,
+		checkedTables: 2,
+		solutionTables: 1,
+		checkedSolutionTables: 1,
+	});
+	assert.deepEqual(layerRows(result), [
+		[null, 61, 'msnfp_/main.js', 'modified', 'active', '', null],
+		['contact', 60, 'Donor', 'modified', 'active', '', null],
+		['msnfp_synthetictable', 2, 'cus_extra', 'added', 'active', 'CustomerCustom', null],
+		['msnfp_synthetictable', 2, 'msnfp_amount', 'modified', 'managed-solution', 'PartnerManaged', null],
+		['msnfp_synthetictable', 2, 'partner_score', 'added', 'managed-solution', 'PartnerManaged', null],
+		['msnfp_synthetictable', 10, 'cus_table_msnfp', 'added', 'active', '', 'Customer Table'],
+		['msnfp_synthetictable', 60, 'Main', 'modified', 'active', '', null],
+		['msnfp_synthetictable', 60, 'Main', 'modified', 'managed-solution', 'PartnerManaged', null],
+	]);
+	assert.ok(result.components?.layerCustomizations?.every(item => item.productUniqueNames.join() === 'NonprofitCore'));
+	assert.equal(result.components?.layerCustomizations?.find(item => item.name === 'cus_extra')?.tableDisplayName, 'Synthetic Table');
+	assert.equal(calls.filter(call => call.startsWith('msdyn_componentlayers')).length, 4);
+	assert.equal(result.evidence.find(item => item.id === 'components')?.status, 'observed');
+	assert.ok(!JSON.stringify(result).includes('SYNTHETIC_DEFINITION_CANARY'));
+	assert.ok(!JSON.stringify(result).includes('cus_unrelated'));
+});
+
+test('layer discovery keeps partner forms unresolved when their layer stack exceeds the response cap', async () => {
+	const calls: string[] = [];
+	const result = await collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: layerFetch(calls, true),
+	});
+	assert.equal(result.components?.layerScan?.status, 'complete');
+	const partner = result.components?.layerCustomizations?.filter(item => item.layer === 'managed-solution')
+		.map(item => [item.name, item.change, item.productUniqueNames.join()]);
+	assert.deepEqual(partner, [
+		['msnfp_amount', 'modified', 'NonprofitCore'],
+		['partner_score', 'added', 'NonprofitCore'],
+		['Main', 'unknown', 'NonprofitCore'],
+	]);
+	assert.equal(calls.filter(call => call.startsWith('msdyn_componentlayers')).length, 4);
+	assert.equal(result.evidence.find(item => item.id === 'components')?.status, 'observed');
+});
+test('partner solutions that layer a nonprofit table definition keep a table-level row', async () => {
+	const result = await collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: layerFetch([], false, 1),
+	});
+	const tableRows = result.components?.layerCustomizations?.filter(item => item.type === 1)
+		.map(item => [item.table, item.layer, item.solutions.join(), item.change]);
+	assert.deepEqual(tableRows, [['msnfp_synthetictable', 'managed-solution', 'PartnerManaged', 'modified']]);
+});
+
+test('unavailable layer details keep overlap evidence and mark components partial', async () => {
+	const result = await collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: async input => {
+			const url = new URL(String(input));
+			return url.pathname.endsWith('/solutioncomponents')
+				? Response.json({ value: [] })
+				: Response.json({}, { status: 404 });
+		},
+	});
+	assert.equal(result.components?.layerScan?.status, 'unavailable');
+	assert.deepEqual(result.components?.layerCustomizations, []);
+	const components = result.evidence.find(item => item.id === 'components');
+	assert.equal(components?.status, 'partial');
+	assert.match(components?.reason ?? '', /changes made directly in the environment could not be listed/);
 });

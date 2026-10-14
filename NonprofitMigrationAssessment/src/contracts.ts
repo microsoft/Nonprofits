@@ -100,6 +100,26 @@ export const ComponentSummarySchema = z.strictObject({
 		customizationSolutions: z.array(IdentifierSchema).min(1),
 		productUniqueNames: z.array(IdentifierSchema).min(1),
 	})).optional(),
+	layerCustomizations: z.array(z.strictObject({
+		productUniqueNames: z.array(IdentifierSchema).min(1),
+		table: IdentifierSchema.nullable(),
+		tableDisplayName: z.string().trim().min(1).max(200).nullable(),
+		type: z.number().int().nonnegative(),
+		objectId: GuidSchema,
+		name: z.string().trim().min(1).max(200),
+		displayName: z.string().trim().min(1).max(200).nullable(),
+		change: z.enum(['added', 'modified', 'unknown']),
+		layer: z.enum(['active', 'managed-solution']),
+		solutions: z.array(IdentifierSchema),
+		relatedTable: z.string().trim().min(1).max(200).nullable(),
+	})).max(1_000).optional(),
+	layerScan: z.strictObject({
+		status: z.enum(['complete', 'partial', 'unavailable']),
+		productTables: CountMetricSchema,
+		checkedTables: CountMetricSchema,
+		solutionTables: CountMetricSchema,
+		checkedSolutionTables: CountMetricSchema,
+	}).optional(),
 	truncated: z.boolean(),
 });
 export const DependencySummarySchema = z.strictObject({

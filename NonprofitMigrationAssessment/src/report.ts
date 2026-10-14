@@ -84,7 +84,9 @@ function decisionConfidence(report: Assessment, route: Assessment['routes'][numb
 
 function planningBasis(report: Assessment, route: Assessment['routes'][number]): string {
 	if (route.status === 'already-at-target') {
-		return 'Installed and GitHub versions match the approved release mapping. Regression-test overlapping customizations.';
+		return `Installed and GitHub versions match the approved release mapping. ${hasCustomizations(report, route.family)
+			? `Regression-test customizations: ${customizationSignal(report, route.family)}.`
+			: 'No customizations were found on this product\'s components.'}`;
 	}
 	const overlap = customizationSignal(report, route.family);
 	if (route.family === 've') {
@@ -166,9 +168,15 @@ function componentBreakdown(
 	return [...totals].map(([label, count]) => `${label}: ${count}`).join(', ');
 }
 
+function hasCustomizations(report: Assessment, family: Family): boolean {
+	return report.discoverySummary.components?.layerScan
+		? familyLayerCustomizations(report, family).length > 0
+		: customizationSignal(report, family).includes('overlapping component');
+}
+
 function recommendation(report: Assessment, route: Assessment['routes'][number]): string {
 	if (route.status === 'already-at-target') {
-		return customizationSignal(report, route.family).includes('overlapping component')
+		return hasCustomizations(report, route.family)
 			? 'No migration required; regression test customizations'
 			: 'No migration required';
 	}
@@ -198,6 +206,17 @@ function dependencies(family: Family): string {
 
 function customizationSignal(report: Assessment, family: Family): string {
 	const route = ROUTES.find(item => item.family === family)!;
+	if (report.discoverySummary.components?.layerScan) {
+		const items = familyLayerCustomizations(report, family);
+		if (items.length) {
+			const added = items.filter(item => item.change === 'added').length;
+			const changed = items.filter(item => item.change === 'modified').length;
+			return `${items.length} named customization(s) found (${added} added, ${changed} changed); see Customizations in Microsoft nonprofit solutions`;
+		}
+		if (report.discoverySummary.components.layerScan.status === 'complete') {
+			return 'No customizations found on this product\'s components';
+		}
+	}
 	const candidates = report.discoverySummary.components?.customizationCandidates
 		?.filter(item => !isMicrosoftFirstPartyPublisher(item.publisher)) ?? [];
 	const matching = candidates.flatMap(item => item.overlaps
@@ -218,6 +237,120 @@ function customizationSignal(report: Assessment, family: Family): string {
 function productName(uniqueName: string): string {
 	const route = ROUTES.find(item => [item.source, item.target].includes(uniqueName));
 	return route ? FAMILY_NAMES[route.family] : uniqueName;
+}
+
+type LayerCustomization = NonNullable<NonNullable<Assessment['discoverySummary']['components']>['layerCustomizations']>[number];
+
+function singularComponentType(type: number): string {
+	return {
+		1: 'Table definition',
+		2: 'Column',
+		9: 'Choice',
+		10: 'Relationship',
+		20: 'Security role',
+		26: 'View',
+		29: 'Workflow/flow',
+		59: 'Chart',
+		60: 'Form',
+		61: 'Script/web resource',
+		62: 'Site map',
+		66: 'Custom control',
+		80: 'App',
+		91: 'Plug-in assembly',
+		92: 'Plug-in step',
+		371: 'Connection reference',
+		380: 'Environment variable',
+	}[type] ?? 'Other component';
+}
+
+function familyLayerCustomizations(report: Assessment, family: Family): LayerCustomization[] {
+	const route = ROUTES.find(item => item.family === family)!;
+	return (report.discoverySummary.components?.layerCustomizations ?? []).filter(item =>
+		item.productUniqueNames.some(name => [route.source, route.target].includes(name)));
+}
+
+function layerLocation(report: Assessment, item: LayerCustomization): string {
+	if (item.layer === 'active') {
+		return item.solutions.length
+			? `Unmanaged change in this environment; also in ${item.solutions.map(text).join(', ')}`
+			: 'Unmanaged change in this environment';
+	}
+	const solution = item.solutions[0] ?? '';
+	const publisher = report.discoverySummary.components?.customizationCandidates
+		?.find(candidate => candidate.uniqueName === solution)?.publisher;
+	return `Managed solution ${text(solution)}${publisher ? ` (${text(publisher)})` : ''}`;
+}
+
+function layerChange(item: LayerCustomization): string {
+	return item.change === 'added' ? 'Added' : item.change === 'modified' ? 'Changed' : 'Added or changed';
+}
+
+function layerCoverage(scan: NonNullable<NonNullable<Assessment['discoverySummary']['components']>['layerScan']>): string {
+	if (scan.status === 'unavailable') {
+		return 'Solution layer details were not available, so changes made directly in this environment are not listed. Only components shared with custom or partner solutions are shown.';
+	}
+	const coverage = `Checked ${scan.checkedTables} of ${scan.productTables} nonprofit tables for unmanaged changes and ${scan.checkedSolutionTables} of ${scan.solutionTables} tables extended by custom or partner solutions.`;
+	return scan.status === 'partial'
+		? `${coverage} Some checks did not complete or reached a safety limit, so more changes may exist.`
+		: coverage;
+}
+
+function layerCustomizationSection(report: Assessment, dependencyCounts: Map<string, number>): string[] {
+	const component = report.discoverySummary.components!;
+	const scan = component.layerScan!;
+	const checked = new Set((component.customizationComponents ?? []).map(item => item.objectId.toLowerCase()));
+	const families = report.routes
+		.filter(route => route.status !== 'not-installed')
+		.map(route => route.family);
+	const output = [
+		'## Customizations in Microsoft nonprofit solutions',
+		'',
+		'Each row is a change layered on top of a Microsoft nonprofit solution component, or a new column, relationship, view, or form added to a nonprofit table. Plan to retest, recreate, or confirm each change against the GitHub version.',
+		'',
+		`**Coverage:** ${layerCoverage(scan)}`,
+		'',
+	];
+	for (const family of families) {
+		const items = [...familyLayerCustomizations(report, family)].sort((left, right) =>
+			(left.tableDisplayName ?? left.table ?? '').localeCompare(right.tableDisplayName ?? right.table ?? '', 'en')
+			|| left.type - right.type
+			|| (left.displayName ?? left.name).localeCompare(right.displayName ?? right.name, 'en')
+			|| left.layer.localeCompare(right.layer, 'en'));
+		output.push(`### ${text(FAMILY_NAMES[family])}`, '');
+		if (!items.length) {
+			output.push(scan.status === 'complete'
+				? 'No customizations were found on this product\'s components.'
+				: 'No customizations were found within the checked scope.', '');
+			continue;
+		}
+		const added = items.filter(item => item.change === 'added').length;
+		const changed = items.filter(item => item.change === 'modified').length;
+		output.push(
+			`**Summary:** ${items.length} customization(s): ${added} added, ${changed} changed${items.length - added - changed ? `, ${items.length - added - changed} added or changed` : ''}.`,
+			'',
+			'| Table | Component | Type | Change | Where the change lives | Dependents found |',
+			'| --- | --- | --- | --- | --- | --- |',
+			...items.map(item => {
+				const table = item.table
+					? item.tableDisplayName ? `${text(item.tableDisplayName)} (${text(item.table)})` : text(item.table)
+					: [2, 10, 26, 59, 60].includes(item.type) ? 'Table not identified' : 'Not table-specific';
+				const name = item.type === 1
+					? 'Table properties'
+					: item.displayName && item.displayName !== item.name
+						? `${text(item.displayName)} (${text(item.name)})`
+						: text(item.name);
+				const related = item.relatedTable && item.relatedTable !== item.tableDisplayName
+					? `; related table: ${text(item.relatedTable)}`
+					: '';
+				const dependents = checked.has(item.objectId.toLowerCase())
+					? String(dependencyCounts.get(item.objectId.toLowerCase()) ?? 0)
+					: 'Not checked';
+				return `| ${table} | ${name}${related} | ${singularComponentType(item.type)} | ${layerChange(item)} | ${layerLocation(report, item)} | ${dependents} |`;
+			}),
+			'',
+		);
+	}
+	return output;
 }
 
 function actionFor(finding: Finding): string {
@@ -326,7 +459,9 @@ function migrationSequence(report: Assessment): string[] {
 	return report.routes.map(route => {
 		const product = FAMILY_NAMES[route.family];
 		if (route.status === 'already-at-target') {
-			return `No migration for **${product}**. Regression-test the overlapping customizations.`;
+			return hasCustomizations(report, route.family)
+				? `No migration for **${product}**. Regression-test its customizations.`
+				: `No migration for **${product}**.`;
 		}
 		if (route.status === 'not-installed') {
 			return `No migration for **${product}** because it was not detected.`;
@@ -365,8 +500,7 @@ function customerProductRows(report: Assessment): string[] {
 function nextActions(report: Assessment): string[] {
 	const actions: string[] = [];
 	const alignedWithOverlap = report.routes
-		.filter(route => route.status === 'already-at-target'
-			&& customizationSignal(report, route.family).includes('overlapping component'))
+		.filter(route => route.status === 'already-at-target' && hasCustomizations(report, route.family))
 		.map(route => FAMILY_NAMES[route.family]);
 	if (alignedWithOverlap.length) {
 		actions.push(`Regression-test the customizations affecting ${alignedWithOverlap.join(' and ')}; no product migration is required.`);
@@ -454,6 +588,7 @@ export function renderMarkdown(report: Assessment): string {
 		'',
 		...(actions.length ? actions.map(action => `- [ ] ${action}`) : ['- [x] No migration actions were identified.']),
 		'',
+		...(component?.layerScan ? layerCustomizationSection(report, dependencyCounts) : []),
 		'## Customization solutions',
 		'',
 		...(!solutionInventoryAvailable
@@ -475,7 +610,7 @@ export function renderMarkdown(report: Assessment): string {
 			...(component?.truncated ? ['', `> **Partial scan:** ${customizationCandidates.length} custom or partner solution candidates are shown. At least one collection limit was reached, so additional solutions or components may exist.`] : []),
 			] : ['No custom or partner solution candidates were identified within the bounded collection scope.']),
 		'',
-		...(customizationComponents.length ? [
+		...(!component?.layerScan && customizationComponents.length ? [
 			'### Named customization overlap components',
 			'',
 			'| Component | Type | Custom solution | Affects product | Dependent references |',

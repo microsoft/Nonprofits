@@ -1,9 +1,20 @@
 import type { Complexity, Family, Inventory } from './contracts.js';
+import { ROUTES } from './routes.js';
 
 export interface ComplexityResult {
 	level: Complexity;
 	reasons: string[];
 	evidenceIds: string[];
+}
+
+function customizationCount(inventory: Inventory, family: Family): number {
+	const components = inventory.discovery.components;
+	if (!components?.layerScan) {
+		return components?.overlappingUnmanagedComponents ?? 0;
+	}
+	const route = ROUTES.find(item => item.family === family)!;
+	return (components.layerCustomizations ?? []).filter(item =>
+		item.productUniqueNames.some(name => [route.source, route.target].includes(name))).length;
 }
 
 export function classifyComplexity(inventory: Inventory, family: Family): ComplexityResult {
@@ -29,7 +40,7 @@ export function classifyComplexity(inventory: Inventory, family: Family): Comple
 			evidenceIds: [`answers.${family}`],
 		};
 	}
-	const overlap = inventory.discovery.components?.overlappingUnmanagedComponents ?? 0;
+	const overlap = customizationCount(inventory, family);
 	const customJourneys = family === 've' && answer.veCustomJourneys === 'present';
 	if (answer.customization === 'customized' || overlap > 0) {
 		const heavy = overlap > 10 || (answer.customization === 'customized' && customJourneys);
@@ -37,7 +48,7 @@ export function classifyComplexity(inventory: Inventory, family: Family): Comple
 			level: heavy ? 'heavy' : 'moderate',
 			reasons: [
 				...(answer.customization === 'customized' ? ['Customizations affecting this product were identified.'] : []),
-				...(overlap ? [`${overlap} unmanaged change(s) overlap nonprofit solution components.`] : []),
+				...(overlap ? [`${overlap} customization(s) were found on this product's components.`] : []),
 				...(customJourneys ? ['Business-critical custom site journeys must be preserved.'] : []),
 			],
 			evidenceIds: [
@@ -61,11 +72,11 @@ export function classifyComplexity(inventory: Inventory, family: Family): Comple
 	}
 	const componentEvidence = inventory.discovery.evidence.find(item => item.id === 'components');
 	if (['unknown', 'standard'].includes(answer.customization) && componentEvidence?.status === 'observed'
-		&& inventory.discovery.components?.overlappingUnmanagedComponents === 0) {
+		&& overlap === 0) {
 		return {
 			level: 'likely-standard',
 			reasons: [
-				'No unmanaged changes overlapping nonprofit solution components were found.',
+				'No customizations were found on this product\'s components.',
 				'External and dynamic dependencies may still exist.',
 			],
 			evidenceIds: ['components', `answers.${family}`],

@@ -9,13 +9,40 @@ import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 
 const API = '/api/data/v9.2/';
 const RESPONSE_BYTES = 512 * 1024;
-const TOTAL_BYTES = 8 * 1024 * 1024;
+const TOTAL_BYTES = 16 * 1024 * 1024;
+const MAX_REQUESTS = 700;
 const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 100;
 const MAX_DEPENDENCY_EDGES = 2_000;
 const MAX_COUNT_TABLES = 50;
+const MAX_LAYER_TABLES = 200;
+const MAX_LAYER_SOLUTION_TABLES = 60;
+const MAX_LAYER_LOOKUPS = 150;
+// Form layer stacks embed full form definitions and often exceed the response cap.
+const MAX_FORM_LAYER_LOOKUPS = 10;
+const LAYER_RESERVED_REQUESTS = 160;
+const LAYER_RESERVED_BYTES = 6 * 1024 * 1024;
+const MAX_LAYER_CUSTOMIZATIONS = 1_000;
+const LAYER_CONCURRENCY = 4;
+const DEFAULT_SOLUTION_ID = 'fd140aaf-4df4-11dd-bd17-0019b9312238';
 const INTEGRATION_COMPONENT_TYPES = new Set([29, 91, 92, 371]);
+// Table subcomponents: columns, relationships, views, charts, and forms.
+const TABLE_CHILD_TYPES = [2, 10, 26, 59, 60];
+const SHARED_TABLE_CHILD_TYPES = [2, 26, 59, 60];
+const LAYER_COMPONENT_NAMES: Record<number, string> = {
+	2: 'Attribute',
+	10: 'EntityRelationship',
+	26: 'SavedQuery',
+	59: 'SavedQueryVisualization',
+	60: 'SystemForm',
+};
+const SUMMARY_SELECT = [
+	'msdyn_name', 'msdyn_displayname', 'msdyn_componenttype', 'msdyn_objectid', 'msdyn_iscustom',
+	'msdyn_ismanaged', 'msdyn_hasactivecustomization', 'msdyn_relatedentity',
+].join(',');
+const GUID_PATTERN = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+const TABLE_NAME_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9_]{0,99}$/;
 
 const VersionResponseSchema = z.object({ Version: z.string() });
 const OrganizationPageSchema = z.object({
@@ -27,6 +54,7 @@ const ComponentPageSchema = z.object({
 		objectid: z.string().regex(
 			/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
 		).nullable(),
+		rootcomponentbehavior: z.number().int().nullable().optional(),
 	})).max(5_000),
 	'@odata.nextLink': z.unknown().optional(),
 });
@@ -56,6 +84,39 @@ const TotalCountSchema = z.object({
 		Values: z.array(z.union([z.string(), z.number()])),
 	}),
 });
+const FlagSchema = z.union([z.boolean(), z.string(), z.null()]).optional()
+	.transform(value => value === true || (typeof value === 'string' && value.toLowerCase() === 'true'));
+const OptionalTextSchema = z.string().nullable().optional()
+	.transform(value => value?.replace(/[\r\n\u0000-\u001f]/g, ' ').trim().slice(0, 200).trim() || null);
+const SummaryPageSchema = z.object({
+	value: z.array(z.object({
+		msdyn_name: OptionalTextSchema,
+		msdyn_displayname: OptionalTextSchema,
+		msdyn_componenttype: z.number().int().nonnegative(),
+		msdyn_objectid: z.string().regex(GUID_PATTERN).nullable().optional(),
+		msdyn_iscustom: FlagSchema,
+		msdyn_ismanaged: FlagSchema,
+		msdyn_hasactivecustomization: FlagSchema,
+		msdyn_relatedentity: OptionalTextSchema,
+	})).max(5_000),
+	'@odata.nextLink': z.unknown().optional(),
+});
+const LayerPageSchema = z.object({
+	value: z.array(z.object({
+		msdyn_solutionname: z.string().max(200),
+		msdyn_order: z.number().int(),
+	})).max(100),
+});
+
+type LayerCustomization = NonNullable<z.infer<typeof ComponentSummarySchema>['layerCustomizations']>[number];
+type LayerScan = NonNullable<z.infer<typeof ComponentSummarySchema>['layerScan']>;
+interface LayerCandidate {
+	uniqueName: string;
+	solutionId: string;
+	managed: boolean;
+	keys: Set<string>;
+	tableBehaviors: Map<string, number | null>;
+}
 
 export interface AssessmentDiscoveryOptions {
 	environmentUrl: string;
@@ -126,6 +187,10 @@ function fallbackComponentName(type: number, objectId: string): string {
 	return `Component type ${type} (${objectId.slice(0, 8)})`;
 }
 
+function componentKey(type: number, objectId: string): string {
+	return `${type}:${objectId.toLowerCase()}`;
+}
+
 async function resolveComponentName(
 	context: RequestContext,
 	component: { componenttype: number; objectid: string },
@@ -177,7 +242,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 	const declared = response.headers.get('content-length');
 	if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > RESPONSE_BYTES)) {
 		discard(response);
-		throw new RequestFailure('The metadata response exceeded the approved byte budget.');
+		throw new RequestFailure('The metadata response exceeded the approved byte budget.', 'partial');
 	}
 	const reader = response.body.getReader();
 	const decoder = new TextDecoder('utf-8', { fatal: true });
@@ -195,7 +260,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 			bytes += chunk.value.byteLength;
 			context.budget.bytes += chunk.value.byteLength;
 			if (bytes > RESPONSE_BYTES || context.budget.bytes > TOTAL_BYTES) {
-				throw new RequestFailure('The metadata response exceeded the approved byte budget.');
+				throw new RequestFailure('The metadata response exceeded the approved byte budget.', 'partial');
 			}
 			text += decoder.decode(chunk.value, { stream: true });
 		}
@@ -213,7 +278,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 }
 
 async function getJsonOnce(context: RequestContext, url: string): Promise<unknown> {
-	if (context.budget.requests >= 160) {
+	if (context.budget.requests >= MAX_REQUESTS) {
 		throw new RequestFailure('The metadata request budget was exhausted.', 'partial');
 	}
 	context.budget.requests++;
@@ -339,12 +404,13 @@ async function collectComponents(
 	};
 	const productKeys = new Map<string, Set<string>>();
 	const tableProducts = new Map<string, Set<string>>();
+	const fullTableProducts = new Map<string, Set<string>>();
 	const componentTypes = new Map<number, number>();
 	let truncated = relevantSolutions.length > MAX_RELEVANT_SOLUTIONS;
 	for (const solution of relevantSolutions.slice(0, MAX_RELEVANT_SOLUTIONS)) {
 		const parsed = ComponentPageSchema.parse(await getJson(context,
 			apiUrl(context.origin, 'solutioncomponents', {
-				'$select': 'componenttype,objectid',
+				'$select': 'componenttype,objectid,rootcomponentbehavior',
 				'$filter': `_solutionid_value eq ${solution.solutionId}`,
 				'$orderby': 'componenttype asc,objectid asc',
 				'$top': '5000',
@@ -352,14 +418,20 @@ async function collectComponents(
 		truncated ||= parsed['@odata.nextLink'] !== undefined;
 		const keys = new Set<string>();
 		for (const item of parsed.value) {
-			relevant.push(item);
+			relevant.push({ componenttype: item.componenttype, objectid: item.objectid });
 			componentTypes.set(item.componenttype, (componentTypes.get(item.componenttype) ?? 0) + 1);
 			if (item.objectid !== null) {
-				keys.add(`${item.componenttype}:${item.objectid}`);
+				keys.add(componentKey(item.componenttype, item.objectid));
 				if (item.componenttype === 1) {
 					const products = tableProducts.get(item.objectid) ?? new Set<string>();
 					products.add(solution.uniqueName);
 					tableProducts.set(item.objectid, products);
+					// Root component behavior 0 means the solution contains the whole table, which marks the owning product.
+					if (item.rootcomponentbehavior === 0) {
+						const owners = fullTableProducts.get(item.objectid.toLowerCase()) ?? new Set<string>();
+						owners.add(solution.uniqueName);
+						fullTableProducts.set(item.objectid.toLowerCase(), owners);
+					}
 				}
 			}
 		}
@@ -368,7 +440,7 @@ async function collectComponents(
 	}
 	const relevantKeys = new Set(relevant
 		.filter(item => item.objectid !== null)
-		.map(item => `${item.componenttype}:${item.objectid}`));
+		.map(item => componentKey(item.componenttype, item.objectid!)));
 	const overlapping = new Set<string>();
 	const analyzedCandidates = customizationCandidates.slice(0, MAX_UNMANAGED_SOLUTIONS);
 	truncated ||= customizationCandidates.length > MAX_UNMANAGED_SOLUTIONS;
@@ -382,11 +454,12 @@ async function collectComponents(
 	}> = [];
 	const productCustomizationSolutions = new Map<string, Set<string>>();
 	const productOverlapCounts = new Map<string, number>();
+	const layerCandidates: LayerCandidate[] = [];
 	let overlappingCandidateSolutions = 0;
 	for (const solution of analyzedCandidates) {
 		const parsed = ComponentPageSchema.parse(await getJson(context,
 			apiUrl(context.origin, 'solutioncomponents', {
-				'$select': 'componenttype,objectid',
+				'$select': 'componenttype,objectid,rootcomponentbehavior',
 				'$filter': `_solutionid_value eq ${solution.solutionId}`,
 				'$orderby': 'componenttype asc,objectid asc',
 				'$top': '5000',
@@ -394,9 +467,20 @@ async function collectComponents(
 		truncated ||= parsed['@odata.nextLink'] !== undefined;
 		const overlapsByProduct = new Map<string, number>();
 		const candidateTypes = new Map<number, number>();
+		layerCandidates.push({
+			uniqueName: solution.uniqueName,
+			solutionId: solution.solutionId!,
+			managed: solution.managed,
+			keys: new Set(parsed.value
+				.filter(item => item.objectid !== null)
+				.map(item => componentKey(item.componenttype, item.objectid!))),
+			tableBehaviors: new Map(parsed.value
+				.filter(item => item.componenttype === 1 && item.objectid !== null)
+				.map(item => [item.objectid!.toLowerCase(), item.rootcomponentbehavior ?? null])),
+		});
 		for (const item of parsed.value) {
 			candidateTypes.set(item.componenttype, (candidateTypes.get(item.componenttype) ?? 0) + 1);
-			const key = item.objectid === null ? '' : `${item.componenttype}:${item.objectid}`;
+			const key = item.objectid === null ? '' : componentKey(item.componenttype, item.objectid);
 			if (!solution.managed && relevantKeys.has(key)) {
 				overlapping.add(key);
 			}
@@ -453,6 +537,22 @@ async function collectComponents(
 			productUniqueNames: [...detail.productUniqueNames].sort(),
 		});
 	}
+	const microsoftSolutions = new Set(discovery.solutions
+		.filter(solution => relevantNames.has(solution.uniqueName.toLowerCase())
+			|| isMicrosoftFirstPartyPublisher(solution.publisher))
+		.map(solution => solution.uniqueName.toLowerCase()));
+	const defaultSolutionId = discovery.solutions
+		.find(solution => solution.uniqueName.toLowerCase() === 'default')?.solutionId ?? DEFAULT_SOLUTION_ID;
+	const layers = await collectLayerCustomizations(context, {
+		products: relevantSolutions.slice(0, MAX_RELEVANT_SOLUTIONS)
+			.map(solution => ({ uniqueName: solution.uniqueName, solutionId: solution.solutionId! })),
+		productKeys,
+		fullTableProducts,
+		candidates: layerCandidates,
+		defaultSolutionId,
+		microsoftSolutions,
+		overlaps: customizationComponents,
+	});
 	return {
 		summary: ComponentSummarySchema.parse({
 			relevantSolutions: relevantSolutions.length,
@@ -471,6 +571,8 @@ async function collectComponents(
 				})),
 				customizationCandidates: candidateSummaries,
 				customizationComponents,
+				layerCustomizations: layers.items,
+				layerScan: layers.scan,
 				truncated,
 		}),
 		relevant,
@@ -485,6 +587,319 @@ async function collectComponents(
 	};
 }
 
+async function mapBounded<T>(items: T[], operation: (item: T) => Promise<unknown>): Promise<void> {
+	let next = 0;
+	await Promise.all(Array.from({ length: Math.min(LAYER_CONCURRENCY, items.length) }, async () => {
+		while (next < items.length) {
+			await operation(items[next++]!);
+		}
+	}));
+}
+
+async function collectLayerCustomizations(
+	context: RequestContext,
+	input: {
+		products: Array<{ uniqueName: string; solutionId: string }>;
+		productKeys: Map<string, Set<string>>;
+		fullTableProducts: Map<string, Set<string>>;
+		candidates: LayerCandidate[];
+		defaultSolutionId: string;
+		microsoftSolutions: Set<string>;
+		overlaps: Array<{
+			type: number;
+			objectId: string;
+			name: string;
+			nameSource: 'observed' | 'identifier';
+			customizationSolutions: string[];
+			productUniqueNames: string[];
+		}>;
+	},
+): Promise<{ items: LayerCustomization[]; scan: LayerScan }> {
+	const items = new Map<string, LayerCustomization>();
+	const tables = new Map<string, {
+		displayName: string | null;
+		objectId: string;
+		custom: boolean;
+		products: Set<string>;
+	}>();
+	let succeeded = 0;
+	let failed = 0;
+	let limited = false;
+	// Keep enough of the shared request and byte budget for dependencies, counts, and sites.
+	const budgetAvailable = (): boolean => {
+		const available = context.budget.requests < MAX_REQUESTS - LAYER_RESERVED_REQUESTS
+			&& context.budget.bytes < TOTAL_BYTES - LAYER_RESERVED_BYTES;
+		limited ||= !available;
+		return available;
+	};
+	const scannedTables = new Set<string>();
+	const scannedSolutionTables = new Set<string>();
+	const summaries = async (filter: string) => {
+		if (!budgetAvailable()) {
+			throw new RequestFailure('The customization layer budget was exhausted.', 'partial');
+		}
+		const parsed = SummaryPageSchema.parse(await getJson(context,
+			apiUrl(context.origin, 'msdyn_solutioncomponentsummaries', {
+				'$select': SUMMARY_SELECT,
+				'$filter': filter,
+			})));
+		limited ||= parsed['@odata.nextLink'] !== undefined;
+		return parsed.value;
+	};
+	const attempt = async (operation: () => Promise<void>): Promise<boolean> => {
+		try {
+			await operation();
+			succeeded++;
+			return true;
+		} catch {
+			failed++;
+			return false;
+		}
+	};
+	const unmanagedSolutionsContaining = (key: string): string[] => input.candidates
+		.filter(candidate => !candidate.managed && candidate.keys.has(key))
+		.map(candidate => candidate.uniqueName);
+	const itemKey = (item: LayerCustomization): string =>
+		`${item.layer}:${item.layer === 'managed-solution' ? item.solutions[0] : ''}:${item.objectId.toLowerCase()}`;
+	const add = (item: LayerCustomization): void => {
+		const existing = items.get(itemKey(item));
+		if (existing) {
+			existing.solutions = [...new Set([...existing.solutions, ...item.solutions])].sort();
+			existing.productUniqueNames = [...new Set([...existing.productUniqueNames, ...item.productUniqueNames])].sort();
+			return;
+		}
+		items.set(itemKey(item), item);
+	};
+
+	await mapBounded(input.products, product => attempt(async () => {
+		for (const row of await summaries(`msdyn_solutionid eq ${product.solutionId}`)) {
+			if (!row.msdyn_objectid || !row.msdyn_name) {
+				continue;
+			}
+			const isTable = row.msdyn_componenttype === 1 && TABLE_NAME_PATTERN.test(row.msdyn_name);
+			if (isTable) {
+				const table = tables.get(row.msdyn_name) ?? {
+					displayName: row.msdyn_displayname,
+					objectId: row.msdyn_objectid,
+					custom: row.msdyn_iscustom,
+					products: new Set<string>(),
+				};
+				table.products.add(product.uniqueName);
+				tables.set(row.msdyn_name, table);
+			}
+			if (row.msdyn_hasactivecustomization && !TABLE_CHILD_TYPES.includes(row.msdyn_componenttype)) {
+				add({
+					productUniqueNames: [product.uniqueName],
+					table: isTable ? row.msdyn_name : null,
+					tableDisplayName: isTable ? row.msdyn_displayname : null,
+					type: row.msdyn_componenttype,
+					objectId: row.msdyn_objectid,
+					name: row.msdyn_name,
+					displayName: row.msdyn_displayname,
+					change: row.msdyn_ismanaged ? 'modified' : 'added',
+					layer: 'active',
+					solutions: unmanagedSolutionsContaining(componentKey(row.msdyn_componenttype, row.msdyn_objectid)),
+					relatedTable: null,
+				});
+			}
+		}
+	}));
+	const summariesAvailable = succeeded > 0 || input.products.length === 0;
+	const typeFilter = `(${TABLE_CHILD_TYPES.map(type => `msdyn_componenttype eq ${type}`).join(' or ')})`;
+	const tableFilter = (solutionId: string, tableName: string): string =>
+		`msdyn_solutionid eq ${solutionId} and msdyn_primaryentityname eq '${tableName}' and ${typeFilter}`;
+	const tableList = [...tables.entries()].sort(([left], [right]) => left.localeCompare(right, 'en'));
+	const checkedTables = summariesAvailable ? tableList.slice(0, MAX_LAYER_TABLES) : [];
+	limited ||= tableList.length > checkedTables.length && summariesAvailable;
+	await mapBounded(checkedTables, ([tableName, table]) => attempt(async () => {
+		// Shared tables such as User carry platform relationships from every table, so only managed nonprofit components are read.
+		const filter = table.custom
+			? tableFilter(input.defaultSolutionId, tableName)
+			: `msdyn_solutionid eq ${input.defaultSolutionId} and msdyn_primaryentityname eq '${tableName}'`
+				+ ` and (${SHARED_TABLE_CHILD_TYPES.map(type => `msdyn_componenttype eq ${type}`).join(' or ')})`
+				+ ' and msdyn_ismanaged eq \'true\'';
+		const rows = await summaries(`${filter} and msdyn_hasactivecustomization eq 'true'`);
+		scannedTables.add(tableName);
+		for (const row of rows) {
+			if (!row.msdyn_hasactivecustomization || !row.msdyn_objectid || !row.msdyn_name
+				|| !TABLE_CHILD_TYPES.includes(row.msdyn_componenttype)) {
+				continue;
+			}
+			// Platform-generated columns and relationships (owner, created by, and similar) are unmanaged but not customer changes.
+			if ([2, 10].includes(row.msdyn_componenttype) && !row.msdyn_ismanaged && !row.msdyn_iscustom) {
+				continue;
+			}
+			if (row.msdyn_componenttype === 2 && !row.msdyn_displayname) {
+				continue;
+			}
+			add({
+				productUniqueNames: [],
+				table: tableName,
+				tableDisplayName: table.displayName,
+				type: row.msdyn_componenttype,
+				objectId: row.msdyn_objectid,
+				name: row.msdyn_name,
+				displayName: row.msdyn_displayname,
+				change: row.msdyn_ismanaged ? 'modified' : 'added',
+				layer: 'active',
+				solutions: unmanagedSolutionsContaining(componentKey(row.msdyn_componenttype, row.msdyn_objectid)),
+				relatedTable: row.msdyn_componenttype === 10 ? row.msdyn_relatedentity : null,
+			});
+		}
+	}));
+
+	const tablesById = new Map([...tables.entries()].map(([name, table]) => [table.objectId.toLowerCase(), name]));
+	const hasTableChildren = (candidate: LayerCandidate): boolean =>
+		[...candidate.keys].some(key => TABLE_CHILD_TYPES.includes(Number(key.split(':')[0])));
+	const solutionTables: Array<{ candidate: LayerCandidate; tableName: string }> = [];
+	for (const candidate of input.candidates.filter(item => item.managed)) {
+		if (!hasTableChildren(candidate)) {
+			continue;
+		}
+		for (const key of candidate.keys) {
+			const tableName = key.startsWith('1:') ? tablesById.get(key.slice(2)) : undefined;
+			if (tableName) {
+				solutionTables.push({ candidate, tableName });
+			}
+		}
+	}
+	solutionTables.sort((left, right) => left.candidate.uniqueName.localeCompare(right.candidate.uniqueName, 'en')
+		|| left.tableName.localeCompare(right.tableName, 'en'));
+	const checkedSolutionTables = summariesAvailable ? solutionTables.slice(0, MAX_LAYER_SOLUTION_TABLES) : [];
+	limited ||= solutionTables.length > checkedSolutionTables.length && summariesAvailable;
+	await mapBounded(checkedSolutionTables, ({ candidate, tableName }) => attempt(async () => {
+		const table = tables.get(tableName)!;
+		const rows = await summaries(tableFilter(candidate.solutionId, tableName));
+		scannedSolutionTables.add(`${candidate.uniqueName}|${tableName}`);
+		for (const row of rows) {
+			if (!row.msdyn_objectid || !row.msdyn_name
+				|| !candidate.keys.has(componentKey(row.msdyn_componenttype, row.msdyn_objectid))) {
+				continue;
+			}
+			add({
+				productUniqueNames: [],
+				table: tableName,
+				tableDisplayName: table.displayName,
+				type: row.msdyn_componenttype,
+				objectId: row.msdyn_objectid,
+				name: row.msdyn_name,
+				displayName: row.msdyn_displayname,
+				change: 'unknown',
+				layer: 'managed-solution',
+				solutions: [candidate.uniqueName],
+				relatedTable: row.msdyn_componenttype === 10 ? row.msdyn_relatedentity : null,
+			});
+		}
+	}));
+
+	// The lowest layers show which Microsoft solutions a change sits on; form stacks can exceed the response cap and fall back.
+	const layerStacks = new Map<string, string[]>();
+	const lookups = [...new Map([...items.values()]
+		.filter(item => item.table && item.type in LAYER_COMPONENT_NAMES && item.change !== 'added')
+		.sort((left, right) => Number(left.type === 60) - Number(right.type === 60)
+			|| Number(left.layer === 'active') - Number(right.layer === 'active'))
+		.map(item => [componentKey(item.type, item.objectId), item])).values()];
+	const formLookups = lookups.filter(item => item.type === 60).slice(0, MAX_FORM_LAYER_LOOKUPS);
+	const checkedLookups = [...lookups.filter(item => item.type !== 60), ...formLookups].slice(0, MAX_LAYER_LOOKUPS);
+	await mapBounded(checkedLookups, async item => {
+		if (!budgetAvailable()) {
+			return;
+		}
+		try {
+			const parsed = LayerPageSchema.parse(await getJson(context, apiUrl(context.origin, 'msdyn_componentlayers', {
+				'$select': 'msdyn_solutionname,msdyn_order',
+				'$filter': `msdyn_componentid eq '${item.objectId}' and msdyn_solutioncomponentname eq '${LAYER_COMPONENT_NAMES[item.type]}'`,
+			})));
+			layerStacks.set(componentKey(item.type, item.objectId), [...parsed.value]
+				.sort((left, right) => left.msdyn_order - right.msdyn_order)
+				.map(layer => layer.msdyn_solutionname.toLowerCase()));
+		} catch {
+			// Attribution falls back to explicit solution membership.
+		}
+	});
+	const productsByName = new Map(input.products.map(product => [product.uniqueName.toLowerCase(), product.uniqueName]));
+	for (const [key, item] of [...items.entries()]) {
+		if (!item.table || !TABLE_CHILD_TYPES.includes(item.type)) {
+			continue;
+		}
+		const table = tables.get(item.table)!;
+		const componentId = componentKey(item.type, item.objectId);
+		const stack = layerStacks.get(componentId);
+		const ownLayer = item.layer === 'active' ? 'active' : item.solutions[0]!.toLowerCase();
+		const below = stack ? stack.slice(0, Math.max(stack.indexOf(ownLayer), 0)) : [];
+		const layered = below.flatMap(name => productsByName.has(name) ? [productsByName.get(name)!] : []);
+		const explicit = [...table.products].filter(product => input.productKeys.get(product)?.has(componentId));
+		const owners = layered.length ? layered : explicit;
+		// On shared Dataverse tables such as Contact, only changes on top of nonprofit solution components are in scope.
+		if (!table.custom && owners.length === 0) {
+			items.delete(key);
+			continue;
+		}
+		const fullTable = [...(input.fullTableProducts.get(table.objectId.toLowerCase()) ?? [])]
+			.filter(product => table.products.has(product));
+		item.productUniqueNames = [...new Set(owners.length ? owners : fullTable.length ? fullTable : [...table.products])].sort();
+		if (item.layer === 'managed-solution') {
+			item.change = below.some(name => input.microsoftSolutions.has(name)) || explicit.length ? 'modified'
+				: stack && stack.includes(ownLayer) ? 'added'
+					: 'unknown';
+		}
+	}
+	for (const overlap of input.overlaps) {
+		const scannedTable = overlap.type === 1 && summariesAvailable
+			? tablesById.get(overlap.objectId.toLowerCase())
+			: undefined;
+		for (const solutionName of overlap.customizationSolutions) {
+			const candidate = input.candidates.find(item => item.uniqueName === solutionName);
+			if (!candidate) {
+				continue;
+			}
+			// Solutions often include a table only as a shell for their columns, forms, and views, which the scans above list.
+			if (scannedTable) {
+				const covered = candidate.managed
+					? candidate.tableBehaviors.get(overlap.objectId.toLowerCase()) === 2
+						&& (scannedSolutionTables.has(`${candidate.uniqueName}|${scannedTable}`) || !hasTableChildren(candidate))
+					: scannedTables.has(scannedTable);
+				if (covered) {
+					continue;
+				}
+			}
+			const tableName = overlap.type === 1 && overlap.nameSource === 'observed' && TABLE_NAME_PATTERN.test(overlap.name)
+				? overlap.name
+				: null;
+			add({
+				productUniqueNames: [...overlap.productUniqueNames].sort(),
+				table: tableName,
+				tableDisplayName: tableName ? tables.get(tableName)?.displayName ?? null : null,
+				type: overlap.type,
+				objectId: overlap.objectId,
+				name: overlap.name,
+				displayName: null,
+				change: 'modified',
+				layer: candidate.managed ? 'managed-solution' : 'active',
+				solutions: [solutionName],
+				relatedTable: null,
+			});
+		}
+	}
+
+	const sorted = [...items.values()].sort((left, right) =>
+		(left.productUniqueNames[0] ?? '').localeCompare(right.productUniqueNames[0] ?? '', 'en')
+		|| (left.table ?? '').localeCompare(right.table ?? '', 'en')
+		|| left.type - right.type
+		|| left.name.localeCompare(right.name, 'en')
+		|| left.layer.localeCompare(right.layer, 'en'));
+	limited ||= sorted.length > MAX_LAYER_CUSTOMIZATIONS;
+	return {
+		items: sorted.slice(0, MAX_LAYER_CUSTOMIZATIONS),
+		scan: {
+			status: !summariesAvailable ? 'unavailable' : failed > 0 || limited ? 'partial' : 'complete',
+			productTables: tables.size,
+			checkedTables: checkedTables.length,
+			solutionTables: solutionTables.length,
+			checkedSolutionTables: checkedSolutionTables.length,
+		},
+	};
+}
 async function collectDependencies(
 	context: RequestContext,
 	components: { componenttype: number; objectid: string; name: string }[],
@@ -707,10 +1122,15 @@ export async function collectAssessmentDetails(
 			componentData = await collectComponents(context, result,
 				new Set(options.relevantSolutionNames.map(name => name.toLowerCase())));
 			result.components = componentData.summary;
-		}, 'Relevant solution components and unmanaged overlap signals were summarized.');
+		}, 'Relevant solution components, solution layers, and customization overlap signals were summarized.');
 		if (result.components?.truncated) {
 			replaceEvidence(result.evidence, evidence('components', 'partial', result.collectedAt,
 				'Component discovery reached an approved solution, row, or pagination cap.', ['solutions']));
+		} else if (result.components?.layerScan && result.components.layerScan.status !== 'complete') {
+			replaceEvidence(result.evidence, evidence('components', 'partial', result.collectedAt,
+				result.components.layerScan.status === 'unavailable'
+					? 'Solution layer details were not available, so changes made directly in the environment could not be listed.'
+					: 'Solution layer discovery reached a safety cap or could not read every table.', ['solutions']));
 		}
 		if (selected('dependencies') && !selected('components')) {
 			replaceEvidence(result.evidence, evidence('dependencies', 'unknown', result.collectedAt,
