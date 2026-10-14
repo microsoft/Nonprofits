@@ -896,6 +896,8 @@ async function collectLayerCustomizations(
 					: 'unknown';
 		}
 	}
+	// When every scan completed, a component that only sits in an unmanaged solution without a direct change isn't a customization.
+	const scansComplete = summariesAvailable && failed === 0 && !limited;
 	for (const overlap of input.overlaps) {
 		const scannedTable = overlap.type === 1 && summariesAvailable
 			? tablesById.get(overlap.objectId.toLowerCase())
@@ -903,6 +905,9 @@ async function collectLayerCustomizations(
 		for (const solutionName of overlap.customizationSolutions) {
 			const candidate = input.candidates.find(item => item.uniqueName === solutionName);
 			if (!candidate) {
+				continue;
+			}
+			if (!candidate.managed && scansComplete && !items.has(`active::${overlap.objectId.toLowerCase()}`)) {
 				continue;
 			}
 			// Solutions often include a table only as a shell for their columns, forms, and views, which the scans above list.

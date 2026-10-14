@@ -694,6 +694,31 @@ test('rubric rates automation on Volunteer Management tables heavy because the t
 	assert.ok(markdown.includes('Legacy Volunteer Management must be replaced by a different GitHub solution. Heavy because of 1 custom relationship(s) or automation(s) use tables that this migration replaces and must be rebuilt. 1 plug-in step registered directly in this environment on Participation.'));
 });
 
+test('an incomplete plug-in, process, and flow scan requires review instead of a standard rating', () => {
+	const input = inventory(['cdm', 'vm']);
+	for (const answer of input.questionnaire.answers) {
+		answer.compatibility = 'unknown';
+		answer.customization = 'unknown';
+		answer.validation = 'unknown';
+	}
+	observeComponents(input, 0);
+	input.discovery.components!.layerCustomizations = [];
+	input.discovery.components!.layerScan = {
+		status: 'complete', productTables: 5, checkedTables: 5, solutionTables: 0, checkedSolutionTables: 0,
+	};
+	input.discovery.integrations = {
+		workflows: 0, connectionReferences: 0, pluginAssemblies: 0, pluginSteps: 0, automations: [],
+		automationScan: { status: 'unavailable', tables: 5, cloudFlows: 0, checkedCloudFlows: 0 },
+		truncated: false,
+	};
+	const vm = assess(input, { now: NOW }).routes.find(route => route.family === 'vm')!;
+	assert.equal(vm.complexity.level, 'unknown');
+	assert.equal(vm.effortBand, 'review-required');
+	assert.deepEqual(vm.complexity.reasons, ['Plug-in steps, processes, or cloud flows on this product\'s tables couldn\'t all be checked.']);
+	input.discovery.integrations.automationScan!.status = 'complete';
+	assert.equal(assess(input, { now: NOW }).routes.find(route => route.family === 'vm')!.complexity.level, 'likely-standard');
+});
+
 test('customer Markdown uses plain language in every report scenario', () => {
 	const banned = /\b(adverse|unscoped|assertions?|derived prerequisite|evidence coverage|candidate-supported|candidate routes?|eligible|route findings?|provisional|inventor(y|ied)|snapshot|dependency edges|hashes|scoped|investigation-required|already-at-target|ownership-transition|not-estimable|metadata signals?|bounded|overlap)\b/i;
 	const healthy = inventory([...FAMILIES]);

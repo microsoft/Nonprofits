@@ -181,8 +181,18 @@ export function classifyComplexity(inventory: Inventory, family: Family): Comple
 		};
 	}
 	const componentEvidence = inventory.discovery.evidence.find(item => item.id === 'components');
-	if (['unknown', 'standard'].includes(answer.customization) && componentEvidence?.status === 'observed'
-		&& overlap === 0) {
+	const automationScan = inventory.discovery.integrations?.automationScan;
+	const noCustomizationsFound = ['unknown', 'standard'].includes(answer.customization)
+		&& componentEvidence?.status === 'observed' && overlap === 0;
+	// Inventories collected before automation discovery have no scan; a failed or capped scan can hide automation.
+	if (noCustomizationsFound && automationScan && automationScan.status !== 'complete') {
+		return {
+			level: 'unknown',
+			reasons: ['Plug-in steps, processes, or cloud flows on this product\'s tables couldn\'t all be checked.'],
+			evidenceIds: ['components', 'integrations', `answers.${family}`],
+		};
+	}
+	if (noCustomizationsFound) {
 		return {
 			level: 'likely-standard',
 			reasons: [

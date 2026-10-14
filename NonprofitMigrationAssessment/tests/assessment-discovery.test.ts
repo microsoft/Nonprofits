@@ -225,30 +225,6 @@ test('detailed discovery summarizes approved environment metadata without record
 			productUniqueNames: ['NonprofitCore'],
 			table: null,
 			tableDisplayName: null,
-			type: 29,
-			objectId: WORKFLOW_ID,
-			name: 'Component type 29 (66666666)',
-			displayName: null,
-			change: 'modified',
-			layer: 'active',
-			solutions: ['CustomerCustom'],
-			relatedTable: null,
-		}, {
-			productUniqueNames: ['NonprofitCore'],
-			table: null,
-			tableDisplayName: null,
-			type: 61,
-			objectId: WEBRESOURCE_ID,
-			name: 'Component type 61 (44444444)',
-			displayName: null,
-			change: 'modified',
-			layer: 'active',
-			solutions: ['CustomerCustom'],
-			relatedTable: null,
-		}, {
-			productUniqueNames: ['NonprofitCore'],
-			table: null,
-			tableDisplayName: null,
 			type: 91,
 			objectId: PLUGIN_ASSEMBLY_ID,
 			name: 'Component type 91 (88888888)',
@@ -444,6 +420,7 @@ function summaryRow(
 const CONTACT_ID = '16161616-1616-4616-8616-161616161616';
 const CONTACT_FORM_ID = '17171717-1717-4717-8717-171717171717';
 const CONTACT_COLUMN_ID = '18181818-1818-4818-8818-181818181818';
+const UNCHANGED_COLUMN_ID = '19191919-1919-4919-8919-191919191919';
 
 function layerFetch(calls: string[], oversizedForm: boolean, partnerTableBehavior = 2): typeof globalThis.fetch {
 	return async input => {
@@ -456,6 +433,7 @@ function layerFetch(calls: string[], oversizedForm: boolean, partnerTableBehavio
 					? [
 						{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 0 },
 						{ componenttype: 1, objectid: CONTACT_ID, rootcomponentbehavior: 2 },
+						{ componenttype: 2, objectid: UNCHANGED_COLUMN_ID },
 					]
 					: filter.includes(PARTNER_ID)
 						? [
@@ -464,7 +442,11 @@ function layerFetch(calls: string[], oversizedForm: boolean, partnerTableBehavio
 							{ componenttype: 2, objectid: PARTNER_CHANGED_COLUMN_ID },
 							{ componenttype: 60, objectid: FORM_ID.toUpperCase() },
 						]
-						: [{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 2 }, { componenttype: 2, objectid: ACTIVE_COLUMN_ID }],
+						: [
+							{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 2 },
+							{ componenttype: 2, objectid: ACTIVE_COLUMN_ID },
+							{ componenttype: 2, objectid: UNCHANGED_COLUMN_ID },
+						],
 			});
 		}
 		if (url.pathname.includes('EntityDefinitions')) {
@@ -569,6 +551,9 @@ test('layer discovery names Active-layer and partner customizations per nonprofi
 	assert.equal(result.evidence.find(item => item.id === 'components')?.status, 'observed');
 	assert.ok(!JSON.stringify(result).includes('SYNTHETIC_DEFINITION_CANARY'));
 	assert.ok(!JSON.stringify(result).includes('cus_unrelated'));
+	// An unchanged product column that only sits in the customer's unmanaged solution isn't a customization.
+	assert.ok(!result.components?.layerCustomizations?.some(item => item.objectId === UNCHANGED_COLUMN_ID));
+	assert.ok(result.components?.customizationComponents?.some(item => item.objectId === UNCHANGED_COLUMN_ID));
 });
 
 test('layer discovery keeps partner forms unresolved when their layer stack exceeds the response cap', async () => {
