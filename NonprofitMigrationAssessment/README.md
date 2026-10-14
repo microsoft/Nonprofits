@@ -126,6 +126,7 @@ The collector uses allowlisted reads for:
 - Relevant solution-component counts and unmanaged overlap
 - Solution component summaries for each nonprofit table, to list unmanaged (Active layer) changes and components added or changed by custom or partner solutions
 - Solution layer stacks for changed components, to tell whether a change adds a new component or changes a Microsoft component (form stacks larger than the response cap are skipped)
+- Plug-in step and process registrations (name, table, message, stage, state, and owning solution) on nonprofit tables, and the tables that non-Microsoft cloud flows require; flow definitions and plug-in code aren't read
 - Dependency lookups for component IDs directly shared by selected nonprofit products and custom/partner solutions, capped at 100
 - Workflow, connection-reference, plug-in assembly, and step counts scoped through selected and overlapping solution components
 - Aggregate counts for relevant tables
@@ -181,6 +182,17 @@ Leaving PPAC automatic servicing and self-managing GitHub builds is an ownership
 
 The customer report uses `None`, `Low`, `Medium`, `High`, or `Review required`. These are relative, rule-based ratings; the assessment doesn't produce hour, cost, or downtime numbers. Unknown critical work is shown as `Review required`, never as `None`.
 
+Each product is rated from its own named customizations: changes in the per-product customization table, plus plug-in steps, processes, and cloud flows that run on its tables. The rules are:
+
+| Customization level | Rule | CDM, Fundraising, Grant Management, Outcome Management | Volunteer Management, Volunteer Engagement |
+| --- | --- | --- | --- |
+| Heavy | More than 10 named customizations, changes from 2 or more partner or custom solutions, or (for replacements) custom relationships or automation on tables that the migration replaces | High | High |
+| Moderate | At least one named customization and no heavy rule applies | Medium | High |
+| Standard | No customizations found on the product's components | Low | Medium |
+| Unknown or opaque | Customization scope can't be established, or its owner is unknown | Review required | Review required |
+
+Products already aligned with their GitHub release show `None`; the same reasons tell you which customizations to regression-test. The report's "Why these effort ratings?" table states the rule that applied and up to four concrete reasons, such as "4 forms changed directly in this environment on Award, Contact, Participation".
+
 ## What the assessment reads
 
 | Category | Read-only metadata |
@@ -190,7 +202,7 @@ The customer report uses `None`, `Low`, `Medium`, `High`, or `Review required`. 
 | Components | Component types of nonprofit solutions and related custom solutions |
 | Customizations | Solution component summaries and solution layers for nonprofit tables: names, types, managed state, and which solution layer changed them |
 | Dependencies | Dataverse dependency records for customized nonprofit components |
-| Integrations | Workflows, connection references, and plug-ins inside related solutions |
+| Integrations | Workflows, connection references, and plug-ins inside related solutions; plug-in step, process, and cloud flow registrations on nonprofit tables |
 | Data scale | Record counts for related tables |
 | Sites | Legacy and enhanced Power Pages site counts |
 
@@ -227,6 +239,7 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 - Metadata can't prove arbitrary custom-code behavior or the absence of dynamic/external dependencies.
 - Direct customization-overlap dependency discovery is capped at 100 components; table discovery also uses a documented deterministic cap.
 - Customization discovery checks up to 200 nonprofit tables and 60 partner-extended tables. On shared Dataverse tables such as Account and Contact, only changes to components that a nonprofit solution brings are listed. When a form's layer stack is too large to read, the change is shown as "Added or changed".
+- Plug-in steps, processes, and cloud flows are listed for tables that nonprofit solutions create, not for shared tables such as Contact. Up to 50 non-Microsoft cloud flows are checked, and a flow is listed only when its required components include a nonprofit table.
 - Environment-wide automation counts can include registrations unrelated to selected products.
 - A representative sandbox rehearsal remains the best validation of migration effort and cutover timing.
 

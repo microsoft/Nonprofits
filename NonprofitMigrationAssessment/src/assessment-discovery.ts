@@ -10,7 +10,7 @@ import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 const API = '/api/data/v9.2/';
 const RESPONSE_BYTES = 512 * 1024;
 const TOTAL_BYTES = 16 * 1024 * 1024;
-const MAX_REQUESTS = 700;
+const MAX_REQUESTS = 800;
 const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 100;
@@ -21,8 +21,14 @@ const MAX_LAYER_SOLUTION_TABLES = 60;
 const MAX_LAYER_LOOKUPS = 150;
 // Form layer stacks embed full form definitions and often exceed the response cap.
 const MAX_FORM_LAYER_LOOKUPS = 10;
-const LAYER_RESERVED_REQUESTS = 160;
+// Reserved for dependencies, automation, counts, and sites, which run after the layer scan.
+const LAYER_RESERVED_REQUESTS = 230;
 const LAYER_RESERVED_BYTES = 6 * 1024 * 1024;
+const MAX_AUTOMATION_TABLES = 200;
+const AUTOMATION_STEP_TABLE_CHUNK = 15;
+const AUTOMATION_PROCESS_TABLE_CHUNK = 25;
+const MAX_FLOW_LOOKUPS = 50;
+const MAX_AUTOMATIONS = 500;
 const MAX_LAYER_CUSTOMIZATIONS = 1_000;
 const LAYER_CONCURRENCY = 4;
 const DEFAULT_SOLUTION_ID = 'fd140aaf-4df4-11dd-bd17-0019b9312238';
@@ -117,6 +123,44 @@ interface LayerCandidate {
 	keys: Set<string>;
 	tableBehaviors: Map<string, number | null>;
 }
+interface NonprofitTable {
+	name: string;
+	displayName: string | null;
+	objectId: string;
+	products: string[];
+}
+const StepPageSchema = z.object({
+	value: z.array(z.object({
+		sdkmessageprocessingstepid: z.string().regex(GUID_PATTERN).optional(),
+		name: OptionalTextSchema,
+		stage: z.number().int().nullable().optional(),
+		mode: z.number().int().nullable().optional(),
+		statecode: z.number().int().nullable().optional(),
+		solutionid: z.string().regex(GUID_PATTERN).nullable().optional(),
+		sdkmessagefilterid: z.object({ primaryobjecttypecode: z.string().max(100).nullable().optional() }).nullable().optional(),
+		sdkmessageid: z.object({ name: OptionalTextSchema }).nullable().optional(),
+	})).max(5_000),
+	'@odata.nextLink': z.unknown().optional(),
+});
+const ProcessPageSchema = z.object({
+	value: z.array(z.object({
+		workflowid: z.string().regex(GUID_PATTERN),
+		name: OptionalTextSchema,
+		category: z.number().int().nullable().optional(),
+		primaryentity: z.string().max(100).nullable().optional(),
+		statecode: z.number().int().nullable().optional(),
+		solutionid: z.string().regex(GUID_PATTERN).nullable().optional(),
+	})).max(5_000),
+	'@odata.nextLink': z.unknown().optional(),
+});
+const STEP_STAGES: Record<number, string> = { 10: 'pre-validation', 20: 'pre-operation', 40: 'post-operation' };
+const PROCESS_CATEGORIES: Record<number, string> = {
+	0: 'Classic workflow',
+	1: 'Dialog',
+	2: 'Business rule',
+	3: 'Action',
+	4: 'Business process flow',
+};
 
 export interface AssessmentDiscoveryOptions {
 	environmentUrl: string;
@@ -379,6 +423,10 @@ async function collectComponents(
 	integrationSolutions: number;
 	dependencyCandidates: { componenttype: number; objectid: string; name: string }[];
 	tableProducts: Map<string, Set<string>>;
+	nonprofitTables: NonprofitTable[];
+	tablesKnown: boolean;
+	microsoftSolutions: Set<string>;
+	productComponentKeys: Set<string>;
 }> {
 	const relevantSolutions = discovery.solutions
 		.filter(solution => relevantNames.has(solution.uniqueName.toLowerCase()) && solution.solutionId);
@@ -584,6 +632,10 @@ async function collectComponents(
 			name: component.name,
 		})),
 		tableProducts,
+		nonprofitTables: layers.tables,
+		tablesKnown: layers.scan.status !== 'unavailable',
+		microsoftSolutions,
+		productComponentKeys: new Set([...productKeys.values()].flatMap(keys => [...keys])),
 	};
 }
 
@@ -614,7 +666,7 @@ async function collectLayerCustomizations(
 			productUniqueNames: string[];
 		}>;
 	},
-): Promise<{ items: LayerCustomization[]; scan: LayerScan }> {
+): Promise<{ items: LayerCustomization[]; scan: LayerScan; tables: NonprofitTable[] }> {
 	const items = new Map<string, LayerCustomization>();
 	const tables = new Map<string, {
 		displayName: string | null;
@@ -898,8 +950,186 @@ async function collectLayerCustomizations(
 			solutionTables: solutionTables.length,
 			checkedSolutionTables: checkedSolutionTables.length,
 		},
+		tables: [...tables.entries()]
+			.filter(([, table]) => table.custom)
+			.map(([name, table]) => {
+				const fullTable = [...(input.fullTableProducts.get(table.objectId.toLowerCase()) ?? [])]
+					.filter(product => table.products.has(product));
+				return {
+					name,
+					displayName: table.displayName,
+					objectId: table.objectId.toLowerCase(),
+					products: (fullTable.length ? fullTable : [...table.products]).sort(),
+				};
+			})
+			.sort((left, right) => left.name.localeCompare(right.name, 'en')),
 	};
 }
+
+async function collectAutomations(
+	context: RequestContext,
+	input: {
+		tables: NonprofitTable[];
+		tablesKnown: boolean;
+		solutions: Discovery['solutions'];
+		microsoftSolutions: Set<string>;
+		productComponentKeys: Set<string>;
+	},
+): Promise<Pick<z.infer<typeof IntegrationSummarySchema>, 'automations' | 'automationScan'>> {
+	type Automation = NonNullable<z.infer<typeof IntegrationSummarySchema>['automations']>[number];
+	const automations: Automation[] = [];
+	const tables = input.tables.slice(0, MAX_AUTOMATION_TABLES);
+	const tablesByName = new Map(tables.map(table => [table.name, table]));
+	const tablesById = new Map(tables.map(table => [table.objectId, table]));
+	const solutionsById = new Map(input.solutions
+		.filter(solution => solution.solutionId)
+		.map(solution => [solution.solutionId!.toLowerCase(), solution]));
+	let succeeded = 0;
+	let failed = 0;
+	let limited = input.tables.length > tables.length;
+	const attempt = async (operation: () => Promise<void>): Promise<void> => {
+		try {
+			await operation();
+			succeeded++;
+		} catch {
+			failed++;
+		}
+	};
+	// The top solution layer identifies who owns the registration; Microsoft and nonprofit product registrations are excluded.
+	const layerOf = (solutionId: string | null | undefined): Pick<Automation, 'layer' | 'solution'> | null => {
+		const solution = solutionId ? solutionsById.get(solutionId.toLowerCase()) : undefined;
+		if (!solution) {
+			return { layer: 'managed-solution', solution: null };
+		}
+		const name = solution.uniqueName.toLowerCase();
+		if (name === 'active' || name === 'default') {
+			return { layer: 'active', solution: null };
+		}
+		if (input.microsoftSolutions.has(name)) {
+			return null;
+		}
+		return { layer: solution.managed ? 'managed-solution' : 'active', solution: solution.uniqueName };
+	};
+	const describeTables = (names: string[]): Pick<Automation, 'tables' | 'tableDisplayNames' | 'productUniqueNames'> => {
+		const matched = [...new Set(names)].sort().flatMap(name => tablesByName.has(name) ? [tablesByName.get(name)!] : []);
+		return {
+			tables: matched.map(table => table.name),
+			tableDisplayNames: matched.map(table => table.displayName ?? table.name),
+			productUniqueNames: [...new Set(matched.flatMap(table => table.products))].sort(),
+		};
+	};
+	const chunks = (size: number): NonprofitTable[][] => Array.from(
+		{ length: Math.ceil(tables.length / size) },
+		(_, index) => tables.slice(index * size, (index + 1) * size),
+	);
+
+	await mapBounded(chunks(AUTOMATION_STEP_TABLE_CHUNK), chunk => attempt(async () => {
+		const parsed = StepPageSchema.parse(await getJson(context, apiUrl(context.origin, 'sdkmessageprocessingsteps', {
+			'$select': 'sdkmessageprocessingstepid,name,stage,mode,statecode,solutionid',
+			'$expand': 'sdkmessagefilterid($select=primaryobjecttypecode),sdkmessageid($select=name)',
+			// Hidden steps are platform registrations, including the internal steps behind real-time workflows.
+			'$filter': `ishidden/Value eq false and (${chunk.map(table =>
+				`sdkmessagefilterid/primaryobjecttypecode eq '${table.name}'`).join(' or ')})`,
+		})));
+		limited ||= parsed['@odata.nextLink'] !== undefined;
+		for (const step of parsed.value) {
+			const layer = layerOf(step.solutionid);
+			const tableName = step.sdkmessagefilterid?.primaryobjecttypecode;
+			// Product steps edited in the environment are already reported as changed product components by the layer scan.
+			if (!layer || !tableName || !tablesByName.has(tableName)
+				|| (step.sdkmessageprocessingstepid && input.productComponentKeys.has(componentKey(92, step.sdkmessageprocessingstepid)))) {
+				continue;
+			}
+			const message = step.sdkmessageid?.name ?? 'Message';
+			const stage = STEP_STAGES[step.stage ?? -1] ?? 'custom stage';
+			automations.push({
+				kind: 'plugin-step',
+				name: step.name ?? `${message} step`,
+				detail: `${message}, ${stage}, ${step.mode === 1 ? 'asynchronous' : 'synchronous'}`,
+				...describeTables([tableName]),
+				...layer,
+				enabled: step.statecode === null || step.statecode === undefined ? null : step.statecode === 0,
+			});
+		}
+	}));
+
+	await mapBounded(chunks(AUTOMATION_PROCESS_TABLE_CHUNK), chunk => attempt(async () => {
+		const parsed = ProcessPageSchema.parse(await getJson(context, apiUrl(context.origin, 'workflows', {
+			'$select': 'workflowid,name,category,primaryentity,statecode,solutionid',
+			'$filter': `type eq 1 and category ne 5 and category ne 6 and (${chunk.map(table =>
+				`primaryentity eq '${table.name}'`).join(' or ')})`,
+		})));
+		limited ||= parsed['@odata.nextLink'] !== undefined;
+		for (const process of parsed.value) {
+			const layer = layerOf(process.solutionid);
+			if (!layer || !process.primaryentity || !tablesByName.has(process.primaryentity)
+				|| input.productComponentKeys.has(componentKey(29, process.workflowid))) {
+				continue;
+			}
+			automations.push({
+				kind: 'process',
+				name: process.name ?? 'Unnamed process',
+				detail: PROCESS_CATEGORIES[process.category ?? -1] ?? 'Process',
+				...describeTables([process.primaryentity]),
+				...layer,
+				enabled: process.statecode === null || process.statecode === undefined ? null : process.statecode === 1,
+			});
+		}
+	}));
+
+	// Cloud flows don't record a primary table; their required components show which tables they use without reading definitions.
+	let cloudFlows: Array<z.infer<typeof ProcessPageSchema>['value'][number]> = [];
+	let checkedFlows: typeof cloudFlows = [];
+	if (tables.length) {
+		await attempt(async () => {
+			const parsed = ProcessPageSchema.parse(await getJson(context, apiUrl(context.origin, 'workflows', {
+				'$select': 'workflowid,name,category,primaryentity,statecode,solutionid',
+				'$filter': 'type eq 1 and category eq 5',
+			})));
+			limited ||= parsed['@odata.nextLink'] !== undefined;
+			cloudFlows = parsed.value.filter(flow => layerOf(flow.solutionid) !== null)
+				.sort((left, right) => (left.name ?? '').localeCompare(right.name ?? '', 'en'));
+		});
+		checkedFlows = cloudFlows.slice(0, MAX_FLOW_LOOKUPS);
+		limited ||= cloudFlows.length > checkedFlows.length;
+		await mapBounded(checkedFlows, flow => attempt(async () => {
+			const parsed = DependencyPageSchema.parse(await getJson(context, apiUrl(context.origin,
+				`RetrieveRequiredComponents(ObjectId=${flow.workflowid},ComponentType=29)`)));
+			limited ||= parsed['@odata.nextLink'] !== undefined;
+			const names = parsed.value
+				.filter(edge => edge.requiredcomponenttype === 1)
+				.flatMap(edge => {
+					const table = tablesById.get(edge.requiredcomponentobjectid.toLowerCase());
+					return table ? [table.name] : [];
+				});
+			if (names.length) {
+				automations.push({
+					kind: 'cloud-flow',
+					name: flow.name ?? 'Unnamed cloud flow',
+					detail: 'Cloud flow',
+					...describeTables(names),
+					...layerOf(flow.solutionid)!,
+					enabled: flow.statecode === null || flow.statecode === undefined ? null : flow.statecode === 1,
+				});
+			}
+		}));
+	}
+	automations.sort((left, right) => left.kind.localeCompare(right.kind, 'en')
+		|| left.tables[0]!.localeCompare(right.tables[0]!, 'en')
+		|| left.name.localeCompare(right.name, 'en'));
+	limited ||= automations.length > MAX_AUTOMATIONS;
+	return {
+		automations: automations.slice(0, MAX_AUTOMATIONS),
+		automationScan: {
+			status: !input.tablesKnown || (succeeded === 0 && failed > 0) ? 'unavailable'
+				: failed > 0 || limited ? 'partial' : 'complete',
+			tables: tables.length,
+			cloudFlows: cloudFlows.length,
+			checkedCloudFlows: checkedFlows.length,
+		},
+	};
+}
+
 async function collectDependencies(
 	context: RequestContext,
 	components: { componenttype: number; objectid: string; name: string }[],
@@ -1156,11 +1386,26 @@ export async function collectAssessmentDetails(
 				if (!componentData) {
 					throw new RequestFailure('No relevant solution component evidence was available.', 'not-applicable');
 				}
-				result.integrations = collectIntegrations(componentData);
-			}, 'Workflow, connection-reference, and plug-in counts were derived from selected product and overlapping customization solution components.');
+				result.integrations = IntegrationSummarySchema.parse({
+					...collectIntegrations(componentData),
+					...await collectAutomations(context, {
+						tables: componentData.nonprofitTables,
+						tablesKnown: componentData.tablesKnown,
+						solutions: result.solutions,
+						microsoftSolutions: componentData.microsoftSolutions,
+						productComponentKeys: componentData.productComponentKeys,
+					}),
+				});
+			}, 'Scoped workflow, connection-reference, and plug-in counts were derived, and plug-in steps, processes, and cloud flows registered on nonprofit tables were named.');
 			if (result.integrations?.truncated) {
 				replaceEvidence(result.evidence, evidence('integrations', 'partial', result.collectedAt,
 					'Scoped integration evidence may be incomplete because component discovery reached a limit.',
+					['components']));
+			} else if (result.integrations?.automationScan && result.integrations.automationScan.status !== 'complete') {
+				replaceEvidence(result.evidence, evidence('integrations', 'partial', result.collectedAt,
+					result.integrations.automationScan.status === 'unavailable'
+						? 'Plug-in steps, processes, and cloud flows on nonprofit tables could not be listed.'
+						: 'Listing plug-in steps, processes, and cloud flows on nonprofit tables reached a safety cap or a read failed.',
 					['components']));
 			}
 		}

@@ -83,19 +83,28 @@ function decisionConfidence(report: Assessment, route: Assessment['routes'][numb
 }
 
 function planningBasis(report: Assessment, route: Assessment['routes'][number]): string {
+	const named = report.discoverySummary.components?.layerScan !== undefined;
+	const evidence = named
+		? route.complexity.reasons.join(' ')
+		: `${customizationSignal(report, route.family)}.`;
 	if (route.status === 'already-at-target') {
+		// Effort is None for aligned products, so only the concrete evidence is shown, not the complexity rule.
+		const regression = named
+			? route.complexity.reasons.filter(reason => !/^(Heavy|Moderate) because/.test(reason)).join(' ')
+			: evidence;
 		return `Installed and GitHub versions match the approved release mapping. ${hasCustomizations(report, route.family)
-			? `Regression-test customizations: ${customizationSignal(report, route.family)}.`
-			: 'No customizations were found on this product\'s components.'}`;
+			? `Regression-test these customizations: ${regression}`
+			: named && !scopeComplete(report)
+				? 'No customizations were found within the checked scope.'
+				: 'No customizations were found on this product\'s components.'}`;
 	}
-	const overlap = customizationSignal(report, route.family);
 	if (route.family === 've') {
-		return `${siteStatus(report)}. Effort applies only if a legacy site must be migrated.`;
+		return `${siteStatus(report)}. Effort applies only if a legacy site must be migrated.${named && hasCustomizations(report, route.family) ? ` ${evidence}` : ''}`;
 	}
 	if (route.family === 'vm' && route.status === 'eligible') {
-		return `Legacy Volunteer Management must be replaced by a different GitHub solution. ${overlap}.`;
+		return `Legacy Volunteer Management must be replaced by a different GitHub solution. ${evidence}`;
 	}
-	return `${recommendation(report, route)}. ${overlap}.`;
+	return `${recommendation(report, route)}. ${evidence}`;
 }
 
 function overallEffort(report: Assessment): string {
@@ -170,7 +179,7 @@ function componentBreakdown(
 
 function hasCustomizations(report: Assessment, family: Family): boolean {
 	return report.discoverySummary.components?.layerScan
-		? familyLayerCustomizations(report, family).length > 0
+		? familyLayerCustomizations(report, family).length + familyAutomations(report, family).length > 0
 		: customizationSignal(report, family).includes('overlapping component');
 }
 
@@ -207,13 +216,11 @@ function dependencies(family: Family): string {
 function customizationSignal(report: Assessment, family: Family): string {
 	const route = ROUTES.find(item => item.family === family)!;
 	if (report.discoverySummary.components?.layerScan) {
-		const items = familyLayerCustomizations(report, family);
-		if (items.length) {
-			const added = items.filter(item => item.change === 'added').length;
-			const changed = items.filter(item => item.change === 'modified').length;
-			return `${items.length} named customization(s) found (${added} added, ${changed} changed); see Customizations in Microsoft nonprofit solutions`;
+		const total = familyLayerCustomizations(report, family).length + familyAutomations(report, family).length;
+		if (total) {
+			return `${total} named customization(s) found; see Customizations in Microsoft nonprofit solutions`;
 		}
-		if (report.discoverySummary.components.layerScan.status === 'complete') {
+		if (scopeComplete(report)) {
 			return 'No customizations found on this product\'s components';
 		}
 	}
@@ -285,19 +292,51 @@ function layerChange(item: LayerCustomization): string {
 	return item.change === 'added' ? 'Added' : item.change === 'modified' ? 'Changed' : 'Added or changed';
 }
 
-function layerCoverage(scan: NonNullable<NonNullable<Assessment['discoverySummary']['components']>['layerScan']>): string {
-	if (scan.status === 'unavailable') {
-		return 'Solution layer details were not available, so changes made directly in this environment are not listed. Only components shared with custom or partner solutions are shown.';
+type Automation = NonNullable<NonNullable<Assessment['discoverySummary']['integrations']>['automations']>[number];
+
+function scopeComplete(report: Assessment): boolean {
+	const automation = report.discoverySummary.integrations?.automationScan;
+	return report.discoverySummary.components?.layerScan?.status === 'complete'
+		&& (!automation || automation.status === 'complete');
+}
+
+function familyAutomations(report: Assessment, family: Family): Automation[] {
+	const route = ROUTES.find(item => item.family === family)!;
+	return (report.discoverySummary.integrations?.automations ?? []).filter(item =>
+		item.productUniqueNames.some(name => [route.source, route.target].includes(name)));
+}
+
+function automationLocation(report: Assessment, item: Automation): string {
+	if (item.layer === 'active') {
+		return 'Unmanaged change in this environment';
 	}
-	const coverage = `Checked ${scan.checkedTables} of ${scan.productTables} nonprofit tables for unmanaged changes and ${scan.checkedSolutionTables} of ${scan.solutionTables} tables extended by custom or partner solutions.`;
-	return scan.status === 'partial'
+	if (!item.solution) {
+		return 'Solution not identified';
+	}
+	const publisher = report.installedSolutions.find(solution => solution.uniqueName === item.solution)?.publisher
+		?? report.discoverySummary.components?.customizationCandidates
+			?.find(candidate => candidate.uniqueName === item.solution)?.publisher;
+	return `Solution ${text(item.solution)}${publisher ? ` (${text(publisher)})` : ''}`;
+}
+
+function layerCoverage(report: Assessment): string {
+	const scan = report.discoverySummary.components!.layerScan!;
+	const automation = report.discoverySummary.integrations?.automationScan;
+	const automationCoverage = !automation ? ''
+		: automation.status === 'unavailable'
+			? ' Plug-in steps, processes, and cloud flows on nonprofit tables could not be listed.'
+			: ` Checked plug-in steps and processes on ${automation.tables} nonprofit tables and ${automation.checkedCloudFlows} of ${automation.cloudFlows} non-Microsoft cloud flows.`;
+	if (scan.status === 'unavailable') {
+		return `Solution layer details were not available, so changes made directly in this environment are not listed. Only components shared with custom or partner solutions are shown.${automationCoverage}`;
+	}
+	const coverage = `Checked ${scan.checkedTables} of ${scan.productTables} nonprofit tables for unmanaged changes and ${scan.checkedSolutionTables} of ${scan.solutionTables} tables extended by custom or partner solutions.${automationCoverage}`;
+	return scan.status === 'partial' || automation?.status === 'partial'
 		? `${coverage} Some checks did not complete or reached a safety limit, so more changes may exist.`
 		: coverage;
 }
 
 function layerCustomizationSection(report: Assessment, dependencyCounts: Map<string, number>): string[] {
 	const component = report.discoverySummary.components!;
-	const scan = component.layerScan!;
 	const checked = new Set((component.customizationComponents ?? []).map(item => item.objectId.toLowerCase()));
 	const families = report.routes
 		.filter(route => route.status !== 'not-installed')
@@ -305,54 +344,68 @@ function layerCustomizationSection(report: Assessment, dependencyCounts: Map<str
 	const output = [
 		'## Customizations in Microsoft nonprofit solutions',
 		'',
-		'Each row is a change layered on top of a Microsoft nonprofit solution component, or a new column, relationship, view, or form added to a nonprofit table. Plan to retest, recreate, or confirm each change against the GitHub version.',
+		'Each row is a change layered on top of a Microsoft nonprofit solution component, a new column, relationship, view, or form on a nonprofit table, or a plug-in step, process, or cloud flow that runs on a nonprofit table. Plan to retest, recreate, or confirm each change against the GitHub version.',
 		'',
-		`**Coverage:** ${layerCoverage(scan)}`,
+		`**Coverage:** ${layerCoverage(report)}`,
 		'',
 	];
 	for (const family of families) {
-		const items = [...familyLayerCustomizations(report, family)].sort((left, right) =>
-			(left.tableDisplayName ?? left.table ?? '').localeCompare(right.tableDisplayName ?? right.table ?? '', 'en')
-			|| left.type - right.type
-			|| (left.displayName ?? left.name).localeCompare(right.displayName ?? right.name, 'en')
-			|| left.layer.localeCompare(right.layer, 'en'));
+		const rows = [
+			...familyLayerCustomizations(report, family).map(item => ({
+				sort: `${item.tableDisplayName ?? item.table ?? ''}|${String(item.type).padStart(5, '0')}|${item.displayName ?? item.name}|${item.layer}`,
+				change: item.change,
+				cells: [
+					item.table
+						? item.tableDisplayName ? `${text(item.tableDisplayName)} (${text(item.table)})` : text(item.table)
+						: [2, 10, 26, 59, 60].includes(item.type) ? 'Table not identified' : 'Not table-specific',
+					`${item.type === 1
+						? 'Table properties'
+						: item.displayName && item.displayName !== item.name
+							? `${text(item.displayName)} (${text(item.name)})`
+							: text(item.name)}${item.relatedTable && item.relatedTable !== item.tableDisplayName
+						? `; related table: ${text(item.relatedTable)}`
+						: ''}`,
+					singularComponentType(item.type),
+					layerChange(item),
+					layerLocation(report, item),
+					checked.has(item.objectId.toLowerCase())
+						? String(dependencyCounts.get(item.objectId.toLowerCase()) ?? 0)
+						: 'Not checked',
+				],
+			})),
+			...familyAutomations(report, family).map(item => ({
+				sort: `${item.tableDisplayNames[0] ?? ''}|99999|${item.name}|${item.layer}`,
+				change: 'added' as const,
+				cells: [
+					item.tableDisplayNames.map(text).join(', '),
+					`${text(item.name)}${item.kind === 'plugin-step' ? ` (${text(item.detail)})` : ''}${item.enabled === false ? ' — turned off' : ''}`,
+					item.kind === 'plugin-step' ? 'Plug-in step' : item.kind === 'cloud-flow' ? 'Cloud flow' : text(item.detail),
+					'Added',
+					automationLocation(report, item),
+					'Not checked',
+				],
+			})),
+		].sort((left, right) => left.sort.localeCompare(right.sort, 'en'));
 		output.push(`### ${text(FAMILY_NAMES[family])}`, '');
-		if (!items.length) {
-			output.push(scan.status === 'complete'
+		if (!rows.length) {
+			output.push(scopeComplete(report)
 				? 'No customizations were found on this product\'s components.'
 				: 'No customizations were found within the checked scope.', '');
 			continue;
 		}
-		const added = items.filter(item => item.change === 'added').length;
-		const changed = items.filter(item => item.change === 'modified').length;
+		const added = rows.filter(row => row.change === 'added').length;
+		const changed = rows.filter(row => row.change === 'modified').length;
 		output.push(
-			`**Summary:** ${items.length} customization(s): ${added} added, ${changed} changed${items.length - added - changed ? `, ${items.length - added - changed} added or changed` : ''}.`,
+			`**Summary:** ${rows.length} customization(s): ${added} added, ${changed} changed${rows.length - added - changed ? `, ${rows.length - added - changed} added or changed` : ''}.`,
 			'',
 			'| Table | Component | Type | Change | Where the change lives | Dependents found |',
 			'| --- | --- | --- | --- | --- | --- |',
-			...items.map(item => {
-				const table = item.table
-					? item.tableDisplayName ? `${text(item.tableDisplayName)} (${text(item.table)})` : text(item.table)
-					: [2, 10, 26, 59, 60].includes(item.type) ? 'Table not identified' : 'Not table-specific';
-				const name = item.type === 1
-					? 'Table properties'
-					: item.displayName && item.displayName !== item.name
-						? `${text(item.displayName)} (${text(item.name)})`
-						: text(item.name);
-				const related = item.relatedTable && item.relatedTable !== item.tableDisplayName
-					? `; related table: ${text(item.relatedTable)}`
-					: '';
-				const dependents = checked.has(item.objectId.toLowerCase())
-					? String(dependencyCounts.get(item.objectId.toLowerCase()) ?? 0)
-					: 'Not checked';
-				return `| ${table} | ${name}${related} | ${singularComponentType(item.type)} | ${layerChange(item)} | ${layerLocation(report, item)} | ${dependents} |`;
-			}),
+			...rows.map(row => `| ${row.cells.join(' | ')} |`),
 			'',
 		);
 	}
 	return output;
 }
-
 function actionFor(finding: Finding): string {
 	if (finding.code === 'target-version' || finding.code === 'compatibility-blocked') {
 		return 'Publish or select a supported GitHub target version, then reassess.';

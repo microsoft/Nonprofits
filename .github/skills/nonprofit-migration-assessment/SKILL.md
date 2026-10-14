@@ -47,6 +47,8 @@ Read the package [README](../../../NonprofitMigrationAssessment/README.md) for c
 - Never present hours, cost, elapsed time, or downtime numbers. The assessment doesn't produce them.
 - Tell the customer to validate ratings with their implementation partner and a representative sandbox rehearsal.
 - Show unknown critical work as Review required, never as None.
+- When explaining a rating, quote the concrete reasons from the report's "Why these effort ratings?" table, for example "4 forms changed directly in this environment on Award, Contact, Participation", rather than summarizing them as a single count.
+
 ## Optional sharing
 
 There is no automatic upload or sharing command. If the customer wants help interpreting a customer-specific report in chat, explain what would be sent, obtain explicit consent, and use only the minimized reviewed content. Secrets and business-record contents remain prohibited.

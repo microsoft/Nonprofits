@@ -149,6 +149,23 @@ export const IntegrationSummarySchema = z.strictObject({
 	pluginSteps: CountMetricSchema.nullable(),
 	scope: z.literal('selected-products-and-overlapping-customizations').optional(),
 	scopedSolutions: CountMetricSchema.optional(),
+	automations: z.array(z.strictObject({
+		kind: z.enum(['plugin-step', 'process', 'cloud-flow']),
+		name: z.string().trim().min(1).max(200),
+		detail: z.string().trim().min(1).max(200),
+		tables: z.array(IdentifierSchema).min(1),
+		tableDisplayNames: z.array(z.string().trim().min(1).max(200)),
+		productUniqueNames: z.array(IdentifierSchema).min(1),
+		layer: z.enum(['active', 'managed-solution']),
+		solution: IdentifierSchema.nullable(),
+		enabled: z.boolean().nullable(),
+	})).max(500).optional(),
+	automationScan: z.strictObject({
+		status: z.enum(['complete', 'partial', 'unavailable']),
+		tables: CountMetricSchema,
+		cloudFlows: CountMetricSchema,
+		checkedCloudFlows: CountMetricSchema,
+	}).optional(),
 	truncated: z.boolean(),
 });
 export const CountSummarySchema = z.strictObject({

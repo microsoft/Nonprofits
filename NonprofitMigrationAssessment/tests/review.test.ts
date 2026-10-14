@@ -123,3 +123,39 @@ test('conditional VE review records only safe planning categories', () => {
 	assert.equal(route.complexity.level, 'heavy');
 	assert.equal(route.effortBand, 'high');
 });
+test('named layer evidence scopes the derived review to the customized product only', () => {
+	const input = inventory(['cdm', 'vm']);
+	input.discovery.components = {
+		relevantSolutions: 2,
+		relevantComponents: 10,
+		componentTypes: [],
+		unmanagedSolutions: 0,
+		analyzedUnmanagedSolutions: 0,
+		overlappingUnmanagedComponents: 0,
+		layerCustomizations: [{
+			productUniqueNames: ['NonprofitCore'],
+			table: 'msnfp_transaction',
+			tableDisplayName: 'Transaction',
+			type: 2,
+			objectId: '32323232-3232-4232-8232-323232323232',
+			name: 'cnto_legacyreceiptnumber',
+			displayName: 'Legacy Receipt Number',
+			change: 'added',
+			layer: 'active',
+			solutions: [],
+			relatedTable: null,
+		}],
+		layerScan: { status: 'complete', productTables: 2, checkedTables: 2, solutionTables: 0, checkedSolutionTables: 0 },
+		truncated: false,
+	};
+	input.discovery.evidence.push({
+		id: 'components', source: 'derived', status: 'observed', collectedAt: NOW.toISOString(),
+		collector: 'synthetic', scope: 'environment', inputs: ['solutions'], reason: 'Synthetic components.',
+	});
+	const reviewed = applyLocalReview(input, deriveLocalReview(input, NOW));
+	const answers = Object.fromEntries(reviewed.questionnaire.answers.map(answer => [answer.family, answer.customization]));
+	assert.deepEqual(answers, { cdm: 'customized', vm: 'standard' });
+	const routes = assess(reviewed, { now: NOW }).routes;
+	assert.equal(routes.find(route => route.family === 'cdm')!.complexity.level, 'moderate');
+	assert.equal(routes.find(route => route.family === 'vm')!.complexity.level, 'likely-standard');
+});

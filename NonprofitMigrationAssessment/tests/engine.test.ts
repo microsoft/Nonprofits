@@ -528,7 +528,12 @@ test('customer Markdown lists named customizations per Microsoft solution with l
 	const cdm = result.routes.find(route => route.family === 'cdm')!;
 	const vm = result.routes.find(route => route.family === 'vm')!;
 	assert.equal(cdm.complexity.level, 'moderate');
-	assert.ok(cdm.complexity.reasons.includes('3 customization(s) were found on this product\'s components.'));
+	assert.deepEqual(cdm.complexity.reasons, [
+		'Moderate because 3 named customization(s) must be retested or recreated and no heavy rule applies.',
+		'1 column added directly in this environment on Transaction.',
+		'1 form changed by PartnerManaged on Transaction.',
+		'1 relationship added directly in this environment on Appeal.',
+	]);
 	assert.ok(!['moderate', 'heavy'].includes(vm.complexity.level));
 	const markdown = renderMarkdown(result);
 	assert.ok(markdown.indexOf('## Customizations in Microsoft nonprofit solutions') < markdown.indexOf('## Customization solutions'));
@@ -540,7 +545,7 @@ test('customer Markdown lists named customizations per Microsoft solution with l
 	assert.ok(markdown.includes('Transaction &#60;main&#62;'));
 	assert.ok(!markdown.includes('<main>'));
 	assert.ok(markdown.includes('No customizations were found on this product\'s components.'));
-	assert.ok(markdown.includes('3 named customization(s) found (2 added, 1 changed)'));
+	assert.ok(markdown.includes('no heavy rule applies. 1 column added directly in this environment on Transaction. 1 form changed by PartnerManaged on Transaction.'));
 	assert.ok(!markdown.includes('### Named customization overlap components'));
 });
 
@@ -563,6 +568,15 @@ test('aligned products ask for regression tests only when named customizations e
 	assert.ok(clean.includes('No customizations were found on this product\'s components.'));
 	assert.ok(clean.includes('1. No migration for **CDM for Nonprofits**.\n'));
 	assert.ok(!clean.includes('Regression-test'));
+	input.discovery.integrations = {
+		workflows: 0, connectionReferences: 0, pluginAssemblies: 0, pluginSteps: 0, automations: [],
+		automationScan: { status: 'unavailable', tables: 1, cloudFlows: 0, checkedCloudFlows: 0 },
+		truncated: false,
+	};
+	const unscanned = renderMarkdown(assess(input, { now: NOW }));
+	assert.ok(unscanned.includes('No customizations were found within the checked scope.'));
+	assert.ok(!unscanned.includes('No customizations were found on this product'));
+	delete input.discovery.integrations;
 	input.discovery.components!.layerCustomizations = [{
 		productUniqueNames: ['NonprofitCore'],
 		table: 'msnfp_transaction',
@@ -578,7 +592,104 @@ test('aligned products ask for regression tests only when named customizations e
 	}];
 	const customized = renderMarkdown(assess(input, { now: NOW }));
 	assert.ok(customized.includes('| No migration required; regression test customizations | High | None |'));
-	assert.ok(customized.includes('Regression-test customizations: 1 named customization(s) found (0 added, 1 changed)'));
+	assert.ok(customized.includes('Regression-test these customizations: 1 form changed directly in this environment on Transaction. |'));
 	assert.ok(customized.includes('Regression-test the customizations affecting CDM for Nonprofits'));
 	assert.ok(customized.includes('No migration for **CDM for Nonprofits**. Regression-test its customizations.'));
+});
+
+function layerItem(product: string, overrides: Record<string, unknown> = {}) {
+	return {
+		productUniqueNames: [product],
+		table: 'msnfp_transaction',
+		tableDisplayName: 'Transaction',
+		type: 2,
+		objectId: '33333333-3333-4333-8333-333333333333',
+		name: 'cnto_column',
+		displayName: 'Column',
+		change: 'added' as const,
+		layer: 'active' as const,
+		solutions: [] as string[],
+		relatedTable: null,
+		...overrides,
+	};
+}
+
+function withLayers(input: ReturnType<typeof inventory>, items: ReturnType<typeof layerItem>[]): void {
+	observeComponents(input, 0);
+	input.discovery.components!.layerCustomizations = items;
+	input.discovery.components!.layerScan = {
+		status: 'complete', productTables: 5, checkedTables: 5, solutionTables: 0, checkedSolutionTables: 0,
+	};
+}
+
+test('rubric rates more than ten named customizations heavy with a concrete reason', () => {
+	const input = inventory(['cdm']);
+	withLayers(input, Array.from({ length: 11 }, (_, index) => layerItem('NonprofitCore', {
+		objectId: `33333333-3333-4333-8333-${String(index).padStart(12, '0')}`,
+		name: `cnto_column${index}`,
+		displayName: `Column ${index}`,
+		tableDisplayName: index < 6 ? 'Transaction' : 'Appeal',
+	})));
+	const route = assess(input, { now: NOW }).routes[0]!;
+	assert.equal(route.complexity.level, 'heavy');
+	assert.equal(route.effortBand, 'high');
+	assert.deepEqual(route.complexity.reasons, [
+		'Heavy because of more than 10 named customizations (11).',
+		'11 columns added directly in this environment on Appeal, Transaction.',
+	]);
+});
+
+test('rubric rates changes from two partner solutions heavy', () => {
+	const input = inventory(['cdm', 'fundraising']);
+	withLayers(input, [
+		layerItem('SocialImpactFundraising', { layer: 'managed-solution', solutions: ['Partner_A'], type: 60, change: 'modified', name: 'Main' }),
+		layerItem('SocialImpactFundraising', { layer: 'managed-solution', solutions: ['PartnerB'], objectId: '34343434-3434-4434-8434-343434343434' }),
+	]);
+	const routes = assess(input, { now: NOW }).routes;
+	const fundraising = routes.find(route => route.family === 'fundraising')!;
+	assert.equal(fundraising.complexity.level, 'heavy');
+	assert.ok(fundraising.complexity.reasons.includes('1 form changed by Partner_A on Transaction.'));
+	assert.ok(fundraising.complexity.reasons.includes('Heavy because of changes from 2 partner or custom solutions (Partner_A, PartnerB).'));
+	const markdown = renderMarkdown(assess(input, { now: NOW }));
+	assert.ok(markdown.includes('(Partner&#95;A, PartnerB)'));
+	assert.ok(!markdown.includes('&#38;#95;'));
+	assert.equal(routes.find(route => route.family === 'cdm')!.complexity.level, 'standard');
+});
+
+test('rubric rates automation on Volunteer Management tables heavy because the tables are replaced', () => {
+	const input = inventory(['cdm', 'vm']);
+	withLayers(input, [layerItem('NonprofitCore')]);
+	input.discovery.integrations = {
+		workflows: 0,
+		connectionReferences: 0,
+		pluginAssemblies: 0,
+		pluginSteps: 0,
+		automations: [{
+			kind: 'plugin-step',
+			name: 'Contoso: audit Participation status change',
+			detail: 'Update, post-operation, asynchronous',
+			tables: ['msnfp_participation'],
+			tableDisplayNames: ['Participation'],
+			productUniqueNames: ['VolunteerManagement'],
+			layer: 'active',
+			solution: null,
+			enabled: true,
+		}],
+		automationScan: { status: 'complete', tables: 5, cloudFlows: 0, checkedCloudFlows: 0 },
+		truncated: false,
+	};
+	const result = assess(input, { now: NOW });
+	const vm = result.routes.find(route => route.family === 'vm')!;
+	assert.equal(vm.complexity.level, 'heavy');
+	assert.equal(vm.effortBand, 'high');
+	assert.deepEqual(vm.complexity.reasons, [
+		'Heavy because of 1 custom relationship(s) or automation(s) use tables that this migration replaces and must be rebuilt.',
+		'1 plug-in step registered directly in this environment on Participation.',
+	]);
+	const cdm = result.routes.find(route => route.family === 'cdm')!;
+	assert.equal(cdm.complexity.level, 'moderate');
+	assert.equal(cdm.effortBand, 'medium');
+	const markdown = renderMarkdown(result);
+	assert.ok(markdown.includes('| Participation | Contoso: audit Participation status change (Update, post-operation, asynchronous) | Plug-in step | Added | Unmanaged change in this environment | Not checked |'));
+	assert.ok(markdown.includes('Legacy Volunteer Management must be replaced by a different GitHub solution. Heavy because of 1 custom relationship(s) or automation(s) use tables that this migration replaces and must be rebuilt. 1 plug-in step registered directly in this environment on Participation.'));
 });

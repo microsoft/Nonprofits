@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
 	InventorySchema, TimestampSchema, type Family, type Inventory,
 } from './contracts.js';
+import { familyEvidence } from './complexity.js';
 import { selectAnswers } from './scope.js';
 
 const ScopeAnswerSchema = z.enum(['none', 'bounded', 'opaque', 'unknown']);
@@ -43,7 +44,7 @@ export function deriveLocalReview(input: unknown, now = new Date()): LocalReview
 			? overlaps ? 'bounded' : 'none'
 			: 'unknown',
 		integrations: ['observed', 'partial'].includes(integrationEvidence?.status ?? '')
-			? (integrationCount ?? 0) > 0 ? 'bounded' : 'none'
+			? (integrationCount ?? 0) > 0 || (inventory.discovery.integrations?.automations?.length ?? 0) > 0 ? 'bounded' : 'none'
 			: 'unknown',
 		ownerAvailability: 'unknown',
 		sandboxAndTests: 'unknown',
@@ -80,9 +81,14 @@ export function applyLocalReview(input: unknown, reviewInput: unknown): Inventor
 
 	for (const answer of selected) {
 		if (migrationSet.has(answer.family)) {
+			const evidence = familyEvidence(inventory, answer.family);
+			// With named layer evidence, only products whose own components were customized are marked customized.
+			const familyBounded = evidence.named
+				? evidence.items.length + evidence.automations.length > 0
+				: review.customization === 'bounded' || review.integrations === 'bounded';
 			answer.customization = opaque ? 'opaque'
-				: review.customization === 'bounded' || review.integrations === 'bounded' ? 'customized'
-					: review.customization === 'none' ? 'standard'
+				: (review.customization === 'bounded' || review.integrations === 'bounded') && familyBounded ? 'customized'
+					: review.customization === 'none' || (evidence.named && review.customization === 'bounded') ? 'standard'
 						: 'unknown';
 			answer.integrations = ['none', 'bounded'].includes(review.integrations) ? 'reviewed' : 'unknown';
 			answer.validation = review.sandboxAndTests === 'ready' ? 'ready' : 'unknown';

@@ -342,6 +342,8 @@ test('detailed discovery summarizes approved environment metadata without record
 		pluginSteps: 2,
 		scope: 'selected-products-and-overlapping-customizations',
 		scopedSolutions: 3,
+		automations: [],
+		automationScan: { status: 'complete', tables: 0, cloudFlows: 0, checkedCloudFlows: 0 },
 		truncated: false,
 	});
 	assert.deepEqual(result.counts, {
@@ -623,4 +625,108 @@ test('unavailable layer details keep overlap evidence and mark components partia
 	const components = result.evidence.find(item => item.id === 'components');
 	assert.equal(components?.status, 'partial');
 	assert.match(components?.reason ?? '', /changes made directly in the environment could not be listed/);
+});
+
+const ACTIVE_SOLUTION_ID = 'fd140aae-4df4-11dd-bd17-0019b9312238';
+const BASIC_SOLUTION_ID = '26262626-2626-4626-8626-262626262626';
+const FLOW_ON_TABLE_ID = '27272727-2727-4727-8727-272727272727';
+const FLOW_ELSEWHERE_ID = '28282828-2828-4828-8828-282828282828';
+const PLATFORM_FLOW_ID = '29292929-2929-4929-8929-292929292929';
+const RULE_ID = '30303030-3030-4030-8030-303030303030';
+const PRODUCT_PROCESS_ID = '31313131-3131-4131-8131-313131313131';
+const PRODUCT_STEP_ID = '35353535-3535-4535-8535-353535353535';
+
+test('automation discovery names customer plug-in steps, processes, and cloud flows on nonprofit tables', async () => {
+	const discovery = baseDiscovery();
+	discovery.solutions.push({
+		solutionId: ACTIVE_SOLUTION_ID,
+		uniqueName: 'Active',
+		version: '1.0',
+		managed: false,
+		publisher: 'DefaultPublisher',
+		publisherPrefix: 'new',
+	}, {
+		solutionId: BASIC_SOLUTION_ID,
+		uniqueName: 'Basic',
+		version: '1.0',
+		managed: true,
+		publisher: 'MicrosoftCorporation',
+		publisherPrefix: 'none',
+	});
+	const step = (name: string, solutionid: string, table: string, extra: Record<string, unknown> = {}) => ({
+		name, stage: 20, mode: 0, statecode: 0, solutionid,
+		sdkmessagefilterid: { primaryobjecttypecode: table },
+		sdkmessageid: { name: 'Create' },
+		...extra,
+	});
+	const result = await collectAssessmentDetails(discovery, {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components', 'integrations'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: async input => {
+			const url = new URL(String(input));
+			const filter = url.searchParams.get('$filter') ?? '';
+			if (url.pathname.endsWith('/solutioncomponents')) {
+				return Response.json({ value: filter.includes(RELEVANT_ID)
+					? [
+						{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 0 },
+						{ componenttype: 92, objectid: PRODUCT_STEP_ID },
+						{ componenttype: 29, objectid: PRODUCT_PROCESS_ID },
+					]
+					: [] });
+			}
+			if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries')) {
+				return Response.json({ value: filter === `msdyn_solutionid eq ${RELEVANT_ID}`
+					? [summaryRow(1, TABLE_ID, 'msnfp_synthetictable', 'Synthetic Table', { custom: true })]
+					: [] });
+			}
+			if (url.pathname.endsWith('/sdkmessageprocessingsteps')) {
+				assert.match(filter, /^ishidden\/Value eq false and \(sdkmessagefilterid\/primaryobjecttypecode eq 'msnfp_synthetictable'\)$/);
+				return Response.json({ value: [
+					step('Customer: default campaign', ACTIVE_SOLUTION_ID, 'msnfp_synthetictable'),
+					step('Product step', RELEVANT_ID, 'msnfp_synthetictable'),
+					step('Edited product step', ACTIVE_SOLUTION_ID, 'msnfp_synthetictable', { sdkmessageprocessingstepid: PRODUCT_STEP_ID }),
+					step('Partner audit', PARTNER_ID, 'msnfp_synthetictable', { stage: 40, mode: 1, statecode: 1 }),
+					step('Contact step', ACTIVE_SOLUTION_ID, 'contact'),
+				] });
+			}
+			if (url.pathname.endsWith('/workflows')) {
+				if (filter.includes('category eq 5')) {
+					return Response.json({ value: [
+						{ workflowid: FLOW_ON_TABLE_ID, name: 'Thank donor', category: 5, primaryentity: 'none', statecode: 1, solutionid: ACTIVE_SOLUTION_ID },
+						{ workflowid: PLATFORM_FLOW_ID, name: 'Platform flow', category: 5, primaryentity: 'none', statecode: 1, solutionid: BASIC_SOLUTION_ID },
+						{ workflowid: FLOW_ELSEWHERE_ID, name: 'Unrelated flow', category: 5, primaryentity: 'none', statecode: 0, solutionid: ACTIVE_SOLUTION_ID },
+					] });
+				}
+				assert.match(filter, /category ne 5 and category ne 6 and \(primaryentity eq 'msnfp_synthetictable'\)/);
+				return Response.json({ value: [
+					{ workflowid: RULE_ID, name: 'Require amount', category: 2, primaryentity: 'msnfp_synthetictable', statecode: 1, solutionid: ACTIVE_SOLUTION_ID },
+					{ workflowid: PRODUCT_PROCESS_ID, name: 'Edited product workflow', category: 0, primaryentity: 'msnfp_synthetictable', statecode: 1, solutionid: ACTIVE_SOLUTION_ID },
+				] });
+			}
+			if (url.pathname.includes('RetrieveRequiredComponents')) {
+				assert.ok(!url.pathname.includes(PLATFORM_FLOW_ID));
+				const objectId = url.pathname.match(/ObjectId=([^,)]+)/)?.[1];
+				return Response.json({ value: [{
+					requiredcomponentobjectid: objectId === FLOW_ON_TABLE_ID ? TABLE_ID : DEPENDENT_ID,
+					requiredcomponenttype: 1,
+					dependentcomponentobjectid: objectId,
+					dependentcomponenttype: 29,
+					dependencytype: 2,
+				}] });
+			}
+			return Response.json({}, { status: 404 });
+		},
+	});
+	assert.deepEqual(result.integrations?.automationScan, { status: 'complete', tables: 1, cloudFlows: 2, checkedCloudFlows: 2 });
+	assert.deepEqual(result.integrations?.automations?.map(item =>
+		[item.kind, item.name, item.detail, item.tables.join(), item.tableDisplayNames.join(), item.productUniqueNames.join(), item.layer, item.solution, item.enabled]), [
+		['cloud-flow', 'Thank donor', 'Cloud flow', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'active', null, true],
+		['plugin-step', 'Customer: default campaign', 'Create, pre-operation, synchronous', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'active', null, true],
+		['plugin-step', 'Partner audit', 'Create, post-operation, asynchronous', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'managed-solution', 'PartnerManaged', false],
+		['process', 'Require amount', 'Business rule', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'active', null, true],
+	]);
+	assert.equal(result.evidence.find(item => item.id === 'integrations')?.status, 'observed');
 });
