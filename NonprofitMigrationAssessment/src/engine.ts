@@ -87,7 +87,7 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 		evidence.push({
 			id: answerId, source: 'customer-reported', status: 'observed',
 			collectedAt: q.consent.confirmedAt, collector: 'local-questionnaire', scope: family, inputs: [],
-			reason: 'Local customer assertions; not independent compatibility verification.',
+			reason: 'Answers from the local customer or partner review; not checked independently.',
 		});
 		const result: RouteResult = {
 			family, routeId: route.id, intent: answer.intent ?? defaultIntent(family), compatibility,
@@ -104,38 +104,38 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 		if (!complete) {
 			result.status = 'insufficient-evidence';
 			addFinding(family, 'solution-inventory-incomplete',
-				'Installed-solution inventory is incomplete, stale, future-dated, or unavailable. Seven days is a provisional freshness limit.',
+				'The list of installed solutions is incomplete, more than seven days old, or couldn\'t be read.',
 				solutionEvidence ? ['solutions'] : []);
 		}
 		if (family !== 've' && !source && !os && complete) {
 			result.status = 'not-installed';
-			addFinding(family, 'not-installed', 'The selected solution was not found in the complete solution inventory.', ['solutions'], false);
+			addFinding(family, 'not-installed', 'This product isn\'t installed in the environment.', ['solutions'], false);
 			continue;
 		}
 		if (family === 'vm' && os) {
 			result.status = 'insufficient-evidence';
 			addFinding(family, 'vm-transition-state', source
-				? 'AppSource and OS VM coexist. Review partial migration state, controls, and registrations before planning the remaining migration.'
-				: 'OS VM is installed, but solution identity alone does not prove migration completion. Verify controls and registrations.',
+				? 'Both the original and the GitHub Volunteer Management solutions are installed. Check how far the migration got, including controls and plug-in registrations, before planning the rest.'
+				: 'The GitHub Volunteer Management solution is installed, but that alone doesn\'t show the migration is finished. Check controls and plug-in registrations.',
 			['solutions']);
 		}
 		if (source && (!source.managed || source.publisher !== route.publisher)) {
 			result.status = 'blocked';
-			addFinding(family, 'source-identity', 'Managed status or publisher differs from the documented source identity.', ['solutions']);
+			addFinding(family, 'source-identity', 'The installed solution isn\'t the managed Microsoft version that the migration guide expects.', ['solutions']);
 		}
 		const sourceVersion = source ? VersionSchema.safeParse(source.version) : undefined;
 		if (sourceVersion && !sourceVersion.success) {
 			result.status = 'blocked';
-			addFinding(family, 'source-version', 'The installed source version is not a comparable four-part solution version.', ['solutions']);
+			addFinding(family, 'source-version', 'The installed version number isn\'t in the expected four-part format, so it can\'t be compared.', ['solutions']);
 		}
 		if (family !== 've') {
 			if (!target || !target.managed || target.publisher !== route.publisher || target.prefix !== route.prefix) {
 				result.status = 'blocked';
-				addFinding(family, 'target-identity', 'Target managed solution metadata is missing or does not match the candidate route.', [answerId]);
+				addFinding(family, 'target-identity', 'The GitHub version of this solution couldn\'t be found or doesn\'t match the migration guide.', [answerId]);
 			}
 		} else if (answer.veSource !== 'legacy') {
 			result.status = 'insufficient-evidence';
-			addFinding(family, 've-site-state', 'Confirm the legacy site and Enhanced Data Model destination prerequisites. Solution presence alone does not identify the site state.', [answerId]);
+			addFinding(family, 've-site-state', 'Confirm whether a legacy Volunteer Engagement site exists and whether the enhanced data model is ready. The installed solution alone doesn\'t show this.', [answerId]);
 		}
 		if (compatibility.status === 'blocked') {
 			result.status = 'blocked';
@@ -150,7 +150,7 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 			if (!installed || !selectedFamilies.has(prerequisite)) {
 				result.status = 'blocked';
 				addFinding(family, `prerequisite-${prerequisite}`,
-					`Include and review ${FAMILY_NAMES[prerequisite]} in the same assessment; its presence alone doesn't confirm compatibility.`,
+					`Also assess ${FAMILY_NAMES[prerequisite]}, because this product depends on it.`,
 					['solutions', answerId]);
 			}
 		}
@@ -174,15 +174,15 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 			}
 			addFinding(family, evidenceBased ? 'evidence-based' : 'review-required',
 				evidenceBased
-					? 'The rating is based on collected metadata and hasn\'t been confirmed by a customer or partner review.'
-					: 'Compatibility, dependency, integration, customization, and validation scope require a documented current local customer/partner review.',
+					? 'The rating is based on the environment\'s configuration and hasn\'t been confirmed by a customer or partner review.'
+					: 'A current customer or partner review is needed to confirm compatibility, customizations, dependencies, integrations, and testing before this product can be rated.',
 				[answerId, ...(discovery.components ? ['components'] : [])],
 				!evidenceBased);
 		}
 		if (result.complexity.level === 'unbounded' && result.status === 'eligible') {
 			result.status = 'insufficient-evidence';
 			addFinding(family, 'opaque-customization',
-				'Customizations or integrations exist, but their owner or impact is unknown. A specialist investigation is required.',
+				'Customizations or integrations exist, but nobody knows who owns them or what they do. Ask a specialist to investigate before planning.',
 				[answerId]);
 		}
 	}
@@ -195,7 +195,7 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 				if (prerequisite && !['eligible', 'already-at-target'].includes(prerequisite.status)
 					&& !findings.some(finding => finding.id === `${result.family}.blocked-by-${dependency}`)) {
 					addFinding(result.family, `blocked-by-${dependency}`,
-						`${FAMILY_NAMES[dependency]} still needs review. Resolve it first because this product depends on it.`,
+						`${FAMILY_NAMES[dependency]} still needs review, and this product depends on it.`,
 						[`answers.${dependency}`]);
 					if (result.status === 'eligible') {
 						result.status = 'blocked';
@@ -259,8 +259,8 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 		limitations: [
 			'Planning output, not a migration approval or guarantee. Validate decisions with the implementation partner.',
 			'Effort ratings are relative (None, Low, Medium, High) and rule-based. They aren\'t time, cost, or downtime estimates.',
-			'Component overlap, dependency references, integration registrations, counts, and site totals are bounded metadata signals; they do not prove behavioral compatibility or absence of undiscoverable dependencies.',
-			'Environment type, region, Managed Environment state, access restriction, and questionnaire answers are customer assertions unless separately marked as observed.',
+			'Customizations, dependencies, plug-ins, processes, flows, and counts come from configuration details. They don\'t prove that everything works the same after migration, and some dependencies can\'t be detected.',
+			'Environment type, region, Managed Environment state, access restriction, and review answers come from the customer or partner unless marked as observed.',
 			'CLI execution verifies target manifests and guides against the pinned public Git commit; direct library callers must perform equivalent verification.',
 			'No migration, deployment, backup, permission change, or business-data retrieval was performed.',
 		],

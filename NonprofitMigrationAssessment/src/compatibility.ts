@@ -56,57 +56,57 @@ export function evaluateCompatibility(
 	const intent = answer.intent ?? defaultIntent(route);
 
 	if (answer.destination !== 'github-same-environment') {
-		return decision('unsupported', 'The candidate catalog covers only the documented GitHub same-environment destination.');
+		return decision('unsupported', 'Only migrating to the GitHub solution in the same environment is supported.');
 	}
 	if (route.family === 've') {
 		if (intent !== 'replace-with-github') {
-			return decision('unsupported', 'Volunteer Engagement supports the documented legacy-site to Portal-EDM replacement intent.');
+			return decision('unsupported', 'Volunteer Engagement can only be assessed as a move from the legacy site to the GitHub Portal-EDM site.');
 		}
 		return answer.veSource === 'legacy'
-			? decision('candidate-supported', 'The declared legacy-site to Portal-EDM route matches the candidate public guide.')
-			: decision('investigation-required', 'The source site model and destination prerequisites are not established.');
+			? decision('candidate-supported', 'Moving the legacy site to the GitHub Portal-EDM site is covered by the public migration guide.')
+			: decision('investigation-required', 'It isn\'t known yet whether a legacy site exists or the destination is ready.');
 	}
 	if (!source && !installedTarget) {
-		return decision('investigation-required', 'No source or target solution identity is available for compatibility evaluation.');
+		return decision('investigation-required', 'Neither the installed solution nor its GitHub version was found, so compatibility can\'t be checked.');
 	}
 	if (!target) {
-		return decision('blocked', 'Pinned target solution metadata is unavailable.');
+		return decision('blocked', 'Details for the GitHub version of this solution aren\'t available.');
 	}
 	if (route.source !== route.target) {
 		if (intent !== 'replace-with-github') {
-			return decision('unsupported', 'This route changes solution identity and requires the replacement-migration intent.');
+			return decision('unsupported', 'This product moves to a different GitHub solution, so it can only be assessed as a replacement.');
 		}
 		if (route.family === 'vm' && installedTarget) {
 			return decision('investigation-required',
 				source
-					? 'Source and target Volunteer Management solutions coexist; continuation state requires review.'
-					: 'The target Volunteer Management solution is installed, but solution identity does not prove migration completion.');
+					? 'Both the original and the GitHub Volunteer Management solutions are installed; check how far the migration got.'
+					: 'The GitHub Volunteer Management solution is installed, but that alone doesn\'t show the migration is finished.');
 		}
-		return decision('candidate-supported', 'Side-by-side replacement is a candidate route; mappings and custom behavior still require reviewed evidence.');
+		return decision('candidate-supported', 'The GitHub solution can be installed next to the current one; data mapping and custom behavior still need review.');
 	}
 	if (intent === 'replace-with-github') {
-		return decision('unsupported', 'This same-identity solution does not require a replacement migration.');
+		return decision('unsupported', 'This GitHub solution is the same solution as the installed one, so no replacement is needed.');
 	}
 	if (!source || !/^\d+\.\d+\.\d+\.\d+$/.test(source.version)) {
-		return decision('investigation-required', 'A comparable installed source version is required.');
+		return decision('investigation-required', 'The installed version can\'t be compared with the GitHub version.');
 	}
 	const comparison = compareVersions(target.version, source.version);
 	if (intent === 'confirm-alignment') {
 		return isEquivalentRelease(route.family, source.version, target.version)
-			? decision('already-aligned', 'The installed PPAC release is mapped to the pinned GitHub baseline; no product or data migration is required.')
-			: decision('investigation-required', 'The installed and target releases are not in the reviewed equivalence catalog.');
+			? decision('already-aligned', 'The installed release matches a GitHub release, so no product or data migration is needed.')
+			: decision('investigation-required', 'It isn\'t confirmed yet which GitHub release matches the installed release.');
 	}
 	if (intent === 'apply-github-release') {
 		if (comparison < 0) {
-			return decision('blocked', 'The selected GitHub release is lower than the installed source version.');
+			return decision('blocked', 'The selected GitHub release is older than the installed version.');
 		}
 		return comparison === 0
 			? decision('already-aligned', 'The installed solution is already on the selected GitHub release.')
-			: decision('candidate-supported', 'The selected GitHub release is newer and can be assessed as an in-place managed update.');
+			: decision('candidate-supported', 'The selected GitHub release is newer and can be installed as an update.');
 	}
 	if (comparison < 0) {
-		return decision('blocked', 'The pinned target version is lower than the installed source version.');
+		return decision('blocked', 'The GitHub version is older than the installed version.');
 	}
 	return decision('candidate-supported',
-		'The same-identity managed solution can be assessed as an ownership transition from PPAC servicing to customer-managed GitHub builds.');
+		'You can move from Microsoft-managed updates to managing GitHub releases yourself; the solution stays the same.');
 }

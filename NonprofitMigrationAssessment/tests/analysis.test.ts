@@ -15,7 +15,7 @@ test('compatibility catalog separates version blockers from candidate routes', (
 	target.version = '1.0.0.0';
 	const blocked = evaluateCompatibility(route, answer, source, target, undefined);
 	assert.equal(blocked.status, 'blocked');
-	assert.match(blocked.reason, /lower/);
+	assert.match(blocked.reason, /older/);
 });
 
 test('reviewed same-release mappings report alignment without migration', () => {

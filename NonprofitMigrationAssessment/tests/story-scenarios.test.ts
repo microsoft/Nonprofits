@@ -90,5 +90,5 @@ test('representative denied-access scenario remains unknown rather than standard
 	assert.equal(result.routes[0]!.complexity.level, 'unknown');
 	assert.equal(result.routes[0]!.status, 'insufficient-evidence');
 	assert.equal(result.routes[0]!.effortBand, 'review-required');
-	assert.ok(renderMarkdown(result).includes('Some metadata could not be read'));
+	assert.ok(renderMarkdown(result).includes('Some configuration details couldn\'t be read'));
 });

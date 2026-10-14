@@ -286,7 +286,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 	const declared = response.headers.get('content-length');
 	if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > RESPONSE_BYTES)) {
 		discard(response);
-		throw new RequestFailure('The metadata response exceeded the approved byte budget.', 'partial');
+		throw new RequestFailure('A safety limit on the amount of data read was reached.', 'partial');
 	}
 	const reader = response.body.getReader();
 	const decoder = new TextDecoder('utf-8', { fatal: true });
@@ -304,7 +304,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 			bytes += chunk.value.byteLength;
 			context.budget.bytes += chunk.value.byteLength;
 			if (bytes > RESPONSE_BYTES || context.budget.bytes > TOTAL_BYTES) {
-				throw new RequestFailure('The metadata response exceeded the approved byte budget.', 'partial');
+				throw new RequestFailure('A safety limit on the amount of data read was reached.', 'partial');
 			}
 			text += decoder.decode(chunk.value, { stream: true });
 		}
@@ -323,7 +323,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 
 async function getJsonOnce(context: RequestContext, url: string): Promise<unknown> {
 	if (context.budget.requests >= MAX_REQUESTS) {
-		throw new RequestFailure('The metadata request budget was exhausted.', 'partial');
+		throw new RequestFailure('A safety limit on the number of requests was reached.', 'partial');
 	}
 	context.budget.requests++;
 	let response: Response;
@@ -1355,12 +1355,12 @@ export async function collectAssessmentDetails(
 		}, 'Relevant solution components, solution layers, and customization overlap signals were summarized.');
 		if (result.components?.truncated) {
 			replaceEvidence(result.evidence, evidence('components', 'partial', result.collectedAt,
-				'Component discovery reached an approved solution, row, or pagination cap.', ['solutions']));
+				'A safety limit on the number of solutions or components was reached, so more may exist.', ['solutions']));
 		} else if (result.components?.layerScan && result.components.layerScan.status !== 'complete') {
 			replaceEvidence(result.evidence, evidence('components', 'partial', result.collectedAt,
 				result.components.layerScan.status === 'unavailable'
-					? 'Solution layer details were not available, so changes made directly in the environment could not be listed.'
-					: 'Solution layer discovery reached a safety cap or could not read every table.', ['solutions']));
+					? 'Solution layer details weren\'t available, so changes made directly in the environment couldn\'t be listed.'
+					: 'Some tables couldn\'t be checked for customizations, or a safety limit was reached.', ['solutions']));
 		}
 		if (selected('dependencies') && !selected('components')) {
 			replaceEvidence(result.evidence, evidence('dependencies', 'unknown', result.collectedAt,
@@ -1374,7 +1374,7 @@ export async function collectAssessmentDetails(
 			}, 'Dependencies were inspected for components directly shared by selected products and customization solutions.');
 			if (result.dependencies?.truncated) {
 				replaceEvidence(result.evidence, evidence('dependencies', 'partial', result.collectedAt,
-					'Not all observed customization-overlap components could be inspected within the safety cap.',
+					'A safety limit was reached before every changed component could be checked for dependencies.',
 					['components']));
 			}
 		}
@@ -1399,13 +1399,13 @@ export async function collectAssessmentDetails(
 			}, 'Scoped workflow, connection-reference, and plug-in counts were derived, and plug-in steps, processes, and cloud flows registered on nonprofit tables were named.');
 			if (result.integrations?.truncated) {
 				replaceEvidence(result.evidence, evidence('integrations', 'partial', result.collectedAt,
-					'Scoped integration evidence may be incomplete because component discovery reached a limit.',
+					'Plug-in and workflow counts may be incomplete because a safety limit was reached while reading components.',
 					['components']));
 			} else if (result.integrations?.automationScan && result.integrations.automationScan.status !== 'complete') {
 				replaceEvidence(result.evidence, evidence('integrations', 'partial', result.collectedAt,
 					result.integrations.automationScan.status === 'unavailable'
-						? 'Plug-in steps, processes, and cloud flows on nonprofit tables could not be listed.'
-						: 'Listing plug-in steps, processes, and cloud flows on nonprofit tables reached a safety cap or a read failed.',
+						? 'Plug-in steps, processes, and cloud flows on nonprofit tables couldn\'t be listed.'
+						: 'Some plug-in steps, processes, or cloud flows couldn\'t be read, or a safety limit was reached.',
 					['components']));
 			}
 		}
@@ -1421,7 +1421,7 @@ export async function collectAssessmentDetails(
 			}, 'Relevant table counts were read from the Dataverse snapshot count function.');
 			if (result.counts?.truncated) {
 				replaceEvidence(result.evidence, evidence('counts', 'partial', result.collectedAt,
-					'Relevant table discovery or count results were incomplete.', ['components']));
+					'Record counts couldn\'t be read for every related table.', ['components']));
 			}
 		}
 		await run('sites', [], async () => {
@@ -1429,7 +1429,7 @@ export async function collectAssessmentDetails(
 		}, 'Legacy and enhanced Power Pages site counts were summarized.');
 		if (result.sites?.truncated) {
 			replaceEvidence(result.evidence, evidence('sites', 'partial', result.collectedAt,
-				'One or more Power Pages site counts reached the Dataverse 5,000-row OData count limit.'));
+				'There are more than 5,000 Power Pages sites, so the site count is a lower limit.'));
 		}
 	} catch (error) {
 		const failure = error instanceof RequestFailure ? error : new RequestFailure('Detailed discovery failed.');

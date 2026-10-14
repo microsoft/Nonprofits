@@ -624,7 +624,7 @@ test('unavailable layer details keep overlap evidence and mark components partia
 	assert.deepEqual(result.components?.layerCustomizations, []);
 	const components = result.evidence.find(item => item.id === 'components');
 	assert.equal(components?.status, 'partial');
-	assert.match(components?.reason ?? '', /changes made directly in the environment could not be listed/);
+	assert.match(components?.reason ?? '', /changes made directly in the environment couldn't be listed/);
 });
 
 const ACTIVE_SOLUTION_ID = 'fd140aae-4df4-11dd-bd17-0019b9312238';

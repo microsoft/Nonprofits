@@ -25,23 +25,23 @@ The skill lists the environments you can access, asks you to pick one, explains 
 
 The Markdown report shows:
 
-- A direct executive recommendation and evidence date
-- Installed supported products and versions only; products not detected are omitted from customer tables
-- Total solution inventory breadth
+- A direct executive recommendation and the assessment date
+- Installed supported products and versions only; products that aren't installed are left out of the customer tables
+- The total number of solutions found in the environment
 - Whether each product needs migration, needs review, or requires no action
-- An evidence-derived next-action checklist; no extra customer questionnaire is required
-- Named customizations for each installed Microsoft nonprofit solution: added or changed columns, relationships, views, charts, and forms, whether each change is unmanaged in the environment or comes from a managed partner solution, and which solution contains it
-- Custom/partner solution candidates, their managed/unmanaged state, component-type summary, direct overlap, and why they need review
-- Per-component dependency-reference counts for directly shared components, and bounded individual dependency edges in partner JSON
-- Product-attributed snapshot counts for the largest related non-empty tables
-- A visual product migration order plus bounded environment dependency signals and their collection limits
-- Prioritized direct and dependency blockers with the action needed to clear each one
-- A clear product decision with separate decision confidence, provisional effort, and effort confidence
-- A recommended sequence, integration/count signals, site applicability, and readable cautions
+- A next-action checklist built from what was found; no extra customer questionnaire is required
+- Named customizations for each installed Microsoft nonprofit solution: added or changed columns, relationships, views, charts, forms, plug-in steps, processes, and cloud flows, whether each change was made directly in the environment or comes from a managed partner solution, and which solution contains it
+- Custom and partner solutions, whether they're managed or unmanaged, what they contain, which nonprofit products they change, and why to review them
+- How many other components use each changed component; the optional detailed JSON lists each dependency
+- Record counts for the largest related tables, by product
+- A diagram of the product migration order and a summary of the dependencies found
+- What blocks each product and the action that clears it
+- A clear product decision with separate decision confidence, expected effort, and effort confidence
+- A recommended sequence, automation and record counts, site applicability, and cautions
 - GitHub migration-guide links
 - Blockers, missing information, and next actions
 
-The first sections are customer-focused. Dependency samples, scoped integration signals, metric definitions, and limitations are grouped in a technical appendix. Workflow, connection-reference, plug-in assembly, and plug-in-step counts are derived from installed nonprofit solutions and directly overlapping custom solutions rather than environment-wide entity counts. Machine evidence remains in the optional partner JSON.
+The first sections are for customers. Dependency details, automation counts, metric definitions, and limitations are grouped in a technical appendix. Workflow, connection-reference, plug-in assembly, and plug-in step counts include only the installed nonprofit solutions and the custom or partner solutions that change them, not the whole environment. Implementation partners can get the full technical detail in the optional JSON file.
 
 Effort is a relative rating, not an hour, cost, or downtime estimate. Validate the result with your implementation partner and a representative sandbox rehearsal.
 

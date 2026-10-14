@@ -7,6 +7,16 @@ function text(value: string): string {
 		.replace(/[\r\n\u0000-\u001f]/g, ' ');
 }
 
+const EVIDENCE_NAMES: Record<string, string> = {
+	environment: 'Environment details',
+	solutions: 'Installed solutions',
+	components: 'Customizations',
+	dependencies: 'Dependencies',
+	integrations: 'Plug-ins, processes, and flows',
+	counts: 'Record counts',
+	sites: 'Websites',
+};
+
 function sourceVersion(report: Assessment, family: Family): string {
 	const route = ROUTES.find(item => item.family === family)!;
 	const solution = report.installedSolutions.find(item =>
@@ -17,7 +27,7 @@ function sourceVersion(report: Assessment, family: Family): string {
 function targetVersion(report: Assessment, family: Family): string {
 	const route = ROUTES.find(item => item.family === family)!;
 	const target = report.target.solutions.find(item => item.uniqueName === route.target);
-	return target ? `${text(target.uniqueName)} ${text(target.version)}` : family === 've' ? 'Portal-EDM site' : 'Target metadata unavailable';
+	return target ? `${text(target.uniqueName)} ${text(target.version)}` : family === 've' ? 'Portal-EDM site' : 'GitHub version not available';
 }
 
 function effortBand(value: Assessment['routes'][number]['effortBand']): string {
@@ -48,7 +58,7 @@ function confidence(value: Assessment['routes'][number]['confidence']): string {
 	return {
 		low: 'Low',
 		medium: 'Medium',
-		'not-estimable': 'Not estimable',
+		'not-estimable': 'Not yet rated',
 	}[value];
 }
 
@@ -62,7 +72,7 @@ function overallEffortConfidence(report: Assessment): string {
 		return 'Not applicable';
 	}
 	if (migrationRoutes.some(route => route.confidence === 'not-estimable')) {
-		return 'Not estimable';
+		return 'Not yet rated';
 	}
 	return migrationRoutes.some(route => route.confidence === 'low') ? 'Low' : 'Medium';
 }
@@ -92,7 +102,7 @@ function planningBasis(report: Assessment, route: Assessment['routes'][number]):
 		const regression = named
 			? route.complexity.reasons.filter(reason => !/^(Heavy|Moderate) because/.test(reason)).join(' ')
 			: evidence;
-		return `Installed and GitHub versions match the approved release mapping. ${hasCustomizations(report, route.family)
+		return `The installed version matches a GitHub release, so no migration is needed. ${hasCustomizations(report, route.family)
 			? `Regression-test these customizations: ${regression}`
 			: named && !scopeComplete(report)
 				? 'No customizations were found within the checked scope.'
@@ -167,7 +177,7 @@ function componentBreakdown(
 	componentCount: number,
 ): string {
 	if (!types.length) {
-		return componentCount > 0 ? 'Not captured in this inventory' : 'No components';
+		return componentCount > 0 ? 'Not recorded' : 'No components';
 	}
 	const totals = new Map<string, number>();
 	for (const item of types) {
@@ -180,7 +190,7 @@ function componentBreakdown(
 function hasCustomizations(report: Assessment, family: Family): boolean {
 	return report.discoverySummary.components?.layerScan
 		? familyLayerCustomizations(report, family).length + familyAutomations(report, family).length > 0
-		: customizationSignal(report, family).includes('overlapping component');
+		: customizationSignal(report, family).includes('nonprofit component(s) changed by');
 }
 
 function recommendation(report: Assessment, route: Assessment['routes'][number]): string {
@@ -201,9 +211,9 @@ function recommendation(report: Assessment, route: Assessment['routes'][number])
 				: 'Migration to GitHub solution is recommended';
 	}
 	if (route.family === 'vm' && route.compatibility.status === 'investigation-required') {
-		return 'Verify whether VM migration is complete';
+		return 'Check whether the Volunteer Management migration is finished';
 	}
-	return route.status === 'unsupported' ? 'Route not supported' : 'Review before migration';
+	return route.status === 'unsupported' ? 'Not supported by this assessment' : 'Review before migration';
 }
 
 function dependencies(family: Family): string {
@@ -231,14 +241,14 @@ function customizationSignal(report: Assessment, family: Family): string {
 		.map(overlap => ({ solution: item.uniqueName, count: overlap.componentCount })));
 	if (matching.length > 0) {
 		const count = matching.reduce((total, item) => total + item.count, 0);
-		return `${count} overlapping component(s) from ${matching.map(item => text(item.solution)).join(', ')}`;
+		return `${count} nonprofit component(s) changed by ${matching.map(item => text(item.solution)).join(', ')}`;
 	}
 	const summary = report.discoverySummary.components?.productSummaries?.find(item =>
 		[route.source, route.target].includes(item.uniqueName));
 	if (!summary && candidates.length === 0) {
-		return family === 've' ? 'See site review' : 'Not available';
+		return family === 've' ? 'See site review' : 'Customizations weren\'t checked';
 	}
-	return 'No direct component overlap found';
+	return 'No nonprofit components are changed by custom or partner solutions';
 }
 
 function productName(uniqueName: string): string {
@@ -327,7 +337,7 @@ function layerCoverage(report: Assessment): string {
 			? ' Plug-in steps, processes, and cloud flows on nonprofit tables could not be listed.'
 			: ` Checked plug-in steps and processes on ${automation.tables} nonprofit tables and ${automation.checkedCloudFlows} of ${automation.cloudFlows} non-Microsoft cloud flows.`;
 	if (scan.status === 'unavailable') {
-		return `Solution layer details were not available, so changes made directly in this environment are not listed. Only components shared with custom or partner solutions are shown.${automationCoverage}`;
+		return `Solution layer details were not available, so changes made directly in this environment are not listed. Only components that custom or partner solutions change are shown.${automationCoverage}`;
 	}
 	const coverage = `Checked ${scan.checkedTables} of ${scan.productTables} nonprofit tables for unmanaged changes and ${scan.checkedSolutionTables} of ${scan.solutionTables} tables extended by custom or partner solutions.${automationCoverage}`;
 	return scan.status === 'partial' || automation?.status === 'partial'
@@ -408,24 +418,24 @@ function layerCustomizationSection(report: Assessment, dependencyCounts: Map<str
 }
 function actionFor(finding: Finding): string {
 	if (finding.code === 'target-version' || finding.code === 'compatibility-blocked') {
-		return 'Publish or select a supported GitHub target version, then reassess.';
+		return 'Choose a supported GitHub version, then run the assessment again.';
 	}
 	if (finding.code === 'release-mapping-required') {
-		return 'Confirm the PPAC-to-GitHub release mapping or choose an ownership/update intent.';
+		return 'Confirm which GitHub release matches your installed version, or decide whether to keep the current version or update.';
 	}
 	if (finding.code === 'review-required') {
-		return 'Review compatibility, customizations, dependencies, integrations, and validation scope.';
+		return 'Ask your implementation partner to do this review.';
 	}
 	if (finding.code === 've-site-state') {
-		return 'Inspect the legacy site, enhanced-model destination, languages, and authentication configuration.';
+		return 'Check the legacy site, whether the enhanced data model is ready, and the site\'s languages and sign-in providers.';
 	}
 	if (finding.code.startsWith('blocked-by-') || finding.code.startsWith('prerequisite-')) {
-		return 'Resolve the prerequisite route first.';
+		return 'Resolve that product first.';
 	}
 	if (finding.code.includes('inventory')) {
-		return 'Repeat the approved read-only collection with sufficient access.';
+		return 'Run the read-only assessment again with an account that can read the environment.';
 	}
-	return 'Resolve the finding with the customer and migration partner before estimating.';
+	return 'Resolve this with your implementation partner before planning the migration.';
 }
 
 function priority(finding: Finding): number {
@@ -520,10 +530,10 @@ function migrationSequence(report: Assessment): string[] {
 			return `No migration for **${product}** because it was not detected.`;
 		}
 		if (route.family === 've') {
-			return `Confirm whether **${product}** is applicable (${siteStatus(report)}). If migration is chosen, perform it after CDM for Nonprofits and Volunteer Management.`;
+			return `Confirm whether **${product}** needs migration (${siteStatus(report)}). If migration is chosen, perform it after CDM for Nonprofits and Volunteer Management.`;
 		}
 		const prerequisite = dependencies(route.family);
-		return `${recommendation(report, route)} for **${product}**${prerequisite === 'None' ? '' : ` after ${prerequisite}`}, then validate its customizations and integrations.`;
+		return `${recommendation(report, route)} for **${product}**${prerequisite === 'None' ? '' : ` after ${prerequisite}`}, then check its customizations and integrations.`;
 	});
 }
 
@@ -559,19 +569,19 @@ function nextActions(report: Assessment): string[] {
 		actions.push(`Regression-test the customizations affecting ${alignedWithOverlap.join(' and ')}; no product migration is required.`);
 	}
 	for (const route of report.routes.filter(item => item.status === 'eligible' && item.family !== 've')) {
-		actions.push(`Rehearse the ${FAMILY_NAMES[route.family]} migration in the representative sandbox and validate its customizations and integrations.`);
+		actions.push(`Rehearse the ${FAMILY_NAMES[route.family]} migration in a test (sandbox) environment that matches production, and check its customizations and integrations.`);
 	}
 	const ve = report.routes.find(route => route.family === 've');
 	if (ve && decisionConfidence(report, ve) === 'Low') {
 		actions.push('Confirm whether a legacy Volunteer Engagement site exists before including it in migration scope.');
 	}
 	if (report.evidence.find(item => item.id === 'dependencies')?.status === 'partial') {
-		actions.push('Complete a named dependency review for the components in migration scope.');
+		actions.push('Review the remaining dependencies of the components being migrated; the automatic check reached a safety limit.');
 	}
 	if (report.evidence.find(item => item.id === 'integrations')?.status === 'partial') {
 		actions.push(report.discoverySummary.integrations?.scope === 'selected-products-and-overlapping-customizations'
-			? 'Review the scoped workflows, connection references, and plug-ins and assign owners.'
-			: 'Identify which workflows, connection references, and plug-ins belong to the nonprofit migration scope and assign owners.');
+			? 'Review the listed workflows, connection references, and plug-ins and assign an owner for each.'
+			: 'Identify which workflows, connection references, and plug-ins are part of the nonprofit migration and assign an owner for each.');
 	}
 	return [...new Set(actions)];
 }
@@ -605,8 +615,8 @@ export function renderMarkdown(report: Assessment): string {
 		'# Nonprofit migration assessment',
 		'',
 		'> This report summarizes installed nonprofit products, customizations, dependencies, and recommended next steps.',
-		'> The assessment only reads metadata and does not change the environment.',
-		'> This report was generated by an AI-assisted assessment skill. Decisions and effort are rule-based, not AI estimates. Validate the findings before taking any action.',
+		'> The assessment only reads configuration details, such as solutions, tables, and forms, plus record counts. It doesn\'t change the environment.',
+		'> This report was generated by an AI-assisted assessment skill. Decisions and effort ratings come from fixed rules, not AI estimates. Check the findings before taking any action.',
 		'',
 		'## Executive decision',
 		'',
@@ -615,23 +625,23 @@ export function renderMarkdown(report: Assessment): string {
 		`| Environment name | ${text(report.environment)} |`,
 		`| URL | ${text(report.environmentUrl)} |`,
 		`| Dataverse version | ${text(report.environmentProfile.dataverseVersion ?? 'Not available')} |`,
-		`| Evidence collected | ${text(solutionEvidenceDate?.slice(0, 10) ?? 'Not available')} |`,
-		`| Solutions inventoried | ${report.environmentProfile.solutionInventoryCount ?? 'Not available'} |`,
+		`| Assessment date | ${text(solutionEvidenceDate?.slice(0, 10) ?? 'Not available')} |`,
+		`| Solutions found | ${report.environmentProfile.solutionInventoryCount ?? 'Not available'} |`,
 		`| Recommendation | ${text(executiveRecommendation(report))} |`,
-		`| Provisional overall effort | ${overallEffort(report)} |`,
+		`| Expected overall effort | ${overallEffort(report)} |`,
 		`| Overall effort confidence | ${overallEffortConfidence(report)} |`,
 		'',
 		'## Supported nonprofit products and recommendations',
 		'',
-		'Decision confidence describes certainty in the action. Effort confidence describes only the reliability of the relative effort rating.',
+		'Decision confidence shows how sure the assessment is about what to do. Effort confidence shows how reliable the effort rating is.',
 		'',
-		'| Product | Installed solution / version | GitHub target / version | Decision | Decision confidence | Provisional effort | Effort confidence | GitHub |',
+		'| Product | Installed solution / version | GitHub solution / version | Decision | Decision confidence | Expected effort | Effort confidence | GitHub |',
 		'| --- | --- | --- | --- | --- | --- | --- | --- |',
 		...productRows,
 		'',
 		'### Why these effort ratings?',
 		'',
-		'| Product | Provisional effort | Effort confidence | Why |',
+		'| Product | Expected effort | Effort confidence | Why |',
 		'| --- | --- | --- | --- |',
 		...report.routes.map(route => {
 			return `| ${text(FAMILY_NAMES[route.family])} | ${effortDisplay(route)} | ${effortConfidence(route)} | ${text(planningBasis(report, route))} |`;
@@ -642,36 +652,36 @@ export function renderMarkdown(report: Assessment): string {
 		...(actions.length ? actions.map(action => `- [ ] ${action}`) : ['- [x] No migration actions were identified.']),
 		'',
 		...(component?.layerScan ? layerCustomizationSection(report, dependencyCounts) : []),
-		'## Customization solutions',
+		'## Custom and partner solutions',
 		'',
 		...(!solutionInventoryAvailable
-			? ['Customization inventory is unavailable because installed solutions could not be read.']
+			? ['Custom and partner solutions can\'t be listed because the installed solutions couldn\'t be read.']
 			: customizationCandidates.length ? [
-			`**Summary:** ${customizationCandidates.length} custom or partner solution(s); ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => item.overlaps.length > 0).length} with direct supported-product overlap.`,
+			`**Summary:** ${customizationCandidates.length} custom or partner solution(s); ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => item.overlaps.length > 0).length} change nonprofit solution components.`,
 			'',
-			'| Solution | Type | Publisher | Components | Component details | Affects supported products | Why review it? |',
+			'| Solution | Type | Publisher | Components | Component details | Nonprofit products it changes | Why review it? |',
 			'| --- | --- | --- | --- | --- | --- | --- |',
 			...customizationCandidates.map(item => {
 				const affects = item.overlaps.length
-					? item.overlaps.map(overlap => `${text(overlap.productUniqueName)} (${overlap.componentCount})`).join(', ')
-					: 'No direct overlap found';
+					? item.overlaps.map(overlap => `${text(productName(overlap.productUniqueName))} (${overlap.componentCount})`).join(', ')
+					: 'None directly';
 				const review = item.overlaps.length
-					? 'Direct overlap found; validate behavior and deployment order'
-					: 'No direct overlap found; confirm dynamic dependencies separately';
+					? 'It changes nonprofit components; test it and plan the order in which solutions are imported'
+					: 'It doesn\'t change nonprofit components directly; check whether its code or flows use them';
 				return `| ${text(item.uniqueName)} | ${item.managed ? 'Managed' : 'Unmanaged'} | ${text(item.publisher)} | ${item.componentCount} | ${componentBreakdown(item.componentTypes, item.componentCount)} | ${affects} | ${review} |`;
 			}),
-			...(component?.truncated ? ['', `> **Partial scan:** ${customizationCandidates.length} custom or partner solution candidates are shown. At least one collection limit was reached, so additional solutions or components may exist.`] : []),
-			] : ['No custom or partner solution candidates were identified within the bounded collection scope.']),
+			...(component?.truncated ? ['', `> **Partial check:** ${customizationCandidates.length} custom or partner solutions are shown. A safety limit was reached, so more solutions or components may exist.`] : []),
+			] : ['No custom or partner solutions were found within the checked scope.']),
 		'',
 		...(!component?.layerScan && customizationComponents.length ? [
-			'### Named customization overlap components',
+			'### Components changed by custom or partner solutions',
 			'',
-			'| Component | Type | Custom solution | Affects product | Dependent references |',
+			'| Component | Type | Custom solution | Nonprofit product | Components that use it |',
 			'| --- | --- | --- | --- | --- |',
 			...customizationComponents.map(item =>
-				`| ${text(item.name)}${item.nameSource === 'identifier' ? ' (identifier)' : ''} | ${componentType(item.type)} | ${item.customizationSolutions.map(text).join(', ')} | ${item.productUniqueNames.map(name => text(productName(name))).join(', ')} | ${dependencyCounts.get(item.objectId.toLowerCase()) ?? 0} |`),
+				`| ${text(item.name)}${item.nameSource === 'identifier' ? ' (name not available)' : ''} | ${componentType(item.type)} | ${item.customizationSolutions.map(text).join(', ')} | ${item.productUniqueNames.map(name => text(productName(name))).join(', ')} | ${dependencyCounts.get(item.objectId.toLowerCase()) ?? 0} |`),
 			'',
-			'Individual dependency edges, stable component IDs, and unresolved dependent-component identifiers remain in the detailed JSON.',
+			'The detailed JSON file lists each dependency and component ID.',
 			'',
 		] : []),
 		'## Technical appendix',
@@ -696,40 +706,40 @@ export function renderMarkdown(report: Assessment): string {
 		'',
 		...migrationSequence(report).map((step, index) => `${index + 1}. ${step}`),
 		'',
-		'### Observed environment dependency signal',
+		'### Dependencies found',
 		'',
 		...(dependency ? [
-			'| Signal | Result | What it means |',
+			'| Check | Result | What it means |',
 			'| --- | --- | --- |',
 			...(dependency.scope === 'direct-customization-overlaps' ? [
-				`| Direct customization-overlap components found | ${dependency.candidateComponents ?? 'Not available'} | Components shared by an installed nonprofit solution and a custom/partner solution |`,
-				`| Overlap components checked | ${dependency.checkedComponents} | Dependency lookup was limited to the observed overlap components |`,
+				`| Components changed by custom or partner solutions | ${dependency.candidateComponents ?? 'Not available'} | Nonprofit solution components that a custom or partner solution also changes |`,
+				`| Components checked for dependencies | ${dependency.checkedComponents} | Only these components were checked |`,
 			] : [
-				`| Components checked | ${dependency.checkedComponents} | Deterministic bounded sample of supported-product components |`,
+				`| Components checked for dependencies | ${dependency.checkedComponents} | A fixed sample of nonprofit solution components |`,
 			]),
-			`| Dependent references returned | ${dependency.dependentReferences} | Total references returned by ${dependency.scope === 'direct-customization-overlaps' ? 'overlap-component' : 'sampled'} lookups; not a list of unique dependency edges |`,
-			`| Coverage | ${dependency.truncated ? 'Partial — safety cap reached' : dependency.scope === 'direct-customization-overlaps' ? 'Complete for observed direct overlaps' : 'Bounded sample completed'} | ${dependency.truncated ? 'Some observed overlap components were not checked' : 'Dynamic or undiscoverable dependencies can still exist'} |`,
+			`| References found | ${dependency.dependentReferences} | Other components that use the checked components; the same component can be counted more than once |`,
+			`| Completeness | ${dependency.truncated ? 'Partial — a safety limit was reached' : dependency.scope === 'direct-customization-overlaps' ? 'All changed components were checked' : 'The sample was checked'} | ${dependency.truncated ? 'Some changed components weren\'t checked' : 'Code, flows, or external systems can still depend on components without Dataverse recording it'} |`,
 			'',
-			'> Individual dependency edges and stable component IDs are retained in the optional partner JSON. The customer report summarizes per-component reference counts.',
-		] : ['Dependency metadata was not available.']),
+			'> The detailed JSON file lists each dependency and component ID. This report shows totals per component.',
+		] : ['Dependency details weren\'t available.']),
 		'',
-		'### Scoped technical signals',
+		'### Automation and data in scope',
 		'',
-		'Integration counts are limited to installed nonprofit solutions and custom solutions that directly overlap them. Relevant table counts use the same selected-product component evidence.',
+		'These counts include only the installed nonprofit solutions and the custom or partner solutions that change them.',
 		'',
-		'| Signal | Result |',
+		'| Item | Count |',
 		'| --- | --- |',
 		...(report.discoverySummary.integrations?.scope === 'selected-products-and-overlapping-customizations' ? [
-			`| Scoped solutions | ${report.discoverySummary.integrations.scopedSolutions ?? 'Not available'} installed product and overlapping customization solutions |`,
-			`| Scoped workflows | ${report.discoverySummary.integrations.workflows ?? 'Not available'} |`,
-			`| Scoped connection references | ${report.discoverySummary.integrations.connectionReferences ?? 'Not available'} |`,
-			`| Scoped plug-in assemblies | ${report.discoverySummary.integrations.pluginAssemblies ?? 'Not available'} |`,
-			`| Scoped plug-in steps | ${report.discoverySummary.integrations.pluginSteps ?? 'Not available'} |`,
+			`| Solutions counted | ${report.discoverySummary.integrations.scopedSolutions ?? 'Not available'} |`,
+			`| Workflows | ${report.discoverySummary.integrations.workflows ?? 'Not available'} |`,
+			`| Connection references | ${report.discoverySummary.integrations.connectionReferences ?? 'Not available'} |`,
+			`| Plug-in assemblies | ${report.discoverySummary.integrations.pluginAssemblies ?? 'Not available'} |`,
+			`| Plug-in steps | ${report.discoverySummary.integrations.pluginSteps ?? 'Not available'} |`,
 		] : [
-			'| Product-scoped workflows and connection references | Not yet attributed; environment-wide counts remain in the detailed JSON |',
-			'| Product-scoped plug-in assemblies and steps | Not yet attributed; environment-wide counts remain in the detailed JSON |',
+			'| Workflows and connection references per product | Not available; environment-wide totals are in the detailed JSON |',
+			'| Plug-in assemblies and steps per product | Not available; environment-wide totals are in the detailed JSON |',
 		]),
-		`| Relevant tables counted | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
+		`| Related tables with record counts | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
 		...(report.routes.some(route => route.family === 've')
 			? [`| Volunteer Engagement sites | ${text(siteStatus(report))} |`]
 			: []),
@@ -737,40 +747,40 @@ export function renderMarkdown(report: Assessment): string {
 		'### Related data volumes',
 		'',
 		...(dataVolumes.length ? [
-			'Largest non-empty related tables from the bounded snapshot count:',
+			'Largest related tables by record count. Dataverse refreshes these counts about once a day, so they can be up to a day old.',
 			'',
-			'| Table | Related product | Snapshot rows |',
+			'| Table | Related product | Records (approximate) |',
 			'| --- | --- | --- |',
 			...dataVolumes.map(table =>
-				`| ${text(table.logicalName)} | ${table.products?.length ? table.products.map(name => text(productName(name))).join(', ') : 'Not attributed'} | ${table.count} |`),
-		] : ['No non-empty related table counts were available.']),
+				`| ${text(table.logicalName)} | ${table.products?.length ? table.products.map(name => text(productName(name))).join(', ') : 'Not assigned'} | ${table.count} |`),
+		] : ['No record counts were available for related tables.']),
 		'',
 		'### Assessment cautions',
 		'',
 		...(findings.length ? findings.map((item, index) =>
 			`${index + 1}. **${item.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(item.message)} ${text(item.action)}`)
-			: ['No blocking route findings were produced.']),
+			: ['Nothing blocks the recommended actions.']),
 		...nonBlockingFindings.map(finding =>
 			`- **${finding.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(finding.message)}`),
 		...(report.evidence.filter(item => item.status === 'partial').map(item =>
-			`- **${text(item.id)}:** ${text(item.reason)}`)),
+			`- **${text(EVIDENCE_NAMES[item.id] ?? item.id)}:** ${text(item.reason)}`)),
 		'',
 		'### Metric definitions',
 		'',
 		'| Metric | Meaning |',
 		'| --- | --- |',
-		'| Decision | What the customer should do for the product. |',
-		'| Decision confidence | How certain the observed product version or site evidence makes that decision. |',
-		'| Provisional effort | Relative migration work: None, Low, Medium, or High. It isn\'t a time, cost, or downtime estimate. |',
-		'| Effort confidence | How reliable the effort rating is. It does not describe confidence in the installed version. |',
+		'| Decision | What to do for the product. |',
+		'| Decision confidence | How sure the assessment is about the decision, based on the installed versions and sites it found. |',
+		'| Expected effort | Relative migration work: None, Low, Medium, or High. It isn\'t a time, cost, or downtime estimate. |',
+		'| Effort confidence | How reliable the effort rating is, based on how much of the environment could be checked. |',
 		'',
 		'## Notes',
 		'',
-		...(accessLimited ? ['- Some metadata could not be read. The result may be incomplete until access is reviewed.'] : []),
-		'- Effort ratings are relative and rule-based. They aren\'t commitments or time estimates.',
-		'- Direct overlap does not prove every dynamic dependency or custom behavior.',
-		'- Validate migration decisions with the implementation partner and a representative sandbox.',
-		'- Detailed evidence, hashes, and technical reasons remain in the optional partner JSON.',
+		...(accessLimited ? ['- Some configuration details couldn\'t be read. The result may be incomplete until access is reviewed.'] : []),
+		'- Effort ratings are relative and come from fixed rules. They aren\'t commitments or time estimates.',
+		'- The assessment can\'t see every dependency, such as code, flows, or external systems that refer to components by name.',
+		'- Confirm migration decisions with your implementation partner and a test (sandbox) environment that matches production.',
+		'- Your implementation partner can get full technical detail by running the assessment with `--partner-json`.',
 		'',
 	];
 	return output.join('\n');
