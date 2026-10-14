@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import {
-	InventorySchema, TimestampSchema, type Family, type Inventory, type WorkRequest,
+	InventorySchema, TimestampSchema, type Family, type Inventory,
 } from './contracts.js';
 import { selectAnswers } from './scope.js';
 
@@ -10,7 +10,6 @@ export const LocalReviewSchema = z.strictObject({
 	integrations: ScopeAnswerSchema,
 	ownerAvailability: z.enum(['available', 'unavailable', 'unknown']),
 	sandboxAndTests: z.enum(['ready', 'partial', 'unavailable', 'unknown']),
-	maxInterruptionHours: z.number().finite().nonnegative().max(168).nullable(),
 	reviewedAt: TimestampSchema,
 	ve: z.strictObject({
 		source: z.enum(['unknown', 'legacy', 'target']),
@@ -47,7 +46,6 @@ export function deriveLocalReview(input: unknown, now = new Date()): LocalReview
 			: 'unknown',
 		ownerAvailability: 'unknown',
 		sandboxAndTests: 'unknown',
-		maxInterruptionHours: null,
 		reviewedAt: now.toISOString(),
 		...(veSelected ? {
 			ve: {
@@ -70,44 +68,21 @@ function migrationFamilies(inventory: Inventory): Family[] {
 		.map(answer => answer.family);
 }
 
-function work(
-	id: string,
-	families: Family[],
-	kind: 'customization' | 'integration',
-	impact: 'bounded' | 'unbounded',
-	basis: string,
-): WorkRequest {
-	return {
-		id,
-		families,
-		kind,
-		phase: kind,
-		environment: 'sandbox',
-		occurrenceId: 'guided-review',
-		activity: 'remediate',
-		component: kind === 'customization' ? 'selected-product-customizations' : 'selected-product-integrations',
-		ruleId: kind === 'customization' ? 'custom' : 'integration',
-		scenario: 'assessed',
-		dependsOn: [],
-		impact,
-		basis,
-	};
-}
-
 export function applyLocalReview(input: unknown, reviewInput: unknown): Inventory {
 	const inventory = structuredClone(InventorySchema.parse(input));
 	const review = LocalReviewSchema.parse(reviewInput);
 	const selected = selectAnswers(inventory.questionnaire, inventory.discovery);
-	const families = migrationFamilies(inventory);
-	const migrationSet = new Set(families);
-	const ownerMakesOpaque = review.ownerAvailability === 'unavailable';
-	inventory.questionnaire.work = inventory.questionnaire.work.filter(item =>
-		!['review.customization', 'review.integration', 'review.ve-journeys', 'review.ve-configuration'].includes(item.id));
+	const migrationSet = new Set(migrationFamilies(inventory));
+	const ownerUnavailable = review.ownerAvailability === 'unavailable';
+	const opaque = review.customization === 'opaque' || review.integrations === 'opaque'
+		|| (ownerUnavailable && (review.customization === 'bounded' || review.integrations === 'bounded'));
 
 	for (const answer of selected) {
 		if (migrationSet.has(answer.family)) {
-			answer.customization = review.customization === 'none' ? 'standard'
-				: review.customization === 'unknown' ? 'unknown' : 'customized';
+			answer.customization = opaque ? 'opaque'
+				: review.customization === 'bounded' || review.integrations === 'bounded' ? 'customized'
+					: review.customization === 'none' ? 'standard'
+						: 'unknown';
 			answer.integrations = ['none', 'bounded'].includes(review.integrations) ? 'reviewed' : 'unknown';
 			answer.validation = review.sandboxAndTests === 'ready' ? 'ready' : 'unknown';
 		}
@@ -117,57 +92,14 @@ export function applyLocalReview(input: unknown, reviewInput: unknown): Inventor
 			answer.veAuthenticationProviders = review.ve.authenticationProviders;
 			answer.veLanguages = review.ve.languages;
 			answer.veCustomJourneys = review.ve.customJourneys;
-			if (review.ve.customJourneys === 'present') {
+			if (review.ve.customJourneys === 'present' && answer.customization !== 'opaque') {
 				answer.customization = 'customized';
 			}
-			if (review.ve.authenticationProviders === 'multiple' || (review.ve.languages ?? 0) > 1) {
-				answer.integrations = 'reviewed';
-			}
 		}
-	}
-	if (families.length > 0 && ['bounded', 'opaque'].includes(review.customization)) {
-		const impact = review.customization === 'opaque' || ownerMakesOpaque ? 'unbounded' : 'bounded';
-		inventory.questionnaire.work.push(work(
-			'review.customization',
-			families,
-			'customization',
-			impact,
-			`Guided review classified selected-product customization as ${review.customization}; owner availability ${review.ownerAvailability}.`,
-		));
-	}
-	if (families.length > 0 && ['bounded', 'opaque'].includes(review.integrations)) {
-		const impact = review.integrations === 'opaque' || ownerMakesOpaque ? 'unbounded' : 'bounded';
-		inventory.questionnaire.work.push(work(
-			'review.integration',
-			families,
-			'integration',
-			impact,
-			`Guided review classified selected-product integrations as ${review.integrations}; owner availability ${review.ownerAvailability}.`,
-		));
-	}
-	if (families.includes('ve') && review.ve?.customJourneys === 'present') {
-		inventory.questionnaire.work.push(work(
-			'review.ve-journeys',
-			['ve'],
-			'customization',
-			ownerMakesOpaque ? 'unbounded' : 'bounded',
-			'Guided VE review identified business-critical custom journeys requiring preservation and regression validation.',
-		));
-	}
-	if (families.includes('ve') && review.ve
-		&& (review.ve.authenticationProviders === 'multiple' || (review.ve.languages ?? 0) > 1)) {
-		inventory.questionnaire.work.push(work(
-			'review.ve-configuration',
-			['ve'],
-			'integration',
-			ownerMakesOpaque ? 'unbounded' : 'bounded',
-			'Guided VE review identified multiple authentication providers or languages requiring configuration and validation.',
-		));
 	}
 	inventory.questionnaire.operations = {
 		ownerAvailability: review.ownerAvailability,
 		sandboxAndTests: review.sandboxAndTests,
-		maxInterruptionHours: review.maxInterruptionHours,
 		reviewedAt: review.reviewedAt,
 	};
 	return InventorySchema.parse(inventory);

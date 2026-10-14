@@ -7,20 +7,15 @@ import { parseArgs } from 'node:util';
 import { pathToFileURL } from 'node:url';
 import { z } from 'zod';
 import {
-	AssessmentSchema, FAMILIES, VERSION, InventorySchema, QuestionnaireSchema, RuleBookSchema,
-	RuleReviewDraftSchema,
+	AssessmentSchema, FAMILIES, VERSION, InventorySchema, QuestionnaireSchema,
 } from './contracts.js';
 import { assess } from './engine.js';
-import { DEFAULT_RULES, ROUTES } from './routes.js';
+import { ROUTES } from './routes.js';
 import { renderMarkdown } from './report.js';
 import { readLocalJson, writeLocalBundle, writeLocalFile } from './storage.js';
 import { resolvePublicTarget, verifyPublicTarget } from './target.js';
-import { createRuleReviewDraft, finalizeRuleReviewDraft } from './rule-review.js';
 import { applyLocalReview, deriveLocalReview, LocalReviewSchema } from './review.js';
 import { selectAnswers } from './scope.js';
-import {
-	calibrateAssessment, CalibrationResultSchema, RehearsalObservationSchema, renderCalibrationMarkdown,
-} from './calibration.js';
 import { validateEnvironmentUrl } from './discovery.js';
 
 const json = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
@@ -59,48 +54,20 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 	const { values, positionals } = parseArgs({
 		args,
 		options: {
-			input: { type: 'string' }, output: { type: 'string' }, rules: { type: 'string' },
-			repository: { type: 'string' }, rehearsal: { type: 'string' },
+			input: { type: 'string' }, output: { type: 'string' },
+			repository: { type: 'string' },
 			'partner-json': { type: 'boolean' },
 		},
 		allowPositionals: true, strict: true,
 	});
 	const command = positionals[0];
 	if (command === 'help' && positionals.length === 1) {
-		console.log('Commands: run --repository <microsoft/Nonprofits-checkout> [--output <visible-folder>] [--partner-json] (recommended human workflow); init --repository <checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder> [--rules <reviewed-rules.json>]; calibrate --input <assessment.json> --rehearsal <observation.json> --output <new-folder>; finalize-rules --input <completed-rules-review.json> --output <new-folder>. Production target commands fetch origin/master.');
+		console.log('Commands: run --repository <microsoft/Nonprofits-checkout> [--output <visible-folder>] [--partner-json] (recommended human workflow); init --repository <checkout> --output <new-folder>; configure --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); collect --repository <checkout> --input <questionnaire.json> --output <new-folder> (human terminal only); review --repository <checkout> --input <inventory.json> --output <new-folder> (human terminal only); assess --repository <checkout> --input <inventory.json> --output <new-folder>. Production target commands fetch origin/master.');
 		return 0;
 	}
 	if (positionals.length !== 1 || (command !== 'run' && !values.output)
 		|| (values['partner-json'] && command !== 'run')) {
 		throw new Error('Invalid command.');
-	}
-	if (command === 'finalize-rules') {
-		if (!values.input || values.rules || values.repository || values.rehearsal) {
-			throw new Error('Invalid finalize-rules options.');
-		}
-		const rules = finalizeRuleReviewDraft(await readLocalJson(values.input));
-		const location = await writeLocalBundle(values.output!, {
-			'rules.json': json(rules),
-			'rules.schema.json': json(z.toJSONSchema(RuleBookSchema)),
-		});
-		console.log(`Reviewed local rulebook written: ${location}`);
-		return 0;
-	}
-	if (command === 'calibrate') {
-		if (!values.input || !values.rehearsal || values.rules || values.repository) {
-			throw new Error('Invalid calibrate options.');
-		}
-		const result = calibrateAssessment(
-			await readLocalJson(values.input),
-			await readLocalJson(values.rehearsal),
-		);
-		const location = await writeLocalBundle(values.output!, {
-			'calibration.json': json(result),
-			'calibration.md': renderCalibrationMarkdown(result),
-			'calibration.schema.json': json(z.toJSONSchema(CalibrationResultSchema)),
-		});
-		console.log(`Local calibration written: ${location}`);
-		return 0;
 	}
 	if (!values.repository) {
 		throw new Error('Public target repository is required.');
@@ -112,7 +79,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		}
 	};
 	if (command === 'run') {
-		if (values.input || values.rules || values.rehearsal
+		if (values.input
 			|| !process.stdin.isTTY || !process.stdout.isTTY || process.env['AZURE_LOG_LEVEL']) {
 			throw new Error('Customer assessment requires an isolated human terminal without Azure SDK debug logging.');
 		}
@@ -139,7 +106,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				deriveLocalReview(collectedInventory),
 			);
 			await verifyPublicTarget(values.repository, inventory.questionnaire.target, targetOptions);
-			const report = assess(inventory, DEFAULT_RULES);
+			const report = assess(inventory);
 			const outputDirectory = resolve(values.output ?? join(homedir(), 'Documents'));
 			await mkdir(outputDirectory, { recursive: true });
 			const date = report.assessedAt.slice(0, 10).replaceAll('-', '');
@@ -163,7 +130,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		}
 	}
 	if (command === 'init') {
-		if (values.input || values.rules || values.rehearsal) {
+		if (values.input) {
 			throw new Error('Invalid init options.');
 		}
 		const now = new Date().toISOString();
@@ -201,18 +168,12 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 					veCustomJourneys: 'unknown',
 				} : {}),
 			})),
-			work: [],
 		};
 		const location = await writeLocalBundle(values.output!, {
 			'questionnaire.json': json(draft),
 			'questionnaire.schema.json': json(z.toJSONSchema(QuestionnaireSchema)),
 			'inventory.schema.json': json(z.toJSONSchema(InventorySchema)),
 			'assessment.schema.json': json(z.toJSONSchema(AssessmentSchema)),
-			'rules.schema.json': json(z.toJSONSchema(RuleBookSchema)),
-			'rules.json': json(DEFAULT_RULES),
-			'rules-review.schema.json': json(z.toJSONSchema(RuleReviewDraftSchema)),
-			'rules-review.json': json(createRuleReviewDraft()),
-			'rehearsal.schema.json': json(z.toJSONSchema(RehearsalObservationSchema)),
 		});
 		completion(`Local questionnaire template created: ${location}`);
 		return 0;
@@ -221,7 +182,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		throw new Error('Local input is required.');
 	}
 	if (command === 'configure') {
-		if (values.rules || values.rehearsal || !process.stdin.isTTY || !process.stdout.isTTY) {
+		if (!process.stdin.isTTY || !process.stdout.isTTY) {
 			throw new Error('Local configuration requires an isolated human terminal.');
 		}
 		const questionnaire = QuestionnaireSchema.parse(await readLocalJson(values.input));
@@ -270,7 +231,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		}
 	}
 	if (command === 'review') {
-		if (values.rules || values.rehearsal || !process.stdin.isTTY || !process.stdout.isTTY) {
+		if (!process.stdin.isTTY || !process.stdout.isTTY) {
 			throw new Error('Local review requires an isolated human terminal.');
 		}
 		const inventory = InventorySchema.parse(await readLocalJson(values.input));
@@ -313,13 +274,6 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				{ label: 'Unavailable', value: 'unavailable' },
 				{ label: 'Unknown', value: 'unknown' },
 			] as const);
-			const interruption = await choose('Maximum acceptable service interruption?', [
-				{ label: 'No interruption', value: '0' },
-				{ label: 'Up to 2 hours', value: '2' },
-				{ label: 'Up to 4 hours', value: '4' },
-				{ label: 'Up to 8 hours', value: '8' },
-				{ label: 'Unknown', value: 'unknown' },
-			] as const);
 			const veSelected = selected.some(answer => answer.family === 've');
 			const ve = veSelected ? {
 				source: await choose('Volunteer Engagement source site model?', [
@@ -350,7 +304,6 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				integrations,
 				ownerAvailability,
 				sandboxAndTests,
-				maxInterruptionHours: interruption === 'unknown' ? null : Number(interruption),
 				reviewedAt: new Date().toISOString(),
 				...(ve ? { ve } : {}),
 			});
@@ -367,13 +320,9 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		}
 	}
 	if (command === 'assess') {
-		if (values.rehearsal) {
-			throw new Error('Invalid assess options.');
-		}
 		const inventory = InventorySchema.parse(await readLocalJson(values.input));
 		await verifyPublicTarget(values.repository, inventory.questionnaire.target, targetOptions);
-		const rules = values.rules ? await readLocalJson(values.rules) : DEFAULT_RULES;
-		const report = assess(inventory, rules);
+		const report = assess(inventory);
 		const slug = reportSlug(report.environment);
 		const location = await writeLocalBundle(values.output!, {
 			[`assessment-${slug}.json`]: json(report),
@@ -383,7 +332,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 		return report.status === 'partial' ? 2 : 0;
 	}
 	if (command === 'collect') {
-		if (values.rules || values.rehearsal || !process.stdin.isTTY || !process.stdout.isTTY || process.env['AZURE_LOG_LEVEL']) {
+		if (!process.stdin.isTTY || !process.stdout.isTTY || process.env['AZURE_LOG_LEVEL']) {
 			throw new Error('Collection requires an isolated human terminal without Azure SDK debug logging.');
 		}
 		const questionnaire = QuestionnaireSchema.parse(await readLocalJson(values.input));

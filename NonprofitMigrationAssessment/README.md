@@ -40,9 +40,9 @@ The Markdown report shows:
 - GitHub migration-guide links
 - Blockers, missing information, and next actions
 
-The first sections are customer-focused. Dependency samples, scoped integration signals, metric definitions, and limitations are grouped in a technical appendix. Workflow, connection-reference, plug-in assembly, and plug-in-step counts are derived from installed nonprofit solutions and directly overlapping custom solutions rather than environment-wide entity counts. Detailed numeric ranges and machine evidence remain in JSON for implementation partners. The customer-facing Markdown uses relative effort only.
+The first sections are customer-focused. Dependency samples, scoped integration signals, metric definitions, and limitations are grouped in a technical appendix. Workflow, connection-reference, plug-in assembly, and plug-in-step counts are derived from installed nonprofit solutions and directly overlapping custom solutions rather than environment-wide entity counts. Machine evidence remains in the optional partner JSON.
 
-Ranges are automatically calculated by deterministic rules. Bundled defaults are uncalibrated engineering assumptions, not guarantees or measured averages. Validate the result with your implementation partner and a representative rehearsal.
+Effort is a relative rating, not an hour, cost, or downtime estimate. Validate the result with your implementation partner and a representative sandbox rehearsal.
 
 ## Prerequisites
 
@@ -78,7 +78,7 @@ The command:
 6. Writes `nonprofit-assessment-<environment>-<date>.md` to the user's Documents folder.
 7. Prints the final report path so Copilot can open it in the editor.
 
-Use `--output "C:\visible\folder"` to choose another existing or creatable folder. Add `--partner-json` to preserve the detailed JSON next to the Markdown report. If the filename already exists, the command adds a numeric suffix rather than overwriting it. The automatic run leaves owner, sandbox/test readiness, and interruption tolerance unknown rather than asking the customer to make technical planning choices.
+Use `--output "C:\visible\folder"` to choose another existing or creatable folder. Add `--partner-json` to preserve the detailed JSON next to the Markdown report. If the filename already exists, the command adds a numeric suffix rather than overwriting it. The automatic run leaves owner and sandbox/test readiness unknown rather than asking the customer to make technical planning choices.
 
 ## Advanced staged workflow
 
@@ -132,7 +132,7 @@ It doesn't retrieve record contents, connection values, plug-in binaries, page c
 
 The default detailed-discovery budget is five minutes. The operation remains bounded and can be canceled.
 
-### 4. Optionally answer five partner review questions
+### 4. Optionally answer four partner review questions
 
 ```powershell
 npm start -- review `
@@ -141,13 +141,12 @@ npm start -- review `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-reviewed"
 ```
 
-Use this optional staged command when an implementation partner wants to refine automatic assumptions. The review asks:
+Use this optional staged command when an implementation partner wants to refine the automatic rating. The review asks:
 
 1. Whether critical custom plug-ins, flows, or components exist
 2. Whether external integrations affect selected products
 3. Whether an accountable owner or source is available
 4. Whether a representative sandbox and critical tests are ready
-5. The maximum acceptable interruption
 
 When Volunteer Engagement is selected, it also asks for site model, authentication-provider count, language count, and critical custom journeys.
 
@@ -177,22 +176,7 @@ Leaving PPAC automatic servicing and self-managing GitHub builds is an ownership
 
 ## Effort
 
-The customer report uses `None`, `Low`, `Medium`, `High`, or `Review required`. Unknown critical work isn't treated as zero.
-
-Detailed numeric ranges remain in JSON. Default ranges are stored in `catalog/assumptions.json`, and a reviewed rulebook can override them with `assess --rules`.
-
-## Compare with a rehearsal
-
-After a representative rehearsal:
-
-```powershell
-npm start -- calibrate `
-  --input "$env:LOCALAPPDATA\nonprofit-assessment-report\assessment.json" `
-  --rehearsal "$env:LOCALAPPDATA\nonprofit-assessment-rehearsal.json" `
-  --output "$env:LOCALAPPDATA\nonprofit-assessment-calibration"
-```
-
-Calibration compares observed effort, elapsed time, execution, and downtime with the assessed ranges. It doesn't change estimation rules automatically.
+The customer report uses `None`, `Low`, `Medium`, `High`, or `Review required`. These are relative, rule-based ratings; the assessment doesn't produce hour, cost, or downtime numbers. Unknown critical work is shown as `Review required`, never as `None`.
 
 ## What the assessment reads
 
@@ -227,7 +211,7 @@ The assessment never reads:
 
 - Assessment inputs and outputs stay local by default.
 - The CLI emits only completion status and local output paths.
-- Don't commit questionnaires, inventories, reports, logs, or rehearsal observations.
+- Don't commit questionnaires, inventories, reports, or logs.
 - Don't paste credentials, tokens, connection strings, certificates, or business-record contents into Copilot or local input files.
 - Review and minimize any report before optional sharing.
 
@@ -239,8 +223,7 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 - Metadata can't prove arbitrary custom-code behavior or the absence of dynamic/external dependencies.
 - Direct customization-overlap dependency discovery is capped at 100 components; table discovery also uses a documented deterministic cap.
 - Environment-wide automation counts can include registrations unrelated to selected products.
-- Scheduling ranges don't place tasks into individual calendars or approval windows.
-- A representative sandbox rehearsal remains the best validation of timing and downtime.
+- A representative sandbox rehearsal remains the best validation of migration effort and cutover timing.
 
 ## Contributor validation
 

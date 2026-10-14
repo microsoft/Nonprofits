@@ -3,7 +3,7 @@ import test from 'node:test';
 import { evaluateCompatibility } from '../src/compatibility.js';
 import { classifyComplexity } from '../src/complexity.js';
 import { ROUTES } from '../src/routes.js';
-import { customization, inventory, NOW } from './fixtures.js';
+import { inventory, NOW } from './fixtures.js';
 
 test('compatibility catalog separates version blockers from candidate routes', () => {
 	const input = inventory(['cdm']);
@@ -113,27 +113,21 @@ test('complexity classification is deterministic and unknown is never standard',
 
 	const moderate = inventory(['cdm']);
 	moderate.questionnaire.answers[0]!.customization = 'customized';
-	moderate.questionnaire.work.push(customization(['cdm']));
 	assert.equal(classifyComplexity(moderate, 'cdm').level, 'moderate');
 
 	const heavy = inventory(['cdm']);
-	heavy.questionnaire.answers[0]!.customization = 'customized';
-	heavy.questionnaire.work.push(
-		customization(['cdm']),
-		customization(['cdm'], {
-			id: 'integration-work',
-			kind: 'integration',
-			phase: 'integration',
-			occurrenceId: 'integration',
-			activity: 'adapt',
-			component: 'external-contract',
-			ruleId: 'integration',
-		}),
-	);
+	heavy.discovery.components = {
+		relevantSolutions: 1,
+		relevantComponents: 30,
+		componentTypes: [],
+		unmanagedSolutions: 1,
+		analyzedUnmanagedSolutions: 1,
+		overlappingUnmanagedComponents: 11,
+		truncated: false,
+	};
 	assert.equal(classifyComplexity(heavy, 'cdm').level, 'heavy');
 
 	const unbounded = inventory(['cdm']);
-	unbounded.questionnaire.answers[0]!.customization = 'customized';
-	unbounded.questionnaire.work.push(customization(['cdm'], { impact: 'unbounded' }));
+	unbounded.questionnaire.answers[0]!.customization = 'opaque';
 	assert.equal(classifyComplexity(unbounded, 'cdm').level, 'unbounded');
 });

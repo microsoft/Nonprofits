@@ -1,15 +1,6 @@
 import { type Assessment, type Family, type Finding } from './contracts.js';
-import { ROUTES } from './routes.js';
+import { FAMILY_NAMES, ROUTES } from './routes.js';
 import { isMicrosoftFirstPartyPublisher } from './publishers.js';
-
-const FAMILY_NAMES: Record<Family, string> = {
-	cdm: 'CDM for Nonprofits',
-	fundraising: 'Fundraising',
-	grants: 'Grant Management',
-	outcomes: 'Outcome Management',
-	vm: 'Volunteer Management',
-	ve: 'Volunteer Engagement',
-};
 
 function text(value: string): string {
 	return value.replace(/[&<>|`\\[\]*_]/g, character => `&#${character.charCodeAt(0)};`)
@@ -103,12 +94,6 @@ function planningBasis(report: Assessment, route: Assessment['routes'][number]):
 		return `Legacy Volunteer Management must be replaced by a different GitHub solution. ${overlap}.`;
 	}
 	return `${recommendation(report, route)}. ${overlap}.`;
-}
-
-function cautionMessage(finding: Finding): string {
-	return finding.code === 'assumption-based'
-		? 'The effort rating is provisional and uses bundled assumptions; validate it with the customer and implementation partner.'
-		: finding.message;
 }
 
 function overallEffort(report: Assessment): string {
@@ -377,10 +362,7 @@ function customerProductRows(report: Assessment): string[] {
 		`| ${text(FAMILY_NAMES[route.family])} | ${sourceVersion(report, route.family)} | ${targetVersion(report, route.family)} | ${text(recommendation(report, route))} | ${decisionConfidence(report, route)} | ${effortDisplay(route)} | ${effortConfidence(route)} | [Guide](${route.guide}) |`);
 }
 
-function nextActions(
-	report: Assessment,
-	interruptionRisk: boolean | null,
-): string[] {
+function nextActions(report: Assessment): string[] {
 	const actions: string[] = [];
 	const alignedWithOverlap = report.routes
 		.filter(route => route.status === 'already-at-target'
@@ -404,12 +386,6 @@ function nextActions(
 			? 'Review the scoped workflows, connection references, and plug-ins and assign owners.'
 			: 'Identify which workflows, connection references, and plug-ins belong to the nonprofit migration scope and assign owners.');
 	}
-	if (interruptionRisk) {
-		const constraint = report.operations?.maxInterruptionHours === 0
-			? 'requested zero-interruption target'
-			: 'stated interruption limit';
-		actions.push(`Agree a cutover approach because the ${constraint} is not supported by the current assumptions.`);
-	}
 	return [...new Set(actions)];
 }
 
@@ -417,7 +393,6 @@ export function renderMarkdown(report: Assessment): string {
 	const component = report.discoverySummary.components;
 	const dependency = report.discoverySummary.dependencies;
 	const findings = groupedFindings(report);
-	const assessed = report.combined.find(item => item.id === 'assessed');
 	const customizationCandidates = component?.customizationCandidates?.filter(item =>
 		!isMicrosoftFirstPartyPublisher(item.publisher) && item.componentCount > 0) ?? [];
 	const customizationComponents = component?.customizationComponents ?? [];
@@ -435,14 +410,9 @@ export function renderMarkdown(report: Assessment): string {
 	);
 	const nonBlockingFindings = report.findings.filter(item => !item.blocking
 		&& !['already-aligned', 'not-installed'].includes(item.code));
-	const interruptionRisk = report.operations?.maxInterruptionHours !== null
-		&& report.operations?.maxInterruptionHours !== undefined
-		&& assessed?.downtime !== null
-		&& assessed?.downtime !== undefined
-		&& assessed.downtime.max > report.operations.maxInterruptionHours;
 	const accessLimited = report.evidence.some(item => item.status === 'access-denied');
 	const solutionEvidenceDate = report.evidence.find(item => item.id === 'solutions')?.collectedAt;
-	const actions = nextActions(report, interruptionRisk);
+	const actions = nextActions(report);
 	const productRows = customerProductRows(report);
 	const output = [
 		'# Nonprofit migration assessment',
@@ -593,7 +563,7 @@ export function renderMarkdown(report: Assessment): string {
 			`${index + 1}. **${item.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(item.message)} ${text(item.action)}`)
 			: ['No blocking route findings were produced.']),
 		...nonBlockingFindings.map(finding =>
-			`- **${finding.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(cautionMessage(finding))}`),
+			`- **${finding.families.map(family => text(FAMILY_NAMES[family])).join(', ')}:** ${text(finding.message)}`),
 		...(report.evidence.filter(item => item.status === 'partial').map(item =>
 			`- **${text(item.id)}:** ${text(item.reason)}`)),
 		'',
@@ -603,16 +573,16 @@ export function renderMarkdown(report: Assessment): string {
 		'| --- | --- |',
 		'| Decision | What the customer should do for the product. |',
 		'| Decision confidence | How certain the observed product version or site evidence makes that decision. |',
-		'| Provisional effort | Relative migration work: None, Low, Medium, or High. It is not a time estimate. |',
+		'| Provisional effort | Relative migration work: None, Low, Medium, or High. It isn\'t a time, cost, or downtime estimate. |',
 		'| Effort confidence | How reliable the effort rating is. It does not describe confidence in the installed version. |',
 		'',
 		'## Notes',
 		'',
 		...(accessLimited ? ['- Some metadata could not be read. The result may be incomplete until access is reviewed.'] : []),
-		'- Bundled uncalibrated engineering assumptions determine the effort rating; it is not a commitment.',
+		'- Effort ratings are relative and rule-based. They aren\'t commitments or time estimates.',
 		'- Direct overlap does not prove every dynamic dependency or custom behavior.',
 		'- Validate migration decisions with the implementation partner and a representative sandbox.',
-		'- Detailed ranges, evidence, hashes, and technical reasons remain in the local JSON file.',
+		'- Detailed evidence, hashes, and technical reasons remain in the optional partner JSON.',
 		'',
 	];
 	return output.join('\n');

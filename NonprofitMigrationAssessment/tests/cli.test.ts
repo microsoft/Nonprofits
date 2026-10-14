@@ -6,11 +6,8 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 import { InventorySchema } from '../src/contracts.js';
-import { assess } from '../src/engine.js';
-import { createRuleReviewDraft } from '../src/rule-review.js';
-import { DEFAULT_RULES } from '../src/routes.js';
 import { writeLocalBundle, writeLocalFile } from '../src/storage.js';
-import { inventory, NOW } from './fixtures.js';
+import { inventory } from './fixtures.js';
 import { createPublicRepository } from './repository-fixture.js';
 
 const CLI = fileURLToPath(new URL('./cli-runner.js', import.meta.url));
@@ -30,8 +27,7 @@ test('init generates local draft/schema files without consent and refuses overwr
 	assert.equal(draft.target.commit, repository.commit);
 	assert.equal(draft.target.files.length, 9);
 	assert.equal(draft.target.solutions.length, 5);
-	assert.ok((await readFile(join(output, 'rules-review.json'), 'utf8')).includes('provisional-typical'));
-	assert.ok((await readFile(join(output, 'rules-review.schema.json'), 'utf8')).includes('reviewedAt'));
+	await assert.rejects(() => readFile(join(output, 'rules.json'), 'utf8'));
 	assert.ok((await readFile(join(output, 'inventory.schema.json'), 'utf8')).includes('additionalProperties'));
 	const repeat = spawnSync(process.execPath, [CLI, 'init', '--repository', repository.path, '--output', output], { encoding: 'utf8' });
 	assert.equal(repeat.status, 1);
@@ -70,13 +66,10 @@ test('offline CLI produces both reports without emitting inventory or questionna
 	assert.ok(!`${run.stdout}${run.stderr}`.includes('CUSTOMER-QUESTIONNAIRE-CANARY'));
 	const report = JSON.parse(await readFile(join(output, 'assessment-customer-environment.json'), 'utf8')) as {
 		status: string;
-		workItems: { estimateType: string | null }[];
-		combined: { id: string; total: unknown }[];
+		routes: { effortBand: string }[];
 	};
 	assert.equal(report.status, 'complete');
-	assert.ok(report.combined.filter(item => item.id !== 'adverse-unscoped').every(item => item.total !== null));
-	assert.equal(report.combined.find(item => item.id === 'adverse-unscoped')!.total, null);
-	assert.ok(report.workItems.every(item => item.estimateType === 'uncalibrated-assumption'));
+	assert.equal(report.routes[0]!.effortBand, 'low');
 	const markdown = await readFile(join(output, 'assessment-customer-environment.md'), 'utf8');
 	assert.ok(markdown.includes('## Supported nonprofit products and recommendations'));
 	assert.ok(markdown.includes('## Executive decision'));
@@ -143,67 +136,6 @@ test('single-run customer workflow refuses non-TTY invocation before creating ou
 	assert.equal(run.status, 1);
 	assert.ok(run.stderr.includes('ASSESSMENT_FAILED'));
 	await assert.rejects(() => realpath(output));
-});
-
-test('finalize-rules converts only a completed local expert review', async t => {
-	const root = await mkdtemp(join(tmpdir(), 'nma-rules-'));
-	t.after(() => rm(root, { recursive: true, force: true }));
-	const draft = createRuleReviewDraft();
-	draft.version = 'synthetic-reviewed-v1';
-	for (const rate of draft.rates) {
-		rate.effort = { min: 1, max: 2, unit: 'person-hours' };
-		rate.elapsed = { min: 1, max: 2, unit: 'hours' };
-		rate.execution = rate.workId.endsWith('.production')
-			? { min: 0.5, max: 1, unit: 'hours' }
-			: null;
-		rate.downtime = rate.workId.endsWith('.production')
-			? { min: 0, max: 0.5, unit: 'hours' }
-			: null;
-		rate.basis = 'Synthetic CLI fixture only.';
-		rate.limitations = ['Not a migration estimate.'];
-		rate.reviewer = 'Synthetic Reviewer';
-		rate.reviewedAt = '2026-09-29T12:00:00.000Z';
-	}
-	const input = join(root, 'rules-review.json');
-	await writeFile(input, JSON.stringify(draft));
-	const output = join(root, 'reviewed');
-	const run = spawnSync(process.execPath, [
-		CLI, 'finalize-rules', '--input', input, '--output', output,
-	], { encoding: 'utf8' });
-	assert.equal(run.status, 0, run.stderr);
-	const rules = JSON.parse(await readFile(join(output, 'rules.json'), 'utf8')) as {
-		status: string;
-		rates: { reviewer: string }[];
-	};
-	assert.equal(rules.status, 'reviewed');
-	assert.equal(rules.rates.length, 102);
-	assert.ok(rules.rates.every(rate => rate.reviewer === 'Synthetic Reviewer'));
-});
-
-test('calibrate writes a local estimate-versus-rehearsal comparison', async t => {
-	const root = await mkdtemp(join(tmpdir(), 'nma-calibrate-'));
-	t.after(() => rm(root, { recursive: true, force: true }));
-	const assessment = assess(inventory(['cdm']), DEFAULT_RULES, { now: NOW });
-	const assessmentPath = join(root, 'assessment.json');
-	const rehearsalPath = join(root, 'rehearsal.json');
-	await writeFile(assessmentPath, JSON.stringify(assessment));
-	await writeFile(rehearsalPath, JSON.stringify({
-		assessmentId: assessment.assessmentId,
-		scenario: 'assessed',
-		observedAt: NOW.toISOString(),
-		effort: { value: 60, unit: 'person-hours' },
-		elapsed: { value: 100, unit: 'hours' },
-		execution: { value: 3, unit: 'hours' },
-		downtime: { value: 1, unit: 'hours' },
-		notes: 'Synthetic CLI calibration fixture.',
-	}));
-	const output = join(root, 'calibration');
-	const run = spawnSync(process.execPath, [
-		CLI, 'calibrate', '--input', assessmentPath, '--rehearsal', rehearsalPath, '--output', output,
-	], { encoding: 'utf8' });
-	assert.equal(run.status, 0, run.stderr);
-	assert.ok(run.stdout.includes('Local calibration written'));
-	assert.ok((await readFile(join(output, 'calibration.md'), 'utf8')).includes('| effort | 46-92 person-hours | 60 | within |'));
 });
 
 test('schema failure and invalid JSON never echo sensitive input', async t => {

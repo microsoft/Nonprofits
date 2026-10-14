@@ -7,7 +7,7 @@ import test from 'node:test';
 import { FAMILIES } from '../src/contracts.js';
 import { assess } from '../src/engine.js';
 import { resolvePublicTarget, verifyPublicTarget } from '../src/target.js';
-import { inventory, NOW, rules } from './fixtures.js';
+import { inventory, NOW } from './fixtures.js';
 import { createPublicRepository } from './repository-fixture.js';
 
 const LOCAL_TARGET = { refreshRemote: false } as const;
@@ -97,7 +97,7 @@ test('future higher GitHub manifest versions remove version-order blockers', asy
 		solution.version = installedVersions.get(solution.uniqueName) ?? solution.version;
 	}
 
-	const result = assess(input, rules(), { now: NOW });
+	const result = assess(input, { now: NOW });
 
 	assert.equal(result.findings.some(item => item.code === 'target-version'), false);
 	assert.equal(result.routes.every(route => route.status === 'eligible'), true);
