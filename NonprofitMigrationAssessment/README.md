@@ -52,19 +52,20 @@ Ranges are automatically calculated by deterministic rules. Bundled defaults are
 - A clean checkout whose `origin` is `https://github.com/microsoft/Nonprofits`
 - Customer authorization to read the selected metadata and aggregate-count categories
 
-From `NonprofitMigrationAssessment`, install and build:
+From `NonprofitMigrationAssessment`, install dependencies once:
 
 ```powershell
 npm ci
-npm run build
 ```
+
+`npm start` compiles the TypeScript sources and runs the assessment.
 
 ## Run the assessment
 
 Use the single customer command from a human terminal:
 
 ```powershell
-nonprofit-migration-assessment run --repository "C:\path\to\Nonprofits"
+npm start -- run --repository "C:\path\to\Nonprofits"
 ```
 
 The command:
@@ -86,7 +87,7 @@ The low-level commands below remain available for partner automation, troublesho
 ### 1. Initialize
 
 ```powershell
-nonprofit-migration-assessment init `
+npm start -- init `
   --repository "C:\path\to\Nonprofits" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-input"
 ```
@@ -96,7 +97,7 @@ nonprofit-migration-assessment init `
 ### 2. Configure interactively
 
 ```powershell
-nonprofit-migration-assessment configure `
+npm start -- configure `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-input\questionnaire.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-configured"
@@ -109,7 +110,7 @@ The generated `questionnaire.json` is a local machine-readable input. Customers 
 ### 3. Collect read-only evidence
 
 ```powershell
-nonprofit-migration-assessment collect `
+npm start -- collect `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-configured\questionnaire.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-inventory"
@@ -134,7 +135,7 @@ The default detailed-discovery budget is five minutes. The operation remains bou
 ### 4. Optionally answer five partner review questions
 
 ```powershell
-nonprofit-migration-assessment review `
+npm start -- review `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-inventory\inventory.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-reviewed"
@@ -153,7 +154,7 @@ When Volunteer Engagement is selected, it also asks for site model, authenticati
 ### 5. Generate the report
 
 ```powershell
-nonprofit-migration-assessment assess `
+npm start -- assess `
   --repository "C:\path\to\Nonprofits" `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-reviewed\inventory.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-report"
@@ -185,13 +186,42 @@ Detailed numeric ranges remain in JSON. Default ranges are stored in `catalog/as
 After a representative rehearsal:
 
 ```powershell
-nonprofit-migration-assessment calibrate `
+npm start -- calibrate `
   --input "$env:LOCALAPPDATA\nonprofit-assessment-report\assessment.json" `
   --rehearsal "$env:LOCALAPPDATA\nonprofit-assessment-rehearsal.json" `
   --output "$env:LOCALAPPDATA\nonprofit-assessment-calibration"
 ```
 
 Calibration compares observed effort, elapsed time, execution, and downtime with the assessed ranges. It doesn't change estimation rules automatically.
+
+## What the assessment reads
+
+| Category | Read-only metadata |
+| --- | --- |
+| Environment | Dataverse version and environment name |
+| Solutions | Name, version, managed state, and publisher |
+| Components | Component types of nonprofit solutions and related custom solutions |
+| Dependencies | Dataverse dependency records for customized nonprofit components |
+| Integrations | Workflows, connection references, and plug-ins inside related solutions |
+| Data scale | Record counts for related tables |
+| Sites | Legacy and enhanced Power Pages site counts |
+
+The assessment never reads:
+
+- Business-record contents
+- Credentials, tokens, certificates, or connection values
+- Plug-in binaries or flow definitions
+- Page, Liquid, JavaScript, or CSS content
+- Full solution or site exports
+
+## Safety
+
+- Only HTTPS GET requests to the selected commercial Dataverse URL are made.
+- Redirects are rejected; requests, pages, bytes, retries, and total time are bounded.
+- Tokens stay in the request path and are never written to files or logs.
+- Errors never include server response bodies or customer values.
+- Denied or unavailable evidence is reported as unavailable, never as absent.
+- Nothing in the environment is changed.
 
 ## Privacy and local files
 
@@ -214,12 +244,8 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 
 ## Contributor validation
 
-Source tests remain in the repository for CI and maintenance. They aren't included in the distributed package.
+Run the unit tests locally before submitting changes:
 
 ```powershell
-npm run typecheck
 npm test
-npm run package:check
 ```
-
-The path-scoped GitHub Actions workflow validates the package on Ubuntu and Windows for pull requests and changes to `master`.
