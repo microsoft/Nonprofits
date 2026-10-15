@@ -187,8 +187,7 @@ The staged `assess` command uses these `assessment-<environment-name>` names. Th
 
 Alignment applies only to same-identity releases listed in `catalog/release-equivalence.json`.
 
-- CDM and template apps can be reported as already aligned ("No migration required") when the installed PPAC version matches a GitHub release-equivalence entry **and** the catalog's `status` is `approved`.
-- While the catalog is a `candidate`, a matching release is shown as **Review required** with a caution that the release mapping isn't approved yet. The tool never states "No migration required" from an unapproved mapping.
+- CDM and template apps are reported as already aligned ("No migration required") when the installed PPAC version matches a GitHub release-equivalence entry. The Microsoft Nonprofits team approved these entries.
 - Volunteer Management isn't in that catalog because it migrates to a different solution identity.
 - Volunteer Engagement isn't in that catalog because it migrates a website rather than a same-identity solution release.
 

@@ -30,7 +30,7 @@ test('short local review records operational readiness', () => {
 		sandboxAndTests: 'ready',
 		reviewedAt: NOW.toISOString(),
 	});
-	const result = assess(reviewed, { now: NOW, releaseCatalogApproved: true });
+	const result = assess(reviewed, { now: NOW });
 	assert.equal(result.routes.find(route => route.family === 'cdm')!.status, 'already-at-target');
 	assert.equal(result.routes.find(route => route.family === 'vm')!.effortBand, 'medium');
 });
@@ -86,7 +86,7 @@ test('bounded review marks migration products customized and raises replacement 
 	const reviewed = applyLocalReview(input, review({ customization: 'bounded', integrations: 'bounded' }));
 	assert.equal(reviewed.questionnaire.answers.find(answer => answer.family === 'vm')!.customization, 'customized');
 	assert.equal(reviewed.questionnaire.answers.find(answer => answer.family === 'cdm')!.customization, 'standard');
-	const vm = assess(reviewed, { now: NOW, releaseCatalogApproved: true }).routes.find(route => route.family === 'vm')!;
+	const vm = assess(reviewed, { now: NOW }).routes.find(route => route.family === 'vm')!;
 	assert.equal(vm.complexity.level, 'moderate');
 	assert.equal(vm.effortBand, 'high');
 });

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
-  "version": "candidate-0.4",
-  "status": "candidate",
-  "owner": "Microsoft Nonprofits owning team approval required",
+  "version": "1.0",
+  "status": "approved",
+  "owner": "Microsoft Nonprofits owning team",
   "basis": "Public PPAC-to-GitHub migration guidance and reviewed package identity metadata.",
   "equivalentReleases": [
     {

@@ -23,7 +23,7 @@ function alignCdm(input: ReturnType<typeof inventory>): void {
 test('representative standard scenario aligns CDM and rates VM medium', () => {
 	const input = inventory(['cdm', 'vm']);
 	alignCdm(input);
-	const result = assess(applyLocalReview(input, cleanReview), { now: NOW, releaseCatalogApproved: true });
+	const result = assess(applyLocalReview(input, cleanReview), { now: NOW });
 	assert.equal(result.routes.find(route => route.family === 'cdm')!.effortBand, 'none');
 	const vm = result.routes.find(route => route.family === 'vm')!;
 	assert.equal(vm.status, 'eligible');
@@ -62,7 +62,7 @@ test('representative VE scenario with custom journeys is high effort', () => {
 			languages: 3,
 			customJourneys: 'present',
 		},
-	}), { now: NOW, releaseCatalogApproved: true });
+	}), { now: NOW });
 	const ve = result.routes.find(route => route.family === 've')!;
 	assert.equal(ve.complexity.level, 'heavy');
 	assert.equal(ve.effortBand, 'high');

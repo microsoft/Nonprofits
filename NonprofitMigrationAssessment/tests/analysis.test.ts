@@ -34,7 +34,7 @@ test('reviewed same-release mappings report alignment without migration', () => 
 		answer.intent = 'confirm-alignment';
 		source.version = item.version;
 		target.version = item.version;
-		const result = evaluateCompatibility(route, answer, source, target, undefined, true);
+		const result = evaluateCompatibility(route, answer, source, target, undefined);
 		assert.equal(result.status, 'already-aligned');
 		assert.match(result.reason, /no product or data migration/i);
 	}
