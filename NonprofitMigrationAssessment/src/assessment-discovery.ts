@@ -16,6 +16,7 @@ const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 100;
 const MAX_DEPENDENCY_EDGES = 2_000;
 const MAX_COUNT_TABLES = 50;
+const COUNT_TABLE_CHUNK = 50;
 const MAX_LAYER_TABLES = 200;
 const MAX_LAYER_SOLUTION_TABLES = 60;
 const MAX_LAYER_LOOKUPS = 150;
@@ -1206,11 +1207,42 @@ function collectIntegrations(
 	});
 }
 
+async function retrieveRecordCounts(context: RequestContext, names: string[]): Promise<Map<string, number>> {
+	const values = new Map<string, number>();
+	for (let start = 0; start < names.length; start += COUNT_TABLE_CHUNK) {
+		const parameter = `['${names.slice(start, start + COUNT_TABLE_CHUNK).join("','")}']`;
+		const result = TotalCountSchema.parse(await getJson(context,
+			apiUrl(context.origin, 'RetrieveTotalRecordCount(EntityNames=@names)', { '@names': parameter })));
+		for (let index = 0; index < result.EntityRecordCountCollection.Keys.length; index++) {
+			const value = Number(result.EntityRecordCountCollection.Values[index]);
+			if (Number.isSafeInteger(value) && value >= 0) {
+				values.set(result.EntityRecordCountCollection.Keys[index]!, value);
+			}
+		}
+	}
+	return values;
+}
+
 async function collectCounts(
 	context: RequestContext,
 	components: { componenttype: number; objectid: string | null }[],
 	tableProducts: Map<string, Set<string>>,
+	nonprofitTables?: NonprofitTable[],
 ): Promise<z.infer<typeof CountSummarySchema>> {
+	// The layer scan already named the tables that nonprofit solutions create, so no per-table lookups are needed.
+	if (nonprofitTables) {
+		const selected = nonprofitTables.slice(0, MAX_LAYER_TABLES);
+		const values = await retrieveRecordCounts(context, selected.map(table => table.name));
+		return CountSummarySchema.parse({
+			tables: selected.filter(table => values.has(table.name)).map(table => ({
+				logicalName: table.name,
+				count: values.get(table.name)!,
+				accuracy: 'snapshot-within-24-hours',
+				products: table.products,
+			})),
+			truncated: nonprofitTables.length > selected.length || values.size < selected.length,
+		});
+	}
 	const metadataIds = [...new Set(components
 		.filter(item => item.componenttype === 1 && item.objectid !== null)
 		.map(item => item.objectid!))];
@@ -1233,16 +1265,7 @@ async function collectCounts(
 	if (resolvedTables.length === 0) {
 		return CountSummarySchema.parse({ tables: [], truncated: metadataIds.length > selected.length });
 	}
-	const parameter = `['${names.join("','")}']`;
-	const result = TotalCountSchema.parse(await getJson(context,
-		apiUrl(context.origin, 'RetrieveTotalRecordCount(EntityNames=@names)', { '@names': parameter })));
-	const values = new Map<string, number>();
-	for (let index = 0; index < result.EntityRecordCountCollection.Keys.length; index++) {
-		const value = Number(result.EntityRecordCountCollection.Values[index]);
-		if (Number.isSafeInteger(value) && value >= 0) {
-			values.set(result.EntityRecordCountCollection.Keys[index]!, value);
-		}
-	}
+	const values = await retrieveRecordCounts(context, names);
 	return CountSummarySchema.parse({
 		tables: resolvedTables.filter(table => values.has(table.logicalName)).map(table => ({
 			logicalName: table.logicalName,
@@ -1422,7 +1445,8 @@ export async function collectAssessmentDetails(
 				if (!componentData) {
 					throw new RequestFailure('No relevant table component identifiers were available.', 'not-applicable');
 				}
-				result.counts = await collectCounts(context, componentData.relevant, componentData.tableProducts);
+				result.counts = await collectCounts(context, componentData.relevant, componentData.tableProducts,
+					componentData.tablesKnown ? componentData.nonprofitTables : undefined);
 			}, 'Relevant table counts were read from the Dataverse snapshot count function.');
 			if (result.counts?.truncated) {
 				replaceEvidence(result.evidence, evidence('counts', 'partial', result.collectedAt,

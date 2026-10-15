@@ -33,7 +33,7 @@ The Markdown report shows:
 - Named customizations for each installed Microsoft nonprofit solution: added or changed columns, relationships, views, charts, forms, plug-in steps, processes, and cloud flows, whether each change was made directly in the environment or comes from a managed partner solution, and which solution contains it
 - Custom and partner solutions, whether they're managed or unmanaged, what they contain, which nonprofit products they change, and why to review them
 - How many other components use each changed component; the optional detailed JSON lists each dependency
-- Record counts for the largest related tables, by product
+- Record counts for the largest tables that nonprofit solutions create, by product
 - A diagram of the product migration order and a summary of the dependencies found
 - What blocks each product and the action that clears it
 - A clear product decision with separate decision confidence, expected effort, and effort confidence
@@ -142,7 +142,7 @@ The collector uses allowlisted reads for:
 - Plug-in step and process registrations (name, table, message, stage, state, and owning solution) on nonprofit tables, and the tables that non-Microsoft cloud flows require; flow definitions and plug-in code aren't read
 - Dependency lookups for component IDs directly shared by selected nonprofit products and custom/partner solutions, capped at 100
 - Workflow, connection-reference, plug-in assembly, and step counts scoped through selected and overlapping solution components
-- Aggregate counts for relevant tables
+- Aggregate record counts for the tables that nonprofit solutions create (shared tables such as User or Contact aren't counted)
 - Legacy and enhanced Power Pages site counts
 
 It doesn't retrieve record contents, connection values, plug-in binaries, page content, credentials, or full exports.
@@ -216,7 +216,7 @@ Products already aligned with their GitHub release show `None`; the same reasons
 | Customizations | Solution component summaries and solution layers for nonprofit tables: names, types, managed state, and which solution layer changed them |
 | Dependencies | Dataverse dependency records for customized nonprofit components |
 | Integrations | Workflows, connection references, and plug-ins inside related solutions; plug-in step, process, and cloud flow registrations on nonprofit tables |
-| Data scale | Record counts for related tables |
+| Data scale | Record counts for tables that nonprofit solutions create |
 | Sites | Legacy and enhanced Power Pages site counts |
 
 The assessment never reads:
@@ -250,7 +250,7 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 
 - Commercial Dataverse URLs are supported; sovereign clouds and on-premises endpoints aren't currently supported.
 - Metadata can't prove arbitrary custom-code behavior or the absence of dynamic/external dependencies.
-- Direct customization-overlap dependency discovery is capped at 100 components; table discovery also uses a documented deterministic cap.
+- Dependency lookups are capped at 100 components that custom or partner solutions change. Record counts cover up to 200 nonprofit tables.
 - Customization discovery checks up to 200 nonprofit tables and 60 partner-extended tables. On shared Dataverse tables such as Account and Contact, only changes to components that a nonprofit solution brings are listed. When a form's layer stack is too large to read, the change is shown as "Added or changed".
 - Plug-in steps, processes, and cloud flows are listed for tables that nonprofit solutions create, not for shared tables such as Contact. Up to 50 non-Microsoft cloud flows are checked, and a flow is listed only when its required components include a nonprofit table.
 - Environment-wide automation counts can include registrations unrelated to selected products.

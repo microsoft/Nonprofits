@@ -12,6 +12,10 @@ type LayerItem = NonNullable<Components['layerCustomizations']>[number];
 type Automation = NonNullable<NonNullable<Inventory['discovery']['integrations']>['automations']>[number];
 
 export const HEAVY_CUSTOMIZATION_COUNT = 10;
+
+export function plural(count: number, singular: string, pluralForm = `${singular}s`): string {
+	return `${count} ${count === 1 ? singular : pluralForm}`;
+}
 const MAX_REASON_GROUPS = 4;
 const COMPONENT_NOUNS: Record<number, [string, string]> = {
 	1: ['table definition', 'table definitions'],
@@ -86,7 +90,7 @@ export function customizationReasons(evidence: FamilyEvidence): string[] {
 		.sort((left, right) => right.count - left.count || left.noun[0].localeCompare(right.noun[0], 'en'))
 		.map(group => `${group.count} ${group.noun[group.count === 1 ? 0 : 1]} ${group.verb} ${group.where}${group.tables.length ? ` on ${tableList(group.tables)}` : ''}.`);
 	return sentences.length > MAX_REASON_GROUPS
-		? [...sentences.slice(0, MAX_REASON_GROUPS), `${sentences.length - MAX_REASON_GROUPS} more group(s) are listed in Customizations in Microsoft nonprofit solutions.`]
+		? [...sentences.slice(0, MAX_REASON_GROUPS), `${plural(sentences.length - MAX_REASON_GROUPS, 'more group is', 'more groups are')} listed in Customizations in Microsoft nonprofit solutions.`]
 		: sentences;
 }
 
@@ -102,7 +106,7 @@ function heavyRules(evidence: FamilyEvidence, family: Family): string[] {
 	return [
 		...(total > HEAVY_CUSTOMIZATION_COUNT ? [`more than ${HEAVY_CUSTOMIZATION_COUNT} named customizations (${total})`] : []),
 		...(solutions.size >= 2 ? [`changes from ${solutions.size} partner or custom solutions (${[...solutions].sort((left, right) => left.localeCompare(right, 'en')).join(', ')})`] : []),
-		...(replaced ? [`${replaced} custom relationship(s) or automation(s) use tables that this migration replaces and must be rebuilt`] : []),
+		...(replaced ? [`${plural(replaced, 'custom relationship or automation uses', 'custom relationships or automations use')} tables that this migration replaces and must be rebuilt`] : []),
 	];
 }
 export function classifyComplexity(inventory: Inventory, family: Family): ComplexityResult {
@@ -141,7 +145,7 @@ export function classifyComplexity(inventory: Inventory, family: Family): Comple
 			reasons: [
 				rules.length
 					? `Heavy because of ${rules.join('; ')}.`
-					: `Moderate because ${namedTotal} named customization(s) must be retested or recreated and no heavy rule applies.`,
+					: `Moderate because ${plural(namedTotal, 'named customization')} must be retested or recreated and no heavy rule applies.`,
 				...customizationReasons(evidence),
 			],
 			evidenceIds: [
@@ -158,7 +162,7 @@ export function classifyComplexity(inventory: Inventory, family: Family): Comple
 			level: heavy ? 'heavy' : 'moderate',
 			reasons: [
 				...(answer.customization === 'customized' ? ['Customizations affecting this product were identified.'] : []),
-				...(overlap ? [`${overlap} unmanaged change(s) overlap nonprofit solution components.`] : []),
+				...(overlap ? [`${plural(overlap, 'unmanaged change affects', 'unmanaged changes affect')} nonprofit solution components.`] : []),
 				...(customJourneys ? ['Business-critical custom site journeys must be preserved.'] : []),
 			],
 			evidenceIds: [

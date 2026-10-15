@@ -1,4 +1,5 @@
 import { type Assessment, type Family, type Finding } from './contracts.js';
+import { plural } from './complexity.js';
 import { FAMILY_NAMES, ROUTES } from './routes.js';
 import { isMicrosoftFirstPartyPublisher } from './publishers.js';
 
@@ -142,10 +143,10 @@ function siteStatus(report: Assessment): string {
 	}
 	const legacy = sites.legacySites === null
 		? 'No legacy site capability detected'
-		: sites.legacySites === 0 ? 'No legacy site observed' : `${sites.legacySites} legacy site(s) observed`;
+		: sites.legacySites === 0 ? 'No legacy site observed' : `${plural(sites.legacySites, 'legacy site')} observed`;
 	const enhanced = sites.enhancedSites === null
 		? 'no enhanced site capability detected'
-		: sites.enhancedSites === 0 ? 'no enhanced site observed' : `${sites.enhancedSites} enhanced site(s) observed`;
+		: sites.enhancedSites === 0 ? 'no enhanced site observed' : `${plural(sites.enhancedSites, 'enhanced site')} observed`;
 	return `${legacy}; ${enhanced}`;
 }
 
@@ -190,7 +191,7 @@ function componentBreakdown(
 function hasCustomizations(report: Assessment, family: Family): boolean {
 	return report.discoverySummary.components?.layerScan
 		? familyLayerCustomizations(report, family).length + familyAutomations(report, family).length > 0
-		: customizationSignal(report, family).includes('nonprofit component(s) changed by');
+		: customizationSignal(report, family).includes(' changed by ');
 }
 
 function recommendation(report: Assessment, route: Assessment['routes'][number]): string {
@@ -228,7 +229,7 @@ function customizationSignal(report: Assessment, family: Family): string {
 	if (report.discoverySummary.components?.layerScan) {
 		const total = familyLayerCustomizations(report, family).length + familyAutomations(report, family).length;
 		if (total) {
-			return `${total} named customization(s) found; see Customizations in Microsoft nonprofit solutions`;
+			return `${plural(total, 'named customization')} found; see Customizations in Microsoft nonprofit solutions`;
 		}
 		if (scopeComplete(report)) {
 			return 'No customizations found on this product\'s components';
@@ -241,7 +242,7 @@ function customizationSignal(report: Assessment, family: Family): string {
 		.map(overlap => ({ solution: item.uniqueName, count: overlap.componentCount })));
 	if (matching.length > 0) {
 		const count = matching.reduce((total, item) => total + item.count, 0);
-		return `${count} nonprofit component(s) changed by ${matching.map(item => text(item.solution)).join(', ')}`;
+		return `${plural(count, 'nonprofit component')} changed by ${matching.map(item => text(item.solution)).join(', ')}`;
 	}
 	const summary = report.discoverySummary.components?.productSummaries?.find(item =>
 		[route.source, route.target].includes(item.uniqueName));
@@ -406,7 +407,7 @@ function layerCustomizationSection(report: Assessment, dependencyCounts: Map<str
 		const added = rows.filter(row => row.change === 'added').length;
 		const changed = rows.filter(row => row.change === 'modified').length;
 		output.push(
-			`**Summary:** ${rows.length} customization(s): ${added} added, ${changed} changed${rows.length - added - changed ? `, ${rows.length - added - changed} added or changed` : ''}.`,
+			`**Summary:** ${plural(rows.length, 'customization')}: ${added} added, ${changed} changed${rows.length - added - changed ? `, ${rows.length - added - changed} added or changed` : ''}.`,
 			'',
 			'| Table | Component | Type | Change | Where the change lives | Dependents found |',
 			'| --- | --- | --- | --- | --- | --- |',
@@ -657,7 +658,7 @@ export function renderMarkdown(report: Assessment): string {
 		...(!solutionInventoryAvailable
 			? ['Custom and partner solutions can\'t be listed because the installed solutions couldn\'t be read.']
 			: customizationCandidates.length ? [
-			`**Summary:** ${customizationCandidates.length} custom or partner solution(s); ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => item.overlaps.length > 0).length} change nonprofit solution components.`,
+			`**Summary:** ${plural(customizationCandidates.length, 'custom or partner solution')}; ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => item.overlaps.length > 0).length} change nonprofit solution components.`,
 			'',
 			'| Solution | Type | Publisher | Components | Component details | Nonprofit products it changes | Why review it? |',
 			'| --- | --- | --- | --- | --- | --- | --- |',
@@ -739,7 +740,7 @@ export function renderMarkdown(report: Assessment): string {
 			'| Workflows and connection references per product | Not available; environment-wide totals are in the detailed JSON |',
 			'| Plug-in assemblies and steps per product | Not available; environment-wide totals are in the detailed JSON |',
 		]),
-		`| Related tables with record counts | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
+		`| Nonprofit tables with record counts | ${report.discoverySummary.counts?.tables.length ?? 'Not available'}${report.discoverySummary.counts?.truncated ? ' (partial)' : ''} |`,
 		...(report.routes.some(route => route.family === 've')
 			? [`| Volunteer Engagement sites | ${text(siteStatus(report))} |`]
 			: []),
@@ -747,13 +748,13 @@ export function renderMarkdown(report: Assessment): string {
 		'### Related data volumes',
 		'',
 		...(dataVolumes.length ? [
-			'Largest related tables by record count. Dataverse refreshes these counts about once a day, so they can be up to a day old.',
+			'Largest tables created by nonprofit solutions, by record count. Dataverse refreshes these counts about once a day, so they can be up to a day old.',
 			'',
-			'| Table | Related product | Records (approximate) |',
+			'| Table | Product | Records (approximate) |',
 			'| --- | --- | --- |',
 			...dataVolumes.map(table =>
 				`| ${text(table.logicalName)} | ${table.products?.length ? table.products.map(name => text(productName(name))).join(', ') : 'Not assigned'} | ${table.count} |`),
-		] : ['No record counts were available for related tables.']),
+		] : ['No record counts were available for nonprofit tables.']),
 		'',
 		'### Assessment cautions',
 		'',

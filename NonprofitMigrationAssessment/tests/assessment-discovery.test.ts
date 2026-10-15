@@ -322,15 +322,7 @@ test('detailed discovery summarizes approved environment metadata without record
 		automationScan: { status: 'complete', tables: 0, cloudFlows: 0, checkedCloudFlows: 0 },
 		truncated: false,
 	});
-	assert.deepEqual(result.counts, {
-		tables: [{
-			logicalName: 'msnfp_synthetictable',
-			count: 42,
-			accuracy: 'snapshot-within-24-hours',
-			products: ['NonprofitCore'],
-		}],
-		truncated: false,
-	});
+	assert.deepEqual(result.counts, { tables: [], truncated: false });
 	assert.deepEqual(result.sites, { legacySites: 1, enhancedSites: 0, truncated: false });
 	assert.ok(allCategories().every(category =>
 		result.evidence.find(item => item.id === category)?.status === 'observed'));
@@ -595,14 +587,23 @@ test('unavailable layer details keep overlap evidence and mark components partia
 	const result = await collectAssessmentDetails(baseDiscovery(), {
 		environmentUrl: ORIGIN,
 		consent: true,
-		categories: ['solutions', 'components'],
+		categories: ['solutions', 'components', 'counts'],
 		relevantSolutionNames: ['NonprofitCore'],
 		getToken: async () => TOKEN,
 		fetch: async input => {
 			const url = new URL(String(input));
-			return url.pathname.endsWith('/solutioncomponents')
-				? Response.json({ value: [] })
-				: Response.json({}, { status: 404 });
+			if (url.pathname.endsWith('/solutioncomponents')) {
+				return Response.json({ value: (url.searchParams.get('$filter') ?? '').includes(RELEVANT_ID)
+					? [{ componenttype: 1, objectid: TABLE_ID }]
+					: [] });
+			}
+			if (url.pathname.includes('EntityDefinitions')) {
+				return Response.json({ LogicalName: 'msnfp_synthetictable' });
+			}
+			if (url.pathname.includes('RetrieveTotalRecordCount')) {
+				return Response.json({ EntityRecordCountCollection: { Keys: ['msnfp_synthetictable'], Values: [5] } });
+			}
+			return Response.json({}, { status: 404 });
 		},
 	});
 	assert.equal(result.components?.layerScan?.status, 'unavailable');
@@ -610,6 +611,11 @@ test('unavailable layer details keep overlap evidence and mark components partia
 	const components = result.evidence.find(item => item.id === 'components');
 	assert.equal(components?.status, 'partial');
 	assert.match(components?.reason ?? '', /changes made directly in the environment couldn't be listed/);
+	// Without layer details, record counts fall back to resolving each product table by ID.
+	assert.deepEqual(result.counts, {
+		tables: [{ logicalName: 'msnfp_synthetictable', count: 5, accuracy: 'snapshot-within-24-hours', products: ['NonprofitCore'] }],
+		truncated: false,
+	});
 });
 
 const ACTIVE_SOLUTION_ID = 'fd140aae-4df4-11dd-bd17-0019b9312238';
@@ -647,12 +653,17 @@ test('automation discovery names customer plug-in steps, processes, and cloud fl
 	const result = await collectAssessmentDetails(discovery, {
 		environmentUrl: ORIGIN,
 		consent: true,
-		categories: ['solutions', 'components', 'integrations'],
+		categories: ['solutions', 'components', 'integrations', 'counts'],
 		relevantSolutionNames: ['NonprofitCore'],
 		getToken: async () => TOKEN,
 		fetch: async input => {
 			const url = new URL(String(input));
 			const filter = url.searchParams.get('$filter') ?? '';
+			assert.ok(!url.pathname.includes('EntityDefinitions'), 'counts use names from the layer scan');
+			if (url.pathname.includes('RetrieveTotalRecordCount')) {
+				assert.equal(url.searchParams.get('@names'), '[\'msnfp_synthetictable\']');
+				return Response.json({ EntityRecordCountCollection: { Keys: ['msnfp_synthetictable'], Values: ['7'] } });
+			}
 			if (url.pathname.endsWith('/solutioncomponents')) {
 				return Response.json({ value: filter.includes(RELEVANT_ID)
 					? [
@@ -714,4 +725,8 @@ test('automation discovery names customer plug-in steps, processes, and cloud fl
 		['process', 'Require amount', 'Business rule', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'active', null, true],
 	]);
 	assert.equal(result.evidence.find(item => item.id === 'integrations')?.status, 'observed');
+	assert.deepEqual(result.counts, {
+		tables: [{ logicalName: 'msnfp_synthetictable', count: 7, accuracy: 'snapshot-within-24-hours', products: ['NonprofitCore'] }],
+		truncated: false,
+	});
 });
