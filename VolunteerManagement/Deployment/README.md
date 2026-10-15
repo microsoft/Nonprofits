@@ -42,6 +42,7 @@ see the [migration guide](../MIGRATION.md).
 | --- | --- |
 | `-StripReferences` | Rewrites forms + saved queries to drop the AppSource PCF references (substituting the default control), then runs `PublishAllXml`. |
 | `-DeleteAppSourceSolution` | Deletes the AppSource managed solution identified by `-AppSourceSolutionUniqueName`. |
+| `-RestoreControls` | After the OS solution is re-imported, removes the active (unmanaged) layer that `-StripReferences` left on each rewritten form/view (listed in `-StateFile`, default `vm-migration-stripped.json`), then runs `PublishAllXml`. |
 | `-Verify` | Reports the plugin assemblies, PCF control ownership, and SDK steps registered on `PluginsOS`. |
 
 ```powershell
@@ -50,6 +51,9 @@ see the [migration guide](../MIGRATION.md).
 
 # Delete the AppSource managed solution
 .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -DeleteAppSourceSolution
+
+# After re-importing the OS solution: remove the active layers so the OS PCF controls show again
+.\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -RestoreControls
 
 # Verify the result
 .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -Verify

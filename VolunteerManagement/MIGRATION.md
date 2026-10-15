@@ -43,10 +43,11 @@ layer and its metadata are.
 1. Build and import the OS solution side-by-side with the AppSource solution.
 2. Strip the AppSource PCF control references that block deletion, then publish.
 3. Delete the unsupported AppSource solution.
-4. Re-import/upgrade the OS solution so its own forms and controls take over.
-5. Verify the result.
+4. Re-import/upgrade the OS solution.
+5. Remove the active layers created in step 2 so the OS forms and controls take over.
+6. Verify the result.
 
-Steps 2–4 are automated by
+Steps 2, 3, 5, and 6 are automated by
 [`Deployment/Migrate-VolunteerManagementToOpenSource.ps1`](Deployment/Migrate-VolunteerManagementToOpenSource.ps1).
 See [`Deployment/README.md`](Deployment/README.md) for the full script reference,
 parameters, and authentication options.
@@ -84,13 +85,26 @@ runs `PublishAllXml`.
 
 ### 4. Re-import / upgrade the OS solution
 
-Re-importing restores the forms and views so they reference the **OS-owned** PCF controls.
-
 ```powershell
 pac solution import --path .\VolunteerManagement\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip --force-overwrite
 ```
 
-### 5. Verify
+### 5. Restore the OS PCF controls
+
+Step 2 rewrites forms and views through the Web API, which leaves an **active (unmanaged) layer**
+on each of them. A managed import does not replace that layer, so the forms keep showing the
+default controls instead of the OS-owned PCF controls. This stage removes the active layer of
+exactly the forms and views that step 2 rewrote (recorded in `vm-migration-stripped.json`), then
+publishes.
+
+```powershell
+.\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -RestoreControls
+```
+
+> Removing the active layer also removes any other unmanaged customization on those forms and
+> views. Preview the list with `-WhatIf` and reapply needed customizations in your own solution.
+
+### 6. Verify
 
 ```powershell
 .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -Verify
