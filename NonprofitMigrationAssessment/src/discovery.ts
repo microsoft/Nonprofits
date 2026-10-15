@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DiscoverySchema, SolutionSchema, type Discovery, type Evidence, type Solution } from './contracts.js';
+import { RETRYABLE_STATUSES, retryAfterDelay } from './retry.js';
 
 const PATH = '/api/data/v9.2/solutions';
 const SELECT = 'solutionid,uniquename,version,ismanaged';
@@ -296,7 +297,7 @@ export async function collectSolutions(options: CollectionOptions): Promise<Disc
 					discard(response);
 					throw new CollectionFailure('Access to solution metadata was denied.', true);
 				}
-				if (![429, 500, 502, 503, 504].includes(response.status)) {
+				if (!RETRYABLE_STATUSES.has(response.status)) {
 					break;
 				}
 				const retryAfter = response.headers.get('retry-after');
@@ -306,13 +307,11 @@ export async function collectSolutions(options: CollectionOptions): Promise<Disc
 				}
 				if (retryAfter !== null) {
 					// Do not retry earlier than requested or accept an unbounded server-controlled wait.
-					const delay = /^\d+$/.test(retryAfter)
-						? Number(retryAfter) * 1_000
-						: Date.parse(retryAfter) - Date.now();
-					if (!Number.isFinite(delay) || delay > 5_000) {
+					const delay = retryAfterDelay(retryAfter, 5_000);
+					if (delay === null) {
 						throw new CollectionFailure('The metadata retry delay exceeded the approved budget.');
 					}
-					retryDelay = Math.max(0, delay);
+					retryDelay = delay;
 				}
 				await wait(retryDelay, signal, timedOut);
 			}

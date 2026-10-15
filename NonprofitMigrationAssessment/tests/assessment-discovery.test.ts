@@ -748,3 +748,85 @@ test('automation discovery names customer plug-in steps, processes, and cloud fl
 		truncated: false,
 	});
 });
+
+test('product summaries follow server paging for a CDM-sized solution', async () => {
+	const tables = [
+		summaryRow(1, TABLE_ID, 'msnfp_synthetictable', 'Synthetic Table', { custom: true }),
+		summaryRow(1, CONTACT_ID, 'contact', 'Contact', { custom: false }),
+	];
+	const rows = [
+		...Array.from({ length: 4_398 }, (_, index) => summaryRow(61, `50505050-5050-4050-8050-${String(index).padStart(12, '0')}`, `msnfp_/resource${index}.js`, `Resource ${index}`, {})),
+		...tables,
+	];
+	let pages = 0;
+	let foreignLink = false;
+	const run = () => collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: async (input, init) => {
+			const url = new URL(String(input));
+			const filter = url.searchParams.get('$filter') ?? '';
+			if (url.pathname.endsWith('/solutioncomponents')) {
+				return Response.json({ value: filter.includes(RELEVANT_ID) ? [{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 0 }] : [] });
+			}
+			if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries') && filter === `msdyn_solutionid eq ${RELEVANT_ID}`) {
+				assert.equal(new Headers(init?.headers).get('prefer'), 'odata.maxpagesize=500');
+				const page = Number(url.searchParams.get('$skiptoken')?.slice(1) ?? '0');
+				pages = Math.max(pages, page + 1);
+				const slice = rows.slice(page * 500, (page + 1) * 500);
+				const next = (page + 1) * 500 < rows.length
+					? { '@odata.nextLink': foreignLink
+						? `${ORIGIN}/api/data/v9.2/systemusers?$skiptoken=p${page + 1}`
+						: `${ORIGIN}/api/data/v9.2/msdyn_solutioncomponentsummaries?$select=x&$skiptoken=p${page + 1}` }
+					: {};
+				return Response.json({ value: slice, ...next });
+			}
+			if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries')) {
+				return Response.json({ value: [] });
+			}
+			return Response.json({}, { status: 404 });
+		},
+	});
+	const result = await run();
+	assert.equal(pages, 9);
+	assert.deepEqual(result.components?.layerScan, {
+		status: 'complete', productTables: 2, checkedTables: 2, solutionTables: 0, checkedSolutionTables: 0,
+	});
+	foreignLink = true;
+	const rejected = await run();
+	assert.equal(rejected.components?.layerScan?.status, 'unavailable');
+});
+
+test('detail discovery waits for Retry-After before retrying throttled requests', async () => {
+	let versionCalls = 0;
+	const started = Date.now();
+	const result = await collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'environment', 'sites'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: async input => {
+			const url = new URL(String(input));
+			if (url.pathname.endsWith('/RetrieveVersion()')) {
+				versionCalls++;
+				return versionCalls === 1
+					? new Response(null, { status: 429, headers: { 'Retry-After': '1' } })
+					: Response.json({ Version: '9.2.26091.152' });
+			}
+			if (url.pathname.endsWith('/organizations')) {
+				return Response.json({ value: [{ name: 'Synthetic' }] });
+			}
+			return new Response(null, { status: 429, headers: { 'Retry-After': '120' } });
+		},
+	});
+	assert.equal(versionCalls, 2);
+	assert.ok(Date.now() - started >= 900);
+	assert.equal(result.evidence.find(item => item.id === 'environment')?.status, 'observed');
+	const sites = result.evidence.find(item => item.id === 'sites');
+	assert.equal(sites?.status, 'partial');
+	assert.match(sites?.reason ?? '', /wait longer than the approved budget/);
+});

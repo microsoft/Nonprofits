@@ -461,6 +461,9 @@ function actionFor(finding: Finding): string {
 	if (finding.code === 'release-mapping-required') {
 		return 'Confirm which GitHub release matches your installed version, or decide whether to keep the current version or update.';
 	}
+	if (finding.code === 'release-mapping-unapproved') {
+		return 'Ask the Microsoft Nonprofits team to approve the release mapping, then run the assessment again.';
+	}
 	if (finding.code === 'review-required') {
 		return 'Ask your implementation partner to do this review.';
 	}

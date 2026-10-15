@@ -1,9 +1,10 @@
 import { chmod, lstat, mkdtemp, open, readFile, realpath, rename, rm } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, resolve } from 'node:path';
+import { GuidanceError } from './errors.js';
 
-export class LocalFileError extends Error {
-	constructor() {
-		super('Local file operation refused. Use an existing local parent outside a Git checkout and a new output directory; check permissions and JSON syntax.');
+export class LocalFileError extends GuidanceError {
+	constructor(message = 'A local file operation was refused. Use an output folder outside any Git repository that doesn\'t exist yet, and check folder permissions and JSON syntax.') {
+		super(message);
 	}
 }
 
@@ -12,8 +13,11 @@ async function assertOutsideRepository(path: string): Promise<void> {
 	while (true) {
 		try {
 			await lstat(join(current, '.git'));
-			throw new LocalFileError();
+			throw new LocalFileError('The output folder is inside a Git repository, so reports could be committed by mistake. Choose a folder outside Git with --output.');
 		} catch (error) {
+			if (error instanceof LocalFileError) {
+				throw error;
+			}
 			if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
 				throw error;
 			}
@@ -56,7 +60,7 @@ export async function writeLocalBundle(path: string, files: Record<string, strin
 		const actual = join(parent, basename(destination));
 		try {
 			await lstat(actual);
-			throw new LocalFileError();
+			throw new LocalFileError('The output folder already exists. Choose a new folder name.');
 		} catch (error) {
 			if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
 				throw error;
@@ -76,11 +80,11 @@ export async function writeLocalBundle(path: string, files: Record<string, strin
 		await rename(temporary, actual);
 		temporary = undefined;
 		return actual;
-	} catch {
+	} catch (error) {
 		if (temporary) {
 			await rm(temporary, { recursive: true, force: true }).catch(() => undefined);
 		}
-		throw new LocalFileError();
+		throw error instanceof LocalFileError ? error : new LocalFileError();
 	}
 }
 
@@ -99,7 +103,7 @@ export async function writeLocalFile(path: string, content: string): Promise<str
 		}
 		try {
 			await lstat(destination);
-			throw new LocalFileError();
+			throw new LocalFileError('The report file already exists. Choose another output folder.');
 		} catch (error) {
 			if (!(error instanceof Error && 'code' in error && error.code === 'ENOENT')) {
 				throw error;
@@ -115,10 +119,10 @@ export async function writeLocalFile(path: string, content: string): Promise<str
 		await rename(temporary, destination);
 		temporary = undefined;
 		return destination;
-	} catch {
+	} catch (error) {
 		if (temporary) {
 			await rm(temporary, { force: true }).catch(() => undefined);
 		}
-		throw new LocalFileError();
+		throw error instanceof LocalFileError ? error : new LocalFileError();
 	}
 }

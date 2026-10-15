@@ -162,12 +162,12 @@ test('output refuses Git trees, relative paths, traversal names and collisions',
 	const root = await mkdtemp(join(tmpdir(), 'nma-storage-'));
 	t.after(() => rm(root, { recursive: true, force: true }));
 	await mkdir(join(root, '.git'));
-	await assert.rejects(() => writeLocalBundle(join(root, 'report'), { 'report.md': 'test' }));
+	await assert.rejects(() => writeLocalBundle(join(root, 'report'), { 'report.md': 'test' }), /inside a Git repository/);
 	await assert.rejects(() => writeLocalBundle('relative', { 'report.md': 'test' }));
 	await rm(join(root, '.git'), { recursive: true });
 	await assert.rejects(() => writeLocalBundle(join(root, 'report'), { '..': 'test' }));
 	await writeLocalBundle(join(root, 'report'), { 'report.md': 'test' });
-	await assert.rejects(() => writeLocalBundle(join(root, 'report'), { 'report.md': 'replacement' }));
+	await assert.rejects(() => writeLocalBundle(join(root, 'report'), { 'report.md': 'replacement' }), /already exists/);
 	assert.equal(await readFile(join(root, 'report', 'report.md'), 'utf8'), 'test');
 	const visible = join(root, 'nonprofit-assessment-synthetic-20260929.md');
 	await writeLocalFile(visible, 'visible report');
@@ -268,4 +268,13 @@ test('collection with read-only confirmation refuses a different environment bef
 	], { encoding: 'utf8' });
 	assert.equal(unbound.status, 1);
 	await assert.rejects(() => realpath(output));
+});
+test('CLI shows specific guidance for an output folder inside Git', async t => {
+	const root = await mkdtemp(join(tmpdir(), 'nma-git-output-'));
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const repository = await createPublicRepository(root);
+	const output = join(repository.path, 'reports');
+	const run = spawnSync(process.execPath, [CLI, 'init', '--repository', repository.path, '--output', output], { encoding: 'utf8' });
+	assert.equal(run.status, 1);
+	assert.match(run.stderr, /ASSESSMENT_FAILED: The output folder is inside a Git repository/);
 });

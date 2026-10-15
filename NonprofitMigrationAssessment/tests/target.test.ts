@@ -60,7 +60,7 @@ test('production target rejects an unpushed local commit', async t => {
 	git(repository.path, ['add', '.']);
 	git(repository.path, ['-c', 'user.name=Synthetic Test', '-c', 'user.email=test@example.invalid',
 		'commit', '-m', 'Local-only revision']);
-	await assert.rejects(() => resolvePublicTarget(repository.path, 'HEAD', LOCAL_TARGET), /reachable/);
+	await assert.rejects(() => resolvePublicTarget(repository.path, 'HEAD', LOCAL_TARGET), /isn't on microsoft\/Nonprofits master/);
 });
 
 test('wrong origin and dirty checkout fail closed', async t => {
@@ -68,10 +68,10 @@ test('wrong origin and dirty checkout fail closed', async t => {
 	t.after(() => rm(root, { recursive: true, force: true }));
 	const repository = await createPublicRepository(root);
 	git(repository.path, ['remote', 'set-url', 'origin', 'https://github.com/example/NotNonprofits.git']);
-	await assert.rejects(() => resolvePublicTarget(repository.path));
+	await assert.rejects(() => resolvePublicTarget(repository.path), /rather than a fork/);
 	git(repository.path, ['remote', 'set-url', 'origin', 'https://github.com/microsoft/Nonprofits.git']);
 	await writeFile(join(repository.path, 'untracked.txt'), 'dirty');
-	await assert.rejects(() => resolvePublicTarget(repository.path));
+	await assert.rejects(() => resolvePublicTarget(repository.path), /has local changes/);
 });
 
 test('future higher GitHub manifest versions remove version-order blockers', async t => {

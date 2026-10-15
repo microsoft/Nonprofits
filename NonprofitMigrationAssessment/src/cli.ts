@@ -17,6 +17,7 @@ import { resolvePublicTarget, verifyPublicTarget } from './target.js';
 import { applyLocalReview, deriveLocalReview, LocalReviewSchema } from './review.js';
 import { selectAnswers } from './scope.js';
 import { validateEnvironmentUrl } from './discovery.js';
+import { GuidanceError } from './errors.js';
 
 const json = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
 const reportSlug = (value: string): string => value.toLowerCase()
@@ -27,9 +28,6 @@ interface CliRuntime {
 	targetOptions?: { refreshRemote?: boolean };
 	quietCompletions?: boolean;
 }
-
-// Fixed guidance text only; never include customer values, tokens, or server responses.
-class GuidanceError extends Error {}
 
 function environmentOrigin(value: string): string {
 	try {
@@ -134,16 +132,18 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 			const collected = join(temporary, '3-collected');
 			const nestedRuntime = { ...runtime, quietCompletions: true };
 			await main(['init', '--repository', values.repository, '--output', initialized], nestedRuntime);
+			// init fetched origin/master and pinned the commit; later steps verify that pin without fetching again.
+			const pinnedRuntime = { ...nestedRuntime, targetOptions: { ...targetOptions, refreshRemote: false } };
 			await main([
 				'configure', '--repository', values.repository,
 				'--input', join(initialized, 'questionnaire.json'), '--output', configured,
 				...(values.environment !== undefined ? ['--environment', values.environment] : []),
-			], nestedRuntime);
+			], pinnedRuntime);
 			await main([
 				'collect', '--repository', values.repository,
 				'--input', join(configured, 'questionnaire.json'), '--output', collected,
 				...(values['confirm-read-only'] ? ['--confirm-read-only', '--environment', values.environment!] : []),
-			], nestedRuntime);
+			], pinnedRuntime);
 			const collectedInventory = InventorySchema.parse(
 				await readLocalJson(join(collected, 'inventory.json')),
 			);
@@ -151,7 +151,7 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 				collectedInventory,
 				deriveLocalReview(collectedInventory),
 			);
-			await verifyPublicTarget(values.repository, inventory.questionnaire.target, targetOptions);
+			await verifyPublicTarget(values.repository, inventory.questionnaire.target, { ...targetOptions, refreshRemote: false });
 			const report = assess(inventory);
 			const outputDirectory = resolve(values.output ?? join(homedir(), 'Documents'));
 			await mkdir(outputDirectory, { recursive: true });
@@ -455,8 +455,8 @@ export async function main(args: string[], runtime: CliRuntime = {}): Promise<nu
 }
 
 export async function execute(args: string[], runtime: CliRuntime = {}): Promise<void> {
-	if (!process.versions.node.startsWith('22.')) {
-		console.error(`UNSUPPORTED_NODE: Node.js 22.x is required; detected ${process.versions.node}.`);
+	if (Number(process.versions.node.split('.')[0]) < 22) {
+		console.error(`UNSUPPORTED_NODE: Node.js 22 or later is required; detected ${process.versions.node}.`);
 		process.exitCode = 1;
 	} else try {
 		process.exitCode = await main(args, runtime);

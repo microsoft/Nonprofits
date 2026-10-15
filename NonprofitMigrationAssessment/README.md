@@ -47,7 +47,7 @@ Effort is a relative rating, not an hour, cost, or downtime estimate. Validate t
 
 ## Prerequisites
 
-- Node.js 22
+- Node.js 22 or later
 - Git
 - Azure CLI, signed in to the tenant that contains the selected environment
 - A clean checkout whose `origin` is `https://github.com/microsoft/Nonprofits`
@@ -181,11 +181,14 @@ Open:
 - `assessment-<environment-name>.md` for the concise customer report
 - `assessment-<environment-name>.json` for detailed evidence and partner tooling
 
+The staged `assess` command uses these `assessment-<environment-name>` names. The single `run` command instead writes `nonprofit-assessment-<environment>-<date>.md` (and `.json` with `--partner-json`).
+
 ## How alignment is determined
 
 Alignment applies only to same-identity releases listed in `catalog/release-equivalence.json`.
 
-- CDM and template apps can be reported as already aligned when the installed PPAC version matches an approved GitHub release-equivalence entry.
+- CDM and template apps can be reported as already aligned ("No migration required") when the installed PPAC version matches a GitHub release-equivalence entry **and** the catalog's `status` is `approved`.
+- While the catalog is a `candidate`, a matching release is shown as **Review required** with a caution that the release mapping isn't approved yet. The tool never states "No migration required" from an unapproved mapping.
 - Volunteer Management isn't in that catalog because it migrates to a different solution identity.
 - Volunteer Engagement isn't in that catalog because it migrates a website rather than a same-identity solution release.
 
@@ -253,7 +256,6 @@ Detailed target hashes remain in local JSON for reproducibility and tamper detec
 - Dependency lookups cover up to 150 listed customizations. Record counts cover up to 200 nonprofit tables.
 - Customization discovery checks up to 200 nonprofit tables and 60 partner-extended tables. On shared Dataverse tables such as Account and Contact, only changes to components that a nonprofit solution brings are listed; changes to those tables' own definitions aren't. When a form's layer stack is too large to read, the change is shown as "Added or changed".
 - Plug-in steps, processes, and cloud flows are listed for tables that nonprofit solutions create, not for shared tables such as Contact. Up to 50 non-Microsoft cloud flows are checked, and a flow is listed only when its required components include a nonprofit table.
-- Environment-wide automation counts can include registrations unrelated to selected products.
 - A representative sandbox rehearsal remains the best validation of migration effort and cutover timing.
 
 ## Contributor validation

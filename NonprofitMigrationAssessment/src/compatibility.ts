@@ -26,6 +26,8 @@ const compatibilityCatalog = CompatibilityCatalogSchema.parse(JSON.parse(readFil
 	'utf8',
 )) as unknown);
 export const COMPATIBILITY_CATALOG_VERSION = compatibilityCatalog.version;
+export const COMPATIBILITY_CATALOG_APPROVED = compatibilityCatalog.status === 'approved';
+export const DRAFT_MAPPING_REASON = 'The installed release matches a GitHub release in the draft release mapping, but the Microsoft Nonprofits team hasn\'t approved that mapping yet. Treat it as not confirmed until it\'s approved.';
 
 export interface CompatibilityDecision {
 	status: 'already-aligned' | 'candidate-supported' | 'blocked' | 'investigation-required' | 'unsupported';
@@ -48,6 +50,7 @@ export function evaluateCompatibility(
 	source: Solution | undefined,
 	target: Questionnaire['target']['solutions'][number] | undefined,
 	installedTarget: Solution | undefined,
+	catalogApproved = COMPATIBILITY_CATALOG_APPROVED,
 ): CompatibilityDecision {
 	const decision = (
 		status: CompatibilityDecision['status'],
@@ -92,9 +95,13 @@ export function evaluateCompatibility(
 	}
 	const comparison = compareVersions(target.version, source.version);
 	if (intent === 'confirm-alignment') {
-		return isEquivalentRelease(route.family, source.version, target.version)
+		if (!isEquivalentRelease(route.family, source.version, target.version)) {
+			return decision('investigation-required', 'It isn\'t confirmed yet which GitHub release matches the installed release.');
+		}
+		// "No migration required" is the strongest customer statement, so it needs an approved release mapping.
+		return catalogApproved
 			? decision('already-aligned', 'The installed release matches a GitHub release, so no product or data migration is needed.')
-			: decision('investigation-required', 'It isn\'t confirmed yet which GitHub release matches the installed release.');
+			: decision('investigation-required', DRAFT_MAPPING_REASON);
 	}
 	if (intent === 'apply-github-release') {
 		if (comparison < 0) {

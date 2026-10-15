@@ -6,11 +6,16 @@ import {
 } from './contracts.js';
 import { validateEnvironmentUrl } from './discovery.js';
 import { isMicrosoftFirstPartyPublisher } from './publishers.js';
+import { RETRYABLE_STATUSES, retryAfterDelay } from './retry.js';
 
 const API = '/api/data/v9.2/';
 const RESPONSE_BYTES = 512 * 1024;
 const TOTAL_BYTES = 16 * 1024 * 1024;
 const MAX_REQUESTS = 800;
+// Paged reads request this many rows per page and stop after MAX_PAGES pages, marking the evidence partial.
+const PAGE_SIZE = 500;
+const MAX_PAGES = 20;
+const MAX_RETRY_AFTER_MS = 30_000;
 const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 100;
@@ -176,7 +181,11 @@ export interface AssessmentDiscoveryOptions {
 }
 
 class RequestFailure extends Error {
-	constructor(message: string, readonly status: Evidence['status'] = 'error') {
+	constructor(
+		message: string,
+		readonly status: Evidence['status'] = 'error',
+		readonly retryAfterMs: number | undefined = undefined,
+	) {
 		super(message);
 	}
 }
@@ -323,7 +332,7 @@ async function readJson(response: Response, context: RequestContext): Promise<un
 	}
 }
 
-async function getJsonOnce(context: RequestContext, url: string): Promise<unknown> {
+async function getJsonOnce(context: RequestContext, url: string, prefer?: string): Promise<unknown> {
 	if (context.budget.requests >= MAX_REQUESTS) {
 		throw new RequestFailure('A safety limit on the number of requests was reached.', 'partial');
 	}
@@ -337,6 +346,7 @@ async function getJsonOnce(context: RequestContext, url: string): Promise<unknow
 				Accept: 'application/json',
 				'OData-MaxVersion': '4.0',
 				'OData-Version': '4.0',
+				...(prefer ? { Prefer: prefer } : {}),
 			},
 			redirect: 'manual',
 			credentials: 'omit',
@@ -362,6 +372,16 @@ async function getJsonOnce(context: RequestContext, url: string): Promise<unknow
 		discard(response);
 		throw new RequestFailure('This metadata capability is not available.', 'not-applicable');
 	}
+	if (RETRYABLE_STATUSES.has(response.status)) {
+		const header = response.headers.get('retry-after');
+		discard(response);
+		// Dataverse service protection limits answer 429 with Retry-After; never retry sooner or wait without bound.
+		const delay = header === null ? undefined : retryAfterDelay(header, MAX_RETRY_AFTER_MS);
+		if (delay === null) {
+			throw new RequestFailure('The metadata service asked to wait longer than the approved budget.', 'partial');
+		}
+		throw new RequestFailure('The metadata service was busy or temporarily unavailable.', 'error', delay);
+	}
 	if (response.status !== 200) {
 		discard(response);
 		throw new RequestFailure('The metadata service returned an unsuccessful response.');
@@ -369,10 +389,10 @@ async function getJsonOnce(context: RequestContext, url: string): Promise<unknow
 	return readJson(response, context);
 }
 
-async function getJson(context: RequestContext, url: string): Promise<unknown> {
+async function getJson(context: RequestContext, url: string, prefer?: string): Promise<unknown> {
 	for (let attempt = 0; attempt <= 2; attempt++) {
 		try {
-			return await getJsonOnce(context, url);
+			return await getJsonOnce(context, url, prefer);
 		} catch (error) {
 			if (error instanceof RequestFailure
 				&& ['access-denied', 'not-applicable', 'partial'].includes(error.status)) {
@@ -381,10 +401,13 @@ async function getJson(context: RequestContext, url: string): Promise<unknown> {
 			if (attempt === 2) {
 				throw new RequestFailure('The metadata request failed after bounded retries.');
 			}
+			const delay = error instanceof RequestFailure && error.retryAfterMs !== undefined
+				? error.retryAfterMs
+				: 100 * 2 ** attempt;
 			let timer: ReturnType<typeof setTimeout> | undefined;
 			try {
 				await bounded(new Promise<void>(resolve => {
-					timer = setTimeout(resolve, 100 * 2 ** attempt);
+					timer = setTimeout(resolve, delay);
 				}), context.signal);
 			} finally {
 				clearTimeout(timer);
@@ -392,6 +415,47 @@ async function getJson(context: RequestContext, url: string): Promise<unknown> {
 		}
 	}
 	throw new RequestFailure('The metadata request failed after bounded retries.');
+}
+
+// Follows server paging with $skiptoken, rebuilding each next-page URL from trusted parts.
+async function getPages<Row>(
+	context: RequestContext,
+	path: string,
+	parameters: Record<string, string>,
+	parse: (value: unknown) => { value: Row[]; '@odata.nextLink'?: unknown },
+): Promise<{ rows: Row[]; complete: boolean }> {
+	const rows: Row[] = [];
+	let skiptoken: string | undefined;
+	for (let page = 0; page < MAX_PAGES; page++) {
+		const parsed = parse(await getJson(context,
+			apiUrl(context.origin, path, { ...parameters, ...(skiptoken ? { '$skiptoken': skiptoken } : {}) }),
+			`odata.maxpagesize=${PAGE_SIZE}`));
+		rows.push(...parsed.value);
+		const next = parsed['@odata.nextLink'];
+		if (next === undefined) {
+			return { rows, complete: true };
+		}
+		skiptoken = nextSkipToken(context, path, next);
+	}
+	return { rows, complete: false };
+}
+
+function nextSkipToken(context: RequestContext, path: string, link: unknown): string {
+	let url: URL;
+	try {
+		if (typeof link !== 'string' || link.length > 16_384) {
+			throw new Error();
+		}
+		url = new URL(link, context.origin);
+	} catch {
+		throw new RequestFailure('The next-page link was invalid.');
+	}
+	const token = url.searchParams.get('$skiptoken');
+	if (url.origin !== context.origin || url.pathname !== `${API}${path}` || url.hash || url.username || url.password
+		|| !token || token.length > 8_192 || /[\u0000-\u001f\u007f]/u.test(token)) {
+		throw new RequestFailure('The next-page link was invalid.');
+	}
+	return token;
 }
 
 async function countEntitySet(
@@ -704,13 +768,10 @@ async function collectLayerCustomizations(
 		if (!budgetAvailable()) {
 			throw new RequestFailure('The customization layer budget was exhausted.', 'partial');
 		}
-		const parsed = SummaryPageSchema.parse(await getJson(context,
-			apiUrl(context.origin, 'msdyn_solutioncomponentsummaries', {
-				'$select': SUMMARY_SELECT,
-				'$filter': filter,
-			})));
-		limited ||= parsed['@odata.nextLink'] !== undefined;
-		return parsed.value;
+		const result = await getPages(context, 'msdyn_solutioncomponentsummaries',
+			{ '$select': SUMMARY_SELECT, '$filter': filter }, value => SummaryPageSchema.parse(value));
+		limited ||= !result.complete;
+		return result.rows;
 	};
 	const attempt = async (operation: () => Promise<void>): Promise<boolean> => {
 		try {
@@ -1057,15 +1118,15 @@ async function collectAutomations(
 	);
 
 	await mapBounded(chunks(AUTOMATION_STEP_TABLE_CHUNK), chunk => attempt(async () => {
-		const parsed = StepPageSchema.parse(await getJson(context, apiUrl(context.origin, 'sdkmessageprocessingsteps', {
+		const result = await getPages(context, 'sdkmessageprocessingsteps', {
 			'$select': 'sdkmessageprocessingstepid,name,stage,mode,statecode,solutionid',
 			'$expand': 'sdkmessagefilterid($select=primaryobjecttypecode),sdkmessageid($select=name)',
 			// Hidden steps are platform registrations, including the internal steps behind real-time workflows.
 			'$filter': `ishidden/Value eq false and (${chunk.map(table =>
 				`sdkmessagefilterid/primaryobjecttypecode eq '${table.name}'`).join(' or ')})`,
-		})));
-		limited ||= parsed['@odata.nextLink'] !== undefined;
-		for (const step of parsed.value) {
+		}, value => StepPageSchema.parse(value));
+		limited ||= !result.complete;
+		for (const step of result.rows) {
 			const layer = layerOf(step.solutionid);
 			const tableName = step.sdkmessagefilterid?.primaryobjecttypecode;
 			// Product steps edited in the environment are already reported as changed product components by the layer scan.
@@ -1088,13 +1149,13 @@ async function collectAutomations(
 	}));
 
 	await mapBounded(chunks(AUTOMATION_PROCESS_TABLE_CHUNK), chunk => attempt(async () => {
-		const parsed = ProcessPageSchema.parse(await getJson(context, apiUrl(context.origin, 'workflows', {
+		const result = await getPages(context, 'workflows', {
 			'$select': 'workflowid,name,category,primaryentity,statecode,solutionid',
 			'$filter': `type eq 1 and category ne 5 and category ne 6 and (${chunk.map(table =>
 				`primaryentity eq '${table.name}'`).join(' or ')})`,
-		})));
-		limited ||= parsed['@odata.nextLink'] !== undefined;
-		for (const process of parsed.value) {
+		}, value => ProcessPageSchema.parse(value));
+		limited ||= !result.complete;
+		for (const process of result.rows) {
 			const layer = layerOf(process.solutionid);
 			if (!layer || !process.primaryentity || !tablesByName.has(process.primaryentity)
 				|| input.productComponentKeys.has(componentKey(29, process.workflowid))) {
@@ -1117,12 +1178,14 @@ async function collectAutomations(
 	let checkedFlows: typeof cloudFlows = [];
 	if (tables.length) {
 		await attempt(async () => {
-			const parsed = ProcessPageSchema.parse(await getJson(context, apiUrl(context.origin, 'workflows', {
+			// Ordered and paged so environments with thousands of flows stay within the per-response cap.
+			const result = await getPages(context, 'workflows', {
 				'$select': 'workflowid,name,category,primaryentity,statecode,solutionid',
 				'$filter': 'type eq 1 and category eq 5',
-			})));
-			limited ||= parsed['@odata.nextLink'] !== undefined;
-			cloudFlows = parsed.value.filter(flow => layerOf(flow.solutionid) !== null)
+				'$orderby': 'workflowid asc',
+			}, value => ProcessPageSchema.parse(value));
+			limited ||= !result.complete;
+			cloudFlows = result.rows.filter(flow => layerOf(flow.solutionid) !== null)
 				.sort((left, right) => (left.name ?? '').localeCompare(right.name ?? '', 'en'));
 		});
 		checkedFlows = cloudFlows.slice(0, MAX_FLOW_LOOKUPS);

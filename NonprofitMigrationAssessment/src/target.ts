@@ -4,6 +4,7 @@ import { lstat, realpath } from 'node:fs/promises';
 import { isAbsolute, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { TargetSchema, type Questionnaire } from './contracts.js';
+import { GuidanceError } from './errors.js';
 import { ROUTES } from './routes.js';
 
 const exec = promisify(execFile);
@@ -37,7 +38,7 @@ async function git(repository: string, args: string[], maxBuffer = 64 * 1024): P
 		});
 		return stdout;
 	} catch {
-		throw new Error('Public target checkout validation failed.');
+		throw new GuidanceError('Git couldn\'t read the microsoft/Nonprofits checkout or fetch origin/master. Check that Git is installed, --repository points to a clone of microsoft/Nonprofits, and you\'re online.');
 	}
 }
 
@@ -63,7 +64,7 @@ function decodeXml(value: string): string {
 function element(xml: string, name: string): string {
 	const match = new RegExp(`<${name}>([^<]+)</${name}>`).exec(xml);
 	if (!match?.[1]) {
-		throw new Error('Public target manifest is missing required metadata.');
+		throw new GuidanceError('The microsoft/Nonprofits checkout doesn\'t contain the solution details this assessment expects. Pull the latest master or use a fresh clone.');
 	}
 	return decodeXml(match[1].trim());
 }
@@ -74,11 +75,11 @@ function parseManifest(xml: string): Target['solutions'][number] {
 		? /<Publisher\b[^>]*>([\s\S]*?)<\/Publisher>/.exec(manifest)?.[1]
 		: undefined;
 	if (!manifest || !publisher) {
-		throw new Error('Public target manifest structure is invalid.');
+		throw new GuidanceError('The microsoft/Nonprofits checkout doesn\'t contain the solution details this assessment expects. Pull the latest master or use a fresh clone.');
 	}
 	const managed = element(manifest, 'Managed');
 	if (!['1', '2'].includes(managed)) {
-		throw new Error('Public target manifest does not support a managed package.');
+		throw new GuidanceError('The microsoft/Nonprofits checkout doesn\'t contain the solution details this assessment expects. Pull the latest master or use a fresh clone.');
 	}
 	return {
 		uniqueName: element(manifest, 'UniqueName'),
@@ -120,22 +121,22 @@ export async function resolvePublicTarget(
 	options: TargetResolutionOptions = {},
 ): Promise<Target> {
 	if (!isAbsolute(repositoryPath) || repositoryPath.startsWith('\\\\') || repositoryPath.startsWith('//')) {
-		throw new Error('Public target checkout path must be absolute and local.');
+		throw new GuidanceError('Use the full local path of your microsoft/Nonprofits checkout for --repository.');
 	}
 	const repository = await realpath(resolve(repositoryPath));
 	const stat = await lstat(repository);
 	if (!stat.isDirectory()) {
-		throw new Error('Public target checkout path is not a directory.');
+		throw new GuidanceError('The --repository path isn\'t a folder. Use the full path of your microsoft/Nonprofits checkout.');
 	}
 	const topLevel = (await git(repository, ['rev-parse', '--show-toplevel'])).trim();
 	if (await realpath(topLevel) !== repository) {
-		throw new Error('Public target path must be the checkout root.');
+		throw new GuidanceError('Point --repository at the root folder of your microsoft/Nonprofits checkout.');
 	}
 	if (!canonicalRemote(await git(repository, ['remote', 'get-url', 'origin']))) {
-		throw new Error('Checkout origin is not microsoft/Nonprofits.');
+		throw new GuidanceError('The checkout\'s origin isn\'t https://github.com/microsoft/Nonprofits. Use a clone of microsoft/Nonprofits rather than a fork.');
 	}
 	if ((await git(repository, ['status', '--porcelain=v1', '--untracked-files=normal'])).trim()) {
-		throw new Error('Public target checkout must be clean.');
+		throw new GuidanceError('The microsoft/Nonprofits checkout has local changes. Commit, stash, or discard them, or use a fresh clone.');
 	}
 	const upstream = await remoteMaster(repository, options.refreshRemote !== false);
 	const selectedRevision = revision ?? upstream;
@@ -144,7 +145,7 @@ export async function resolvePublicTarget(
 		throw new Error('Public target revision did not resolve to a commit.');
 	}
 	if (!await isAncestor(repository, commit, upstream)) {
-		throw new Error('Public target revision is not reachable from freshly fetched origin/master.');
+		throw new GuidanceError('The checkout\'s commit isn\'t on microsoft/Nonprofits master. Pull the latest master or use a fresh clone.');
 	}
 	const contents = new Map<string, Buffer>();
 	for (const path of EVIDENCE_FILES) {
@@ -156,11 +157,11 @@ export async function resolvePublicTarget(
 	for (const solution of solutions) {
 		const route = routeTargets.get(solution.uniqueName);
 		if (!route || route.publisher !== solution.publisher || route.prefix !== solution.prefix) {
-			throw new Error('Public target manifest and route catalog disagree.');
+			throw new GuidanceError('The microsoft/Nonprofits checkout doesn\'t match this version of the assessment. Pull the latest master.');
 		}
 	}
 	if (solutions.length !== routeTargets.size) {
-		throw new Error('Public target route catalog is missing a manifest.');
+		throw new GuidanceError('The microsoft/Nonprofits checkout doesn\'t match this version of the assessment. Pull the latest master.');
 	}
 	return TargetSchema.parse({
 		repository: REPOSITORY,
@@ -182,7 +183,7 @@ export async function verifyPublicTarget(
 	const expected = TargetSchema.parse(target);
 	const actual = await resolvePublicTarget(repositoryPath, expected.commit, options);
 	if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-		throw new Error('Pinned public target evidence does not match the questionnaire.');
+		throw new GuidanceError('The microsoft/Nonprofits checkout changed during the assessment. Run the assessment again.');
 	}
 	return actual;
 }

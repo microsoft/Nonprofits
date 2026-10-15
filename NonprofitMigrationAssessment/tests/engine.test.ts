@@ -235,7 +235,7 @@ test('alignment intent produces no migration effort for equivalent releases', ()
 	answer.intent = 'confirm-alignment';
 	input.discovery.solutions[0]!.version = '3.1.3.4';
 	input.questionnaire.target.solutions[0]!.version = '3.1.3.4';
-	const result = assess(input, { now: NOW });
+	const result = assess(input, { now: NOW, releaseCatalogApproved: true });
 	assert.equal(result.status, 'complete');
 	assert.equal(result.routes[0]!.status, 'already-at-target');
 	assert.equal(result.routes[0]!.effortBand, 'none');
@@ -250,7 +250,7 @@ test('already-aligned CDM satisfies the Volunteer Management prerequisite', () =
 	cdm.intent = 'confirm-alignment';
 	input.discovery.solutions.find(solution => solution.uniqueName === 'NonprofitCore')!.version = '3.1.3.4';
 	input.questionnaire.target.solutions.find(solution => solution.uniqueName === 'NonprofitCore')!.version = '3.1.3.4';
-	const result = assess(input, { now: NOW });
+	const result = assess(input, { now: NOW, releaseCatalogApproved: true });
 	assert.equal(result.routes.find(route => route.family === 'cdm')!.status, 'already-at-target');
 	const vm = result.routes.find(route => route.family === 'vm')!;
 	assert.equal(vm.status, 'eligible');
@@ -580,7 +580,7 @@ test('aligned products ask for regression tests only when named customizations e
 		checkedSolutionTables: 0,
 	};
 	input.discovery.components!.layerCustomizations = [];
-	const clean = renderMarkdown(assess(input, { now: NOW }));
+	const clean = renderMarkdown(assess(input, { now: NOW, releaseCatalogApproved: true }));
 	assert.ok(clean.includes('| No migration required | High | None |'));
 	assert.ok(clean.includes('No customizations were found on this product\'s components.'));
 	assert.ok(clean.includes('1. No migration for **CDM for Nonprofits**.\n'));
@@ -590,7 +590,7 @@ test('aligned products ask for regression tests only when named customizations e
 		automationScan: { status: 'unavailable', tables: 1, cloudFlows: 0, checkedCloudFlows: 0 },
 		truncated: false,
 	};
-	const unscanned = renderMarkdown(assess(input, { now: NOW }));
+	const unscanned = renderMarkdown(assess(input, { now: NOW, releaseCatalogApproved: true }));
 	assert.ok(unscanned.includes('No customizations were found within the checked scope.'));
 	assert.ok(!unscanned.includes('No customizations were found on this product'));
 	delete input.discovery.integrations;
@@ -607,7 +607,7 @@ test('aligned products ask for regression tests only when named customizations e
 		solutions: [],
 		relatedTable: null,
 	}];
-	const customized = renderMarkdown(assess(input, { now: NOW }));
+	const customized = renderMarkdown(assess(input, { now: NOW, releaseCatalogApproved: true }));
 	assert.ok(customized.includes('| No migration required; regression test customizations | High | None |'));
 	assert.ok(customized.includes('Regression-test these customizations: 1 form changed directly in this environment on Transaction. |'));
 	assert.ok(customized.includes('Regression-test the customizations affecting CDM for Nonprofits'));
@@ -819,4 +819,30 @@ test('rating reasons and solution counts show every partner solution consistentl
 	assert.ok(markdown.includes('| CDM for Nonprofits (19) | It changes nonprofit components;'));
 	assert.ok(markdown.includes('**Summary:** 2 custom or partner solutions; 1 unmanaged; 2 change nonprofit solution components.'));
 	assert.ok(markdown.includes('| Local step (Create, pre-operation, synchronous) | Plug-in step | Added | Unmanaged change in this environment; also in LocalWork |'));
+});
+
+test('a draft release catalog never produces No migration required', () => {
+	const input = inventory(['cdm', 'vm']);
+	input.questionnaire.answers.find(answer => answer.family === 'cdm')!.intent = 'confirm-alignment';
+	input.discovery.solutions.find(solution => solution.uniqueName === 'NonprofitCore')!.version = '3.1.3.4';
+	input.questionnaire.target.solutions.find(solution => solution.uniqueName === 'NonprofitCore')!.version = '3.1.3.4';
+	const draft = assess(input, { now: NOW });
+	const route = draft.routes.find(item => item.family === 'cdm')!;
+	assert.equal(route.compatibility.status, 'investigation-required');
+	assert.equal(route.status, 'insufficient-evidence');
+	assert.equal(route.effortBand, 'review-required');
+	const cdmFindings = draft.findings.filter(finding => finding.families.includes('cdm') && finding.blocking);
+	assert.deepEqual(cdmFindings.map(finding => finding.code), ['release-mapping-unapproved']);
+	assert.match(cdmFindings[0]!.message, /hasn't approved that mapping yet/);
+	// Volunteer Management keeps its own rating: CDM is installed at the GitHub version.
+	const vm = draft.routes.find(item => item.family === 'vm')!;
+	assert.equal(vm.status, 'eligible');
+	assert.equal(vm.effortBand, 'medium');
+	assert.ok(!draft.findings.some(finding => finding.code === 'blocked-by-cdm'));
+	const markdown = renderMarkdown(draft);
+	assert.ok(!markdown.includes('No migration required'));
+	assert.ok(markdown.includes('| CDM for Nonprofits | NonprofitCore 3.1.3.4 | NonprofitCore 3.1.3.4 | Review before migration |'));
+	assert.ok(markdown.includes('draft release mapping'));
+	const approved = assess(input, { now: NOW, releaseCatalogApproved: true });
+	assert.equal(approved.routes.find(item => item.family === 'cdm')!.status, 'already-at-target');
 });

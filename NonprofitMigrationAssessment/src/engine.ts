@@ -2,7 +2,7 @@ import {
 	AssessmentSchema, DISCOVERY_CATEGORIES, InventorySchema, VERSION, VersionSchema,
 	type Assessment, type Complexity, type EffortBand, type Evidence, type Family, type Finding, type RouteResult,
 } from './contracts.js';
-import { evaluateCompatibility } from './compatibility.js';
+import { DRAFT_MAPPING_REASON, evaluateCompatibility } from './compatibility.js';
 import { classifyComplexity } from './complexity.js';
 import { CATALOG_VERSION, FAMILY_NAMES, ROUTES, guideUrl } from './routes.js';
 import { selectAnswers } from './scope.js';
@@ -28,7 +28,7 @@ function relativeEffort(family: Family, complexity: Complexity): EffortBand {
 	return replacement ? 'medium' : 'low';
 }
 
-export function assess(input: unknown, options: { now?: Date } = {}): Assessment {
+export function assess(input: unknown, options: { now?: Date; releaseCatalogApproved?: boolean } = {}): Assessment {
 	const inventory = InventorySchema.parse(input);
 	const now = options.now ?? new Date();
 	if (!Number.isFinite(now.getTime())) {
@@ -82,7 +82,7 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 		const target = family === 've'
 			? undefined
 			: q.target.solutions.find(item => item.uniqueName === route.target);
-		const compatibility = evaluateCompatibility(route, answer, source, target, os);
+		const compatibility = evaluateCompatibility(route, answer, source, target, os, options.releaseCatalogApproved);
 		const answerId = `answers.${family}`;
 		evidence.push({
 			id: answerId, source: 'customer-reported', status: 'observed',
@@ -142,7 +142,8 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 			addFinding(family, 'compatibility-blocked', compatibility.reason, ['solutions', answerId]);
 		} else if (compatibility.status === 'investigation-required' && result.status === 'eligible') {
 			result.status = 'insufficient-evidence';
-			addFinding(family, 'release-mapping-required', compatibility.reason, ['solutions', answerId]);
+			addFinding(family, compatibility.reason === DRAFT_MAPPING_REASON ? 'release-mapping-unapproved' : 'release-mapping-required',
+				compatibility.reason, ['solutions', answerId]);
 		}
 		for (const prerequisite of route.prerequisites) {
 			const prerequisiteRoute = ROUTES.find(item => item.family === prerequisite)!;
@@ -166,7 +167,8 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 			|| answer.customization === 'unknown' || !answer.basis.trim()
 			|| now.getTime() - Date.parse(q.consent.confirmedAt) < 0
 			|| now.getTime() - Date.parse(q.consent.confirmedAt) > AGE_LIMIT_MS;
-		if (unreviewed) {
+		// The draft-mapping caution already says what to confirm, so the generic review caution would only repeat it.
+		if (unreviewed && compatibility.reason !== DRAFT_MAPPING_REASON) {
 			const evidenceBased = ['likely-standard', 'moderate', 'heavy'].includes(result.complexity.level)
 				&& result.compatibility.status === 'candidate-supported';
 			if (result.status === 'eligible' && !evidenceBased) {
@@ -187,12 +189,20 @@ export function assess(input: unknown, options: { now?: Date } = {}): Assessment
 		}
 	}
 	const active = routes.filter(item => !['unsupported', 'not-installed', 'already-at-target'].includes(item.status));
+	// A prerequisite whose only blocker is the draft release mapping is installed at the GitHub version, which is what dependents need.
+	const prerequisiteSatisfied = (route: RouteResult): boolean => {
+		if (['eligible', 'already-at-target'].includes(route.status)) {
+			return true;
+		}
+		const blockers = findings.filter(finding => finding.blocking && finding.families.includes(route.family));
+		return blockers.length > 0 && blockers.every(finding => finding.code === 'release-mapping-unapproved');
+	};
 	// An unresolved prerequisite is inherited by every selected downstream route.
 	for (let pass = 0; pass < routes.length; pass++) {
 		for (const result of active) {
 			for (const dependency of ROUTES.find(route => route.family === result.family)!.prerequisites) {
 				const prerequisite = routes.find(route => route.family === dependency);
-				if (prerequisite && !['eligible', 'already-at-target'].includes(prerequisite.status)
+				if (prerequisite && !prerequisiteSatisfied(prerequisite)
 					&& !findings.some(finding => finding.id === `${result.family}.blocked-by-${dependency}`)) {
 					addFinding(result.family, `blocked-by-${dependency}`,
 						`${FAMILY_NAMES[dependency]} still needs review, and this product depends on it.`,
