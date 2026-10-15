@@ -524,7 +524,24 @@ test('customer Markdown lists named customizations per Microsoft solution with l
 		solutionTables: 5,
 		checkedSolutionTables: 5,
 	};
+	input.discovery.dependencies = {
+		checkedComponents: 2,
+		dependentReferences: 9,
+		scope: 'named-customizations',
+		candidateComponents: 3,
+		components: [
+			{ type: 2, objectId: '21212121-2121-4121-8121-212121212121', dependents: 2, complete: true },
+			{ type: 60, objectId: '23232323-2323-4323-8323-232323232323', dependents: 5, complete: false },
+		],
+		truncated: true,
+	};
 	const result = assess(input, { now: NOW });
+	const dependentsMarkdown = renderMarkdown(result);
+	assert.ok(dependentsMarkdown.includes('| Unmanaged change in this environment | 2 |'));
+	assert.ok(dependentsMarkdown.includes('| Managed solution PartnerManaged (PartnerPublisher) | At least 5 |'));
+	assert.ok(dependentsMarkdown.includes('; related table: Donor Event | Relationship | Added | Unmanaged change in this environment; also in CustomerCustom | Not checked |'));
+	assert.ok(dependentsMarkdown.includes('| Customizations checked for dependencies | 2 of 3 |'));
+	assert.ok(dependentsMarkdown.includes('| Components that use them | 7 |'));
 	const cdm = result.routes.find(route => route.family === 'cdm')!;
 	const vm = result.routes.find(route => route.family === 'vm')!;
 	assert.equal(cdm.complexity.level, 'moderate');
@@ -539,7 +556,7 @@ test('customer Markdown lists named customizations per Microsoft solution with l
 	assert.ok(markdown.indexOf('## Customizations in Microsoft nonprofit solutions') < markdown.indexOf('## Custom and partner solutions'));
 	assert.ok(markdown.includes('**Coverage:** Checked 90 of 90 nonprofit tables for unmanaged changes and 5 of 5 tables extended by custom or partner solutions.'));
 	assert.ok(markdown.includes('**Summary:** 3 customizations: 2 added, 1 changed.'));
-	assert.ok(markdown.includes('| Transaction (msnfp&#95;transaction) | Legacy Receipt Number (cnto&#95;legacyreceiptnumber) | Column | Added | Unmanaged change in this environment | Not checked |'));
+	assert.ok(markdown.includes('| Transaction (msnfp&#95;transaction) | Legacy Receipt Number (cnto&#95;legacyreceiptnumber) | Column | Added | Unmanaged change in this environment | 2 |'));
 	assert.ok(markdown.includes('| Form | Changed | Managed solution PartnerManaged (PartnerPublisher) |'));
 	assert.ok(markdown.includes('related table: Donor Event | Relationship | Added | Unmanaged change in this environment; also in CustomerCustom |'));
 	assert.ok(markdown.includes('Transaction &#60;main&#62;'));
@@ -690,7 +707,7 @@ test('rubric rates automation on Volunteer Management tables heavy because the t
 	assert.equal(cdm.complexity.level, 'moderate');
 	assert.equal(cdm.effortBand, 'medium');
 	const markdown = renderMarkdown(result);
-	assert.ok(markdown.includes('| Participation | Contoso: audit Participation status change (Update, post-operation, asynchronous) | Plug-in step | Added | Unmanaged change in this environment | Not checked |'));
+	assert.ok(markdown.includes('| Participation | Contoso: audit Participation status change (Update, post-operation, asynchronous) | Plug-in step | Added | Unmanaged change in this environment | Not applicable |'));
 	assert.ok(markdown.includes('Legacy Volunteer Management must be replaced by a different GitHub solution. Heavy because of 1 custom relationship or automation uses tables that this migration replaces and must be rebuilt. 1 plug-in step registered directly in this environment on Participation.'));
 });
 

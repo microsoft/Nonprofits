@@ -346,9 +346,20 @@ function layerCoverage(report: Assessment): string {
 		: coverage;
 }
 
+function dependentsCell(report: Assessment, objectId: string, edgeCounts: Map<string, number>): string {
+	const id = objectId.toLowerCase();
+	const counted = report.discoverySummary.dependencies?.components;
+	if (counted) {
+		const entry = counted.find(item => item.objectId.toLowerCase() === id);
+		return !entry ? 'Not checked' : entry.complete ? String(entry.dependents) : `At least ${entry.dependents}`;
+	}
+	// Older inventories only checked components shared with custom or partner solutions.
+	const checked = (report.discoverySummary.components?.customizationComponents ?? [])
+		.some(item => item.objectId.toLowerCase() === id);
+	return checked ? String(edgeCounts.get(id) ?? 0) : 'Not checked';
+}
+
 function layerCustomizationSection(report: Assessment, dependencyCounts: Map<string, number>): string[] {
-	const component = report.discoverySummary.components!;
-	const checked = new Set((component.customizationComponents ?? []).map(item => item.objectId.toLowerCase()));
 	const families = report.routes
 		.filter(route => route.status !== 'not-installed')
 		.map(route => route.family);
@@ -379,9 +390,7 @@ function layerCustomizationSection(report: Assessment, dependencyCounts: Map<str
 					singularComponentType(item.type),
 					layerChange(item),
 					layerLocation(report, item),
-					checked.has(item.objectId.toLowerCase())
-						? String(dependencyCounts.get(item.objectId.toLowerCase()) ?? 0)
-						: 'Not checked',
+					dependentsCell(report, item.objectId, dependencyCounts),
 				],
 			})),
 			...familyAutomations(report, family).map(item => ({
@@ -393,7 +402,7 @@ function layerCustomizationSection(report: Assessment, dependencyCounts: Map<str
 					item.kind === 'plugin-step' ? 'Plug-in step' : item.kind === 'cloud-flow' ? 'Cloud flow' : text(item.detail),
 					'Added',
 					automationLocation(report, item),
-					'Not checked',
+					'Not applicable',
 				],
 			})),
 		].sort((left, right) => left.sort.localeCompare(right.sort, 'en'));
@@ -712,16 +721,20 @@ export function renderMarkdown(report: Assessment): string {
 		...(dependency ? [
 			'| Check | Result | What it means |',
 			'| --- | --- | --- |',
-			...(dependency.scope === 'direct-customization-overlaps' ? [
+			...(dependency.scope === 'named-customizations' ? [
+				`| Customizations checked for dependencies | ${dependency.checkedComponents} of ${dependency.candidateComponents ?? dependency.checkedComponents} | Each listed customization is checked, up to 150 |`,
+				`| Components that use them | ${(dependency.components ?? []).reduce((total, item) => total + item.dependents, 0)} | For example, forms or views that show a custom column; each customization's count is in the Dependents found column |`,
+			] : dependency.scope === 'direct-customization-overlaps' ? [
 				`| Components changed by custom or partner solutions | ${dependency.candidateComponents ?? 'Not available'} | Nonprofit solution components that a custom or partner solution also changes |`,
 				`| Components checked for dependencies | ${dependency.checkedComponents} | Only these components were checked |`,
+				`| References found | ${dependency.dependentReferences} | Other components that use the checked components; the same component can be counted more than once |`,
 			] : [
 				`| Components checked for dependencies | ${dependency.checkedComponents} | A fixed sample of nonprofit solution components |`,
+				`| References found | ${dependency.dependentReferences} | Other components that use the checked components; the same component can be counted more than once |`,
 			]),
-			`| References found | ${dependency.dependentReferences} | Other components that use the checked components; the same component can be counted more than once |`,
-			`| Completeness | ${dependency.truncated ? 'Partial — a safety limit was reached' : dependency.scope === 'direct-customization-overlaps' ? 'All changed components were checked' : 'The sample was checked'} | ${dependency.truncated ? 'Some changed components weren\'t checked' : 'Code, flows, or external systems can still depend on components without Dataverse recording it'} |`,
+			`| Completeness | ${dependency.truncated ? 'Partial — a safety limit was reached' : dependency.scope === 'named-customizations' ? 'All listed customizations were checked' : dependency.scope === 'direct-customization-overlaps' ? 'All changed components were checked' : 'The sample was checked'} | ${dependency.truncated ? 'Some components weren\'t fully checked' : 'Code, flows, or external systems can still depend on components without Dataverse recording it'} |`,
 			'',
-			'> The detailed JSON file lists each dependency and component ID. This report shows totals per component.',
+			'> The detailed JSON file lists each dependency and component ID.',
 		] : ['Dependency details weren\'t available.']),
 		'',
 		'### Automation and data in scope',

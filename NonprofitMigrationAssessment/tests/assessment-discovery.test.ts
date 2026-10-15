@@ -256,39 +256,19 @@ test('detailed discovery summarizes approved environment metadata without record
 		truncated: false,
 	});
 	assert.deepEqual(result.dependencies, {
-		checkedComponents: 4,
-		dependentReferences: 4,
-		scope: 'direct-customization-overlaps',
-		candidateComponents: 4,
+		checkedComponents: 2,
+		dependentReferences: 2,
+		scope: 'named-customizations',
+		candidateComponents: 2,
+		components: [
+			{ type: 1, objectId: TABLE_ID, dependents: 1, complete: true },
+			{ type: 91, objectId: PLUGIN_ASSEMBLY_ID, dependents: 1, complete: true },
+		],
 		edges: [{
 			requiredComponent: {
 				type: 1,
 				objectId: TABLE_ID,
 				name: 'msnfp_synthetictable',
-			},
-			dependentComponent: {
-				type: 10,
-				objectId: DEPENDENT_ID,
-				name: null,
-			},
-			dependencyType: 2,
-		}, {
-			requiredComponent: {
-				type: 29,
-				objectId: WORKFLOW_ID,
-				name: 'Component type 29 (66666666)',
-			},
-			dependentComponent: {
-				type: 10,
-				objectId: DEPENDENT_ID,
-				name: null,
-			},
-			dependencyType: 2,
-		}, {
-			requiredComponent: {
-				type: 61,
-				objectId: WEBRESOURCE_ID,
-				name: 'Component type 61 (44444444)',
 			},
 			dependentComponent: {
 				type: 10,
@@ -327,7 +307,7 @@ test('detailed discovery summarizes approved environment metadata without record
 	assert.ok(allCategories().every(category =>
 		result.evidence.find(item => item.id === category)?.status === 'observed'));
 	assert.ok(!JSON.stringify(result).includes('forbidden'));
-	assert.ok(calls.length >= 13);
+	assert.ok(calls.length >= 11);
 	assert.equal(calls.some(call => /\/(workflows|connectionreferences|pluginassemblies|sdkmessageprocessingsteps)\?/.test(call)), false);
 });
 
@@ -581,6 +561,42 @@ test('partner solutions that layer a nonprofit table definition keep a table-lev
 	const tableRows = result.components?.layerCustomizations?.filter(item => item.type === 1)
 		.map(item => [item.table, item.layer, item.solutions.join(), item.change]);
 	assert.deepEqual(tableRows, [['msnfp_synthetictable', 'managed-solution', 'PartnerManaged', 'modified']]);
+});
+
+test('table definition changes on shared Dataverse tables aren\'t listed as nonprofit customizations', async () => {
+	const result = await collectAssessmentDetails(baseDiscovery(), {
+		environmentUrl: ORIGIN,
+		consent: true,
+		categories: ['solutions', 'components'],
+		relevantSolutionNames: ['NonprofitCore'],
+		getToken: async () => TOKEN,
+		fetch: async input => {
+			const url = new URL(String(input));
+			const filter = url.searchParams.get('$filter') ?? '';
+			if (url.pathname.endsWith('/solutioncomponents')) {
+				return Response.json({ value: filter.includes(RELEVANT_ID)
+					? [{ componenttype: 1, objectid: TABLE_ID, rootcomponentbehavior: 0 }, { componenttype: 1, objectid: CONTACT_ID, rootcomponentbehavior: 2 }]
+					: filter.includes(PARTNER_ID)
+						? [{ componenttype: 1, objectid: CONTACT_ID, rootcomponentbehavior: 1 }]
+						: [] });
+			}
+			if (url.pathname.includes('EntityDefinitions')) {
+				return Response.json({ LogicalName: 'contact' });
+			}
+			if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries')) {
+				return Response.json({ value: filter === `msdyn_solutionid eq ${RELEVANT_ID}`
+					? [
+						summaryRow(1, TABLE_ID, 'msnfp_synthetictable', 'Synthetic Table', { custom: true }),
+						summaryRow(1, CONTACT_ID, 'contact', 'Contact', { custom: false, active: true }),
+					]
+					: [] });
+			}
+			return Response.json({}, { status: 404 });
+		},
+	});
+	assert.equal(result.components?.layerScan?.status, 'complete');
+	assert.deepEqual(result.components?.layerCustomizations, []);
+	assert.ok(result.components?.customizationComponents?.some(item => item.objectId === CONTACT_ID));
 });
 
 test('unavailable layer details keep overlap evidence and mark components partial', async () => {

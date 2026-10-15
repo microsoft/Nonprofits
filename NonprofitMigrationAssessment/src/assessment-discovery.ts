@@ -14,6 +14,7 @@ const MAX_REQUESTS = 800;
 const MAX_RELEVANT_SOLUTIONS = 12;
 const MAX_UNMANAGED_SOLUTIONS = 20;
 const MAX_DEPENDENCY_COMPONENTS = 100;
+const MAX_DEPENDENCY_LOOKUPS = 150;
 const MAX_DEPENDENCY_EDGES = 2_000;
 const MAX_COUNT_TABLES = 50;
 const COUNT_TABLE_CHUNK = 50;
@@ -423,6 +424,7 @@ async function collectComponents(
 	integrations: { componenttype: number; objectid: string | null }[];
 	integrationSolutions: number;
 	dependencyCandidates: { componenttype: number; objectid: string; name: string }[];
+	dependencyScope: 'direct-customization-overlaps' | 'named-customizations';
 	tableProducts: Map<string, Set<string>>;
 	nonprofitTables: NonprofitTable[];
 	tablesKnown: boolean;
@@ -627,11 +629,19 @@ async function collectComponents(
 		relevant,
 		integrations: [...integrationComponents.values()],
 		integrationSolutions: relevantSolutions.length + overlappingCandidateSolutions,
-		dependencyCandidates: customizationComponents.map(component => ({
-			componenttype: component.type,
-			objectid: component.objectId,
-			name: component.name,
-		})),
+		// With named layer evidence, every listed customization gets an exact dependent count.
+		dependencyCandidates: layers.scan.status !== 'unavailable'
+			? layers.items.map(item => ({
+				componenttype: item.type,
+				objectid: item.objectId,
+				name: item.displayName ?? item.name,
+			}))
+			: customizationComponents.map(component => ({
+				componenttype: component.type,
+				objectid: component.objectId,
+				name: component.name,
+			})),
+		dependencyScope: layers.scan.status !== 'unavailable' ? 'named-customizations' : 'direct-customization-overlaps',
 		tableProducts,
 		nonprofitTables: layers.tables,
 		tablesKnown: layers.scan.status !== 'unavailable',
@@ -740,7 +750,8 @@ async function collectLayerCustomizations(
 				table.products.add(product.uniqueName);
 				tables.set(row.msdyn_name, table);
 			}
-			if (row.msdyn_hasactivecustomization && !TABLE_CHILD_TYPES.includes(row.msdyn_componenttype)) {
+			if (row.msdyn_hasactivecustomization && !TABLE_CHILD_TYPES.includes(row.msdyn_componenttype)
+				&& !(isTable && !row.msdyn_iscustom)) {
 				add({
 					productUniqueNames: [product.uniqueName],
 					table: isTable ? row.msdyn_name : null,
@@ -912,6 +923,10 @@ async function collectLayerCustomizations(
 				continue;
 			}
 			// Solutions often include a table only as a shell for their columns, forms, and views, which the scans above list.
+			// Table definitions of shared Dataverse tables such as Account and Contact aren't nonprofit components.
+			if (scannedTable && !tables.get(scannedTable)!.custom) {
+				continue;
+			}
 			if (scannedTable) {
 				const covered = candidate.managed
 					? candidate.tableBehaviors.get(overlap.objectId.toLowerCase()) === 2
@@ -1139,42 +1154,46 @@ async function collectAutomations(
 async function collectDependencies(
 	context: RequestContext,
 	components: { componenttype: number; objectid: string; name: string }[],
+	scope: 'direct-customization-overlaps' | 'named-customizations',
 ): Promise<z.infer<typeof DependencySummarySchema>> {
 	const distinct = [...new Map(components
-		.map(item => [`${item.componenttype}:${item.objectid}`, item])).values()]
+		.map(item => [componentKey(item.componenttype, item.objectid), item])).values()]
 		.sort((left, right) => left.componenttype - right.componenttype
 			|| left.objectid.localeCompare(right.objectid, 'en'));
 	const componentNames = new Map(distinct.map(item =>
-		[`${item.componenttype}:${item.objectid}`, item.name]));
-	const candidates = distinct.slice(0, MAX_DEPENDENCY_COMPONENTS);
+		[componentKey(item.componenttype, item.objectid), item.name]));
+	const candidates = distinct.slice(0, MAX_DEPENDENCY_LOOKUPS);
 	let dependentReferences = 0;
 	let truncated = distinct.length > candidates.length;
 	const edges: z.infer<typeof DependencySummarySchema>['edges'] = [];
+	const counts: NonNullable<z.infer<typeof DependencySummarySchema>['components']> = [];
 	for (const component of candidates) {
 		const parsed = DependencyPageSchema.parse(await getJson(context,
 			apiUrl(context.origin,
 				`RetrieveDependentComponents(ObjectId=${component.objectid},ComponentType=${component.componenttype})`)));
 		dependentReferences += parsed.value.length;
-		truncated ||= parsed['@odata.nextLink'] !== undefined;
-		for (const edge of parsed.value) {
-			if (edges.length >= MAX_DEPENDENCY_EDGES) {
-				truncated = true;
-				break;
-			}
+		const complete = parsed['@odata.nextLink'] === undefined;
+		truncated ||= !complete;
+		counts.push({
+			type: component.componenttype,
+			objectId: component.objectid,
+			dependents: new Set(parsed.value.map(edge =>
+				componentKey(edge.dependentcomponenttype, edge.dependentcomponentobjectid))).size,
+			complete,
+		});
+		// The edge list in the detailed JSON is capped; per-component counts above stay exact.
+		for (const edge of parsed.value.slice(0, Math.max(MAX_DEPENDENCY_EDGES - edges.length, 0))) {
 			edges.push({
 				requiredComponent: {
 					type: edge.requiredcomponenttype,
 					objectId: edge.requiredcomponentobjectid,
-					name: componentNames.get(
-						`${edge.requiredcomponenttype}:${edge.requiredcomponentobjectid}`,
-					) ?? fallbackComponentName(edge.requiredcomponenttype, edge.requiredcomponentobjectid),
+					name: componentNames.get(componentKey(edge.requiredcomponenttype, edge.requiredcomponentobjectid))
+						?? fallbackComponentName(edge.requiredcomponenttype, edge.requiredcomponentobjectid),
 				},
 				dependentComponent: {
 					type: edge.dependentcomponenttype,
 					objectId: edge.dependentcomponentobjectid,
-					name: componentNames.get(
-						`${edge.dependentcomponenttype}:${edge.dependentcomponentobjectid}`,
-					) ?? null,
+					name: componentNames.get(componentKey(edge.dependentcomponenttype, edge.dependentcomponentobjectid)) ?? null,
 				},
 				dependencyType: edge.dependencytype,
 			});
@@ -1183,8 +1202,9 @@ async function collectDependencies(
 	return DependencySummarySchema.parse({
 		checkedComponents: candidates.length,
 		dependentReferences,
-		scope: 'direct-customization-overlaps',
+		scope,
 		candidateComponents: distinct.length,
+		components: counts,
 		edges,
 		truncated,
 	});
@@ -1398,8 +1418,9 @@ export async function collectAssessmentDetails(
 				if (!componentData) {
 					throw new RequestFailure('No relevant solution component evidence was available.', 'not-applicable');
 				}
-				result.dependencies = await collectDependencies(context, componentData.dependencyCandidates);
-			}, 'Dependencies were inspected for components directly shared by selected products and customization solutions.');
+				result.dependencies = await collectDependencies(context, componentData.dependencyCandidates,
+					componentData.dependencyScope);
+			}, 'Dependencies were checked for the listed customizations.');
 			if (result.dependencies?.truncated) {
 				replaceEvidence(result.evidence, evidence('dependencies', 'partial', result.collectedAt,
 					'A safety limit was reached before every changed component could be checked for dependencies.',

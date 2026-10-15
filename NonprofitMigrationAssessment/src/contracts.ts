@@ -125,8 +125,14 @@ export const ComponentSummarySchema = z.strictObject({
 export const DependencySummarySchema = z.strictObject({
 	checkedComponents: CountMetricSchema,
 	dependentReferences: CountMetricSchema,
-	scope: z.literal('direct-customization-overlaps').optional(),
+	scope: z.enum(['direct-customization-overlaps', 'named-customizations']).optional(),
 	candidateComponents: CountMetricSchema.optional(),
+	components: z.array(z.strictObject({
+		type: z.number().int().nonnegative(),
+		objectId: GuidSchema,
+		dependents: CountMetricSchema,
+		complete: z.boolean(),
+	})).max(1_000).optional(),
 	edges: z.array(z.strictObject({
 		requiredComponent: z.strictObject({
 			type: z.number().int().nonnegative(),
