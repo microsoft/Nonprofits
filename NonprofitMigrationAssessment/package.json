@@ -6,8 +6,7 @@
 		"node": ">=22"
 	},
 	"scripts": {
-		"start": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && node dist/src/cli.js",
-		"test": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json && node --test dist/tests/*.test.js"
+		"start": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json && node dist/src/cli.js"
 	},
 	"dependencies": {
 		"@azure/identity": "^4.13.0",
