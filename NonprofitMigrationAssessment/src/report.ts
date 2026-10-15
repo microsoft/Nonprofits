@@ -319,7 +319,9 @@ function familyAutomations(report: Assessment, family: Family): Automation[] {
 
 function automationLocation(report: Assessment, item: Automation): string {
 	if (item.layer === 'active') {
-		return 'Unmanaged change in this environment';
+		return item.alsoIn?.length
+			? `Unmanaged change in this environment; also in ${item.alsoIn.map(text).join(', ')}`
+			: 'Unmanaged change in this environment';
 	}
 	if (!item.solution) {
 		return 'Solution not identified';
@@ -344,6 +346,32 @@ function layerCoverage(report: Assessment): string {
 	return scan.status === 'partial' || automation?.status === 'partial'
 		? `${coverage} Some checks did not complete or reached a safety limit, so more changes may exist.`
 		: coverage;
+}
+
+// Product counts for a custom or partner solution, from the same named customizations as the per-product tables.
+function solutionChanges(report: Assessment, solution: string): Array<{ product: string; count: number }> | null {
+	if (!report.discoverySummary.components?.layerScan) {
+		return null;
+	}
+	const counts = new Map<string, number>();
+	const add = (products: string[]): void => {
+		for (const product of new Set(products.map(productName))) {
+			counts.set(product, (counts.get(product) ?? 0) + 1);
+		}
+	};
+	for (const item of report.discoverySummary.components.layerCustomizations ?? []) {
+		if (item.layer === 'managed-solution' ? item.solutions[0] === solution : item.solutions.includes(solution)) {
+			add(item.productUniqueNames);
+		}
+	}
+	for (const item of report.discoverySummary.integrations?.automations ?? []) {
+		if (item.solution === solution || item.alsoIn?.includes(solution)) {
+			add(item.productUniqueNames);
+		}
+	}
+	return [...counts.entries()]
+		.map(([product, count]) => ({ product, count }))
+		.sort((left, right) => left.product.localeCompare(right.product, 'en'));
 }
 
 function dependentsCell(report: Assessment, objectId: string, edgeCounts: Map<string, number>): string {
@@ -667,15 +695,21 @@ export function renderMarkdown(report: Assessment): string {
 		...(!solutionInventoryAvailable
 			? ['Custom and partner solutions can\'t be listed because the installed solutions couldn\'t be read.']
 			: customizationCandidates.length ? [
-			`**Summary:** ${plural(customizationCandidates.length, 'custom or partner solution')}; ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => item.overlaps.length > 0).length} change nonprofit solution components.`,
+			`**Summary:** ${plural(customizationCandidates.length, 'custom or partner solution')}; ${customizationCandidates.filter(item => !item.managed).length} unmanaged; ${customizationCandidates.filter(item => {
+				const changes = solutionChanges(report, item.uniqueName);
+				return changes ? changes.length > 0 : item.overlaps.length > 0;
+			}).length} change nonprofit solution components.`,
 			'',
 			'| Solution | Type | Publisher | Components | Component details | Nonprofit products it changes | Why review it? |',
 			'| --- | --- | --- | --- | --- | --- | --- |',
 			...customizationCandidates.map(item => {
-				const affects = item.overlaps.length
-					? item.overlaps.map(overlap => `${text(productName(overlap.productUniqueName))} (${overlap.componentCount})`).join(', ')
-					: 'None directly';
-				const review = item.overlaps.length
+				const changes = solutionChanges(report, item.uniqueName);
+				const affects = changes
+					? changes.length ? changes.map(entry => `${text(entry.product)} (${entry.count})`).join(', ') : 'None directly'
+					: item.overlaps.length
+						? item.overlaps.map(overlap => `${text(productName(overlap.productUniqueName))} (${overlap.componentCount})`).join(', ')
+						: 'None directly';
+				const review = (changes ? changes.length : item.overlaps.length)
 					? 'It changes nonprofit components; test it and plan the order in which solutions are imported'
 					: 'It doesn\'t change nonprofit components directly; check whether its code or flows use them';
 				return `| ${text(item.uniqueName)} | ${item.managed ? 'Managed' : 'Unmanaged'} | ${text(item.publisher)} | ${item.componentCount} | ${componentBreakdown(item.componentTypes, item.componentCount)} | ${affects} | ${review} |`;

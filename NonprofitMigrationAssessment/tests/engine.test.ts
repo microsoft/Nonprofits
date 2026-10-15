@@ -772,3 +772,51 @@ test('customer Markdown uses plain language in every report scenario', () => {
 		assert.equal(line, undefined, `${name}: ${line}`);
 	}
 });
+
+test('rating reasons and solution counts show every partner solution consistently', () => {
+	const input = inventory(['cdm']);
+	input.questionnaire.answers[0]!.intent = 'confirm-alignment';
+	input.discovery.solutions[0]!.version = '3.1.3.4';
+	input.questionnaire.target.solutions[0]!.version = '3.1.3.4';
+	observeComponents(input, 0);
+	const id = (index: number) => `40404040-4040-4040-8040-${String(index).padStart(12, '0')}`;
+	const active = (type: number, count: number, offset: number) => Array.from({ length: count }, (_, index) => layerItem('NonprofitCore', {
+		type, objectId: id(offset + index), name: `item${offset + index}`, displayName: `Item ${offset + index}`,
+		change: type === 2 ? 'added' : 'modified', solutions: ['LocalWork'],
+	}));
+	input.discovery.components!.layerCustomizations = [
+		...active(2, 6, 0), ...active(60, 5, 10), ...active(26, 4, 20), ...active(10, 3, 30),
+		layerItem('NonprofitCore', {
+			type: 26, objectId: id(40), name: 'Memberships by Tier', displayName: 'Memberships by Tier',
+			table: 'msnfp_membership', tableDisplayName: 'Membership', layer: 'managed-solution', solutions: ['NewPartner'],
+		}),
+	];
+	input.discovery.components!.layerScan = {
+		status: 'complete', productTables: 5, checkedTables: 5, solutionTables: 1, checkedSolutionTables: 1,
+	};
+	input.discovery.components!.customizationCandidates = [
+		{ uniqueName: 'NewPartner', managed: true, publisher: 'Partner', componentCount: 3, componentTypes: [], overlaps: [{ productUniqueName: 'NonprofitCore', componentCount: 1 }] },
+		{ uniqueName: 'LocalWork', managed: false, publisher: 'Customer', componentCount: 20, componentTypes: [], overlaps: [] },
+	];
+	input.discovery.integrations = {
+		workflows: 0, connectionReferences: 0, pluginAssemblies: 0, pluginSteps: 0,
+		automations: [{
+			kind: 'plugin-step', name: 'Local step', detail: 'Create, pre-operation, synchronous',
+			tables: ['msnfp_transaction'], tableDisplayNames: ['Transaction'], productUniqueNames: ['NonprofitCore'],
+			layer: 'active', solution: null, alsoIn: ['LocalWork'], enabled: true,
+		}],
+		automationScan: { status: 'complete', tables: 5, cloudFlows: 0, checkedCloudFlows: 0 },
+		truncated: false,
+	};
+	const result = assess(input, { now: NOW });
+	const reasons = result.routes[0]!.complexity.reasons;
+	assert.ok(reasons.includes('1 view added by NewPartner on Membership.'), reasons.join(' | '));
+	assert.equal(reasons.filter(reason => / (added|changed|registered) /.test(reason)).length, 4);
+	const markdown = renderMarkdown(result);
+	assert.ok(markdown.includes('| NewPartner | Managed | Partner | 3 |'));
+	assert.ok(markdown.includes('| CDM for Nonprofits (1) | It changes nonprofit components;'));
+	assert.ok(markdown.includes('| LocalWork | Unmanaged | Customer | 20 |'));
+	assert.ok(markdown.includes('| CDM for Nonprofits (19) | It changes nonprofit components;'));
+	assert.ok(markdown.includes('**Summary:** 2 custom or partner solutions; 1 unmanaged; 2 change nonprofit solution components.'));
+	assert.ok(markdown.includes('| Local step (Create, pre-operation, synchronous) | Plug-in step | Added | Unmanaged change in this environment; also in LocalWork |'));
+});

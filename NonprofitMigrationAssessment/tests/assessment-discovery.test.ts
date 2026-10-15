@@ -642,6 +642,7 @@ const PLATFORM_FLOW_ID = '29292929-2929-4929-8929-292929292929';
 const RULE_ID = '30303030-3030-4030-8030-303030303030';
 const PRODUCT_PROCESS_ID = '31313131-3131-4131-8131-313131313131';
 const PRODUCT_STEP_ID = '35353535-3535-4535-8535-353535353535';
+const CUSTOMER_STEP_ID = '36363636-3636-4636-8636-363636363636';
 
 test('automation discovery names customer plug-in steps, processes, and cloud flows on nonprofit tables', async () => {
 	const discovery = baseDiscovery();
@@ -687,7 +688,7 @@ test('automation discovery names customer plug-in steps, processes, and cloud fl
 						{ componenttype: 92, objectid: PRODUCT_STEP_ID },
 						{ componenttype: 29, objectid: PRODUCT_PROCESS_ID },
 					]
-					: [] });
+					: filter.includes(CUSTOM_ID) ? [{ componenttype: 92, objectid: CUSTOMER_STEP_ID }] : [] });
 			}
 			if (url.pathname.endsWith('/msdyn_solutioncomponentsummaries')) {
 				return Response.json({ value: filter === `msdyn_solutionid eq ${RELEVANT_ID}`
@@ -697,7 +698,7 @@ test('automation discovery names customer plug-in steps, processes, and cloud fl
 			if (url.pathname.endsWith('/sdkmessageprocessingsteps')) {
 				assert.match(filter, /^ishidden\/Value eq false and \(sdkmessagefilterid\/primaryobjecttypecode eq 'msnfp_synthetictable'\)$/);
 				return Response.json({ value: [
-					step('Customer: default campaign', ACTIVE_SOLUTION_ID, 'msnfp_synthetictable'),
+					step('Customer: default campaign', ACTIVE_SOLUTION_ID, 'msnfp_synthetictable', { sdkmessageprocessingstepid: CUSTOMER_STEP_ID }),
 					step('Product step', RELEVANT_ID, 'msnfp_synthetictable'),
 					step('Edited product step', ACTIVE_SOLUTION_ID, 'msnfp_synthetictable', { sdkmessageprocessingstepid: PRODUCT_STEP_ID }),
 					step('Partner audit', PARTNER_ID, 'msnfp_synthetictable', { stage: 40, mode: 1, statecode: 1 }),
@@ -740,6 +741,7 @@ test('automation discovery names customer plug-in steps, processes, and cloud fl
 		['plugin-step', 'Partner audit', 'Create, post-operation, asynchronous', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'managed-solution', 'PartnerManaged', false],
 		['process', 'Require amount', 'Business rule', 'msnfp_synthetictable', 'Synthetic Table', 'NonprofitCore', 'active', null, true],
 	]);
+	assert.deepEqual(result.integrations?.automations?.map(item => item.alsoIn ?? []), [[], ['CustomerCustom'], [], []]);
 	assert.equal(result.evidence.find(item => item.id === 'integrations')?.status, 'observed');
 	assert.deepEqual(result.counts, {
 		tables: [{ logicalName: 'msnfp_synthetictable', count: 7, accuracy: 'snapshot-within-24-hours', products: ['NonprofitCore'] }],

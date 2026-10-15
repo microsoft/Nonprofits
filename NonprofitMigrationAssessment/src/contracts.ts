@@ -164,6 +164,7 @@ export const IntegrationSummarySchema = z.strictObject({
 		productUniqueNames: z.array(IdentifierSchema).min(1),
 		layer: z.enum(['active', 'managed-solution']),
 		solution: IdentifierSchema.nullable(),
+		alsoIn: z.array(IdentifierSchema).optional(),
 		enabled: z.boolean().nullable(),
 	})).max(500).optional(),
 	automationScan: z.strictObject({

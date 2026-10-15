@@ -17,6 +17,7 @@ export function plural(count: number, singular: string, pluralForm = `${singular
 	return `${count} ${count === 1 ? singular : pluralForm}`;
 }
 const MAX_REASON_GROUPS = 4;
+const MAX_SOURCE_GROUPS = 8;
 const COMPONENT_NOUNS: Record<number, [string, string]> = {
 	1: ['table definition', 'table definitions'],
 	2: ['column', 'columns'],
@@ -86,11 +87,26 @@ export function customizationReasons(evidence: FamilyEvidence): string[] {
 			AUTOMATION_NOUNS[automation.kind], 'registered', location(automation.layer, automation.solution),
 			automation.tableDisplayNames);
 	}
-	const sentences = [...groups.values()]
-		.sort((left, right) => right.count - left.count || left.noun[0].localeCompare(right.noun[0], 'en'))
+	const ordered = [...groups.values()]
+		.sort((left, right) => right.count - left.count || left.noun[0].localeCompare(right.noun[0], 'en'));
+	// Every solution (and direct environment changes) keeps its largest group, so a new partner solution is never hidden.
+	const selected = new Set<typeof ordered[number]>();
+	for (const group of ordered) {
+		if (selected.size < MAX_SOURCE_GROUPS && ![...selected].some(item => item.where === group.where)) {
+			selected.add(group);
+		}
+	}
+	for (const group of ordered) {
+		if (selected.size >= MAX_REASON_GROUPS) {
+			break;
+		}
+		selected.add(group);
+	}
+	const sentences = ordered.filter(group => selected.has(group))
 		.map(group => `${group.count} ${group.noun[group.count === 1 ? 0 : 1]} ${group.verb} ${group.where}${group.tables.length ? ` on ${tableList(group.tables)}` : ''}.`);
-	return sentences.length > MAX_REASON_GROUPS
-		? [...sentences.slice(0, MAX_REASON_GROUPS), `${plural(sentences.length - MAX_REASON_GROUPS, 'more group is', 'more groups are')} listed in Customizations in Microsoft nonprofit solutions.`]
+	const hidden = ordered.length - sentences.length;
+	return hidden > 0
+		? [...sentences, `${plural(hidden, 'more group is', 'more groups are')} listed in Customizations in Microsoft nonprofit solutions.`]
 		: sentences;
 }
 

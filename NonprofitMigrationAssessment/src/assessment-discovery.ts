@@ -430,6 +430,7 @@ async function collectComponents(
 	tablesKnown: boolean;
 	microsoftSolutions: Set<string>;
 	productComponentKeys: Set<string>;
+	unmanagedSolutions: Array<{ uniqueName: string; keys: Set<string> }>;
 }> {
 	const relevantSolutions = discovery.solutions
 		.filter(solution => relevantNames.has(solution.uniqueName.toLowerCase()) && solution.solutionId);
@@ -647,6 +648,8 @@ async function collectComponents(
 		tablesKnown: layers.scan.status !== 'unavailable',
 		microsoftSolutions,
 		productComponentKeys: new Set([...productKeys.values()].flatMap(keys => [...keys])),
+		unmanagedSolutions: layerCandidates.filter(candidate => !candidate.managed)
+			.map(candidate => ({ uniqueName: candidate.uniqueName, keys: candidate.keys })),
 	};
 }
 
@@ -995,6 +998,7 @@ async function collectAutomations(
 		solutions: Discovery['solutions'];
 		microsoftSolutions: Set<string>;
 		productComponentKeys: Set<string>;
+		unmanagedSolutions: Array<{ uniqueName: string; keys: Set<string> }>;
 	},
 ): Promise<Pick<z.infer<typeof IntegrationSummarySchema>, 'automations' | 'automationScan'>> {
 	type Automation = NonNullable<z.infer<typeof IntegrationSummarySchema>['automations']>[number];
@@ -1030,6 +1034,14 @@ async function collectAutomations(
 			return null;
 		}
 		return { layer: solution.managed ? 'managed-solution' : 'active', solution: solution.uniqueName };
+	};
+	const alsoIn = (layer: Pick<Automation, 'layer'>, key: string | null): Pick<Automation, 'alsoIn'> => {
+		if (layer.layer !== 'active' || !key) {
+			return {};
+		}
+		const names = input.unmanagedSolutions.filter(solution => solution.keys.has(key))
+			.map(solution => solution.uniqueName).sort();
+		return names.length ? { alsoIn: names } : {};
 	};
 	const describeTables = (names: string[]): Pick<Automation, 'tables' | 'tableDisplayNames' | 'productUniqueNames'> => {
 		const matched = [...new Set(names)].sort().flatMap(name => tablesByName.has(name) ? [tablesByName.get(name)!] : []);
@@ -1069,6 +1081,7 @@ async function collectAutomations(
 				detail: `${message}, ${stage}, ${step.mode === 1 ? 'asynchronous' : 'synchronous'}`,
 				...describeTables([tableName]),
 				...layer,
+				...alsoIn(layer, step.sdkmessageprocessingstepid ? componentKey(92, step.sdkmessageprocessingstepid) : null),
 				enabled: step.statecode === null || step.statecode === undefined ? null : step.statecode === 0,
 			});
 		}
@@ -1093,6 +1106,7 @@ async function collectAutomations(
 				detail: PROCESS_CATEGORIES[process.category ?? -1] ?? 'Process',
 				...describeTables([process.primaryentity]),
 				...layer,
+				...alsoIn(layer, componentKey(29, process.workflowid)),
 				enabled: process.statecode === null || process.statecode === undefined ? null : process.statecode === 1,
 			});
 		}
@@ -1124,12 +1138,14 @@ async function collectAutomations(
 					return table ? [table.name] : [];
 				});
 			if (names.length) {
+				const layer = layerOf(flow.solutionid)!;
 				automations.push({
 					kind: 'cloud-flow',
 					name: flow.name ?? 'Unnamed cloud flow',
 					detail: 'Cloud flow',
 					...describeTables(names),
-					...layerOf(flow.solutionid)!,
+					...layer,
+					...alsoIn(layer, componentKey(29, flow.workflowid)),
 					enabled: flow.statecode === null || flow.statecode === undefined ? null : flow.statecode === 1,
 				});
 			}
@@ -1443,6 +1459,7 @@ export async function collectAssessmentDetails(
 						solutions: result.solutions,
 						microsoftSolutions: componentData.microsoftSolutions,
 						productComponentKeys: componentData.productComponentKeys,
+						unmanagedSolutions: componentData.unmanagedSolutions,
 					}),
 				});
 			}, 'Scoped workflow, connection-reference, and plug-in counts were derived, and plug-in steps, processes, and cloud flows registered on nonprofit tables were named.');
