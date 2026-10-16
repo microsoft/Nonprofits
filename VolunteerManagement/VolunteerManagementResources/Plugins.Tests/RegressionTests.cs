@@ -229,6 +229,32 @@ namespace Plugins.Tests
 			service.Verify(s => s.RetrieveMultiple(It.IsAny<QueryBase>()), Times.Never);
 		}
 
+		[Test]
+		public void GroupMembershipPreCreateRequiresContactAndGroup()
+		{
+			var target = new Entity("msnfp_groupmembership", Guid.NewGuid()) { ["msnfp_groupid"] = new EntityReference("msnfp_group", Guid.NewGuid()) };
+			var localization = new Mock<ILocalizationHelper<Labels>>();
+			localization.Setup(l => l.GetLocalizedMessage(It.IsAny<Func<Labels, LocalizationInfoModel>>())).Returns("Contact and Group are required.");
+
+			var sut = new GroupMembershipOnPreCreateStrategy(tracingService.Object, CreateContext("Create", target).Object, CreateServiceProvider(new Mock<IOrganizationService>()).Object, localization.Object);
+
+			Assert.Throws<InvalidPluginExecutionException>(() => sut.Run()).Message.Should().Be("Contact and Group are required.");
+		}
+
+		[Test]
+		public void ParticipationPreCreateRequiresContact()
+		{
+			var target = new Entity("msnfp_participation", Guid.NewGuid()) { ["msnfp_engagementopportunityid"] = new EntityReference("msnfp_engagementopportunity", Guid.NewGuid()) };
+			var localization = new Mock<ILocalizationHelper<Labels>>();
+			localization.Setup(l => l.GetLocalizedMessage(It.IsAny<Func<Labels, LocalizationInfoModel>>())).Returns("A Contact is required.");
+			var service = new Mock<IOrganizationService>();
+
+			var sut = new ParticipationOnPreCreateStrategy(tracingService.Object, CreateContext("Create", target).Object, CreateServiceProvider(service).Object, localization.Object);
+
+			Assert.Throws<InvalidPluginExecutionException>(() => sut.Run()).Message.Should().Be("A Contact is required.");
+			service.Verify(s => s.Retrieve(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ColumnSet>()), Times.Never);
+		}
+
 		private static Mock<IPluginExecutionContext> CreateContext(string messageName, Entity target)
 		{
 			var context = new Mock<IPluginExecutionContext>();
