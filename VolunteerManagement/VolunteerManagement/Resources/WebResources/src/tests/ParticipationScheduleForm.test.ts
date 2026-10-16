@@ -1,40 +1,103 @@
 import { XrmMockGenerator } from 'xrm-mock';
 import { ParticipationScheduleForm } from '../ParticipationScheduleForm';
 
-class XMLHttpRequestMock {
-	status: number;
-	responseText: string;
-
-	constructor() {
-		this.status = 200;
-		this.responseText = '{"_msnfp_engagementopportunityid_value":"888-888-888"}';
-	}
-
-	open(...params: any) {}
-	send(...params: any) {}
-}
+const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
 
 describe('ParticipationScheduleForm', () => {
-	beforeEach(() => {
-		XrmMockGenerator.Attribute.createLookup('msnfp_engagementopportunityscheduleid', { id: '888-888-888', name: 'msnfp_engagementopportunity', entityType: '' });
-		XrmMockGenerator.Attribute.createLookup('msnfp_participationid', { id: '888-888-888', name: 'msnfp_participation', entityType: '' });
+	let retrieveRecordMock: jest.Mock;
+	let xhrOpenSpy: jest.SpyInstance;
 
-		(window as any).XMLHttpRequest = XMLHttpRequestMock;
+	beforeEach(() => {
+		XrmMockGenerator.initialise();
+		XrmMockGenerator.Attribute.createLookup('msnfp_engagementopportunityscheduleid', { id: '{111-111-111}', name: 'msnfp_engagementopportunityschedule', entityType: 'msnfp_engagementopportunityschedule' });
+		XrmMockGenerator.Attribute.createLookup('msnfp_participationid', { id: '{888-888-888}', name: 'msnfp_participation', entityType: 'msnfp_participation' });
+
+		retrieveRecordMock = jest.fn().mockResolvedValue({ _msnfp_engagementopportunityid_value: '999-999-999' });
+		Xrm.WebApi.retrieveRecord = retrieveRecordMock;
+		xhrOpenSpy = jest.spyOn(XMLHttpRequest.prototype, 'open');
 	});
 
-	describe('OnLoad', () => {
-		test('Runs without errors', () => {
-			const participationScheduleForm = new ParticipationScheduleForm();
+	afterEach(() => {
+		xhrOpenSpy.mockRestore();
+	});
 
-			participationScheduleForm.OnLoad(XrmMockGenerator.eventContext);
+	const getScheduleControl = () => XrmMockGenerator.formContext.getControl<Xrm.Controls.LookupControl>('msnfp_engagementopportunityscheduleid') as any;
+
+	describe('OnLoad', () => {
+		test('Reads the engagement opportunity asynchronously via Xrm.WebApi', async () => {
+			const form = new ParticipationScheduleForm();
+
+			form.OnLoad(XrmMockGenerator.eventContext);
+			await flushPromises();
+
+			expect(retrieveRecordMock).toHaveBeenCalledTimes(1);
+			expect(retrieveRecordMock).toHaveBeenCalledWith('msnfp_participation', '888-888-888', '?$select=_msnfp_engagementopportunityid_value');
+			expect(xhrOpenSpy).not.toHaveBeenCalled();
+		});
+
+		test('Registers the pre-search handler only once', () => {
+			const form = new ParticipationScheduleForm();
+
+			form.OnLoad(XrmMockGenerator.eventContext);
+			form.OnLoad(XrmMockGenerator.eventContext);
+
+			const handlers = getScheduleControl().preSearchHandlers.filter((h: unknown) => h === form.OnPreSearchAddFilterSync);
+			expect(handlers).toHaveLength(1);
+		});
+
+		test('Refreshes the cached opportunity when the participation changes', async () => {
+			const form = new ParticipationScheduleForm();
+			form.OnLoad(XrmMockGenerator.eventContext);
+			await flushPromises();
+
+			retrieveRecordMock.mockResolvedValue({ _msnfp_engagementopportunityid_value: '777-777-777' });
+			const participation = XrmMockGenerator.formContext.getAttribute('msnfp_participationid');
+			participation.setValue([{ id: '{555-555-555}', name: 'other', entityType: 'msnfp_participation' }]);
+			participation.fireOnChange();
+			await flushPromises();
+
+			expect(retrieveRecordMock).toHaveBeenLastCalledWith('msnfp_participation', '555-555-555', '?$select=_msnfp_engagementopportunityid_value');
+
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+			expect(getScheduleControl().filters.pop().filter).toContain('value=\'{777-777-777}\'');
 		});
 	});
 
 	describe('OnPreSearchAddFilterSync', () => {
-		test('Runs without errors', () => {
-			const participationScheduleForm = new ParticipationScheduleForm();
+		test('Uses the cached opportunity id and makes no network call', async () => {
+			const form = new ParticipationScheduleForm();
+			form.OnLoad(XrmMockGenerator.eventContext);
+			await flushPromises();
+			retrieveRecordMock.mockClear();
 
-			participationScheduleForm.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+
+			expect(retrieveRecordMock).not.toHaveBeenCalled();
+			expect(xhrOpenSpy).not.toHaveBeenCalled();
+			const filters = getScheduleControl().filters;
+			expect(filters).toHaveLength(1);
+			expect(filters[0].filter).toBe('<filter type=\'and\'><condition attribute=\'msnfp_engagementopportunity\' operator=\'eq\' value=\'{999-999-999}\'/></filter>');
+		});
+
+		test('Adds no filter when the opportunity id is not cached', () => {
+			const form = new ParticipationScheduleForm();
+
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+
+			expect(retrieveRecordMock).not.toHaveBeenCalled();
+			expect(xhrOpenSpy).not.toHaveBeenCalled();
+			expect(getScheduleControl().filters).toHaveLength(0);
+		});
+
+		test('Adds no filter when the retrieve fails', async () => {
+			retrieveRecordMock.mockRejectedValue(new Error('failure'));
+			const form = new ParticipationScheduleForm();
+			form.OnLoad(XrmMockGenerator.eventContext);
+			await flushPromises();
+
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+
+			expect(getScheduleControl().filters).toHaveLength(0);
 		});
 	});
 });
