@@ -90,5 +90,13 @@
 		/// This shift is full. Please choose another shift.
 		/// </summary>
         public LocalizationInfoModel ParticipationSchedule_ShiftFullException { get; set; }
+		/// <summary>
+		/// A Contact is required.
+		/// </summary>
+        public LocalizationInfoModel Participation_Contact_RequiredException { get; set; }
+		/// <summary>
+		/// Contact and Group are required.
+		/// </summary>
+        public LocalizationInfoModel GroupMembership_ContactAndGroup_RequiredException { get; set; }
     }
 }
