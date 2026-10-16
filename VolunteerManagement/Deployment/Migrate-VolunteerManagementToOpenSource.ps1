@@ -44,7 +44,10 @@
     Rewrite the active form/view layers to remove the AppSource PCF control references and publish.
 
 .PARAMETER DeleteAppSourceSolution
-    Delete the AppSource managed solution identified by -AppSourceSolutionUniqueName.
+    Delete the AppSource managed solution identified by -AppSourceSolutionUniqueName. The stage
+    refuses to delete unless the open-source solution 'volunteermanagementos' is installed, the
+    target solution is managed, and its plug-in assemblies are not signed with the open-source
+    key (so it is the AppSource build). Use -Force to override these checks.
 
 .PARAMETER RestoreControls
     Remove the active (unmanaged) layer of every form/view listed in -StateFile so the OS solution
@@ -73,6 +76,10 @@
 .PARAMETER AzCommand
     The Azure CLI executable used to acquire a token when -AccessToken is not supplied.
     Default: 'az'. You may point this at an isolated CLI wrapper for non-default sign-ins.
+
+.PARAMETER Force
+    Delete the solution in -DeleteAppSourceSolution even when its safety checks fail. The
+    open-source solution itself is never deleted. Only use this with a verified backup.
 
 .PARAMETER WhatIf
     Supported on the destructive stages (PATCH / publish / delete) via SupportsShouldProcess.
@@ -109,12 +116,16 @@ param(
     ),
 
     [string]$AccessToken,
-    [string]$AzCommand = 'az'
+    [string]$AzCommand = 'az',
+
+    [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
 $EnvironmentUrl = $EnvironmentUrl.TrimEnd('/')
 $base = "$EnvironmentUrl/api/data/v9.2"
+$OsSolutionUniqueName = 'volunteermanagementos'
+$OsPluginPublicKeyToken = '703f25cc8a15a472'
 
 if (-not ($StripReferences -or $DeleteAppSourceSolution -or $RestoreControls -or $Verify)) {
     Write-Host 'Nothing to do. Specify at least one stage: -StripReferences, -DeleteAppSourceSolution, -RestoreControls, or -Verify.' -ForegroundColor Yellow
@@ -236,8 +247,47 @@ function Invoke-StripReferences {
     }
 }
 
+function Get-SolutionPluginAssemblies {
+    param([Guid]$SolutionId)
+    # componenttype 91 = PluginAssembly
+    $components = Get-AllPages -Url "$base/solutioncomponents?`$select=objectid&`$filter=_solutionid_value eq $SolutionId and componenttype eq 91"
+    foreach ($c in $components) {
+        Invoke-RestMethod -Uri "$base/pluginassemblies($($c.objectid))?`$select=name,publickeytoken" -Headers $headers
+    }
+}
+
+# Returns the reasons why the solution must not be deleted; an empty list means it is safe.
+function Get-DeleteBlockers {
+    param($Solution)
+    $blockers = @()
+
+    $os = (Invoke-RestMethod -Uri "$base/solutions?`$select=solutionid&`$filter=uniquename eq '$OsSolutionUniqueName'" -Headers $headers).value
+    if (-not $os) {
+        $blockers += "The open-source solution '$OsSolutionUniqueName' is not installed. Deleting '$AppSourceSolutionUniqueName' now would delete the Volunteer Management tables and their data. Import the OS solution first (step 1)."
+    }
+
+    if (-not $Solution.ismanaged) {
+        $blockers += "Solution '$AppSourceSolutionUniqueName' is unmanaged. Only the managed AppSource solution can be deleted by this script."
+    }
+
+    $assemblies = @(Get-SolutionPluginAssemblies -SolutionId $Solution.solutionid)
+    $osAssemblies = @($assemblies | Where-Object { $_.publickeytoken -eq $OsPluginPublicKeyToken })
+    if ($osAssemblies.Count -gt 0) {
+        $blockers += "Solution '$AppSourceSolutionUniqueName' contains plug-in assembly '$($osAssemblies[0].name)' signed with the open-source key ($OsPluginPublicKeyToken). It is an open-source build (for example one installed before the solution was renamed to '$OsSolutionUniqueName'), not the AppSource solution."
+    }
+    elseif ($assemblies.Count -eq 0) {
+        $blockers += "Solution '$AppSourceSolutionUniqueName' contains no plug-in assembly, so it cannot be confirmed to be the AppSource Volunteer Management solution."
+    }
+
+    return $blockers
+}
+
 function Invoke-DeleteAppSourceSolution {
     Write-Host "=== Deleting AppSource managed solution '$AppSourceSolutionUniqueName' ===" -ForegroundColor Cyan
+    if ($AppSourceSolutionUniqueName -ieq $OsSolutionUniqueName) {
+        throw "Refusing to delete '$OsSolutionUniqueName': it is the open-source solution this migration installs."
+    }
+
     $sol = (Invoke-RestMethod -Uri "$base/solutions?`$select=solutionid,friendlyname,version,ismanaged&`$filter=uniquename eq '$AppSourceSolutionUniqueName'" -Headers $headers).value
     if (-not $sol) {
         Write-Host "  Solution '$AppSourceSolutionUniqueName' not found (already removed?)." -ForegroundColor Yellow
@@ -245,7 +295,20 @@ function Invoke-DeleteAppSourceSolution {
     }
     $s = $sol[0]
     Write-Host ("  Found: {0} v{1} (managed={2})" -f $s.friendlyname, $s.version, $s.ismanaged)
-    if ($PSCmdlet.ShouldProcess("solution '$AppSourceSolutionUniqueName' ($($s.friendlyname) v$($s.version))", 'DELETE')) {
+
+    $blockers = @(Get-DeleteBlockers -Solution $s)
+    if ($blockers.Count -gt 0) {
+        foreach ($b in $blockers) { Write-Host "  BLOCKED: $b" -ForegroundColor Red }
+        if (-not $Force) {
+            throw "Refusing to delete '$AppSourceSolutionUniqueName' ($($blockers.Count) safety check(s) failed). Fix the cause, or rerun with -Force if you are certain and have a backup."
+        }
+        Write-Host '  -Force specified: continuing despite the failed safety checks.' -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "  Safety checks passed: '$OsSolutionUniqueName' is installed and the target is the managed AppSource build."
+    }
+
+    if ($PSCmdlet.ShouldProcess("solution '$AppSourceSolutionUniqueName' ($($s.friendlyname) v$($s.version), managed=$($s.ismanaged))", 'DELETE')) {
         Invoke-RestMethod -Uri "$base/solutions($($s.solutionid))" -Method Delete -Headers $headers | Out-Null
         Write-Host '  Deleted.'
     }
