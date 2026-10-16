@@ -79,15 +79,24 @@ export async function initialize(params: InitParams) {
 					</StrictMode>,
 				);
 			} catch (error) {
-				const err = error as Error;
-				console.error('React render failed:', err);
-				rootElement.innerHTML = `
-					<div style="padding: 20px; color: red; font-family: monospace;">
-						<h2>❌ React Rendering Error</h2>
-						<p>Error: ${err.message}</p>
-						<pre>${err.stack}</pre>
-					</div>
-				`;
+				const correlationId =
+					typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+						? crypto.randomUUID()
+						: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+				console.error(`React render failed (correlationId: ${correlationId}):`, error);
+
+				const container = document.createElement('div');
+				container.style.padding = '20px';
+				container.style.color = 'red';
+				const heading = document.createElement('h2');
+				heading.textContent = 'Something went wrong while loading this page.';
+				const message = document.createElement('p');
+				message.textContent =
+					'Please refresh the page and try again. If the problem persists, contact support.';
+				const reference = document.createElement('p');
+				reference.textContent = `Reference ID: ${correlationId}`;
+				container.append(heading, message, reference);
+				rootElement.replaceChildren(container);
 			}
 		}
 	});
