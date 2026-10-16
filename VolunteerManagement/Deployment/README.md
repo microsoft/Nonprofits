@@ -41,7 +41,7 @@ see the [migration guide](../MIGRATION.md).
 | Switch | What it does |
 | --- | --- |
 | `-StripReferences` | Rewrites forms + saved queries to drop the AppSource PCF references (substituting the default control), then runs `PublishAllXml`. |
-| `-DeleteAppSourceSolution` | Deletes the AppSource managed solution identified by `-AppSourceSolutionUniqueName`. |
+| `-DeleteAppSourceSolution` | Deletes the AppSource managed solution identified by `-AppSourceSolutionUniqueName`. Refuses unless `volunteermanagementos` is installed, the target is managed, and the target is not an open-source build; `-Force` overrides. |
 | `-RestoreControls` | After the OS solution is re-imported, removes the active (unmanaged) layer that `-StripReferences` left on each rewritten form/view (listed in `-StateFile`, default `vm-migration-stripped.json`), then runs `PublishAllXml`. |
 | `-Verify` | Reports the plugin assemblies, PCF control ownership, and SDK steps registered on `PluginsOS`. |
 
