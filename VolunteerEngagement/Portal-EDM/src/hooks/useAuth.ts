@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { clearTokenCache } from '@/services/apiClient';
+
 import type { PortalUser } from '@/types';
 
 import { readPortalUserGlobal, resolvePortalUser } from './useAuth.model';
@@ -13,6 +15,17 @@ interface AuthState {
 
 let cachedResolvedUser: PortalUser | null | undefined;
 let resolveUserPromise: Promise<PortalUser | null> | null = null;
+let lastAuthContactId: string | null | undefined;
+
+// The anti-forgery token is bound to the auth session, so drop it whenever the resolved identity changes.
+function setResolvedUser(user: PortalUser | null) {
+	cachedResolvedUser = user;
+	const contactId = user?.contactId ?? null;
+	if (lastAuthContactId !== contactId) {
+		lastAuthContactId = contactId;
+		clearTokenCache();
+	}
+}
 
 async function resolveUserOnce(): Promise<PortalUser | null> {
 	if (cachedResolvedUser !== undefined) {
@@ -24,7 +37,7 @@ async function resolveUserOnce(): Promise<PortalUser | null> {
 	}
 
 	resolveUserPromise = resolvePortalUser().then((user) => {
-		cachedResolvedUser = user;
+		setResolvedUser(user);
 		return user;
 	});
 
@@ -50,7 +63,7 @@ export function useAuth(): AuthState {
 
 		const globalUser = readPortalUserGlobal();
 		if (globalUser) {
-			cachedResolvedUser = globalUser;
+			setResolvedUser(globalUser);
 		}
 		return globalUser;
 	});

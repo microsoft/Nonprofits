@@ -29,6 +29,12 @@ const ParticipationStatusBadge: React.FC<{ status: number; size?: StatusBadgePro
 					{t('MSVE_SPA/Status/Applied')}
 				</Badge>
 			);
+		case ParticipationStatus.InReview:
+			return (
+				<Badge appearance="tint" color="warning" size={size} icon={<Clock20Regular />}>
+					{t('MSVE_SPA/Status/InReview')}
+				</Badge>
+			);
 		case ParticipationStatus.Accepted:
 			return (
 				<Badge appearance="tint" color="success" size={size} icon={<CheckmarkCircle20Regular />}>
