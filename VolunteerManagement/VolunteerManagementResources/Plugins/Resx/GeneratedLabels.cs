@@ -86,5 +86,9 @@
 		/// The selected participation record must be approved.
 		/// </summary>
         public LocalizationInfoModel Participation_NotApprovedException { get; set; }
+		/// <summary>
+		/// This shift is full. Please choose another shift.
+		/// </summary>
+        public LocalizationInfoModel ParticipationSchedule_ShiftFullException { get; set; }
     }
 }

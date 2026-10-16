@@ -1,4 +1,5 @@
-﻿using Plugins.Strategies;
+﻿using Plugins.Services;
+using Plugins.Strategies;
 
 namespace Plugins
 {
@@ -9,7 +10,10 @@ namespace Plugins
 		"msnfp_schedulestatus",
 		"Post-Update Participation Schedule",
 		1,
-		IsolationModeEnum.Sandbox)]
+		IsolationModeEnum.Sandbox,
+		Image1Attributes = "msnfp_schedulestatus",
+		Image1Type = ImageTypeEnum.PreImage,
+		Image1Name = ParticipationScheduleOnPostUpdateAndCreateStrategy.PreImageName)]
 	[CrmPluginRegistration(MessageNameEnum.Create,
 		"msnfp_participationschedule",
 		StageEnum.PostOperation,
@@ -23,6 +27,7 @@ namespace Plugins
 		public ParticipationScheduleOnPostUpdateAndCreate() 
 		{
 			RegisterPluginStrategy<ParticipationScheduleOnPostUpdateAndCreateStrategy>();
+			RegisterService<IParticipationScheduleService, ParticipationScheduleService>();
 		}
 	}
 }

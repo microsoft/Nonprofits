@@ -83,11 +83,27 @@ runs `PublishAllXml`.
 .\VolunteerManagement\Deployment\Migrate-VolunteerManagementToOpenSource.ps1 -EnvironmentUrl https://contoso.crm.dynamics.com -DeleteAppSourceSolution
 ```
 
+Before deleting, the script checks that:
+
+- the open-source solution `volunteermanagementos` is installed (otherwise the delete would remove
+  the Volunteer Management tables and their data),
+- the target solution is managed, and
+- the target is the AppSource build: none of its plug-in assemblies is signed with the open-source
+  key (`703f25cc8a15a472`). An environment that installed an open-source build from before the
+  rename to `volunteermanagementos` has the unique name `VolunteerManagement` too.
+
+If any check fails, the script stops and lists the reasons. `-Force` overrides the checks; use it
+only with a verified backup.
+
 ### 4. Re-import / upgrade the OS solution
 
 ```powershell
 pac solution import --path .\VolunteerManagement\VolunteerManagement\bin\Release\VolunteerManagement_managed.zip --force-overwrite
 ```
+
+> `--force-overwrite` overwrites unmanaged customizations on the components in the solution,
+> including changes you made to Volunteer Management forms. Export or document them first and
+> reapply them in your own solution afterwards.
 
 ### 5. Restore the OS PCF controls
 

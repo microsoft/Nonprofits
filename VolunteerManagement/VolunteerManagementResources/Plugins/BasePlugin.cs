@@ -10,10 +10,7 @@ namespace Plugins
 {
     public abstract class BasePlugin : IPlugin
     {
-        private IServiceProvider _serviceProvider;
         private readonly IServiceCollection _services;
-
-        public IServiceProvider ServiceProvider { get => this._serviceProvider; set => this._serviceProvider = value; }
 
         public IServiceCollection Services => this._services;
 
@@ -43,61 +40,56 @@ namespace Plugins
         /// <param name="serviceProvider">The service provider for the current execution context.</param>
         public void Execute(IServiceProvider serviceProvider)
         {
-            // Ensure ServiceProvider is built only once, AFTER all plugin services are registered
-            if (ServiceProvider == null)
+            // Dataverse caches plug-in instances and reuses them across executions (possibly concurrently),
+            // so the container holding the execution context must be built per call, never stored on the instance.
+            using (var executionServiceProvider = BuildExecutionServiceProvider(serviceProvider))
+            using (var scope = executionServiceProvider.CreateScope())
             {
-                var services = new ServiceCollection();
-
-                // Register default services from `serviceProvider`
-                services.AddSingleton(serviceProvider.GetRequiredService<ITracingService>());
-                services.AddSingleton(serviceProvider.GetRequiredService<IPluginExecutionContext>());
-                services.AddSingleton(serviceProvider.GetRequiredService<IExecutionContext>());
-
-                // Try to resolve `IOrganizationServiceFactory`
-                var factory = serviceProvider.GetService<IOrganizationServiceFactory>();
-                if (factory != null)
-                {
-                    services.AddSingleton(factory);
-
-                    // Register `IOrganizationService` only if factory is available
-                    services.AddScoped<IOrganizationService>(sp =>
-                    {
-                        var factoryFromDI = sp.GetRequiredService<IOrganizationServiceFactory>();
-                        return factoryFromDI.CreateOrganizationService(null);
-                    });
-                }
-                else
-                {
-                    var tracingService = serviceProvider.GetService<ITracingService>();
-                    tracingService?.Trace("ERROR: IOrganizationServiceFactory is NULL.");
-                    throw new InvalidOperationException("IOrganizationServiceFactory could not be resolved.");
-                }
-
-                // Merge with base plugin services
-                foreach (var service in _services)
-                {
-                    services.Add(service);
-                }
-
-                ServiceProvider = services.BuildServiceProvider();
-            }
-
-            try
-            {
-                using (var scope = ServiceProvider.CreateScope())
+                try
                 {
                     var strategy = scope.ServiceProvider.GetRequiredService<IPluginStrategy>();
                     strategy.Run();
                 }
+                catch (Exception ex)
+                {
+                    var tracingService = serviceProvider.GetService<ITracingService>();
+                    var exceptionHandlingStrategy = scope.ServiceProvider.GetRequiredService<IExceptionHandlingStrategy>();
+                    exceptionHandlingStrategy.HandleGenericException(ex, GetType().FullName);
+                    tracingService?.Trace($"Exception: {ex.Message}");
+                    throw;
+                }
             }
-            catch (Exception ex)
+        }
+
+        private ServiceProvider BuildExecutionServiceProvider(IServiceProvider serviceProvider)
+        {
+            var services = new ServiceCollection();
+
+            services.AddSingleton(serviceProvider.GetRequiredService<ITracingService>());
+            services.AddSingleton(serviceProvider.GetRequiredService<IPluginExecutionContext>());
+            services.AddSingleton(serviceProvider.GetRequiredService<IExecutionContext>());
+
+            var factory = serviceProvider.GetService<IOrganizationServiceFactory>();
+            if (factory == null)
             {
                 var tracingService = serviceProvider.GetService<ITracingService>();
-                var exceptionHandlingStrategy = ServiceProvider.GetRequiredService<IExceptionHandlingStrategy>();
-                exceptionHandlingStrategy.HandleGenericException(ex, GetType().FullName);
-                tracingService?.Trace($"Exception: {ex.Message}");
-                throw;
+                tracingService?.Trace("ERROR: IOrganizationServiceFactory is NULL.");
+                throw new InvalidOperationException("IOrganizationServiceFactory could not be resolved.");
             }
+
+            services.AddSingleton(factory);
+            services.AddScoped<IOrganizationService>(sp =>
+            {
+                var factoryFromDI = sp.GetRequiredService<IOrganizationServiceFactory>();
+                return factoryFromDI.CreateOrganizationService(null);
+            });
+
+            foreach (var service in _services)
+            {
+                services.Add(service);
+            }
+
+            return services.BuildServiceProvider();
         }
 
         /// <summary>

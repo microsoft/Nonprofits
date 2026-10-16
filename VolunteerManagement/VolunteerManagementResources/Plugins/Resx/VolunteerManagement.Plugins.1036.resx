@@ -177,4 +177,7 @@
   <data name="Participation.NotApprovedException" xml:space="preserve">
     <value>L’enregistrement de participation sélectionné doit être approuvé.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
+    <value>Cette équipe est complète. Veuillez choisir une autre équipe.</value>
+  </data>
 </root>
