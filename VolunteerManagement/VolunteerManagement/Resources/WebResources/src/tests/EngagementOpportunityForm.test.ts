@@ -67,6 +67,20 @@ describe('EngagementOpportunityForm', () => {
 			expect(XrmMockGenerator.formContext.getAttribute('msnfp_multipledays').getValue()).toBe(false);
 		});
 
+		test('Does not throw when optional attributes are removed from the form', () => {
+			const formContext = XrmMockGenerator.eventContext.formContext;
+			const originalGetAttribute = formContext.getAttribute;
+			const removed = ['msnfp_locationtype', 'msnfp_multipledays', 'msnfp_shifts'];
+			formContext.getAttribute = ((name: string) => removed.includes(name) ? null : (originalGetAttribute as any).call(formContext, name)) as any;
+
+			try {
+				expect(() => scheduleForm.OnLoad(XrmMockGenerator.eventContext)).not.toThrow();
+			}
+			finally {
+				formContext.getAttribute = originalGetAttribute;
+			}
+		});
+
 		test('not set msnfp_multipledays to true if it already contains value', () => {
 			XrmMockGenerator.formContext.getAttribute('msnfp_multipledays').setValue(true);
 
@@ -171,6 +185,29 @@ describe('EngagementOpportunityForm', () => {
 		test('Return false when dates are NOT provided', () => {
 			expect(scheduleForm.areDatesAtSameDay(null, null)).toBe(false);
 		});
+
+		test('Uses the user time-zone offset to determine the day', () => {
+			const twoHoursMs = 2 * 60 * EngagmentOpportunityForm.ONE_MINUTE_MS;
+			// 22:30 UTC and 23:30 UTC are 00:30 and 01:30 the next day for a UTC+2 user.
+			const date1 = new Date('2024-03-10T22:30:00Z');
+			const date2 = new Date('2024-03-10T23:30:00Z');
+			// 21:30 UTC is still 23:30 on the previous day for a UTC+2 user.
+			const date3 = new Date('2024-03-10T21:30:00Z');
+
+			expect(scheduleForm.areDatesAtSameDay(date1, date2, twoHoursMs)).toBe(true);
+			expect(scheduleForm.areDatesAtSameDay(date3, date1, twoHoursMs)).toBe(false);
+			expect(scheduleForm.areDatesAtSameDay(date3, date1, 0)).toBe(true);
+			expect(scheduleForm.areDatesAtSameDay(date1, new Date('2024-03-11T00:30:00Z'), -twoHoursMs)).toBe(true);
+		});
+
+		test('Is consistent with getEndOfDayForDate for the same offset', () => {
+			const offsetMs = -300 * EngagmentOpportunityForm.ONE_MINUTE_MS;
+			const start = new Date('2024-03-10T23:00:00Z');
+			const endOfDay = scheduleForm.getEndOfDayForDate(start, offsetMs);
+
+			expect(scheduleForm.areDatesAtSameDay(start, endOfDay, offsetMs)).toBe(true);
+			expect(scheduleForm.areDatesAtSameDay(start, new Date(endOfDay.getTime() + 1), offsetMs)).toBe(false);
+		});
 	});
 
 	describe('getEndOfDayForDate', () => {
@@ -183,12 +220,72 @@ describe('EngagementOpportunityForm', () => {
 		test('Runs without errors', () => {
 			scheduleForm.onChangeAutoApproveAsync(XrmMockGenerator.eventContext);
 		});
+
+		test('Passes a string message to the error dialog', async () => {
+			Xrm.Navigation.openConfirmDialog = () => Promise.resolve({ confirmed: true }) as any;
+			XrmMockGenerator.eventContext.formContext.data.save = () => Promise.reject(new Error('Auto approve failed')) as any;
+			const errorDialogMock = jest.fn(() => Promise.resolve());
+			Xrm.Navigation.openErrorDialog = errorDialogMock as any;
+
+			await scheduleForm.onChangeAutoApproveAsync(XrmMockGenerator.eventContext);
+
+			expect(errorDialogMock).toHaveBeenCalledWith({ message: 'Auto approve failed' });
+		});
 	});
 
 	describe('PublishFromRibbon', () => {
-		test('Runs without errors', () => {
+		const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
+
+		beforeEach(() => {
 			Xrm.Navigation.openConfirmDialog = (confirmStrings: Xrm.Navigation.ConfirmStrings, confirmOptions?: Xrm.Navigation.DialogSizeOptions) => Promise.resolve({ confirmed: true }) as any;
-			scheduleForm.PublishFromRibbon(XrmMockGenerator.eventContext.formContext, 0, '', '');
+			XrmMockGenerator.formContext.getAttribute('msnfp_engagementopportunitystatus').setValue(1);
+		});
+
+		test('Shows success notification only after save resolves', async () => {
+			let resolveSave: () => void;
+			const formContext = XrmMockGenerator.eventContext.formContext;
+			formContext.data.save = jest.fn(() => new Promise<void>(resolve => { resolveSave = resolve; })) as any;
+			const notificationSpy = jest.spyOn(formContext.ui, 'setFormNotification');
+
+			const publishPromise = scheduleForm.PublishFromRibbon(formContext, 2, '', '');
+			await flushPromises();
+
+			expect(formContext.data.save).toHaveBeenCalledTimes(1);
+			expect(formContext.getAttribute('msnfp_engagementopportunitystatus').getValue()).toBe(2);
+			expect(notificationSpy).not.toHaveBeenCalled();
+
+			resolveSave();
+			await publishPromise;
+
+			expect(notificationSpy).toHaveBeenCalledWith(expect.anything(), 'INFO', EngagmentOpportunityForm.NOTIFICATION_ID_PUBLISH_STATUS);
+			expect(formContext.getAttribute('msnfp_engagementopportunitystatus').getValue()).toBe(2);
+			notificationSpy.mockRestore();
+		});
+
+		test('Restores previous status and shows error when save fails', async () => {
+			const formContext = XrmMockGenerator.eventContext.formContext;
+			formContext.data.save = jest.fn(() => Promise.reject(new Error('Save failed'))) as any;
+			const notificationSpy = jest.spyOn(formContext.ui, 'setFormNotification');
+			const errorDialogMock = jest.fn(() => Promise.resolve());
+			Xrm.Navigation.openErrorDialog = errorDialogMock as any;
+
+			await scheduleForm.PublishFromRibbon(formContext, 2, '', '');
+
+			expect(formContext.getAttribute('msnfp_engagementopportunitystatus').getValue()).toBe(1);
+			expect(errorDialogMock).toHaveBeenCalledWith({ message: 'Save failed' });
+			expect(notificationSpy).not.toHaveBeenCalled();
+			notificationSpy.mockRestore();
+		});
+
+		test('Does nothing when not confirmed', async () => {
+			Xrm.Navigation.openConfirmDialog = () => Promise.resolve({ confirmed: false }) as any;
+			const formContext = XrmMockGenerator.eventContext.formContext;
+			formContext.data.save = jest.fn(() => Promise.resolve()) as any;
+
+			await scheduleForm.PublishFromRibbon(formContext, 2, '', '');
+
+			expect(formContext.data.save).not.toHaveBeenCalled();
+			expect(formContext.getAttribute('msnfp_engagementopportunitystatus').getValue()).toBe(1);
 		});
 	});
 
