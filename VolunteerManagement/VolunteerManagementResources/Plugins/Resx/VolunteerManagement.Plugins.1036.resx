@@ -180,4 +180,10 @@
   <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
     <value>Cette équipe est complète. Veuillez choisir une autre équipe.</value>
   </data>
+  <data name="Participation.Contact.RequiredException" xml:space="preserve">
+    <value>Un contact est obligatoire.</value>
+  </data>
+  <data name="GroupMembership.ContactAndGroup.RequiredException" xml:space="preserve">
+    <value>Le contact et le groupe sont obligatoires.</value>
+  </data>
 </root>

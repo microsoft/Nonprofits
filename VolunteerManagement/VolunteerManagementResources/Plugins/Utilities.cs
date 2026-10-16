@@ -252,7 +252,7 @@ namespace Plugins
                     <order attribute='msnfp_participationscheduleid'/>
                     <filter type='and'>
                       <condition attribute='statecode' operator='eq' value='0'/>
-                      <condition attribute='msnfp_schedulestatus' operator='eq' value='335940001'/>
+                      <condition attribute='msnfp_schedulestatus' operator='eq' value='" + (int)ParticipationScheduleStatus.Completed + @"'/>
                       <condition attribute='msnfp_participationid' operator='eq' uitype='msnfp_participation' value ='{" + participationRef.Id + @"}'/>
                     </filter>
                     <link-entity name='msnfp_engagementopportunityschedule' from='msnfp_engagementopportunityscheduleid' to='msnfp_engagementopportunityscheduleid' visible='false' link-type='outer' alias='a_msnfp_engagementopportunityschedule'>
@@ -302,7 +302,7 @@ namespace Plugins
                         <order attribute='msnfp_participationid' />
                         <filter type='and'>
                           <condition attribute='statecode' operator='eq' value='0' />
-                          <condition attribute='msnfp_status' operator='eq' value='844060002' />
+                          <condition attribute='msnfp_status' operator='eq' value='" + (int)ParticipationStatus.Approved + @"' />
                           <condition attribute='msnfp_contactid' operator='eq' uitype='contact' value='{" + contactRef.Id + @"}' />
                         </filter>
                         <link-entity name='msnfp_engagementopportunity' from='msnfp_engagementopportunityid' to='msnfp_engagementopportunityid' visible='false' link-type='outer' alias='a_msnfp_engagementopportunity'>
