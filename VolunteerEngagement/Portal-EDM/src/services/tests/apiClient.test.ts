@@ -90,4 +90,72 @@ describe('apiClient', () => {
 			}),
 		);
 	});
+
+	it('refreshes a stale token and retries a write exactly once on 403', async () => {
+		const getTokenDeferred = vi.fn().mockResolvedValueOnce('stale-token').mockResolvedValueOnce('fresh-token');
+		getTestWindow().shell = { getTokenDeferred };
+		const fetchMock = vi
+			.fn<typeof fetch>()
+			.mockResolvedValueOnce(new Response('', { status: 403 }))
+			.mockResolvedValueOnce(new Response(null, { status: 204 }));
+		vi.stubGlobal('fetch', fetchMock);
+
+		const { apiPatch } = await import('../apiClient');
+
+		await expect(apiPatch('/_api/items(1)', { name: 'Food Bank' })).resolves.toBeUndefined();
+		expect(getTokenDeferred).toHaveBeenCalledTimes(2);
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		expect(fetchMock.mock.calls[0][1]?.headers).toMatchObject({ __RequestVerificationToken: 'stale-token' });
+		expect(fetchMock.mock.calls[1][1]?.headers).toMatchObject({ __RequestVerificationToken: 'fresh-token' });
+	});
+
+	it('does not retry more than once when the write keeps failing with 400/403', async () => {
+		const getTokenDeferred = vi.fn().mockResolvedValueOnce('stale-token').mockResolvedValueOnce('fresh-token');
+		getTestWindow().shell = { getTokenDeferred };
+		const fetchMock = vi
+			.fn<typeof fetch>()
+			.mockResolvedValueOnce(new Response('', { status: 400 }))
+			.mockResolvedValueOnce(new Response('', { status: 403 }));
+		vi.stubGlobal('fetch', fetchMock);
+
+		const { apiPost } = await import('../apiClient');
+
+		await expect(apiPost('/_api/items', { name: 'Food Bank' })).rejects.toMatchObject({
+			name: 'ApiError',
+			status: 403,
+		});
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		expect(getTokenDeferred).toHaveBeenCalledTimes(2);
+	});
+
+	it('does not retry writes that fail with other statuses', async () => {
+		getTestWindow().shell = { getTokenDeferred: vi.fn().mockResolvedValue('request-token') };
+		const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(new Response('', { status: 500 }));
+		vi.stubGlobal('fetch', fetchMock);
+
+		const { apiDelete } = await import('../apiClient');
+
+		await expect(apiDelete('/_api/items(1)')).rejects.toMatchObject({ status: 500 });
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	});
+
+	it('fetches a new token after clearTokenCache', async () => {
+		const getTokenDeferred = vi.fn().mockResolvedValueOnce('first-token').mockResolvedValueOnce('second-token');
+		getTestWindow().shell = { getTokenDeferred };
+		vi.stubGlobal('fetch', vi.fn<typeof fetch>());
+
+		const { clearTokenCache, getToken } = await import('../apiClient');
+
+		await expect(getToken()).resolves.toBe('first-token');
+		clearTokenCache();
+		await expect(getToken()).resolves.toBe('second-token');
+	});
+
+	it('assertGuid rejects malformed ids with a not-found ApiError', async () => {
+		const { assertGuid } = await import('../apiClient');
+		const id = 'a1b2c3d4-e5f6-4789-8abc-def012345678';
+
+		expect(assertGuid(id)).toBe(id);
+		expect(() => assertGuid("x' or 1 eq 1", 'contact id')).toThrow('Invalid contact id');
+	});
 });

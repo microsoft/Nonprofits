@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useTranslation } from '@/i18n';
+import { isGuid } from '@/utils/guid';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import {
 	Badge,
@@ -47,6 +48,7 @@ import {
 	fetchParticipationSchedules,
 	fetchQualificationTypes,
 	markContactAsVolunteer,
+	reapplyParticipation,
 	updateParticipationStatus,
 	updateScheduleStatus,
 } from '@/services/api';
@@ -59,7 +61,14 @@ import type {
 	ParticipationSchedule,
 	QualificationType,
 } from '@/types';
-import { LocationType, ParticipationStatus, ScheduleStatus, getLocationLabel } from '@/types';
+import {
+	LocationType,
+	ParticipationStatus,
+	ScheduleStatus,
+	canReapplyStatus,
+	getLocationLabel,
+	isPendingApprovalStatus,
+} from '@/types';
 
 import { useStyles } from './EngagementDetails.styles';
 import { useEngagementDocumentTitle } from './hooks/useEngagementDocumentTitle';
@@ -84,11 +93,12 @@ export default function EngagementDetails() {
 	const [qualTypes, setQualTypes] = useState<QualificationType[]>([]);
 	const contactId = user?.contactId;
 	const engagementOppId = engagement?._msnfp_engagementopportunityid_value;
+	const hasValidId = isGuid(id);
 
-	useEngagementDocumentTitle({ engagement, id, loading });
+	useEngagementDocumentTitle({ engagement, id, loading: loading && hasValidId });
 
 	useEffect(() => {
-		if (!id) return;
+		if (!id || !isGuid(id)) return;
 		let cancelled = false;
 
 		const load = async () => {
@@ -173,8 +183,17 @@ export default function EngagementDetails() {
 		setActionLoading(true);
 		try {
 			await markContactAsVolunteer(user.contactId);
-			const part = await createParticipation(engagement._msnfp_engagementopportunityid_value, user.contactId);
-			setParticipation(part);
+			if (participation && canReapplyStatus(participation.msnfp_status)) {
+				// Reactivate the existing (canceled) record instead of creating a duplicate participation.
+				await reapplyParticipation(participation.msnfp_participationid);
+				setParticipation({
+					...participation,
+					msnfp_status: ParticipationStatus.Applied,
+				});
+			} else {
+				const part = await createParticipation(engagement._msnfp_engagementopportunityid_value, user.contactId);
+				setParticipation(part);
+			}
 			navigate('/success?action=apply');
 		} catch (err) {
 			console.error('Error applying:', err);
@@ -291,11 +310,11 @@ export default function EngagementDetails() {
 	const getRemainingCapacity = (schedule: EngagementSchedule) =>
 		Math.max((schedule.msnfp_maximum ?? 0) - (schedule.msnfp_number ?? 0), 0);
 
-	if (loading) {
+	if (loading && hasValidId) {
 		return <Spinner label={t('MSVE_SPA/Engagement/Loading')} />;
 	}
 
-	if (!engagement) {
+	if (!hasValidId || !engagement) {
 		return (
 			<div className={styles.page}>
 				<MessageBar intent="error">
@@ -310,13 +329,13 @@ export default function EngagementDetails() {
 
 	const startDate = new Date(engagement.msnfp_startingdate).toLocaleDateString();
 	const endDate = new Date(engagement.msnfp_endingdate).toLocaleDateString();
-	const canApply = isAuthenticated && !participation;
+	const canApply = isAuthenticated && (!participation || canReapplyStatus(participation.msnfp_status));
 	const isActive =
 		participation &&
 		participation.msnfp_status !== ParticipationStatus.Canceled &&
 		participation.msnfp_status !== ParticipationStatus.Dismissed;
 	const isApproved = participation?.msnfp_status === ParticipationStatus.Accepted;
-	const isPendingApproval = participation?.msnfp_status === ParticipationStatus.Applied;
+	const isPendingApproval = isPendingApprovalStatus(participation?.msnfp_status);
 	const descriptionHtml = engagement.msnfp_description ? sanitizeHtml(engagement.msnfp_description) : '';
 
 	return (

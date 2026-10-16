@@ -11,9 +11,10 @@ import {
 	fetchPublicEngagementByPrivateId,
 } from '../engagementService';
 
-vi.mock('../apiClient', () => ({
-	apiGet: vi.fn(),
-}));
+vi.mock('../apiClient', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../apiClient')>();
+	return { ApiError: actual.ApiError, assertGuid: actual.assertGuid, apiGet: vi.fn() };
+});
 
 const mockApiGet = vi.mocked(apiGet);
 
@@ -34,7 +35,9 @@ describe('engagementService', () => {
 	it('fetches published future public engagements ordered by start date', async () => {
 		vi.useFakeTimers();
 		vi.setSystemTime(new Date('2026-06-04T12:00:00.000Z'));
-		const engagement = { msnfp_publicengagementopportunityid: 'public-1' } as Engagement;
+		const engagement = {
+			msnfp_publicengagementopportunityid: '66666666-6666-4666-8666-666666666666',
+		} as Engagement;
 		const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse({ value: [engagement] }));
 		vi.stubGlobal('fetch', fetchMock);
 
@@ -63,31 +66,47 @@ describe('engagementService', () => {
 	});
 
 	it('fetches a single public engagement by id', async () => {
-		const engagement = { msnfp_publicengagementopportunityid: 'public-1' } as Engagement;
+		const engagement = {
+			msnfp_publicengagementopportunityid: '66666666-6666-4666-8666-666666666666',
+		} as Engagement;
 		mockApiGet.mockResolvedValue(engagement);
 
-		await expect(fetchEngagement('public-1')).resolves.toBe(engagement);
-		expect(mockApiGet.mock.calls[0][0]).toContain('/_api/msnfp_publicengagementopportunities(public-1)?$select=');
+		await expect(fetchEngagement('66666666-6666-4666-8666-666666666666')).resolves.toBe(engagement);
+		expect(mockApiGet.mock.calls[0][0]).toContain(
+			'/_api/msnfp_publicengagementopportunities(66666666-6666-4666-8666-666666666666)?$select=',
+		);
+	});
+
+	it('rejects malformed engagement ids without calling the Web API', async () => {
+		await expect(fetchEngagement('not-a-guid')).rejects.toMatchObject({ name: 'ApiError', status: 404 });
+		await expect(fetchEngagementSchedules("x' or 1 eq 1 or 'a")).rejects.toMatchObject({ status: 404 });
+		await expect(fetchPublicEngagementByPrivateId('bad')).resolves.toBeNull();
+		await expect(fetchEngagementRequiredQualifications('bad')).resolves.toEqual([]);
+		expect(mockApiGet).not.toHaveBeenCalled();
 	});
 
 	it('fetches engagement schedules ordered by start period', async () => {
 		const schedules = [{ msnfp_engagementopportunityscheduleid: 'schedule-1' }] as EngagementSchedule[];
 		mockApiGet.mockResolvedValue({ value: schedules });
 
-		await expect(fetchEngagementSchedules('opportunity-1')).resolves.toBe(schedules);
+		await expect(fetchEngagementSchedules('22222222-2222-4222-8222-222222222222')).resolves.toBe(schedules);
 		expect(mockApiGet).toHaveBeenCalledWith(
-			"/_api/msnfp_engagementopportunityschedules?$select=msnfp_engagementopportunityscheduleid,msnfp_shiftname,msnfp_startperiod,msnfp_maximum,msnfp_number&$filter=_msnfp_engagementopportunity_value eq 'opportunity-1' and statecode eq 0&$orderby=msnfp_startperiod asc",
+			"/_api/msnfp_engagementopportunityschedules?$select=msnfp_engagementopportunityscheduleid,msnfp_shiftname,msnfp_startperiod,msnfp_maximum,msnfp_number&$filter=_msnfp_engagementopportunity_value eq '22222222-2222-4222-8222-222222222222' and statecode eq 0&$orderby=msnfp_startperiod asc",
 		);
 	});
 
 	it('returns the first public engagement for a private engagement id', async () => {
-		const engagement = { msnfp_publicengagementopportunityid: 'public-1' } as Engagement;
+		const engagement = {
+			msnfp_publicengagementopportunityid: '66666666-6666-4666-8666-666666666666',
+		} as Engagement;
 		mockApiGet.mockResolvedValue({ value: [engagement] });
 
-		await expect(fetchPublicEngagementByPrivateId('opportunity-1')).resolves.toBe(engagement);
+		await expect(fetchPublicEngagementByPrivateId('22222222-2222-4222-8222-222222222222')).resolves.toBe(
+			engagement,
+		);
 		expect(mockApiGet.mock.calls[0][0]).toContain('/_api/msnfp_publicengagementopportunities?$select=');
 		expect(mockApiGet.mock.calls[0][0]).toContain(
-			"$filter=_msnfp_engagementopportunityid_value eq 'opportunity-1'",
+			"$filter=_msnfp_engagementopportunityid_value eq '22222222-2222-4222-8222-222222222222'",
 		);
 		expect(mockApiGet.mock.calls[0][0]).toContain('$top=1');
 	});
@@ -95,8 +114,10 @@ describe('engagementService', () => {
 	it('uses empty fallbacks for optional engagement lookups', async () => {
 		mockApiGet.mockRejectedValue(new Error('not available'));
 
-		await expect(fetchPublicEngagementByPrivateId('opportunity-1')).resolves.toBeNull();
-		await expect(fetchEngagementRequiredQualifications('opportunity-1')).resolves.toEqual([]);
+		await expect(fetchPublicEngagementByPrivateId('22222222-2222-4222-8222-222222222222')).resolves.toBeNull();
+		await expect(fetchEngagementRequiredQualifications('22222222-2222-4222-8222-222222222222')).resolves.toEqual(
+			[],
+		);
 	});
 
 	it('fetches required qualification links for an engagement', async () => {
@@ -105,9 +126,11 @@ describe('engagementService', () => {
 		] as EngagementRequiredQualification[];
 		mockApiGet.mockResolvedValue({ value: required });
 
-		await expect(fetchEngagementRequiredQualifications('opportunity-1')).resolves.toBe(required);
+		await expect(fetchEngagementRequiredQualifications('22222222-2222-4222-8222-222222222222')).resolves.toBe(
+			required,
+		);
 		expect(mockApiGet).toHaveBeenCalledWith(
-			"/_api/msnfp_engagementopportunityparticipantquals?$select=msnfp_engagementopportunityparticipantqualid,_msnfp_qualificationtypeid_value&$filter=_msnfp_engagementopportunityid_value eq 'opportunity-1'",
+			"/_api/msnfp_engagementopportunityparticipantquals?$select=msnfp_engagementopportunityparticipantqualid,_msnfp_qualificationtypeid_value&$filter=_msnfp_engagementopportunityid_value eq '22222222-2222-4222-8222-222222222222'",
 		);
 	});
 });

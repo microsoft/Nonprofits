@@ -91,9 +91,20 @@ export interface ContactDetails {
 // Status enums matching Dataverse option set values
 export enum ParticipationStatus {
 	Applied = 844060000,
+	InReview = 844060001,
 	Accepted = 844060002,
 	Dismissed = 844060003,
 	Canceled = 844060004,
+}
+
+/** Applied and In Review participations are both still waiting for a staff decision. */
+export function isPendingApprovalStatus(status: number | undefined): boolean {
+	return status === ParticipationStatus.Applied || status === ParticipationStatus.InReview;
+}
+
+/** A volunteer may re-apply after canceling; Dismissed is a staff decision and stays final. */
+export function canReapplyStatus(status: number | undefined): boolean {
+	return status === ParticipationStatus.Canceled;
 }
 
 export enum ScheduleStatus {
@@ -132,6 +143,8 @@ export function getParticipationStatusLabel(value: number, t?: (key: string) => 
 	switch (value) {
 		case ParticipationStatus.Applied:
 			return t ? t('MSVE_SPA/Status/Applied') : 'Applied';
+		case ParticipationStatus.InReview:
+			return t ? t('MSVE_SPA/Status/InReview') : 'In Review';
 		case ParticipationStatus.Accepted:
 			return t ? t('MSVE_SPA/Status/Accepted') : 'Accepted';
 		case ParticipationStatus.Dismissed:

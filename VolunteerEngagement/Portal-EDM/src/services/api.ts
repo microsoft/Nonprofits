@@ -2,7 +2,7 @@
 // for backward compatibility. Prefer importing from specific service modules
 // in new code (e.g. '@/services/engagementService').
 
-export { getToken, apiGet, apiPost, apiPatch, apiDelete, ApiError } from './apiClient';
+export { getToken, clearTokenCache, apiGet, apiPost, apiPatch, apiDelete, ApiError } from './apiClient';
 export {
 	fetchEngagements,
 	fetchEngagement,
@@ -15,6 +15,7 @@ export {
 	fetchMyParticipations,
 	createParticipation,
 	updateParticipationStatus,
+	reapplyParticipation,
 	fetchParticipationSchedules,
 	createParticipationSchedule,
 	updateScheduleStatus,
