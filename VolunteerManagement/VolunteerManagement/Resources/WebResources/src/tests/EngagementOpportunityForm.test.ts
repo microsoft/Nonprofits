@@ -222,14 +222,24 @@ describe('EngagementOpportunityForm', () => {
 		});
 
 		test('Passes a string message to the error dialog', async () => {
-			Xrm.Navigation.openConfirmDialog = () => Promise.resolve({ confirmed: true }) as any;
-			XrmMockGenerator.eventContext.formContext.data.save = () => Promise.reject(new Error('Auto approve failed')) as any;
+			Xrm.Navigation.openConfirmDialog = () => Promise.reject(new Error('Dialog failed')) as any;
 			const errorDialogMock = jest.fn(() => Promise.resolve());
 			Xrm.Navigation.openErrorDialog = errorDialogMock as any;
 
 			await scheduleForm.onChangeAutoApproveAsync(XrmMockGenerator.eventContext);
 
-			expect(errorDialogMock).toHaveBeenCalledWith({ message: 'Auto approve failed' });
+			expect(errorDialogMock).toHaveBeenCalledWith({ message: 'Dialog failed' });
+		});
+
+		test('Does not show a second dialog when the platform reports a save error', async () => {
+			Xrm.Navigation.openConfirmDialog = () => Promise.resolve({ confirmed: true }) as any;
+			XrmMockGenerator.eventContext.formContext.data.save = () => Promise.reject({ errorCode: 2147746405, message: 'Invalid shift' }) as any;
+			const errorDialogMock = jest.fn(() => Promise.resolve());
+			Xrm.Navigation.openErrorDialog = errorDialogMock as any;
+
+			await scheduleForm.onChangeAutoApproveAsync(XrmMockGenerator.eventContext);
+
+			expect(errorDialogMock).not.toHaveBeenCalled();
 		});
 	});
 
@@ -262,7 +272,23 @@ describe('EngagementOpportunityForm', () => {
 			notificationSpy.mockRestore();
 		});
 
-		test('Restores previous status and shows error when save fails', async () => {
+		test('Restores previous status without a second dialog when the platform reports a save error', async () => {
+			const formContext = XrmMockGenerator.eventContext.formContext;
+			// The platform rejects save() with a plain object and shows its own error dialog.
+			formContext.data.save = jest.fn(() => Promise.reject({ errorCode: 2147746405, message: 'Invalid shift' })) as any;
+			const notificationSpy = jest.spyOn(formContext.ui, 'setFormNotification');
+			const errorDialogMock = jest.fn(() => Promise.resolve());
+			Xrm.Navigation.openErrorDialog = errorDialogMock as any;
+
+			await scheduleForm.PublishFromRibbon(formContext, 2, '', '');
+
+			expect(formContext.getAttribute('msnfp_engagementopportunitystatus').getValue()).toBe(1);
+			expect(errorDialogMock).not.toHaveBeenCalled();
+			expect(notificationSpy).not.toHaveBeenCalled();
+			notificationSpy.mockRestore();
+		});
+
+		test('Restores previous status and shows a readable error for other failures', async () => {
 			const formContext = XrmMockGenerator.eventContext.formContext;
 			formContext.data.save = jest.fn(() => Promise.reject(new Error('Save failed'))) as any;
 			const notificationSpy = jest.spyOn(formContext.ui, 'setFormNotification');

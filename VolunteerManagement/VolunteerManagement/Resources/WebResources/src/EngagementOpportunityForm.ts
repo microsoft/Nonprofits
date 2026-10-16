@@ -1,6 +1,16 @@
 import { getLocalizedText } from './Common';
 import { VolunteerManagementResxKeys } from './types/Localization';
 
+// formContext.data.save() rejects with a plain { errorCode, message } object after the platform has already shown the error.
+const isPlatformSaveError = (err: unknown): boolean =>
+	(typeof err === 'object' && err !== null && 'errorCode' in err);
+
+const getErrorMessage = (err: unknown): string => {
+	if (err instanceof Error) { return err.message; }
+	const message = (typeof err === 'object' && err !== null) ? (err as { message?: unknown }).message : undefined;
+	return (typeof message === 'string') ? message : String(err);
+};
+
 export class EngagmentOpportunityForm {
 	static readonly NOTIFICATION_ID_SHIFTS_CHANGED = 'msnfp_shifts_changed';
 	static readonly NOTIFICATION_ID_PUBLISH_STATUS = 'StatusUpdateConfirmationMessage';
@@ -273,9 +283,9 @@ export class EngagmentOpportunityForm {
 			}
 		}
 		catch (err) {
-			Xrm.Navigation.openErrorDialog({
-				message: (err instanceof Error) ? err.message : String(err)
-			});
+			if (!isPlatformSaveError(err)) {
+				Xrm.Navigation.openErrorDialog({ message: getErrorMessage(err) });
+			}
 		}
 	};
 
@@ -311,9 +321,9 @@ export class EngagmentOpportunityForm {
 		}
 		catch (err) {
 			statusAttribute.setValue(previousStatus);
-			Xrm.Navigation.openErrorDialog({
-				message: (err instanceof Error) ? err.message : String(err)
-			});
+			if (!isPlatformSaveError(err)) {
+				Xrm.Navigation.openErrorDialog({ message: getErrorMessage(err) });
+			}
 		}
 	};
 
