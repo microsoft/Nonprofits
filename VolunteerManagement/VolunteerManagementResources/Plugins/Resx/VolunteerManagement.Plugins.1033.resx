@@ -177,4 +177,7 @@
   <data name="Participation.NotApprovedException" xml:space="preserve">
     <value>The selected participation record must be approved.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
+    <value>This shift is full. Please choose another shift.</value>
+  </data>
 </root>

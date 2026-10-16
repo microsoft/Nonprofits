@@ -71,7 +71,7 @@ namespace Plugins.Strategies
 					if (oldHours != newHours)
 					{
 						Utilities.CalculateContactTotalHours(service, tracingService, postImage.GetAttributeValue<EntityReference>("msnfp_contactid"));
-						if ((oldHours == null || oldHours < 1) && newHours > 0)
+						if ((oldHours == null || oldHours <= 0) && newHours > 0)
 						{
 							Utilities.EngagementOpportunityMessage(service, tracingService, participation.GetAttributeValue<EntityReference>("msnfp_contactid"), participation.GetAttributeValue<EntityReference>("msnfp_engagementopportunityid"), EngagementOpportunitySettingMessageEventType.EngagementCompleted);
 						}

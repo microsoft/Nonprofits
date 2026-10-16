@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Plugins.Services;
+using VolunteerManagement.Definitions;
 
 namespace Plugins.Strategies
 {
@@ -27,6 +28,13 @@ namespace Plugins.Strategies
 			{
 				var target = (Entity)context.InputParameters["Target"];
 				participationScheduleService.ValidateApprovalStatus(target);
+
+				var scheduleStatus = target.GetAttributeValue<OptionSetValue>(ParticipationScheduleDef.ScheduleStatus)?.Value
+					?? (int)ParticipationScheduleStatus.Pending;
+				if (scheduleStatus == (int)ParticipationScheduleStatus.Pending || scheduleStatus == (int)ParticipationScheduleStatus.Completed)
+				{
+					participationScheduleService.ValidateShiftCapacity(target.GetAttributeValue<EntityReference>(ParticipationScheduleDef.EngagementOpportunitySchedule));
+				}
 			}
 		}
 	}

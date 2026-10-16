@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using Moq;
@@ -57,6 +58,74 @@ namespace Plugins.Tests.ParticipationScheduleTests
 				.Setup(x => x.Retrieve(ParticipationDef.EntityName,
 				It.IsAny<Guid>(), It.IsAny<ColumnSet>()))
 				.Returns(participation);
+		}
+
+		[Test]
+		[TestCase(2, 2, true)]
+		[TestCase(2, 3, true)]
+		[TestCase(2, 1, false)]
+		public void ValidateShiftCapacityThrowsOnlyWhenShiftIsFull(int maximum, int booked, bool shouldThrow)
+		{
+			var service = CreateShiftService(maximum, booked);
+			var sut = new ParticipationScheduleService(service.Object, this.localizationHelper.Object);
+			var shiftRef = new EntityReference(EngagementOpportunityScheduleDef.EntityName, Guid.NewGuid());
+
+			if (shouldThrow)
+			{
+				Assert.Throws<InvalidPluginExecutionException>(() => sut.ValidateShiftCapacity(shiftRef));
+			}
+			else
+			{
+				Assert.DoesNotThrow(() => sut.ValidateShiftCapacity(shiftRef));
+			}
+
+			// The shift row is updated first so concurrent sign-ups for the same shift are serialized.
+			service.Verify(s => s.Update(It.Is<Entity>(e => e.LogicalName == EngagementOpportunityScheduleDef.EntityName && e.Id == shiftRef.Id)), Times.Once);
+		}
+
+		[Test]
+		[TestCase(null)]
+		[TestCase(0)]
+		public void ValidateShiftCapacityIgnoresShiftsWithoutMaximum(int? maximum)
+		{
+			var service = CreateShiftService(maximum, 10);
+			var sut = new ParticipationScheduleService(service.Object, this.localizationHelper.Object);
+
+			Assert.DoesNotThrow(() => sut.ValidateShiftCapacity(new EntityReference(EngagementOpportunityScheduleDef.EntityName, Guid.NewGuid())));
+			service.Verify(s => s.RetrieveMultiple(It.IsAny<QueryBase>()), Times.Never);
+		}
+
+		[Test]
+		public void ValidateShiftCapacityExcludesTheRecordBeingValidated()
+		{
+			var service = CreateShiftService(1, 0);
+			var sut = new ParticipationScheduleService(service.Object, this.localizationHelper.Object);
+			var excludedId = Guid.NewGuid();
+
+			sut.ValidateShiftCapacity(new EntityReference(EngagementOpportunityScheduleDef.EntityName, Guid.NewGuid()), excludedId);
+
+			service.Verify(s => s.RetrieveMultiple(It.Is<QueryExpression>(q => q.Criteria.Conditions.Any(c =>
+				c.AttributeName == ParticipationScheduleDef.PrimaryKey
+				&& c.Operator == ConditionOperator.NotEqual
+				&& (Guid)c.Values[0] == excludedId))), Times.Once);
+		}
+
+		private static Mock<IOrganizationService> CreateShiftService(int? maximum, int booked)
+		{
+			var service = new Mock<IOrganizationService>();
+			service
+				.Setup(s => s.Retrieve(EngagementOpportunityScheduleDef.EntityName, It.IsAny<Guid>(), It.IsAny<ColumnSet>()))
+				.Returns((string name, Guid id, ColumnSet columns) => new Entity(name, id)
+				{
+					[EngagementOpportunityScheduleDef.MaxofParticipants] = maximum,
+					[EngagementOpportunityScheduleDef.Number] = booked
+				});
+			service
+				.Setup(s => s.RetrieveMultiple(It.IsAny<QueryBase>()))
+				.Returns(() => new EntityCollection(Enumerable.Range(0, booked)
+					.Select(_ => new Entity(ParticipationScheduleDef.EntityName, Guid.NewGuid()))
+					.ToList()));
+			return service;
 		}
 	}
 }

@@ -31,7 +31,9 @@ namespace Plugins.Strategies
 				var postStatus = postImage.GetAttributeValue<OptionSetValue>("msnfp_engagementopportunitystatus");
 				var publicEOStatuses = new HashSet<EngagementOpportunityStatus> { EngagementOpportunityStatus.PublishToWeb, EngagementOpportunityStatus.Closed, EngagementOpportunityStatus.Cancelled };
 				var service = this.serviceProvider.CreateCurrentUserOrganizationService();
-				if (postStatus != null && publicEOStatuses.Any(status => (int)status == postStatus.Value))
+				var isPublic = postStatus != null && publicEOStatuses.Contains((EngagementOpportunityStatus)postStatus.Value);
+				var wasPublic = preStatus != null && publicEOStatuses.Contains((EngagementOpportunityStatus)preStatus.Value);
+				if (isPublic)
 				{
 					var publicEO = Utilities.QueryByAttributeExt(service, "msnfp_publicengagementopportunity", "msnfp_engagementopportunityid", target.Id, new ColumnSet("msnfp_engagementopportunityid"));
 					if (publicEO.TotalRecordCount > 0)
@@ -43,7 +45,7 @@ namespace Plugins.Strategies
 						Utilities.CreatePublicEOFromEO(service, target.Id);
 					}
 				}
-				else if (preStatus != null && publicEOStatuses.Any(status => (int)status == preStatus.Value) && postStatus != null && publicEOStatuses.Any(status => (int)status != postStatus.Value))
+				else if (wasPublic)
 				{
 					tracingService.Trace("Status Changed from Publish to Web");
 					var publicEO = Utilities.QueryByAttributeExt(service, "msnfp_publicengagementopportunity", "msnfp_engagementopportunityid", target.Id, new ColumnSet("msnfp_engagementopportunityid"));

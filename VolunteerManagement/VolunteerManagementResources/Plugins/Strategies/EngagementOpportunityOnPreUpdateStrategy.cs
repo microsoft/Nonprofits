@@ -54,7 +54,7 @@ namespace Plugins.Strategies
 				return;
 			}
 			var service = this.serviceProvider.CreateCurrentUserOrganizationService();
-			var invalidShifts = GetInvalidShifts(service, target.Id, startingDate, endingDate.Value, tracingService);
+			var invalidShifts = GetInvalidShifts(service, target.Id, startingDate, endingDate, tracingService);
 			if (invalidShifts.Count() == 0) return;
 
 			var invalidShiftNames = string.Join(
@@ -68,7 +68,7 @@ namespace Plugins.Strategies
 		}
 
 		private static IEnumerable<Entity> GetInvalidShifts(
-			IOrganizationService service, Guid eoId, DateTime eoStart, DateTime eoEnd, ITracingService tracingService
+			IOrganizationService service, Guid eoId, DateTime eoStart, DateTime? eoEnd, ITracingService tracingService
 		)
 		{
 			tracingService.Trace($"{nameof(GetInvalidShifts)}(eOid={eoId}; eoStart={eoStart}; eoEnd={eoEnd}; )");

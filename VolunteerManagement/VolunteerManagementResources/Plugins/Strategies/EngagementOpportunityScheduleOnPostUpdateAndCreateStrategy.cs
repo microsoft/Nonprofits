@@ -40,8 +40,8 @@ namespace Plugins.Strategies
 			}
 
 			var target = targetObj as Entity;
-			var preImage = context.PreEntityImages.Count == 0 ? default : context.PreEntityImages["Target"];
-			var postImage = context.PostEntityImages.Count == 0 ? target : context.PreEntityImages["Target"];
+			var preImage = context.PreEntityImages.TryGetValue("Target", out var preImageEntity) ? preImageEntity : default;
+			var postImage = context.PostEntityImages.TryGetValue("Target", out var postImageEntity) ? postImageEntity : target;
 
 			if (context.MessageName == "Create")
 			{
