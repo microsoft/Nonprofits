@@ -6,7 +6,7 @@
       <LocalizedName description="Volunteer Management (OS)" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.1.3.0</Version>
+    <Version>1.1.3.4</Version>
     <Managed>2</Managed>
     <Publisher>
       <UniqueName>microsofttechforsocialimpact</UniqueName>
@@ -182,6 +182,7 @@
       <RootComponent type="92" id="{671dd33c-2ae1-434c-8652-40a96ea4a6d2}" behavior="0" />
       <RootComponent type="92" id="{dc676866-dead-48da-9b43-52059af2ab83}" behavior="0" />
       <RootComponent type="92" id="{86e747bf-c118-47b2-8dd4-cfb70d016bf7}" behavior="0" />
+      <RootComponent type="92" id="{17f281f3-b0e8-4342-9339-2e523b8936d7}" behavior="0" />
       <RootComponent type="92" id="{2a00b8be-03e1-46db-a352-b49f1c379753}" behavior="0" />
       <RootComponent type="92" id="{7a061612-6940-4b13-8706-3d0fb99e2c30}" behavior="0" />
       <RootComponent type="92" id="{8271517a-25f9-4cf2-a006-20e7248dc767}" behavior="0" />

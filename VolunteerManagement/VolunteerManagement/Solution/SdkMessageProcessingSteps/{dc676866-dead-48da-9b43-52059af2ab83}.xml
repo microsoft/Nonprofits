@@ -5,7 +5,7 @@
   <PluginTypeId>ed6ba47e-ba76-4cd9-a261-143865c50e85</PluginTypeId>
   <PrimaryEntity>msnfp_participationschedule</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
-  <FilteringAttributes>msnfp_schedulestatus</FilteringAttributes>
+  <FilteringAttributes>msnfp_engagementopportunityscheduleid,msnfp_schedulestatus</FilteringAttributes>
   <InvocationSource>1</InvocationSource>
   <Mode>0</Mode>
   <Rank>1</Rank>
@@ -15,5 +15,14 @@
   <IsHidden>0</IsHidden>
   <SupportedDeployment>0</SupportedDeployment>
   <IntroducedVersion>1.0</IntroducedVersion>
-  <SdkMessageProcessingStepImages />
+  <SdkMessageProcessingStepImages>
+    <SdkMessageProcessingStepImage Name="PreImage">
+      <SdkMessageProcessingStepImageId>{4b1f7c52-8e3a-4d6f-9a2b-6c5e1d7f3a90}</SdkMessageProcessingStepImageId>
+      <Attributes>msnfp_engagementopportunityscheduleid,msnfp_schedulestatus</Attributes>
+      <EntityAlias>PreImage</EntityAlias>
+      <ImageType>0</ImageType>
+      <MessagePropertyName>Target</MessagePropertyName>
+      <IsCustomizable>1</IsCustomizable>
+    </SdkMessageProcessingStepImage>
+  </SdkMessageProcessingStepImages>
 </SdkMessageProcessingStep>

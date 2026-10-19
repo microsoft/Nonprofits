@@ -1,6 +1,16 @@
 import { getLocalizedText } from './Common';
 import { VolunteerManagementResxKeys } from './types/Localization';
 
+// formContext.data.save() rejects with a plain { errorCode, message } object after the platform has already shown the error.
+const isPlatformSaveError = (err: unknown): boolean =>
+	(typeof err === 'object' && err !== null && 'errorCode' in err);
+
+const getErrorMessage = (err: unknown): string => {
+	if (err instanceof Error) { return err.message; }
+	const message = (typeof err === 'object' && err !== null) ? (err as { message?: unknown }).message : undefined;
+	return (typeof message === 'string') ? message : String(err);
+};
+
 export class EngagmentOpportunityForm {
 	static readonly NOTIFICATION_ID_SHIFTS_CHANGED = 'msnfp_shifts_changed';
 	static readonly NOTIFICATION_ID_PUBLISH_STATUS = 'StatusUpdateConfirmationMessage';
@@ -16,17 +26,17 @@ export class EngagmentOpportunityForm {
 
 		const locationTypeAttribute = formContext.getAttribute('msnfp_locationtype');
 		locationTypeAttribute?.addOnChange(this.setVisibilityLocationType);
-		locationTypeAttribute.fireOnChange();
+		locationTypeAttribute?.fireOnChange();
 
 		formContext.getAttribute('msnfp_startingdate')?.addOnChange(this.onScheduleDateChanges);
 		formContext.getAttribute('msnfp_endingdate')?.addOnChange(this.onScheduleDateChanges);
 		const multipleDaysAttribute = formContext.getAttribute('msnfp_multipledays');
 		multipleDaysAttribute?.addOnChange(this.onScheduleDateChanges);
-		multipleDaysAttribute.fireOnChange();
+		multipleDaysAttribute?.fireOnChange();
 
 		const shiftsAttribute = formContext.getAttribute('msnfp_shifts');
 		shiftsAttribute?.addOnChange(this.onChangeShifts);
-		shiftsAttribute.fireOnChange();
+		shiftsAttribute?.fireOnChange();
 
 		formContext.getAttribute('msnfp_minimum')?.addOnChange(this.ValidateMinAndMaxParticipants);
 		formContext.getAttribute('msnfp_maximum')?.addOnChange(this.ValidateMinAndMaxParticipants);
@@ -161,7 +171,7 @@ export class EngagmentOpportunityForm {
 		if (isMultipleDays || !startDate) { return; }
 
 		const endOfStartDate = this.getEndOfDayForDate(startDate, userOffSetMs);
-		const datesAreInSameDay = this.areDatesAtSameDay(startDate, endDate);
+		const datesAreInSameDay = this.areDatesAtSameDay(startDate, endDate, userOffSetMs);
 		const isEndDateInRange: boolean = (startDate <= endDate && endDate <= endOfStartDate);
 		if (!isEndDateInRange && !datesAreInSameDay) {
 			endDateAttribute.setValue(endOfStartDate);
@@ -188,7 +198,7 @@ export class EngagmentOpportunityForm {
 		const startDate = startDateAttribute?.getValue();
 		const endDate = endDateAttribute?.getValue();
 		if (startDate && endDate && !multipleDaysChanged) {
-			const datesAreInSameDay = this.areDatesAtSameDay(startDate, endDate);
+			const datesAreInSameDay = this.areDatesAtSameDay(startDate, endDate, userOffSetMs);
 			if (isMultipleDays && datesAreInSameDay) {
 				multipleDays?.setValue(false);
 			}
@@ -273,39 +283,48 @@ export class EngagmentOpportunityForm {
 			}
 		}
 		catch (err) {
-			Xrm.Navigation.openErrorDialog({
-				message: err
-			});
+			if (!isPlatformSaveError(err)) {
+				Xrm.Navigation.openErrorDialog({ message: getErrorMessage(err) });
+			}
 		}
 	};
 
-	PublishFromRibbon = (
+	PublishFromRibbon = async (
 		formContext: Xrm.FormContext,
 		value: number,
 		confirmTextKey: string,
 		confirmTitleKey: string,
 		confirmButtonText = getLocalizedText('EngagementOpportunity.PublishEngagementOpportunity.ConfirmButtonText')
-	): void => {
-		Xrm.Navigation.openConfirmDialog(
+	): Promise<void> => {
+		const success = await Xrm.Navigation.openConfirmDialog(
 			{
 				text: getLocalizedText(confirmTextKey as VolunteerManagementResxKeys),
 				title: getLocalizedText(confirmTitleKey as VolunteerManagementResxKeys),
 				confirmButtonLabel: confirmButtonText,
 			},
 			null
-		).then(function (success) {
-			if (success.confirmed) {
-				formContext
-					.getAttribute('msnfp_engagementopportunitystatus')
-					.setValue(value);
-				formContext.data.save();
-				formContext.ui.setFormNotification(
-					getLocalizedText('EngagementOpportunity.PublishEngagementOpportunity.FormNotificationText'),
-					'INFO',
-					EngagmentOpportunityForm.NOTIFICATION_ID_PUBLISH_STATUS
-				);
+		);
+		if (!success.confirmed) {
+			return;
+		}
+
+		const statusAttribute = formContext.getAttribute('msnfp_engagementopportunitystatus');
+		const previousStatus = statusAttribute.getValue();
+		statusAttribute.setValue(value);
+		try {
+			await formContext.data.save();
+			formContext.ui.setFormNotification(
+				getLocalizedText('EngagementOpportunity.PublishEngagementOpportunity.FormNotificationText'),
+				'INFO',
+				EngagmentOpportunityForm.NOTIFICATION_ID_PUBLISH_STATUS
+			);
+		}
+		catch (err) {
+			statusAttribute.setValue(previousStatus);
+			if (!isPlatformSaveError(err)) {
+				Xrm.Navigation.openErrorDialog({ message: getErrorMessage(err) });
 			}
-		});
+		}
 	};
 
 	OpenQuickCreateFromSubgridRibbon = (
@@ -331,13 +350,12 @@ export class EngagmentOpportunityForm {
 		return new Date(date.getTime() + timeToNextMidnightMs - EngagmentOpportunityForm.ONE_MILLISECOND);
 	};
 
-	areDatesAtSameDay = (date1: null | Date, date2: null | Date): boolean => {
+	// Compares calendar days using the same user time-zone offset basis as getEndOfDayForDate.
+	areDatesAtSameDay = (date1: null | Date, date2: null | Date, userOffsetMs = 0): boolean => {
 		if (!date1 || !date2) { return false; }
-		return (
-			date1.getFullYear() === date2.getFullYear() &&
-			date1.getMonth() === date2.getMonth() &&
-			date1.getDate() === date2.getDate()
-		);
+		const day1 = Math.floor((date1.getTime() + userOffsetMs) / EngagmentOpportunityForm.ONE_DAY_MS);
+		const day2 = Math.floor((date2.getTime() + userOffsetMs) / EngagmentOpportunityForm.ONE_DAY_MS);
+		return day1 === day2;
 	};
 
 	/**

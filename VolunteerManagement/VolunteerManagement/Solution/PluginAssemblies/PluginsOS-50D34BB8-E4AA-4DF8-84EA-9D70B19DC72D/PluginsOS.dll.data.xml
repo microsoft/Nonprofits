@@ -56,6 +56,9 @@
     <PluginType AssemblyQualifiedName="Plugins.ParticipationOnPreCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" PluginTypeId="3434c556-ed15-4a03-9d03-062512717595" Name="Plugins.ParticipationOnPreCreate">
       <FriendlyName>Plugins.ParticipationOnPreCreate</FriendlyName>
     </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationOnPreUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" PluginTypeId="94b3802c-2b42-4394-9e62-0f91a0c3be1d" Name="Plugins.ParticipationOnPreUpdate">
+      <FriendlyName>Plugins.ParticipationOnPreUpdate</FriendlyName>
+    </PluginType>
     <PluginType AssemblyQualifiedName="Plugins.ParticipationScheduleOnPostUpdateAndCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" PluginTypeId="ed6ba47e-ba76-4cd9-a261-143865c50e85" Name="Plugins.ParticipationScheduleOnPostUpdateAndCreate">
       <FriendlyName>Plugins.ParticipationScheduleOnPostUpdateAndCreate</FriendlyName>
     </PluginType>

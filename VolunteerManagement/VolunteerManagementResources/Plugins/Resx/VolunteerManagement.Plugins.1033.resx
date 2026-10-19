@@ -177,4 +177,19 @@
   <data name="Participation.NotApprovedException" xml:space="preserve">
     <value>The selected participation record must be approved.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
+    <value>This shift is full. Please choose another shift.</value>
+  </data>
+  <data name="ParticipationSchedule.ShiftNotInEngagementOpportunityException" xml:space="preserve">
+    <value>The selected shift belongs to a different engagement opportunity. Please choose a shift of this participation's engagement opportunity.</value>
+  </data>
+  <data name="Participation.NoMoreVolunteersNeededException" xml:space="preserve">
+    <value>No more volunteers needed.</value>
+  </data>
+  <data name="Participation.Contact.RequiredException" xml:space="preserve">
+    <value>A Contact is required.</value>
+  </data>
+  <data name="GroupMembership.ContactAndGroup.RequiredException" xml:space="preserve">
+    <value>Contact and Group are required.</value>
+  </data>
 </root>

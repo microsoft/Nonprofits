@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
@@ -34,11 +35,77 @@ namespace Plugins
 			query.Values.Add(attributeValue);
 			query.Attributes.Add("statecode");
 			query.Values.Add("Active");
-			query.PageInfo = new PagingInfo() { ReturnTotalRecordCount = true };
 			query.ColumnSet = columnSet;
 			if (!string.IsNullOrEmpty(orderAttributeName)) query.AddOrder(orderAttributeName, OrderType.Ascending);
-			EntityCollection results = service.RetrieveMultiple(query);
-			return results;
+
+			var records = RetrieveAll(service, query);
+			return new EntityCollection(records) { EntityName = entityName, TotalRecordCount = records.Count };
+		}
+
+		/// <summary>
+		/// Retrieves every record matching a <see cref="QueryExpression"/> or <see cref="QueryByAttribute"/>, following paging cookies past the 5,000 record page limit.
+		/// </summary>
+		public static List<Entity> RetrieveAll(IOrganizationService service, QueryBase query)
+		{
+			PagingInfo pageInfo;
+			switch (query)
+			{
+				case QueryExpression queryExpression:
+					pageInfo = queryExpression.PageInfo = queryExpression.PageInfo ?? new PagingInfo();
+					break;
+				case QueryByAttribute queryByAttribute:
+					pageInfo = queryByAttribute.PageInfo = queryByAttribute.PageInfo ?? new PagingInfo();
+					break;
+				case FetchExpression fetchExpression:
+					return RetrieveAll(service, fetchExpression.Query);
+				default:
+					throw new ArgumentException($"Unsupported query type {query?.GetType().Name}", nameof(query));
+			}
+
+			pageInfo.Count = MaxRecordsInRetrieveRequest;
+			pageInfo.PageNumber = 1;
+			pageInfo.PagingCookie = null;
+
+			var records = new List<Entity>();
+			while (true)
+			{
+				var page = service.RetrieveMultiple(query);
+				if (page == null) break;
+				records.AddRange(page.Entities);
+				if (!page.MoreRecords) break;
+				pageInfo.PageNumber++;
+				pageInfo.PagingCookie = page.PagingCookie;
+			}
+
+			return records;
+		}
+
+		/// <summary>
+		/// Retrieves every record matching a FetchXML query, following paging cookies past the 5,000 record page limit.
+		/// </summary>
+		public static List<Entity> RetrieveAll(IOrganizationService service, string fetchXml)
+		{
+			var document = XDocument.Parse(fetchXml);
+			var fetch = document.Root;
+			var pageNumber = 1;
+			string pagingCookie = null;
+
+			var records = new List<Entity>();
+			while (true)
+			{
+				fetch.SetAttributeValue("page", pageNumber);
+				fetch.SetAttributeValue("count", MaxRecordsInRetrieveRequest);
+				fetch.SetAttributeValue("paging-cookie", pagingCookie);
+
+				var page = service.RetrieveMultiple(new FetchExpression(document.ToString(SaveOptions.DisableFormatting)));
+				if (page == null) break;
+				records.AddRange(page.Entities);
+				if (!page.MoreRecords) break;
+				pageNumber++;
+				pagingCookie = page.PagingCookie;
+			}
+
+			return records;
 		}
 
 		public static void CalculateParticpationsCountsByEO(IOrganizationService service, EntityReference eoRef)
@@ -50,18 +117,16 @@ namespace Plugins
 			query.Values.Add(eoRef.Id);
 			query.Attributes.Add("statecode");
 			query.Values.Add("Active");
-			query.PageInfo = new PagingInfo() { ReturnTotalRecordCount = true };
 			query.ColumnSet = new ColumnSet("msnfp_status", "msnfp_engagementopportunityid", "statecode");
-			EntityCollection participants = service.RetrieveMultiple(query);
+			List<Entity> participants = RetrieveAll(service, query);
 
-			int applied = participants.Entities.Count;
+			int applied = participants.Count;
 			int needReview = 0;
 			int approved = 0;
-			int dismissed = 0;
 			int cancelled = 0;
-			foreach (Entity p in participants.Entities)
+			foreach (Entity p in participants)
 			{
-				switch (p.GetAttributeValue<OptionSetValue>("msnfp_status").Value)
+				switch (p.GetAttributeValue<OptionSetValue>("msnfp_status")?.Value)
 				{
 					case (int)ParticipationStatus.NeedsReview:
 						needReview += 1;
@@ -71,9 +136,6 @@ namespace Plugins
 						break;
 					case (int)ParticipationStatus.Approved:
 						approved += 1;
-						break;
-					case (int)ParticipationStatus.Dismissed:
-						dismissed += 1;
 						break;
 					case (int)ParticipationStatus.Cancelled:
 						cancelled += 1;
@@ -90,49 +152,48 @@ namespace Plugins
 		}
 		public static void CalculateShiftCountsByEO(IOrganizationService service, ITracingService tracingService, EntityReference eoRef)
 		{
-			tracingService.Trace("Starting CalculateEOScheduleCurrentCount");
+			tracingService.Trace($"Starting {nameof(CalculateShiftCountsByEO)}");
 			if (eoRef.LogicalName != "msnfp_engagementopportunity") throw new InvalidPluginExecutionException(OperationStatus.Failed, "Incorrect Entity passed to CalculateShiftCountsByEO");
 
-			QueryByAttribute query = new QueryByAttribute("msnfp_participation");
-			query.Attributes.Add("msnfp_engagementopportunityid");
-			query.Values.Add(eoRef.Id);
-			query.Attributes.Add("statecode");
-			query.Values.Add("Active");
-			query.Attributes.Add("msnfp_status");
-			query.Values.Add((int)ParticipationStatus.Approved);
-			query.PageInfo = new PagingInfo() { ReturnTotalRecordCount = true };
-			query.ColumnSet = new ColumnSet("msnfp_status", "msnfp_engagementopportunityid", "statecode");
-			EntityCollection participants = service.RetrieveMultiple(query);
-			tracingService.Trace($"Participations retrived: {participants.Entities.Count}");
-
-			EntityCollection shifts = new EntityCollection();
-			if (participants.Entities.Count > 0)
+			// One query for all schedules of the EO's active, approved participations, instead of one query per participation.
+			QueryExpression query = new QueryExpression("msnfp_participationschedule")
 			{
-				foreach (Entity e in participants.Entities)
+				ColumnSet = new ColumnSet("msnfp_schedulestatus"),
+				Criteria =
 				{
-					DataCollection<Entity> entities = Utilities.QueryByAttributeExt(service, "msnfp_participationschedule", "msnfp_participationid", e.Id, new ColumnSet("statecode", "msnfp_schedulestatus", "msnfp_participationid")).Entities;
-					if (entities.Count > 0) shifts.Entities.AddRange(entities);
+					Conditions =
+					{
+						new ConditionExpression("statecode", ConditionOperator.Equal, 0)
+					}
 				}
-				tracingService.Trace($"Shifts Found: {shifts.Entities.Count}");
-				if (shifts.Entities.Count > 0)
-				{
-					Entity eo = service.Retrieve("msnfp_engagementopportunity", eoRef.Id, new ColumnSet("msnfp_filledshifts", "msnfp_cancelledshifts", "msnfp_noshow", "msnfp_completed"));
+			};
+			LinkEntity participationLink = query.AddLink("msnfp_participation", "msnfp_participationid", "msnfp_participationid");
+			participationLink.LinkCriteria.AddCondition("msnfp_engagementopportunityid", ConditionOperator.Equal, eoRef.Id);
+			participationLink.LinkCriteria.AddCondition("statecode", ConditionOperator.Equal, 0);
+			participationLink.LinkCriteria.AddCondition("msnfp_status", ConditionOperator.Equal, (int)ParticipationStatus.Approved);
 
-					tracingService.Trace($"{shifts.Entities.First().GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value} vs {(int)ParticipationScheduleStatus.Pending} = {shifts.Entities.First().GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.Pending}");
+			List<Entity> shifts = RetrieveAll(service, query);
+			tracingService.Trace($"Shifts Found: {shifts.Count}");
 
-					int filledShifts = shifts.Entities.Count(s => s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.Pending || s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.Completed);
-					int cancelledShifts = shifts.Entities.Count(s => s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.Cancelled);
-					int noShowShifts = shifts.Entities.Count(s => s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.NoShow);
-					int completedShifts = shifts.Entities.Count(s => s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.Completed);
+			int CountWithStatus(params ParticipationScheduleStatus[] statuses) =>
+				shifts.Count(s => statuses.Any(status => s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)status));
 
-					tracingService.Trace($"Updating EO from {shifts.Entities.Count} shifts.");
-					Entity eoUpdate = new Entity("msnfp_engagementopportunity", eoRef.Id);
-					if (eo.GetAttributeValue<int?>("msnfp_filledshifts") != filledShifts) eoUpdate["msnfp_filledshifts"] = filledShifts;
-					if (eo.GetAttributeValue<int?>("msnfp_cancelledshifts") != cancelledShifts) eoUpdate["msnfp_cancelledshifts"] = cancelledShifts;
-					if (eo.GetAttributeValue<int?>("msnfp_noshow") != noShowShifts) eoUpdate["msnfp_noshow"] = noShowShifts;
-					if (eo.GetAttributeValue<int?>("msnfp_completed") != completedShifts) eoUpdate["msnfp_completed"] = completedShifts;
-					service.Update(eoUpdate);
-				}
+			int filledShifts = CountWithStatus(ParticipationScheduleStatus.Pending, ParticipationScheduleStatus.Completed);
+			int cancelledShifts = CountWithStatus(ParticipationScheduleStatus.Cancelled);
+			int noShowShifts = CountWithStatus(ParticipationScheduleStatus.NoShow);
+			int completedShifts = CountWithStatus(ParticipationScheduleStatus.Completed);
+
+			Entity eo = service.Retrieve("msnfp_engagementopportunity", eoRef.Id, new ColumnSet("msnfp_filledshifts", "msnfp_cancelledshifts", "msnfp_noshow", "msnfp_completed"));
+			Entity eoUpdate = new Entity("msnfp_engagementopportunity", eoRef.Id);
+			if (eo.GetAttributeValue<int?>("msnfp_filledshifts") != filledShifts) eoUpdate["msnfp_filledshifts"] = filledShifts;
+			if (eo.GetAttributeValue<int?>("msnfp_cancelledshifts") != cancelledShifts) eoUpdate["msnfp_cancelledshifts"] = cancelledShifts;
+			if (eo.GetAttributeValue<int?>("msnfp_noshow") != noShowShifts) eoUpdate["msnfp_noshow"] = noShowShifts;
+			if (eo.GetAttributeValue<int?>("msnfp_completed") != completedShifts) eoUpdate["msnfp_completed"] = completedShifts;
+
+			if (eoUpdate.Attributes.Count > 0)
+			{
+				tracingService.Trace($"Updating EO from {shifts.Count} shifts.");
+				service.Update(eoUpdate);
 			}
 		}
 		public static void CalculateEOScheduleCurrentCount(IOrganizationService service, ITracingService tracingService, EntityReference eoScheduleRef)
@@ -144,21 +205,20 @@ namespace Plugins
 
 			QueryExpression queryExpression = new QueryExpression("msnfp_participationschedule");
 			queryExpression.ColumnSet = new ColumnSet("msnfp_engagementopportunityscheduleid", "statecode", "msnfp_schedulestatus");
-			queryExpression.PageInfo = new PagingInfo() { ReturnTotalRecordCount = true };
 			FilterExpression filter = new FilterExpression(LogicalOperator.And);
 			filter.AddCondition("msnfp_engagementopportunityscheduleid", ConditionOperator.Equal, eoSchedule.Id);
 			filter.AddCondition("statecode", ConditionOperator.Equal, "Active");
 			filter.AddCondition("msnfp_schedulestatus", ConditionOperator.In, (int)ParticipationScheduleStatus.Pending, (int)ParticipationScheduleStatus.Completed);
 			queryExpression.Criteria = filter;
-			EntityCollection shifts = service.RetrieveMultiple(queryExpression);
+			int shiftCount = RetrieveAll(service, queryExpression).Count;
 
-			tracingService.Trace($"{shifts.Entities.Count} shifts found. EO Schedule currently has {eoSchedule.GetAttributeValue<int?>("msnfp_number")}");
-			int currentNumber = eoSchedule.GetAttributeValue<int?>("msnfp_number") != null ? eoSchedule.GetAttributeValue<int>("msnfp_number") : 0;
-			if (shifts.Entities.Count != currentNumber)
+			tracingService.Trace($"{shiftCount} shifts found. EO Schedule currently has {eoSchedule.GetAttributeValue<int?>("msnfp_number")}");
+			int currentNumber = eoSchedule.GetAttributeValue<int?>("msnfp_number") ?? 0;
+			if (shiftCount != currentNumber)
 			{
-				tracingService.Trace($"Updating EO Schedule with {shifts.Entities.Count} shifts.");
+				tracingService.Trace($"Updating EO Schedule with {shiftCount} shifts.");
 				Entity eoScheduleUpdate = new Entity("msnfp_engagementopportunityschedule", eoScheduleRef.Id);
-				eoScheduleUpdate["msnfp_number"] = shifts.Entities.Count;
+				eoScheduleUpdate["msnfp_number"] = shiftCount;
 				service.Update(eoScheduleUpdate);
 			}
 		}
@@ -168,12 +228,13 @@ namespace Plugins
 			tracingService.Trace($"Starting CalculateParticipationTotalHours");
 			if (participationRef.LogicalName != "msnfp_participation") throw new InvalidPluginExecutionException(OperationStatus.Failed, "Incorrect Entity passed to CalculateParticipationTotalHours");
 
-			FetchExpression fetch = new FetchExpression(@"<fetch version='1.0' output-format='xml - platform' mapping='logical' distinct='false'>
+			string fetch = @"<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
                   <entity name='msnfp_participationschedule'>
                     <attribute name='msnfp_participationscheduleid'/>
+                    <order attribute='msnfp_participationscheduleid'/>
                     <filter type='and'>
                       <condition attribute='statecode' operator='eq' value='0'/>
-                      <condition attribute='msnfp_schedulestatus' operator='eq' value='335940001'/>
+                      <condition attribute='msnfp_schedulestatus' operator='eq' value='" + (int)ParticipationScheduleStatus.Completed + @"'/>
                       <condition attribute='msnfp_participationid' operator='eq' uitype='msnfp_participation' value ='{" + participationRef.Id + @"}'/>
                     </filter>
                     <link-entity name='msnfp_engagementopportunityschedule' from='msnfp_engagementopportunityscheduleid' to='msnfp_engagementopportunityscheduleid' visible='false' link-type='outer' alias='a_msnfp_engagementopportunityschedule'>
@@ -181,27 +242,23 @@ namespace Plugins
                     </link-entity>
                   </entity>
                 </fetch>
-            ");
+            ";
 
 			tracingService.Trace($"Fetching Shifts");
-			EntityCollection shifts = service.RetrieveMultiple(fetch);
-			tracingService.Trace($"{shifts.Entities.Count} shifts found.");
+			List<Entity> shifts = RetrieveAll(service, fetch);
+			tracingService.Trace($"{shifts.Count} shifts found.");
 
 			decimal totalHours = new decimal();
-			if (shifts.Entities.Count > 0)
+			foreach (Entity s in shifts)
 			{
-				foreach (Entity s in shifts.Entities)
+				if (s.GetAttributeValue<AliasedValue>("a_msnfp_engagementopportunityschedule.msnfp_hours")?.Value is decimal hours)
 				{
-					if (s.GetAttributeValue<AliasedValue>("a_msnfp_engagementopportunityschedule.msnfp_hours") != null)
-					{
-						decimal hours = (decimal)s.GetAttributeValue<AliasedValue>("a_msnfp_engagementopportunityschedule.msnfp_hours").Value;
-						totalHours += hours;
-						tracingService.Trace($"Found: {hours}");
-					}
+					totalHours += hours;
+					tracingService.Trace($"Found: {hours}");
 				}
 			}
 
-			tracingService.Trace($"{shifts.Entities.Count} shifts found with {totalHours}.");
+			tracingService.Trace($"{shifts.Count} shifts found with {totalHours}.");
 
 			if (totalHours != participationHours)
 			{
@@ -217,31 +274,33 @@ namespace Plugins
 			tracingService.Trace("Starting CalculateContactTotalHours");
 			if (contactRef.LogicalName != "contact") throw new InvalidPluginExecutionException(OperationStatus.Failed, "Incorrect Entity passed to CalculateContactTotalHours");
 
-			FetchExpression fetch = new FetchExpression(@"<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
+			string fetch = @"<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
                       <entity name='msnfp_participation'>
                         <attribute name='msnfp_status' />
                         <attribute name='msnfp_engagementopportunityid' />
                         <attribute name='msnfp_contactid' />
                         <attribute name='msnfp_participationid' />
                         <attribute name='msnfp_hours' />
+                        <order attribute='msnfp_participationid' />
                         <filter type='and'>
                           <condition attribute='statecode' operator='eq' value='0' />
-                          <condition attribute='msnfp_status' operator='eq' value='844060002' />
+                          <condition attribute='msnfp_status' operator='eq' value='" + (int)ParticipationStatus.Approved + @"' />
                           <condition attribute='msnfp_contactid' operator='eq' uitype='contact' value='{" + contactRef.Id + @"}' />
                         </filter>
                         <link-entity name='msnfp_engagementopportunity' from='msnfp_engagementopportunityid' to='msnfp_engagementopportunityid' visible='false' link-type='outer' alias='a_msnfp_engagementopportunity'>
                           <attribute name='msnfp_shifts' />
                         </link-entity>
                       </entity>
-                    </fetch>"
-				);
-			EntityCollection participants = service.RetrieveMultiple(fetch);
+                    </fetch>";
+			List<Entity> participants = RetrieveAll(service, fetch);
 
 			Entity contact = service.Retrieve("contact", contactRef.Id, new ColumnSet("msnfp_totalengagements", "msnfp_totalengagementhours"));
-			decimal newTotalHours = participants.Entities.Where(p => (bool)p.GetAttributeValue<AliasedValue>("a_msnfp_engagementopportunity.msnfp_shifts").Value).Sum(p => p.GetAttributeValue<decimal>("msnfp_hours"));
+			decimal newTotalHours = participants
+				.Where(p => p.GetAttributeValue<AliasedValue>("a_msnfp_engagementopportunity.msnfp_shifts")?.Value as bool? == true)
+				.Sum(p => p.GetAttributeValue<decimal>("msnfp_hours"));
 			decimal oldTotalHours = contact.GetAttributeValue<decimal>("msnfp_totalengagementhours");
 
-			int newEoCount = participants.Entities.Count;
+			int newEoCount = participants.Count;
 			int oldEoCount = contact.GetAttributeValue<int>("msnfp_totalengagements");
 			tracingService.Trace($"Found {newTotalHours} vs Old: {oldTotalHours} from {newEoCount} vs Old: {oldEoCount}");
 
@@ -257,7 +316,7 @@ namespace Plugins
 		public static void EngagementOpportunityMessage(IOrganizationService service, ITracingService tracingService, EntityReference contactRef, EntityReference EngagementRef, EngagementOpportunitySettingMessageEventType messageEvent)
 		{
 			tracingService.Trace("Starting EngagementOpportunityMessage");
-			if (contactRef.LogicalName != "contact" || EngagementRef.LogicalName != "msnfp_engagementopportunity") throw new InvalidPluginExecutionException(OperationStatus.Failed, "Incorrect Entity passed to CalculateContactTotalHours");
+			if (contactRef.LogicalName != "contact" || EngagementRef.LogicalName != "msnfp_engagementopportunity") throw new InvalidPluginExecutionException(OperationStatus.Failed, "Incorrect Entity passed to EngagementOpportunityMessage");
 
 			QueryExpression queryExpression = new QueryExpression("msnfp_engagementopportunitysetting");
 			queryExpression.ColumnSet = new ColumnSet("msnfp_engagementopportunityid", "statecode", "msnfp_messagewhensenttype", "msnfp_messagetext", "msnfp_messagesubject", "msnfp_messagesendtotype", "msnfp_settingtype", "createdby");
@@ -307,7 +366,7 @@ namespace Plugins
 				throw new ArgumentNullException(nameof(message));
 			}
 
-			var bccLimit = GetEnvironmentalVariable<int>(service, "msnfp_VolunteerEmailBCCLimit");
+			var bccLimit = GetEnvironmentalVariable<int>(service, "msnfp_VolunteerEmailBCCLimit", tracingService);
 			tracingService.Trace($"Bcc limit is set to {bccLimit}");
 			if (bccLimit == 0 || bccLimit > MaxLimitOfRecipients)
 			{
@@ -315,7 +374,7 @@ namespace Plugins
 				bccLimit = MaxLimitOfRecipients;
 			}
 
-			var enableVolunteerEmailingVariable = GetEnvironmentalVariable<string>(service, "msnfp_EnableVolunteerEmailing");
+			var enableVolunteerEmailingVariable = GetEnvironmentalVariable<string>(service, "msnfp_EnableVolunteerEmailing", tracingService);
 			var sendEmailEnabled = string.Equals(enableVolunteerEmailingVariable, "yes", StringComparison.CurrentCultureIgnoreCase); 
 			tracingService.Trace($"Email sending enabled: {sendEmailEnabled}");
 						
@@ -393,7 +452,7 @@ namespace Plugins
 			tracingService.Trace($"SendEmailRequest ({emailIndex}) sent");
 		}
 
-		static T GetEnvironmentalVariable<T>(IOrganizationService service, string schemaName = "msnfp_EnableVolunteerEmailing")
+		static T GetEnvironmentalVariable<T>(IOrganizationService service, string schemaName = "msnfp_EnableVolunteerEmailing", ITracingService tracingService = null)
 		{
 			try
 			{
@@ -405,8 +464,9 @@ namespace Plugins
 				var textValue = service.Execute(retrieveEnvironmentVariableValueRequest)[ValueResponseParameter];
 				return (T)Convert.ChangeType(textValue, typeof(T));
 			}
-			catch
+			catch (Exception ex)
 			{
+				tracingService?.Trace($"Could not read environment variable '{schemaName}', using the default value: {ex}");
 				return default;
 			}
 		}
@@ -421,6 +481,7 @@ namespace Plugins
 			var newActivityParties = new List<Entity>();
 			var partiesByEntity = existingParty
 				.Select(p => p.GetAttributeValue<EntityReference>("partyid"))
+				.Where(x => x != null)
 				.GroupBy(x => x.LogicalName)
 				.ToDictionary(k => k.Key, v => v.ToArray());
 
@@ -488,8 +549,17 @@ namespace Plugins
 		/// <param name="participation"></param>
 		public static void CreateParticipationSchedule(IOrganizationService service, Entity participation, ILocalizationHelper<Labels> localizationHelper)
 		{
-			EntityCollection participationScehdules = Utilities.QueryByAttributeExt(service, "msnfp_participationschedule", "msnfp_participationid", participation.Id, new ColumnSet("statecode", "msnfp_participationid"));
-			if (participationScehdules.TotalRecordCount < 1)
+			EntityCollection participationScehdules = Utilities.QueryByAttributeExt(service, "msnfp_participationschedule", "msnfp_participationid", participation.Id, new ColumnSet("statecode", "msnfp_participationid", "msnfp_schedulestatus"));
+			if (participationScehdules.TotalRecordCount > 0
+				&& participationScehdules.Entities.Count > 0
+				&& participationScehdules.Entities.All(s => s.GetAttributeValue<OptionSetValue>("msnfp_schedulestatus")?.Value == (int)ParticipationScheduleStatus.Cancelled))
+			{
+				// A volunteer approved again after cancelling gets the cancelled default shift back.
+				Entity reactivatedSchedule = new Entity("msnfp_participationschedule", participationScehdules.Entities.First().Id);
+				reactivatedSchedule["msnfp_schedulestatus"] = new OptionSetValue((int)ParticipationScheduleStatus.Pending);
+				service.Update(reactivatedSchedule);
+			}
+			else if (participationScehdules.TotalRecordCount < 1)
 			{
 				EntityCollection schedules = Utilities.QueryByAttributeExt(service, "msnfp_engagementopportunityschedule", "msnfp_engagementopportunity", participation.GetAttributeValue<EntityReference>("msnfp_engagementopportunityid").Id, new ColumnSet("msnfp_engagementopportunity", "statecode", "msnfp_engagementopportunityschedule"));
 				if (schedules.Entities.Count != 1)
@@ -546,7 +616,7 @@ namespace Plugins
 			engagementOpportunitySchedule[EngagementOpportunityScheduleDef.ShiftName] = DefaultShiftName;
 			engagementOpportunitySchedule[EngagementOpportunityScheduleDef.PrimaryName] = GetNameOfDefaultShift(target);
 			engagementOpportunitySchedule[EngagementOpportunityScheduleDef.StartDate] = target.GetAttributeValue<DateTime?>(EngagementOpportunityDef.StartingDate);
-			engagementOpportunitySchedule[EngagementOpportunityScheduleDef.EndDate] = target.GetAttributeValue<DateTime>(EngagementOpportunityDef.EndingDate);
+			engagementOpportunitySchedule[EngagementOpportunityScheduleDef.EndDate] = target.GetAttributeValue<DateTime?>(EngagementOpportunityDef.EndingDate);
 			engagementOpportunitySchedule.Id = service.Create(engagementOpportunitySchedule);
 
 			return engagementOpportunitySchedule;
@@ -560,11 +630,11 @@ namespace Plugins
 			criteria.AddCondition("msnfp_contactid", ConditionOperator.Equal, participantId);
 			criteria.AddCondition("msnfp_status", ConditionOperator.In, (int)ParticipationStatus.InReview, (int)ParticipationStatus.NeedsReview);
 			expression.Criteria = criteria;
-			EntityCollection participations = service.RetrieveMultiple(expression);
+			List<Entity> participations = RetrieveAll(service, expression);
 
-			for (int pos = 0; pos < participations.Entities.Count; ++pos)
+			foreach (Entity participation in participations)
 			{
-				Entity participationUpdate = new Entity("msnfp_participation", participations[pos].Id);
+				Entity participationUpdate = new Entity("msnfp_participation", participation.Id);
 				participationUpdate["msnfp_status"] = new OptionSetValue((int)ParticipationStatus.Cancelled);
 				service.Update(participationUpdate);
 			}
@@ -586,7 +656,7 @@ namespace Plugins
                 </link-entity>
               </entity>
             </fetch>");
-			EntityCollection preferences = service.RetrieveMultiple(fetch);
+			List<Entity> preferences = RetrieveAll(service, fetch);
 			return ConvertAliasedAttributeToCsv(preferences, "a_msnfp_preferencetypeid.msnfp_preferencetypetitle");
 		}
 
@@ -604,19 +674,17 @@ namespace Plugins
                 </link-entity>
               </entity>
             </fetch>");
-			EntityCollection qualifications = service.RetrieveMultiple(fetch);
+			List<Entity> qualifications = RetrieveAll(service, fetch);
 			return ConvertAliasedAttributeToCsv(qualifications, "a_msnfp_qualificationtypeid.msnfp_qualificationtypetitle");
 		}
 
-		private static string ConvertAliasedAttributeToCsv(EntityCollection entityCollection, string targetAttribute)
+		private static string ConvertAliasedAttributeToCsv(IEnumerable<Entity> entities, string targetAttribute)
 		{
-			StringBuilder csv = new StringBuilder("");
-			for (int i = 0; i < entityCollection.Entities.Count; i++)
-			{
-				string tempString = $"\"{((string)entityCollection.Entities[i].GetAttributeValue<AliasedValue>(targetAttribute).Value).Replace("\"", "\"\"")}\"";
-				csv.Append(i == (entityCollection.Entities.Count - 1) ? tempString : tempString + ", ");
-			}
-			return csv.ToString();
+			var values = entities
+				.Select(e => e.GetAttributeValue<AliasedValue>(targetAttribute)?.Value as string)
+				.Where(v => v != null)
+				.Select(v => $"\"{v.Replace("\"", "\"\"")}\"");
+			return string.Join(", ", values);
 		}
 
 		public static void CreatePublicEOFromEO(IOrganizationService service, Guid EOId, Guid? PublicEOId = null)
