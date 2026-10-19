@@ -42,6 +42,27 @@ namespace Plugins.Tests
 		}
 
 		[Test]
+		public void QueryByAttributeExtRequestsEachPageOnce()
+		{
+			var service = new Mock<IOrganizationService>();
+			var pages = new Queue<EntityCollection>(new[]
+			{
+				new EntityCollection(new List<Entity> { new Entity("msnfp_participationschedule", Guid.NewGuid()) }) { MoreRecords = true, PagingCookie = "cookie-1" },
+				new EntityCollection(new List<Entity> { new Entity("msnfp_participationschedule", Guid.NewGuid()) }) { MoreRecords = false }
+			});
+			var requestedPages = new List<(int page, string cookie)>();
+			service.Setup(s => s.RetrieveMultiple(It.IsAny<QueryBase>()))
+				.Callback<QueryBase>(q => requestedPages.Add((((QueryByAttribute)q).PageInfo.PageNumber, ((QueryByAttribute)q).PageInfo.PagingCookie)))
+				.Returns(() => pages.Dequeue());
+
+			var result = Utilities.QueryByAttributeExt(service.Object, "msnfp_participationschedule", "msnfp_participationid", Guid.NewGuid(), new ColumnSet("msnfp_schedulestatus"));
+
+			requestedPages.Should().Equal((1, null), (2, "cookie-1"));
+			result.Entities.Should().HaveCount(2);
+			result.TotalRecordCount.Should().Be(2);
+		}
+
+		[Test]
 		public void RetrieveAllPagesFetchXml()
 		{
 			var service = new Mock<IOrganizationService>();

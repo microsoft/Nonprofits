@@ -35,29 +35,11 @@ namespace Plugins
 			query.Values.Add(attributeValue);
 			query.Attributes.Add("statecode");
 			query.Values.Add("Active");
-			query.PageInfo = new PagingInfo() { ReturnTotalRecordCount = true };
 			query.ColumnSet = columnSet;
 			if (!string.IsNullOrEmpty(orderAttributeName)) query.AddOrder(orderAttributeName, OrderType.Ascending);
 
-			EntityCollection results = service.RetrieveMultiple(query);
-			if (results == null || !results.MoreRecords)
-			{
-				return results;
-			}
-
-			while (true)
-			{
-				query.PageInfo.PageNumber++;
-				query.PageInfo.PagingCookie = results.PagingCookie;
-				var page = service.RetrieveMultiple(query);
-				results.Entities.AddRange(page.Entities);
-				results.PagingCookie = page.PagingCookie;
-				if (!page.MoreRecords) break;
-			}
-
-			results.MoreRecords = false;
-			results.TotalRecordCount = results.Entities.Count;
-			return results;
+			var records = RetrieveAll(service, query);
+			return new EntityCollection(records) { EntityName = entityName, TotalRecordCount = records.Count };
 		}
 
 		/// <summary>
