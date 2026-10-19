@@ -7,6 +7,8 @@ import { createRoot } from 'react-dom/client';
 
 import { workloadTelemetryService } from '@services/telemetry';
 
+import { ExceptionOperation, logException } from '@nds/telemetry/ExceptionTelemetry';
+
 import { App } from './App';
 import { callGetItem } from './controller/ItemCRUDController';
 import { WorkloadI18nProvider } from './providers/I18nProvider';
@@ -84,6 +86,11 @@ export async function initialize(params: InitParams) {
 						? crypto.randomUUID()
 						: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 				console.error(`React render failed (correlationId: ${correlationId}):`, error);
+				logException({
+					name: ExceptionOperation.UiRenderFailed,
+					error,
+					additionalProperties: { referenceId: correlationId },
+				});
 
 				const container = document.createElement('div');
 				container.style.padding = '20px';
@@ -92,7 +99,7 @@ export async function initialize(params: InitParams) {
 				heading.textContent = 'Something went wrong while loading this page.';
 				const message = document.createElement('p');
 				message.textContent =
-					'Please refresh the page and try again. If the problem persists, contact support.';
+					'Please refresh the page and try again. If the problem continues, contact your administrator and include the reference ID below.';
 				const reference = document.createElement('p');
 				reference.textContent = `Reference ID: ${correlationId}`;
 				container.append(heading, message, reference);

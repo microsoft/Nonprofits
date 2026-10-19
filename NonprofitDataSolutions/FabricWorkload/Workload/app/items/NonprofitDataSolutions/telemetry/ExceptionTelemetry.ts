@@ -14,6 +14,9 @@ export enum ExceptionOperation {
 
 	// Deployment
 	DeploymentFailed = 'Deployment.Failed',
+
+	// UI
+	UiRenderFailed = 'UI.RenderFailed',
 }
 
 export interface ExceptionTelemetryPayload {

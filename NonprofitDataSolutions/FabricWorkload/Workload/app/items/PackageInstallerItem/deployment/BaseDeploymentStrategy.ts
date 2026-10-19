@@ -436,6 +436,7 @@ export abstract class DeploymentStrategy {
 				depContext.setCurrentItem(packItem, newItem);
 			} else if (createResp.status === 202) {
 				const opLocation = createResp.headers['operation-location'] || createResp.headers['location'];
+				createOperationLocation = opLocation || undefined;
 				if (opLocation) {
 					newItem = await this.pollOperationForItem(
 						opLocation,
@@ -488,6 +489,7 @@ export abstract class DeploymentStrategy {
 					newItem = createResp.body as any;
 				} else if (createResp.status === 202) {
 					const opLocation = createResp.headers['operation-location'] || createResp.headers['location'];
+					createOperationLocation = opLocation || undefined;
 					if (opLocation) {
 						newItem = await this.pollOperationForItem(
 							opLocation,
