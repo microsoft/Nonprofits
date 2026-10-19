@@ -33,7 +33,7 @@ Every table used through `/_api` needs matching `Webapi/<table>/enabled`, `Webap
 | `preferenceService.ts` | `msnfp_preferencetypes`, `msnfp_preferences` | Read, create, delete | Profile preferences. |
 | `qualificationService.ts` | `msnfp_qualificationtypes`, `msnfp_qualifications` | Read, create, delete | Profile qualifications. |
 
-The core HTTP helpers are in `src/services/apiClient.ts`. POST, PATCH, and DELETE require the Power Pages anti-forgery token. The helper first uses `window.shell.getTokenDeferred()` when available, then falls back to `/_layout/tokenhtml`.
+The core HTTP helpers are in `src/services/apiClient.ts`. POST, PATCH, and DELETE require the Power Pages anti-forgery token. The helper first uses `window.shell.getTokenDeferred()` when available, then falls back to `/_layout/tokenhtml`. The token is cached per page; if a write returns 400 or 403, the cache is cleared and the request is retried once with a fresh token.
 
 ## Runtime Bootstrap
 

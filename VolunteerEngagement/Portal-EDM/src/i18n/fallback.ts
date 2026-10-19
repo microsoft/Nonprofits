@@ -223,6 +223,7 @@ export const fallbackStrings: Record<string, string> = {
 	'MSVE_SPA/Status/Canceled': 'Canceled',
 	'MSVE_SPA/Status/Completed': 'Completed',
 	'MSVE_SPA/Status/Dismissed': 'Dismissed',
+	'MSVE_SPA/Status/InReview': 'In Review',
 	'MSVE_SPA/Status/Missed': 'Missed',
 	'MSVE_SPA/Status/Registered': 'Registered',
 	'MSVE_SPA/Status/Unknown': 'Unknown',

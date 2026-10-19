@@ -91,9 +91,36 @@ export interface ContactDetails {
 // Status enums matching Dataverse option set values
 export enum ParticipationStatus {
 	Applied = 844060000,
+	InReview = 844060001,
 	Accepted = 844060002,
 	Dismissed = 844060003,
 	Canceled = 844060004,
+}
+
+/** Applied and In Review participations are both still waiting for a staff decision. */
+export function isPendingApprovalStatus(status: number | undefined): boolean {
+	return status === ParticipationStatus.Applied || status === ParticipationStatus.InReview;
+}
+
+/** A volunteer may re-apply after canceling; Dismissed is a staff decision and stays final. */
+export function canReapplyStatus(status: number | undefined): boolean {
+	return status === ParticipationStatus.Canceled;
+}
+
+/**
+ * A volunteer can apply (or re-apply after canceling) only while the engagement is published to the web.
+ * Closed and canceled engagements stay public, but no longer take applications.
+ */
+export function canApplyToEngagement(
+	isAuthenticated: boolean,
+	engagementStatus: number | undefined,
+	participationStatus: number | undefined,
+): boolean {
+	return (
+		isAuthenticated &&
+		engagementStatus === EngagementOpportunityStatus.PublishToWeb &&
+		(participationStatus === undefined || canReapplyStatus(participationStatus))
+	);
 }
 
 export enum ScheduleStatus {
@@ -132,6 +159,8 @@ export function getParticipationStatusLabel(value: number, t?: (key: string) => 
 	switch (value) {
 		case ParticipationStatus.Applied:
 			return t ? t('MSVE_SPA/Status/Applied') : 'Applied';
+		case ParticipationStatus.InReview:
+			return t ? t('MSVE_SPA/Status/InReview') : 'In Review';
 		case ParticipationStatus.Accepted:
 			return t ? t('MSVE_SPA/Status/Accepted') : 'Accepted';
 		case ParticipationStatus.Dismissed:

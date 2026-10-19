@@ -1,8 +1,10 @@
 // Engagement opportunity data access
+import { isGuid } from '@/utils/guid';
+
 import type { Engagement, EngagementRequiredQualification, EngagementSchedule } from '@/types';
 import { EngagementOpportunityStatus } from '@/types';
 
-import { apiGet } from './apiClient';
+import { apiGet, assertGuid } from './apiClient';
 
 const PUBLIC_ENGAGEMENT_FIELDS = [
 	'msnfp_publicengagementopportunityid',
@@ -50,18 +52,22 @@ export async function fetchEngagements(): Promise<Engagement[]> {
 }
 
 export async function fetchEngagement(id: string): Promise<Engagement> {
-	const url = `/_api/msnfp_publicengagementopportunities(${id})?$select=${PUBLIC_ENGAGEMENT_FIELDS}`;
+	const url = `/_api/msnfp_publicengagementopportunities(${assertGuid(id, 'engagement id')})?$select=${PUBLIC_ENGAGEMENT_FIELDS}`;
 	return apiGet<Engagement>(url);
 }
 
 export async function fetchEngagementSchedules(privateOppId: string): Promise<EngagementSchedule[]> {
-	const filter = [`_msnfp_engagementopportunity_value eq '${privateOppId}'`, 'statecode eq 0'].join(' and ');
+	const filter = [
+		`_msnfp_engagementopportunity_value eq '${assertGuid(privateOppId, 'engagement opportunity id')}'`,
+		'statecode eq 0',
+	].join(' and ');
 	const url = `/_api/msnfp_engagementopportunityschedules?$select=msnfp_engagementopportunityscheduleid,msnfp_shiftname,msnfp_startperiod,msnfp_maximum,msnfp_number&$filter=${filter}&$orderby=msnfp_startperiod asc`;
 	const data = await apiGet<{ value: EngagementSchedule[] }>(url);
 	return data.value;
 }
 
 export async function fetchPublicEngagementByPrivateId(privateOppId: string): Promise<Engagement | null> {
+	if (!isGuid(privateOppId)) return null;
 	const filter = `_msnfp_engagementopportunityid_value eq '${privateOppId}'`;
 	const url = `/_api/msnfp_publicengagementopportunities?$select=${PUBLIC_ENGAGEMENT_FIELDS}&$filter=${filter}&$top=1`;
 	try {
@@ -75,6 +81,7 @@ export async function fetchPublicEngagementByPrivateId(privateOppId: string): Pr
 export async function fetchEngagementRequiredQualifications(
 	engagementOppId: string,
 ): Promise<EngagementRequiredQualification[]> {
+	if (!isGuid(engagementOppId)) return [];
 	const filter = `_msnfp_engagementopportunityid_value eq '${engagementOppId}'`;
 	const url = `/_api/msnfp_engagementopportunityparticipantquals?$select=msnfp_engagementopportunityparticipantqualid,_msnfp_qualificationtypeid_value&$filter=${filter}`;
 	try {
