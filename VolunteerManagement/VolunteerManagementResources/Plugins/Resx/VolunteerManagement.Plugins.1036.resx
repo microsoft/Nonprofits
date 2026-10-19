@@ -186,4 +186,10 @@
   <data name="Participation.NoMoreVolunteersNeededException" xml:space="preserve">
     <value>Plus aucun bénévole n’est nécessaire.</value>
   </data>
+  <data name="Participation.Contact.RequiredException" xml:space="preserve">
+    <value>Un contact est obligatoire.</value>
+  </data>
+  <data name="GroupMembership.ContactAndGroup.RequiredException" xml:space="preserve">
+    <value>Le contact et le groupe sont obligatoires.</value>
+  </data>
 </root>

@@ -98,5 +98,13 @@
 		/// No more volunteers needed.
 		/// </summary>
         public LocalizationInfoModel Participation_NoMoreVolunteersNeededException { get; set; }
+		/// <summary>
+		/// A Contact is required.
+		/// </summary>
+        public LocalizationInfoModel Participation_Contact_RequiredException { get; set; }
+		/// <summary>
+		/// Contact and Group are required.
+		/// </summary>
+        public LocalizationInfoModel GroupMembership_ContactAndGroup_RequiredException { get; set; }
     }
 }

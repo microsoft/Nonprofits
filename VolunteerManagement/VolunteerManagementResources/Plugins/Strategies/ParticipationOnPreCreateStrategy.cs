@@ -31,8 +31,14 @@ namespace Plugins.Strategies
 			if (context.InputParameters.Contains("Target") && context.InputParameters["Target"] is Entity && context.InputParameters["Target"] != null)
 			{
 				Entity target = (Entity)context.InputParameters["Target"];
+				var contactRef = target.GetAttributeValue<EntityReference>("msnfp_contactid");
+				if (contactRef == null)
+				{
+					throw new InvalidPluginExecutionException(OperationStatus.Failed, this.localizationHelper.GetLocalizedMessage(l => l.Participation_Contact_RequiredException));
+				}
+
 				var service = this.serviceProvider.CreateCurrentUserOrganizationService();
-				Entity contact = service.Retrieve("contact", target.GetAttributeValue<EntityReference>("msnfp_contactid").Id, new ColumnSet("fullname", "statecode"));
+				Entity contact = service.Retrieve("contact", contactRef.Id, new ColumnSet("fullname", "statecode"));
 				ContactStatus contactStatus = (ContactStatus)contact.GetAttributeValue<OptionSetValue>("statecode").Value;
 				string contactFullName = contact.GetAttributeValue<string>("fullname");
 
