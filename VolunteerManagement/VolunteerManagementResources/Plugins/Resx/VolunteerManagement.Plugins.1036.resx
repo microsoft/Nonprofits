@@ -183,4 +183,7 @@
   <data name="ParticipationSchedule.ShiftNotInEngagementOpportunityException" xml:space="preserve">
     <value>L’équipe sélectionnée appartient à une autre opportunité d’engagement. Veuillez choisir une équipe de l’opportunité d’engagement de cette participation.</value>
   </data>
+  <data name="Participation.NoMoreVolunteersNeededException" xml:space="preserve">
+    <value>Plus aucun bénévole n’est nécessaire.</value>
+  </data>
 </root>

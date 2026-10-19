@@ -183,4 +183,7 @@
   <data name="ParticipationSchedule.ShiftNotInEngagementOpportunityException" xml:space="preserve">
     <value>The selected shift belongs to a different engagement opportunity. Please choose a shift of this participation's engagement opportunity.</value>
   </data>
+  <data name="Participation.NoMoreVolunteersNeededException" xml:space="preserve">
+    <value>No more volunteers needed.</value>
+  </data>
 </root>

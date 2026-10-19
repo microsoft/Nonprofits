@@ -94,5 +94,9 @@
 		/// The selected shift belongs to a different engagement opportunity. Please choose a shift of this participation's engagement opportunity.
 		/// </summary>
         public LocalizationInfoModel ParticipationSchedule_ShiftNotInEngagementOpportunityException { get; set; }
+		/// <summary>
+		/// No more volunteers needed.
+		/// </summary>
+        public LocalizationInfoModel Participation_NoMoreVolunteersNeededException { get; set; }
     }
 }
