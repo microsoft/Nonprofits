@@ -107,6 +107,22 @@ export function canReapplyStatus(status: number | undefined): boolean {
 	return status === ParticipationStatus.Canceled;
 }
 
+/**
+ * A volunteer can apply (or re-apply after canceling) only while the engagement is published to the web.
+ * Closed and canceled engagements stay public, but no longer take applications.
+ */
+export function canApplyToEngagement(
+	isAuthenticated: boolean,
+	engagementStatus: number | undefined,
+	participationStatus: number | undefined,
+): boolean {
+	return (
+		isAuthenticated &&
+		engagementStatus === EngagementOpportunityStatus.PublishToWeb &&
+		(participationStatus === undefined || canReapplyStatus(participationStatus))
+	);
+}
+
 export enum ScheduleStatus {
 	Registered = 335940000,
 	Completed = 335940001,

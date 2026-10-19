@@ -65,6 +65,7 @@ import {
 	LocationType,
 	ParticipationStatus,
 	ScheduleStatus,
+	canApplyToEngagement,
 	canReapplyStatus,
 	getLocationLabel,
 	isPendingApprovalStatus,
@@ -329,7 +330,11 @@ export default function EngagementDetails() {
 
 	const startDate = new Date(engagement.msnfp_startingdate).toLocaleDateString();
 	const endDate = new Date(engagement.msnfp_endingdate).toLocaleDateString();
-	const canApply = isAuthenticated && (!participation || canReapplyStatus(participation.msnfp_status));
+	const canApply = canApplyToEngagement(
+		isAuthenticated,
+		engagement.msnfp_engagementopportunitystatus,
+		participation?.msnfp_status,
+	);
 	const isActive =
 		participation &&
 		participation.msnfp_status !== ParticipationStatus.Canceled &&
