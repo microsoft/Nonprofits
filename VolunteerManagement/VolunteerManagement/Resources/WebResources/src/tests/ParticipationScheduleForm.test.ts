@@ -2,6 +2,7 @@ import { XrmMockGenerator } from 'xrm-mock';
 import { ParticipationScheduleForm } from '../ParticipationScheduleForm';
 
 const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
+const noShiftsFilter = '<filter type=\'and\'><condition attribute=\'msnfp_engagementopportunityscheduleid\' operator=\'null\'/></filter>';
 
 describe('ParticipationScheduleForm', () => {
 	let retrieveRecordMock: jest.Mock;
@@ -79,25 +80,48 @@ describe('ParticipationScheduleForm', () => {
 			expect(filters[0].filter).toBe('<filter type=\'and\'><condition attribute=\'msnfp_engagementopportunity\' operator=\'eq\' value=\'{999-999-999}\'/></filter>');
 		});
 
-		test('Adds no filter when the opportunity id is not cached', () => {
+		test('Adds no filter when no participation is selected', () => {
+			XrmMockGenerator.formContext.getAttribute('msnfp_participationid').setValue(null);
 			const form = new ParticipationScheduleForm();
 
 			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
 
 			expect(retrieveRecordMock).not.toHaveBeenCalled();
-			expect(xhrOpenSpy).not.toHaveBeenCalled();
 			expect(getScheduleControl().filters).toHaveLength(0);
 		});
 
-		test('Adds no filter when the retrieve fails', async () => {
-			retrieveRecordMock.mockRejectedValue(new Error('failure'));
+		test('Lists no shifts while the opportunity is still loading, without starting a second load', async () => {
+			let resolveRetrieve: (value: unknown) => void;
+			retrieveRecordMock.mockReturnValue(new Promise(resolve => { resolveRetrieve = resolve; }));
+			const form = new ParticipationScheduleForm();
+			form.OnLoad(XrmMockGenerator.eventContext);
+
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+
+			expect(getScheduleControl().filters.pop().filter).toBe(noShiftsFilter);
+			expect(retrieveRecordMock).toHaveBeenCalledTimes(1);
+
+			resolveRetrieve({ _msnfp_engagementopportunityid_value: '999-999-999' });
+			await flushPromises();
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+
+			expect(getScheduleControl().filters.pop().filter).toContain('value=\'{999-999-999}\'');
+			expect(xhrOpenSpy).not.toHaveBeenCalled();
+		});
+
+		test('Lists no shifts and retries the load when the retrieve failed', async () => {
+			retrieveRecordMock.mockRejectedValueOnce(new Error('failure'));
 			const form = new ParticipationScheduleForm();
 			form.OnLoad(XrmMockGenerator.eventContext);
 			await flushPromises();
 
 			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+			expect(getScheduleControl().filters.pop().filter).toBe(noShiftsFilter);
+			expect(retrieveRecordMock).toHaveBeenCalledTimes(2);
 
-			expect(getScheduleControl().filters).toHaveLength(0);
+			await flushPromises();
+			form.OnPreSearchAddFilterSync(XrmMockGenerator.eventContext);
+			expect(getScheduleControl().filters.pop().filter).toContain('value=\'{999-999-999}\'');
 		});
 	});
 });
