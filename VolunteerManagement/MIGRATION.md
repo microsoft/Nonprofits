@@ -85,15 +85,19 @@ runs `PublishAllXml`.
 
 Before deleting, the script checks that:
 
-- the open-source solution `volunteermanagementos` is installed (otherwise the delete would remove
-  the Volunteer Management tables and their data),
+- the open-source solution `volunteermanagementos` is installed,
 - the target solution is managed, and
-- the target is the AppSource build: none of its plug-in assemblies is signed with the open-source
-  key (`703f25cc8a15a472`). An environment that installed an open-source build from before the
-  rename to `volunteermanagementos` has the unique name `VolunteerManagement` too.
+- every table in the target solution is also in another managed solution, such as
+  `volunteermanagementos` or Common Data Model for Nonprofits. Deleting a managed solution deletes
+  the tables that only it holds, together with their data.
 
-If any check fails, the script stops and lists the reasons. `-Force` overrides the checks; use it
-only with a verified backup.
+The script doesn't try to tell the AppSource build apart from an open-source build installed
+before the solution was renamed to `volunteermanagementos`. Both use the unique name
+`VolunteerManagement`, the same publisher, and the same plug-in assembly and signing key. Both are
+migrated the same way, and the table check above protects the data in either case.
+
+If any check fails, the script stops and lists the reasons, including the tables that would be
+deleted. `-Force` overrides the checks; use it only with a verified backup.
 
 ### 4. Re-import / upgrade the OS solution
 

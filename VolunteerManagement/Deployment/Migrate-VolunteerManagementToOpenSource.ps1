@@ -44,10 +44,10 @@
     Rewrite the active form/view layers to remove the AppSource PCF control references and publish.
 
 .PARAMETER DeleteAppSourceSolution
-    Delete the AppSource managed solution identified by -AppSourceSolutionUniqueName. The stage
-    refuses to delete unless the open-source solution 'volunteermanagementos' is installed, the
-    target solution is managed, and its plug-in assemblies are not signed with the open-source
-    key (so it is the AppSource build). Use -Force to override these checks.
+    Delete the managed solution identified by -AppSourceSolutionUniqueName. The stage refuses to
+    delete unless the open-source solution 'volunteermanagementos' is installed, the target
+    solution is managed, and every table in the target is also in another managed solution (so no
+    table or data is deleted with it). Use -Force to override these checks.
 
 .PARAMETER RestoreControls
     Remove the active (unmanaged) layer of every form/view listed in -StateFile so the OS solution
@@ -125,7 +125,6 @@ $ErrorActionPreference = 'Stop'
 $EnvironmentUrl = $EnvironmentUrl.TrimEnd('/')
 $base = "$EnvironmentUrl/api/data/v9.2"
 $OsSolutionUniqueName = 'volunteermanagementos'
-$OsPluginPublicKeyToken = '703f25cc8a15a472'
 
 if (-not ($StripReferences -or $DeleteAppSourceSolution -or $RestoreControls -or $Verify)) {
     Write-Host 'Nothing to do. Specify at least one stage: -StripReferences, -DeleteAppSourceSolution, -RestoreControls, or -Verify.' -ForegroundColor Yellow
@@ -247,12 +246,17 @@ function Invoke-StripReferences {
     }
 }
 
-function Get-SolutionPluginAssemblies {
+# Tables (componenttype 1) that no other managed solution holds are deleted, with their data,
+# together with the solution. Returns the logical names of those tables.
+function Get-TablesOnlyInSolution {
     param([Guid]$SolutionId)
-    # componenttype 91 = PluginAssembly
-    $components = Get-AllPages -Url "$base/solutioncomponents?`$select=objectid&`$filter=_solutionid_value eq $SolutionId and componenttype eq 91"
-    foreach ($c in $components) {
-        Invoke-RestMethod -Uri "$base/pluginassemblies($($c.objectid))?`$select=name,publickeytoken" -Headers $headers
+    $managedSolutionIds = @(Get-AllPages -Url "$base/solutions?`$select=solutionid&`$filter=ismanaged eq true" | ForEach-Object { $_.solutionid })
+    $tables = Get-AllPages -Url "$base/solutioncomponents?`$select=objectid&`$filter=_solutionid_value eq $SolutionId and componenttype eq 1"
+    foreach ($t in $tables) {
+        $holders = Get-AllPages -Url "$base/solutioncomponents?`$select=_solutionid_value&`$filter=componenttype eq 1 and objectid eq $($t.objectid) and _solutionid_value ne $SolutionId"
+        if (@($holders | Where-Object { $managedSolutionIds -contains $_._solutionid_value }).Count -eq 0) {
+            (Invoke-RestMethod -Uri "$base/EntityDefinitions($($t.objectid))?`$select=LogicalName" -Headers $headers).LogicalName
+        }
     }
 }
 
@@ -263,20 +267,16 @@ function Get-DeleteBlockers {
 
     $os = (Invoke-RestMethod -Uri "$base/solutions?`$select=solutionid&`$filter=uniquename eq '$OsSolutionUniqueName'" -Headers $headers).value
     if (-not $os) {
-        $blockers += "The open-source solution '$OsSolutionUniqueName' is not installed. Deleting '$AppSourceSolutionUniqueName' now would delete the Volunteer Management tables and their data. Import the OS solution first (step 1)."
+        $blockers += "The open-source solution '$OsSolutionUniqueName' is not installed. Import it first (step 1) so it takes over the Volunteer Management tables."
     }
 
     if (-not $Solution.ismanaged) {
-        $blockers += "Solution '$AppSourceSolutionUniqueName' is unmanaged. Only the managed AppSource solution can be deleted by this script."
+        $blockers += "Solution '$AppSourceSolutionUniqueName' is unmanaged. Only a managed solution can be deleted by this script."
     }
 
-    $assemblies = @(Get-SolutionPluginAssemblies -SolutionId $Solution.solutionid)
-    $osAssemblies = @($assemblies | Where-Object { $_.publickeytoken -eq $OsPluginPublicKeyToken })
-    if ($osAssemblies.Count -gt 0) {
-        $blockers += "Solution '$AppSourceSolutionUniqueName' contains plug-in assembly '$($osAssemblies[0].name)' signed with the open-source key ($OsPluginPublicKeyToken). It is an open-source build (for example one installed before the solution was renamed to '$OsSolutionUniqueName'), not the AppSource solution."
-    }
-    elseif ($assemblies.Count -eq 0) {
-        $blockers += "Solution '$AppSourceSolutionUniqueName' contains no plug-in assembly, so it cannot be confirmed to be the AppSource Volunteer Management solution."
+    $orphanTables = @(Get-TablesOnlyInSolution -SolutionId $Solution.solutionid)
+    if ($orphanTables.Count -gt 0) {
+        $blockers += "Deleting '$AppSourceSolutionUniqueName' would delete $($orphanTables.Count) table(s) and all their data, because no other managed solution contains them: $($orphanTables -join ', ')."
     }
 
     return $blockers
@@ -305,7 +305,7 @@ function Invoke-DeleteAppSourceSolution {
         Write-Host '  -Force specified: continuing despite the failed safety checks.' -ForegroundColor Yellow
     }
     else {
-        Write-Host "  Safety checks passed: '$OsSolutionUniqueName' is installed and the target is the managed AppSource build."
+        Write-Host "  Safety checks passed: '$OsSolutionUniqueName' is installed and every table in '$AppSourceSolutionUniqueName' is also in another managed solution."
     }
 
     if ($PSCmdlet.ShouldProcess("solution '$AppSourceSolutionUniqueName' ($($s.friendlyname) v$($s.version), managed=$($s.ismanaged))", 'DELETE')) {
