@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<!-- Package information -->
+		<id>ManifestPackage-{{ENVIRONMENT}}</id>
+		<version>{{VERSION}}</version>
+		<authors>author</authors>
+		<owners>owner</owners>
+		<description>A NuGet package that holds the manifests for the {{WORKLOAD_NAME}} workload ({{ENVIRONMENT}} environment).</description>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	</metadata>
+	<files>
+		<!-- Include the XML and FE files -->
+		<file src="<ManifestFolder>*.xml" target="BE" />
+		<file src="<ManifestFolder>*.json" target="FE" />
+		<file src="<ManifestFolder>assets\**" target="FE\assets" />
+	</files>
+</package>

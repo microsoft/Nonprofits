@@ -9,7 +9,7 @@ param logAnalyticsWorkspaceResourceId string
 @description('Diagnostic setting name.')
 param diagnosticSettingName string = 'alz-kv-diag'
 
-resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2026-02-01' existing = {
   name: keyVaultName
 }
 

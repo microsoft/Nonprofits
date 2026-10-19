@@ -6,6 +6,8 @@ import { PersonArrowRight24Regular, SignOut24Regular } from '@fluentui/react-ico
 
 import { useAuth } from '@/hooks/useAuth';
 
+import { clearTokenCache } from '@/services/apiClient';
+
 import { useAuthButtonStyles } from './AuthButton.styles';
 
 export const AuthButton: React.FC = () => {
@@ -25,6 +27,7 @@ export const AuthButton: React.FC = () => {
 						appearance="subtle"
 						onClick={async () => {
 							await fetch('/Account/Login/LogOff', { credentials: 'same-origin' });
+							clearTokenCache();
 							window.location.href = '/';
 						}}
 					/>

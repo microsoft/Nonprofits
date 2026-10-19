@@ -1,0 +1,974 @@
+{
+	"id": "Fundraising",
+	"displayName": "Fundraising",
+	"description": "Set up everything that is needed for Fundraising.",
+	"version": "{{VERSION}}",
+	"deploymentConfig": {
+		"type": "UX",
+		"location": "Default",
+		"prefixItemNames": "PackageInstallerItemName",
+		"suffixItemNames": false,
+		"prefixedOrSuffixedReplacements": [
+			"{BRONZE_LAKEHOUSE_NAME}",
+			"{SILVER_LAKEHOUSE_NAME}",
+			"{GOLD_LAKEHOUSE_NAME}",
+			"<Fundraising_Config>",
+			"<Fundraising_SL_CreateSchema>",
+			"<Fundraising_D365_Config>",
+			"<Fundraising_SalesforceNPSP_Config>"
+		]
+	},
+	"items": [
+		{
+			"type": "Lakehouse",
+			"displayName": "Fundraising_SalesforceNPSP_BR",
+			"sourceId": "Fundraising_SalesforceNPSP_BR_Lakehouse"
+		},
+		{
+			"type": "Lakehouse",
+			"displayName": "Fundraising_SL",
+			"sourceId": "Fundraising_SL_Lakehouse",
+			"data": {
+				"files": [
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Account.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Account.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Address.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Address.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Campaign.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Campaign.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/CampaignChannel.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/CampaignChannel.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/CampaignType.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/CampaignType.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Configuration.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Configuration.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Constituent.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Constituent.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/ConstituentEmailEngagement.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/ConstituentEmailEngagement.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/ConstituentOpportunityStage.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/ConstituentOpportunityStage.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/ConstituentProgram.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/ConstituentProgram.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/ConstituentSocialEngagement.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/ConstituentSocialEngagement.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/ConstituentType.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/ConstituentType.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Contact.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Contact.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Country.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Country.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/EmailEngagement.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/EmailEngagement.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/EngagementPlatform.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/EngagementPlatform.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/EngagementStage.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/EngagementStage.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Event.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Event.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/EventType.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/EventType.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Gender.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Gender.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Letter.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Letter.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Opportunity.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Opportunity.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/OpportunityStage.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/OpportunityStage.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/OpportunityType.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/OpportunityType.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Participation.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Participation.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/ParticipationType.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/ParticipationType.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/PhoneCall.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/PhoneCall.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Program.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Program.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/SocialEngagement.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/SocialEngagement.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/SoftCredit.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/SoftCredit.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Source.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Source.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/SourceSystemIdMapping.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/SourceSystemIdMapping.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/Transaction.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/Transaction.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/TransactionSource.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/TransactionSource.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/WealthScreening.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/WealthScreening.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/WealthScreeningCapacityRange.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/WealthScreeningCapacityRange.csv"
+					},
+					{
+						"addToParentFolder": true,
+						"payloadType": "AssetLink",
+						"path": "Files/nds-silver-sampledata/WealthScreeningConstituentRating.csv",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/data/nds-silver-sampledata/WealthScreeningConstituentRating.csv"
+					}
+				]
+			}
+		},
+		{
+			"type": "Lakehouse",
+			"displayName": "Fundraising_GD",
+			"sourceId": "Fundraising_GD_Lakehouse"
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_Config",
+			"sourceId": "Fundraising_Config_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_Config.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{SILVER_LAKEHOUSE_NAME}": "Fundraising_SL",
+							"{GOLD_LAKEHOUSE_NAME}": "Fundraising_GD"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_GD_CreateSchema",
+			"sourceId": "Fundraising_GD_CreateSchema_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_GD_CreateSchema.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{GOLD_LAKEHOUSE_NAME}": "Fundraising_GD",
+							"{GOLD_LAKEHOUSE_ID}": "{{Fundraising_GD_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_GD_CreateSegments",
+			"sourceId": "Fundraising_GD_CreateSegments_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_GD_CreateSegments.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{GOLD_LAKEHOUSE_NAME}": "Fundraising_GD",
+							"{GOLD_LAKEHOUSE_ID}": "{{Fundraising_GD_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SL_DefaultConfig",
+			"sourceId": "Fundraising_SL_DefaultConfig_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SL_DefaultConfig.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{SILVER_LAKEHOUSE_NAME}": "Fundraising_SL",
+							"{SILVER_LAKEHOUSE_ID}": "{{Fundraising_SL_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SL_CreateSchema",
+			"sourceId": "Fundraising_SL_CreateSchema_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SL_CreateSchema.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{SILVER_LAKEHOUSE_NAME}": "Fundraising_SL",
+							"{SILVER_LAKEHOUSE_ID}": "{{Fundraising_SL_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SL_SampleData",
+			"sourceId": "Fundraising_SL_SampleData_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SL_SampleData.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"{SILVER_LAKEHOUSE_NAME}": "Fundraising_SL",
+							"{SILVER_LAKEHOUSE_ID}": "{{Fundraising_SL_Lakehouse}}",
+							"<Fundraising_SL_CreateSchema>": "Fundraising_SL_CreateSchema"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SL_GD_Enrichment",
+			"sourceId": "Fundraising_SL_GD_Enrichment_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SL_GD_Enrichment.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{SILVER_LAKEHOUSE_NAME}": "Fundraising_SL",
+							"{SILVER_LAKEHOUSE_ID}": "{{Fundraising_SL_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SalesforceNPSP_BR_Merge",
+			"sourceId": "Fundraising_SalesforceNPSP_BR_Merge_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SalesforceNPSP_BR_Merge.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{BRONZE_LAKEHOUSE_NAME}": "Fundraising_SalesforceNPSP_BR",
+							"{BRONZE_LAKEHOUSE_ID}": "{{Fundraising_SalesforceNPSP_BR_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_SalesforceNPSP_Config>": "Fundraising_SalesforceNPSP_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_D365_Transform",
+			"sourceId": "Fundraising_D365_Transform_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_D365_Transform.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{DYNAMICS_LAKEHOUSE_NAME}": "D365ConnectionNamePlaceholder",
+							"{DYNAMICS_LAKEHOUSE_ID}": "D365ConnectionIdPlaceholder",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_D365_Config>": "Fundraising_D365_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SalesforceNPSP_Transform",
+			"sourceId": "Fundraising_SalesforceNPSP_Transform_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SalesforceNPSP_Transform.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{BRONZE_LAKEHOUSE_NAME}": "Fundraising_SalesforceNPSP_BR",
+							"{BRONZE_LAKEHOUSE_ID}": "{{Fundraising_SalesforceNPSP_BR_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_SalesforceNPSP_Config>": "Fundraising_SalesforceNPSP_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_D365_Config",
+			"sourceId": "Fundraising_D365_Config_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_D365_Config.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{DYNAMICS_LAKEHOUSE_NAME}": "D365ConnectionNamePlaceholder",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Notebook",
+			"displayName": "Fundraising_SalesforceNPSP_Config",
+			"sourceId": "Fundraising_SalesforceNPSP_Config_Notebook",
+			"definition": {
+				"format": "ipynb",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": "notebook-content.ipynb",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Notebooks/Fundraising_SalesforceNPSP_Config.Notebook/notebook-content.ipynb"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{BRONZE_LAKEHOUSE_NAME}": "Fundraising_SalesforceNPSP_BR",
+							"{BRONZE_LAKEHOUSE_ID}": "{{Fundraising_SalesforceNPSP_BR_Lakehouse}}",
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"<Fundraising_Config>": "Fundraising_Config"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "DataPipeline",
+			"displayName": "Fundraising_SalesforceNPSP_BR_Load",
+			"sourceId": "Fundraising_SalesforceNPSP_BR_Load_DataPipeline",
+			"definition": {
+				"parts": [
+					{
+						"path": "pipeline-content.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/DataPipelines/Fundraising_SalesforceNPSP_BR_Load.DataPipeline/pipeline-content.json",
+						"payloadType": "AssetLink"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"{SALESFORCE_CONNECTION_NAME}": "SalesforceConnectionIdPlaceholder",
+							"{BRONZE_LAKEHOUSE_NAME}": "Fundraising_SalesforceNPSP_BR",
+							"{BRONZE_LAKEHOUSE_ID}": "{{Fundraising_SalesforceNPSP_BR_Lakehouse}}",
+							"{BRONZE_MERGE_STAGING_DATA_NOTEBOOK_ID}": "{{Fundraising_SalesforceNPSP_BR_Merge_Notebook}}",
+							"{BRONZE_CONFIG_NOTEBOOK_ID}": "{{Fundraising_SalesforceNPSP_Config_Notebook}}"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "DataPipeline",
+			"displayName": "Fundraising_BR_Ingestion",
+			"sourceId": "Fundraising_BR_Ingestion_DataPipeline",
+			"definition": {
+				"parts": [
+					{
+						"path": "pipeline-content.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/DataPipelines/Fundraising_BR_Ingestion.DataPipeline/pipeline-content.json",
+						"payloadType": "AssetLink"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"{SILVER_IMPORT_SAMPLE_DATA_NOTEBOOK_ID}": "{{Fundraising_SL_SampleData_Notebook}}",
+							"{D365_TRANSFORM_NOTEBOOK_ID}": "{{Fundraising_D365_Transform_Notebook}}",
+							"{SALESFORCE_TRANSFORM_NOTEBOOK_ID}": "{{Fundraising_SalesforceNPSP_Transform_Notebook}}"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "DataPipeline",
+			"displayName": "Fundraising_SL_GD_Enrichment",
+			"sourceId": "Fundraising_SL_GD_Enrichment_DataPipeline",
+			"definition": {
+				"parts": [
+					{
+						"path": "pipeline-content.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/DataPipelines/Fundraising_SL_GD_Enrichment.DataPipeline/pipeline-content.json",
+						"payloadType": "AssetLink"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"{SILVER_TO_GOLD_ENRICHMENT_NOTEBOOK_ID}": "{{Fundraising_SL_GD_Enrichment_Notebook}}",
+							"{GOLD_CREATE_SEGMENTS_NOTEBOOK_ID}": "{{Fundraising_GD_CreateSegments_Notebook}}"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "DataPipeline",
+			"displayName": "Fundraising_Orchestration",
+			"sourceId": "Fundraising_Orchestration_DataPipeline",
+			"definition": {
+				"parts": [
+					{
+						"path": "pipeline-content.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/DataPipelines/Fundraising_Orchestration.DataPipeline/pipeline-content.json",
+						"payloadType": "AssetLink"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{WORKSPACE_ID}": "{{WORKSPACE_ID}}",
+							"{SILVER_CREATE_SCHEMA_NOTEBOOK_ID}": "{{Fundraising_SL_CreateSchema_Notebook}}",
+							"{SILVER_CREATE_DEFAULT_CONFIGURATION_NOTEBOOK_ID}": "{{Fundraising_SL_DefaultConfig_Notebook}}",
+							"{BRONZE_INGESTION_PIPELINE_ID}": "{{Fundraising_BR_Ingestion_DataPipeline}}",
+							"{SILVER_TO_GOLD_ENRICHMENT_PIPELINE_ID}": "{{Fundraising_SL_GD_Enrichment_DataPipeline}}",
+							"{GOLD_CREATE_SCHEMA_NOTEBOOK_ID}": "{{Fundraising_GD_CreateSchema_Notebook}}"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "SemanticModel",
+			"displayName": "Fundraising_Intelligence_Semantic",
+			"sourceId": "Fundraising_Intelligence_SemanticModel",
+			"definition": {
+				"creationMode": "WithDefinition",
+				"parts": [
+					{
+						"payloadType": "AssetLink",
+						"path": ".platform",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/.platform"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition.pbism",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition.pbism"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/model.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/model.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/database.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/database.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/expressions.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/expressions.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/relationships.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/relationships.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/ChangeDataFeedState.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/ChangeDataFeedState.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/Configuration.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/Configuration.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimAddress.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimAddress.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimCampaign.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimCampaign.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimCampaignChannelBridge.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimCampaignChannelBridge.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimCampaignType.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimCampaignType.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimChannel.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimChannel.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituent.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituent.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentProgramBridge.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentProgramBridge.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentSegmentBridge_AgeRange.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentSegmentBridge_AgeRange.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentSegmentBridge_GiftRecurrence.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentSegmentBridge_GiftRecurrence.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentSegmentBridge_LifetimeGivingRange.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentSegmentBridge_LifetimeGivingRange.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentSegment_AgeRange.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentSegment_AgeRange.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentSegment_GiftRecurrence.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentSegment_GiftRecurrence.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimConstituentSegment_LifetimeGivingRange.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimConstituentSegment_LifetimeGivingRange.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimDate.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimDate.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimDonationSource.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimDonationSource.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimEmail.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimEmail.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimEngagementPlatform.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimEngagementPlatform.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimEvent.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimEvent.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimLetter.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimLetter.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimOpportunityStage.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimOpportunityStage.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimOpportunityType.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimOpportunityType.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimPhonecall.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimPhonecall.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimProgram.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimProgram.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimSource.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimSource.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/DimVolunteeringType.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/DimVolunteeringType.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/dm_CampaignAttribution.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/dm_CampaignAttribution.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/dm_Constituent.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/dm_Constituent.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/dm_EngagementTimeline.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/dm_EngagementTimeline.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactConstituentEmailEngagement.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactConstituentEmailEngagement.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactConstituentLetterEngagement.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactConstituentLetterEngagement.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactConstituentPhonecallEngagement.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactConstituentPhonecallEngagement.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactConstituentSocialEngagement.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactConstituentSocialEngagement.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactDonation.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactDonation.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactEventAttendance.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactEventAttendance.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactOpportunity.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactOpportunity.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactSocialEngagement.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactSocialEngagement.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactSoftCredit.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactSoftCredit.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactVolunteerHours.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactVolunteerHours.tmdl"
+					},
+					{
+						"payloadType": "AssetLink",
+						"path": "definition/tables/FactWealthScreening.tmdl",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/SemanticModels/Fundraising_Intelligence_Semantic.SemanticModel/definition/tables/FactWealthScreening.tmdl"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{GOLD_LAKEHOUSE_SQL_SERVER}": "{{Fundraising_GD_SQL_Server}}",
+							"{GOLD_LAKEHOUSE_SQL_ENDPOINT}": "{{Fundraising_GD_SQL_Endpoint}}",
+							"{GOLD_LAKEHOUSE_NAME}": "Fundraising_GD"
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "Report",
+			"displayName": "Fundraising_Intelligence",
+			"sourceId": "Fundraising_Intelligence_Report",
+			"definition": {
+				"creationMode": "WithDefinition",
+				"parts": [
+					{
+						"path": "definition.pbir",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Reports/Fundraising_Intelligence.Report/definition.pbir",
+						"payloadType": "AssetLink"
+					},
+					{
+						"path": "report.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Reports/Fundraising_Intelligence.Report/report.json",
+						"payloadType": "AssetLink"
+					},
+					{
+						"path": "StaticResources/RegisteredResources/Tema_TSI21199199988509476.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Reports/Fundraising_Intelligence.Report/StaticResources/RegisteredResources/Tema_TSI21199199988509476.json",
+						"payloadType": "AssetLink"
+					},
+					{
+						"path": "StaticResources/SharedResources/BaseThemes/CY25SU11.json",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Reports/Fundraising_Intelligence.Report/StaticResources/SharedResources/BaseThemes/CY25SU11.json",
+						"payloadType": "AssetLink"
+					},
+					{
+						"path": ".platform",
+						"payload": "/assets/items/PackageInstallerItem/Fundraising/definitions/Reports/Fundraising_Intelligence.Report/.platform",
+						"payloadType": "AssetLink"
+					}
+				],
+				"interceptor": {
+					"type": "StringReplacement",
+					"config": {
+						"replacements": {
+							"{SEMANTICMODEL_ID}": "{{Fundraising_Intelligence_SemanticModel}}",
+							"{WORKSPACE_NAME}": "{{WORKSPACE_NAME}}"
+						}
+					}
+				}
+			}
+		}
+	]
+}

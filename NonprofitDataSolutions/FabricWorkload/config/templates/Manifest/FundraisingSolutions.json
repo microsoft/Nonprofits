@@ -1,0 +1,40 @@
+{
+	"name": "Fundraising",
+	"version": "1.100",
+	"displayName": "FundraisingItem_Display_Name",
+	"displayNamePlural": "FundraisingItem_Display_Name_Plural",
+	"editor": {
+		"path": "/fundraising-item"
+	},
+	"icon": {
+		"name": "assets/images/fundraising-icon.png"
+	},
+	"activeIcon": {
+		"name": "assets/images/fundraising-icon.png"
+	},
+	"contextMenuItems": [],
+	"quickActionItems": [],
+	"supportedInMonitoringHub": false,
+	"supportedInDatahubL1": false,
+	"itemJobActionConfig": {},
+	"itemSettings": {
+		"getItemSettings": {
+			"action": "getItemSettings"
+		}
+	},
+	"editorTab": {
+		"onDeactivate": "item.tab.onDeactivate",
+		"canDeactivate": "item.tab.canDeactivate",
+		"canDestroy": "item.tab.canDestroy",
+		"onDestroy": "item.tab.onDestroy",
+		"onDelete": "item.tab.onDelete"
+	},
+	"createItemDialogConfig": {
+		"onCreationFailure": {
+			"action": "Fundraising.onCreationFailure"
+		},
+		"onCreationSuccess": {
+			"action": "Fundraising.onCreationSuccess"
+		}
+	}
+}

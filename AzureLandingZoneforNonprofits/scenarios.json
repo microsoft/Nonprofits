@@ -28,6 +28,11 @@
           "requiresExplicitApproval": false
         },
         {
+          "parameter": "enableSimpleNetwork",
+          "message": "The Foundation application subnet uses a network security group that blocks internet ingress and egress. Before deploying workloads, add only the required higher-priority allow rules and an explicit outbound method. Before rerunning against an existing Foundation VNet, review and migrate any existing subnet rules and traffic dependencies to avoid interruption.",
+          "requiresExplicitApproval": false
+        },
+        {
           "parameter": "enablePrivateDnsAndEndpoints",
           "message": "Private connectivity changes the platform access model and may require extra DNS configuration.",
           "requiresExplicitApproval": false

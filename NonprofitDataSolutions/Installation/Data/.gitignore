@@ -1,0 +1,3 @@
+# Ignore all files in this directory (used for downloaded lakehouse data)
+*
+!.gitignore

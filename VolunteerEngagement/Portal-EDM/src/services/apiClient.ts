@@ -1,8 +1,14 @@
 // Core API client — token handling, HTTP helpers, error class
 // Used by all domain service modules.
 import type ExtendedWindow from '@/ExtendedWindow';
+import { isGuid } from '@/utils/guid';
 
 let cachedToken: string | null = null;
+
+/** Drop the cached anti-forgery token so the next write fetches a fresh one. */
+export function clearTokenCache(): void {
+	cachedToken = null;
+}
 
 export async function getToken(): Promise<string> {
 	if (cachedToken) return cachedToken;
@@ -28,6 +34,28 @@ export async function getToken(): Promise<string> {
 	return cachedToken;
 }
 
+/**
+ * Throws a not-found ApiError when an id is not a GUID, so malformed ids are
+ * never interpolated into Web API URLs or OData filters.
+ */
+export function assertGuid(id: string, label = 'id'): string {
+	if (!isGuid(id)) {
+		throw new ApiError(`Invalid ${label}`, 404);
+	}
+	return id;
+}
+
+// A stale anti-forgery token (e.g. after the session changed) surfaces as 400/403.
+// Refresh the token and retry the write exactly once.
+async function sendWithToken(url: string, buildInit: (token: string) => RequestInit): Promise<Response> {
+	const response = await fetch(url, buildInit(await getToken()));
+	if (response.status !== 400 && response.status !== 403) {
+		return response;
+	}
+	clearTokenCache();
+	return fetch(url, buildInit(await getToken()));
+}
+
 export async function apiGet<T>(url: string): Promise<T> {
 	const response = await fetch(url);
 	if (response.status === 403) {
@@ -42,8 +70,7 @@ export async function apiGet<T>(url: string): Promise<T> {
 }
 
 export async function apiPost<T>(url: string, body: Record<string, unknown>): Promise<T> {
-	const token = await getToken();
-	const response = await fetch(url, {
+	const response = await sendWithToken(url, (token) => ({
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -51,7 +78,7 @@ export async function apiPost<T>(url: string, body: Record<string, unknown>): Pr
 			__RequestVerificationToken: token,
 		},
 		body: JSON.stringify(body),
-	});
+	}));
 	if (!response.ok) {
 		throw new ApiError(`API error: ${response.status}`, response.status);
 	}
@@ -60,28 +87,26 @@ export async function apiPost<T>(url: string, body: Record<string, unknown>): Pr
 }
 
 export async function apiPatch(url: string, body: Record<string, unknown>): Promise<void> {
-	const token = await getToken();
-	const response = await fetch(url, {
+	const response = await sendWithToken(url, (token) => ({
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
 			__RequestVerificationToken: token,
 		},
 		body: JSON.stringify(body),
-	});
+	}));
 	if (!response.ok) {
 		throw new ApiError(`API error: ${response.status}`, response.status);
 	}
 }
 
 export async function apiDelete(url: string): Promise<void> {
-	const token = await getToken();
-	const response = await fetch(url, {
+	const response = await sendWithToken(url, (token) => ({
 		method: 'DELETE',
 		headers: {
 			__RequestVerificationToken: token,
 		},
-	});
+	}));
 	if (!response.ok) {
 		throw new ApiError(`API error: ${response.status}`, response.status);
 	}

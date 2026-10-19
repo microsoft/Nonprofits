@@ -1,0 +1,34 @@
+{
+	"Fundraising_Item_DisplayName": "Fundraising",
+	"labels": {
+		"deployment": {
+			"finished": "Deployment finished",
+			"view_fundraising_item": "Open {{itemName}}",
+			"failed": "Deployment failed",
+			"started": "Deployment started",
+			"id": "Deployment id: {{id}}",
+			"workspace_not_defined": "Deployment workspace is not defined",
+			"progress": {
+				"starting": "Starting deployment",
+				"validating_config": "Validating config....",
+				"starting_step": "Starting deployment....",
+				"initializing": "Initializing deployment..."
+			},
+			"errors": {
+				"failed_to_save_item": "Failed to save item: {{error}}",
+				"failed_to_load_data": "Failed to load data: {{error}}",
+				"failed_to_load_resources": "Failed to load resources: {{error}}",
+				"failed_to_save_deployment": "Failed to save deployment: {{error}}",
+				"failed_to_update_deployment": "Failed to update deployment: {{error}}",
+				"failed_to_deploy_package": "Failed to deploy the package: {{error}}",
+				"unexpected_error": "Unexpected error during the deployment: {{error}}",
+				"package_not_found": "Package with typeId {{packageId}} not found",
+				"deployment_not_set": "Cannot start deployment: deployment is not set",
+				"workload_item_not_loaded": "Cannot start deployment: workload item not loaded",
+				"package_context_not_loaded": "Cannot start deployment: package context not loaded",
+				"package_not_loaded": "Cannot start deployment: package not loaded",
+				"deployment_failed": "Deployment failed: {{error}}"
+			}
+		}
+	}
+}

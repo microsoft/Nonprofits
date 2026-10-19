@@ -1,0 +1,19 @@
+{
+	"name": "nonprofit-migration-assessment",
+	"private": true,
+	"type": "module",
+	"engines": {
+		"node": ">=22"
+	},
+	"scripts": {
+		"start": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json && node dist/src/cli.js"
+	},
+	"dependencies": {
+		"@azure/identity": "^4.13.0",
+		"zod": "^4.1.11"
+	},
+	"devDependencies": {
+		"@types/node": "22.19.20",
+		"typescript": "^5.9.3"
+	}
+}

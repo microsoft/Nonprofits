@@ -56,7 +56,7 @@ param platformManagementGroupId string = ''
 @description('Reserve the GatewaySubnet in the hub VNet so a VPN gateway, ExpressRoute gateway, or Azure Virtual WAN can be added later. This deployment reserves the subnet only; it does not create the gateway resource, public IP, or connection objects.')
 param reserveGatewaySubnet bool = false
 
-@description('Optional private DNS and Key Vault private endpoints flag.')
+@description('Enable private DNS and a private endpoint for the shared platform Key Vault, and disable its public endpoint. When false, the public endpoint remains enabled but the Key Vault firewall denies all public IP and virtual-network traffic by default.')
 param enablePrivateDnsAndEndpoints bool = false
 
 @description('Enable purge protection on the Expanded Platform management Key Vault. Defaults to true for steady-state platform environments; set false for evaluation deployments that need immediate teardown.')

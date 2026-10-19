@@ -16,7 +16,7 @@ param serviceOwner string
 @description('Deploy the optional simple Foundation network baseline.')
 param enableSimpleNetwork bool = false
 
-@description('Enable private DNS and a private endpoint for the shared platform Key Vault. In Foundation this requires the simple network baseline.')
+@description('Enable private DNS and a private endpoint for the shared platform Key Vault, and disable its public endpoint. In Foundation this requires the simple network baseline. When false, the Key Vault remains protected by the shared deny-by-default firewall baseline.')
 param enablePrivateDnsAndEndpoints bool = false
 
 @description('Address space for the optional Foundation VNet. Default /22 (1024 addresses) sized for a small NGO and to leave room for future peering without /16 collisions.')
@@ -78,6 +78,7 @@ output logAnalyticsWorkspaceResourceId string = foundationSlice.outputs.logAnaly
 output keyVaultResourceId string = foundationSlice.outputs.keyVaultResourceId
 output vnetResourceId string = foundationNetworking.outputs.vnetResourceId
 output applicationSubnetResourceId string = foundationNetworking.outputs.applicationSubnetResourceId
+output applicationNetworkSecurityGroupResourceId string = foundationNetworking.outputs.applicationNetworkSecurityGroupResourceId
 output privateEndpointsSubnetResourceId string = foundationNetworking.outputs.privateEndpointsSubnetResourceId
 output keyVaultPrivateEndpointResourceId string = foundationNetworking.outputs.keyVaultPrivateEndpointResourceId
 output keyVaultPrivateDnsZoneResourceId string = foundationNetworking.outputs.keyVaultPrivateDnsZoneResourceId

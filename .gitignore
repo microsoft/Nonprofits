@@ -9,6 +9,8 @@
 # output directory
 **/out
 **/Build
+!NonprofitDataSolutions/FabricWorkload/scripts/Build/
+!NonprofitDataSolutions/FabricWorkload/scripts/Build/**
 **/Logs
 
 # msbuild output directories

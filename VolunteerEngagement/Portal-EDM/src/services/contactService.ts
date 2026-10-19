@@ -1,7 +1,7 @@
 // Contact profile data access
 import type { ContactDetails } from '@/types';
 
-import { ApiError, apiGet, apiPatch } from './apiClient';
+import { ApiError, apiGet, apiPatch, assertGuid } from './apiClient';
 
 export async function fetchContactDetails(contactId: string): Promise<ContactDetails> {
 	const select = [
@@ -21,7 +21,7 @@ export async function fetchContactDetails(contactId: string): Promise<ContactDet
 		'donotfax',
 		'donotpostalmail',
 	].join(',');
-	const url = `/_api/contacts?$select=${select}&$filter=contactid eq '${contactId}'&$top=1`;
+	const url = `/_api/contacts?$select=${select}&$filter=contactid eq '${assertGuid(contactId, 'contact id')}'&$top=1`;
 	const data = await apiGet<{ value: ContactDetails[] }>(url);
 	const contact = data.value?.[0];
 	if (!contact) throw new ApiError('Contact not found', 404);
@@ -32,5 +32,5 @@ export async function updateContactDetails(
 	contactId: string,
 	fields: Partial<Omit<ContactDetails, 'contactid'>>,
 ): Promise<void> {
-	return apiPatch(`/_api/contacts(${contactId})`, fields as Record<string, unknown>);
+	return apiPatch(`/_api/contacts(${assertGuid(contactId, 'contact id')})`, fields as Record<string, unknown>);
 }

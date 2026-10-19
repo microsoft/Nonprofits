@@ -35,7 +35,7 @@ param createKeyVault bool = true
 @description('Optional stable seed for the generated Key Vault name. Leave empty to preserve the default deterministic name; set a custom value only when an evaluation deployment must avoid a soft-deleted Key Vault name in the same resource group.')
 param keyVaultNameSeed string = ''
 
-@description('Public network access mode for the shared Key Vault.')
+@description('Public endpoint mode for the shared Key Vault. The shared resource baseline always applies a deny-by-default firewall; private endpoint deployments set this to Disabled.')
 param keyVaultPublicNetworkAccess 'Enabled' | 'Disabled' = 'Enabled'
 
 @description('Enable purge protection on the slice Key Vault. Defaults to false in this shared module; Foundation exposes this as an opt-in, while Expanded Platform enables it for the management Key Vault.')

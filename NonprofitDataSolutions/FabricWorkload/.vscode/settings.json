@@ -1,0 +1,8 @@
+{
+	"editor.formatOnSave": true,
+	"editor.insertSpaces": false,
+	"prettier.requireConfig": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.detectIndentation": false,
+	"playwright.configs": ["Workload/playwright.config.ts"]
+}
