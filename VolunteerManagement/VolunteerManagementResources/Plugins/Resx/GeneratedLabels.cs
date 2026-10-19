@@ -90,5 +90,9 @@
 		/// This shift is full. Please choose another shift.
 		/// </summary>
         public LocalizationInfoModel ParticipationSchedule_ShiftFullException { get; set; }
+		/// <summary>
+		/// The selected shift belongs to a different engagement opportunity. Please choose a shift of this participation's engagement opportunity.
+		/// </summary>
+        public LocalizationInfoModel ParticipationSchedule_ShiftNotInEngagementOpportunityException { get; set; }
     }
 }

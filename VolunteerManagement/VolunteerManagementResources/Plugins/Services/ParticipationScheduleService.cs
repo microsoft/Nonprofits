@@ -31,6 +31,24 @@ namespace Plugins.Services
 			}
 		}
 
+		public void ValidateShiftBelongsToParticipation(EntityReference participationRef, EntityReference shiftRef)
+		{
+			if (participationRef == null || shiftRef == null)
+			{
+				return;
+			}
+
+			var participationOpportunity = orgService.Retrieve(ParticipationDef.EntityName, participationRef.Id,
+				new ColumnSet(ParticipationDef.EngagementOpportunity)).GetAttributeValue<EntityReference>(ParticipationDef.EngagementOpportunity);
+			var shiftOpportunity = orgService.Retrieve(EngagementOpportunityScheduleDef.EntityName, shiftRef.Id,
+				new ColumnSet(EngagementOpportunityScheduleDef.EngagementOpportunity)).GetAttributeValue<EntityReference>(EngagementOpportunityScheduleDef.EngagementOpportunity);
+			if (participationOpportunity != null && shiftOpportunity != null && participationOpportunity.Id != shiftOpportunity.Id)
+			{
+				throw new InvalidPluginExecutionException(OperationStatus.Failed,
+					this.localizationHelper.GetLocalizedMessage(l => l.ParticipationSchedule_ShiftNotInEngagementOpportunityException));
+			}
+		}
+
 		public void ValidateShiftCapacity(EntityReference shiftRef, Guid? excludeParticipationScheduleId = null)
 		{
 			if (shiftRef == null)

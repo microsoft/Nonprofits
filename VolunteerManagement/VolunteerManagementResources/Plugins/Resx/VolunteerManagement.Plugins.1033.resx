@@ -180,4 +180,7 @@
   <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
     <value>This shift is full. Please choose another shift.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftNotInEngagementOpportunityException" xml:space="preserve">
+    <value>The selected shift belongs to a different engagement opportunity. Please choose a shift of this participation's engagement opportunity.</value>
+  </data>
 </root>

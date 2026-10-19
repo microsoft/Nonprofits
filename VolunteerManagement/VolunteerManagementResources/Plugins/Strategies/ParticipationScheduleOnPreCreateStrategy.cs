@@ -28,6 +28,9 @@ namespace Plugins.Strategies
 			{
 				var target = (Entity)context.InputParameters["Target"];
 				participationScheduleService.ValidateApprovalStatus(target);
+				participationScheduleService.ValidateShiftBelongsToParticipation(
+					target.GetAttributeValue<EntityReference>(ParticipationScheduleDef.Participation),
+					target.GetAttributeValue<EntityReference>(ParticipationScheduleDef.EngagementOpportunitySchedule));
 
 				var scheduleStatus = target.GetAttributeValue<OptionSetValue>(ParticipationScheduleDef.ScheduleStatus)?.Value
 					?? (int)ParticipationScheduleStatus.Pending;

@@ -180,4 +180,7 @@
   <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
     <value>Cette équipe est complète. Veuillez choisir une autre équipe.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftNotInEngagementOpportunityException" xml:space="preserve">
+    <value>L’équipe sélectionnée appartient à une autre opportunité d’engagement. Veuillez choisir une équipe de l’opportunité d’engagement de cette participation.</value>
+  </data>
 </root>
