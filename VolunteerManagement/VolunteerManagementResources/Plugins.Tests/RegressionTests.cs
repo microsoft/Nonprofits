@@ -230,15 +230,21 @@ namespace Plugins.Tests
 		}
 
 		[Test]
-		public void GroupMembershipPreCreateRequiresContactAndGroup()
+		[TestCase(false, true, TestName = "GroupMembershipPreCreateRequiresContact")]
+		[TestCase(true, false, TestName = "GroupMembershipPreCreateRequiresGroup")]
+		public void GroupMembershipPreCreateRequiresContactAndGroup(bool hasContact, bool hasGroup)
 		{
-			var target = new Entity("msnfp_groupmembership", Guid.NewGuid()) { ["msnfp_groupid"] = new EntityReference("msnfp_group", Guid.NewGuid()) };
+			var target = new Entity("msnfp_groupmembership", Guid.NewGuid());
+			if (hasContact) target["msnfp_contactid"] = new EntityReference("contact", Guid.NewGuid());
+			if (hasGroup) target["msnfp_groupid"] = new EntityReference("msnfp_group", Guid.NewGuid());
 			var localization = new Mock<ILocalizationHelper<Labels>>();
 			localization.Setup(l => l.GetLocalizedMessage(It.IsAny<Func<Labels, LocalizationInfoModel>>())).Returns("Contact and Group are required.");
+			var service = new Mock<IOrganizationService>();
 
-			var sut = new GroupMembershipOnPreCreateStrategy(tracingService.Object, CreateContext("Create", target).Object, CreateServiceProvider(new Mock<IOrganizationService>()).Object, localization.Object);
+			var sut = new GroupMembershipOnPreCreateStrategy(tracingService.Object, CreateContext("Create", target).Object, CreateServiceProvider(service).Object, localization.Object);
 
 			Assert.Throws<InvalidPluginExecutionException>(() => sut.Run()).Message.Should().Be("Contact and Group are required.");
+			service.Verify(s => s.Retrieve(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ColumnSet>()), Times.Never);
 		}
 
 		[Test]
