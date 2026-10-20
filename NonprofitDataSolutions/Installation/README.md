@@ -37,11 +37,22 @@ Deploys all workspace assets (lakehouses, notebooks, pipelines, triggers, report
 .\Install-IntoWorkspace.ps1 -WorkspaceName "MyWorkspace" -Prefix "NDS_" -SkipConfirmation
 ```
 
+With `-SkipConfirmation` the script does not prompt for data sources. Pass them as parameters:
+```powershell
+.\Install-IntoWorkspace.ps1 -WorkspaceName "MyWorkspace" -Prefix "NDS_" -SkipConfirmation `
+    -DynamicsLakehouseName "MyDataverseLakehouse" -SalesforceConnectionId "<connection-id>"
+```
+
 #### Parameters:
 - `-WorkspaceName`: The name of the Fabric workspace to deploy to
 - `-Prefix`: Prefix to add to all created resources (e.g., "NDS_")
 - `-SkipSampleData`: Skip importing sample data (sample data is imported by default)
 - `-SkipConfirmation`: Skip confirmation prompts for automated installations
+- `-DynamicsLakehouseName`: Lakehouse with the Dataverse (Dynamics 365) data (optional, skips the prompt)
+- `-SalesforceConnectionId`: Salesforce connection to use (optional, skips the prompt)
+
+Data sources that are not configured are left out of the bronze ingestion pipeline, as in the
+deployment wizard, so the orchestration pipeline only runs the configured sources.
 
 #### Data source options
 
