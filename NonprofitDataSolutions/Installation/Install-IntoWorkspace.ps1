@@ -1134,6 +1134,14 @@ function Upload-FilesToLakehouse ($localPath, $lakehouseName, $subPath) {
 }
 
 function Setup-SalesforceConnection {
+    # An explicit parameter wins over saved state (e.g. a placeholder loaded with -LoadFromFile)
+    if (-not [string]::IsNullOrWhiteSpace($SalesforceConnectionId)) {
+        $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] = $SalesforceConnectionId
+        $Script:RuntimeVariables["SALESFORCE_CONNECTION_NAME"] = $SalesforceConnectionId
+        Write-Log "Using Salesforce connection from -SalesforceConnectionId: $SalesforceConnectionId" -Level "SUCCESS"
+        return
+    }
+
     # Skip if already configured
     if ($null -ne $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] -and 
         $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] -ne "") {
@@ -1142,13 +1150,6 @@ function Setup-SalesforceConnection {
     }
     
     Write-Log "Setting up Salesforce connection..." -Level "INFO"
-
-    if (-not [string]::IsNullOrWhiteSpace($SalesforceConnectionId)) {
-        $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] = $SalesforceConnectionId
-        $Script:RuntimeVariables["SALESFORCE_CONNECTION_NAME"] = $SalesforceConnectionId
-        Write-Log "Using Salesforce connection from -SalesforceConnectionId: $SalesforceConnectionId" -Level "SUCCESS"
-        return
-    }
     
     try {
         $connections = Invoke-FabCommand -Command "ls" -Arguments @(".connections", "-l")
@@ -1230,8 +1231,9 @@ function Setup-SalesforceConnection {
 }
 
 function Setup-D365Lakehouse {
-    # Skip if already configured
-    if ($null -ne $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -and 
+    # Skip if already configured, unless -DynamicsLakehouseName overrides saved state (e.g. a placeholder loaded with -LoadFromFile)
+    if ([string]::IsNullOrWhiteSpace($DynamicsLakehouseName) -and
+        $null -ne $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -and 
         $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -ne "") {
         Write-Log "D365 lakehouse already configured (Name: $($Script:RuntimeVariables['DYNAMICS_LAKEHOUSE_NAME'])), skipping setup" -Level "INFO"
         return
