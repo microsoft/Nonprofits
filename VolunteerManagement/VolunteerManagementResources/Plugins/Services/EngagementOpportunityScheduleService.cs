@@ -274,7 +274,7 @@ namespace Plugins.Services
 					}
 				}
 			};
-			var participationSchedules = orgService.RetrieveMultiple(query).Entities;
+			var participationSchedules = Utilities.RetrieveAll(orgService, query);
 			tracingService.Trace($"Retrieved {participationSchedules.Count} Participation Schedules");
 
 			foreach (Entity participationschedule in participationSchedules)

@@ -412,6 +412,7 @@ export abstract class DeploymentStrategy {
 
 	protected async createItemDefinition(packItem: PackageItem, depContext: DeploymentContext): Promise<Item> {
 		let newItem;
+		let createOperationLocation: string | undefined;
 		if (packItem.creationPayload) {
 			// If creation payload is provided, use with-response to handle async 202
 			logger.debug(`[Create ${packItem.type}] ${packItem.displayName}`);
@@ -435,6 +436,7 @@ export abstract class DeploymentStrategy {
 				depContext.setCurrentItem(packItem, newItem);
 			} else if (createResp.status === 202) {
 				const opLocation = createResp.headers['operation-location'] || createResp.headers['location'];
+				createOperationLocation = opLocation || undefined;
 				if (opLocation) {
 					newItem = await this.pollOperationForItem(
 						opLocation,
@@ -487,6 +489,7 @@ export abstract class DeploymentStrategy {
 					newItem = createResp.body as any;
 				} else if (createResp.status === 202) {
 					const opLocation = createResp.headers['operation-location'] || createResp.headers['location'];
+					createOperationLocation = opLocation || undefined;
 					if (opLocation) {
 						newItem = await this.pollOperationForItem(
 							opLocation,
@@ -542,6 +545,7 @@ export abstract class DeploymentStrategy {
 				newItem = createResp.body as any;
 			} else if (createResp.status === 202) {
 				const opLocation = createResp.headers['operation-location'] || createResp.headers['location'];
+				createOperationLocation = opLocation || undefined;
 				if (opLocation) {
 					newItem = await this.pollOperationForItem(
 						opLocation,
@@ -581,10 +585,17 @@ export abstract class DeploymentStrategy {
 				depContext.setCurrentItem(packItem, newItem);
 			}
 		}
+		if (!newItem?.id) {
+			throw new Error(
+				`Failed to create item of type '${packItem?.type}' with display name '${packItem?.displayName}': ` +
+					`the item could not be resolved after creation` +
+					(createOperationLocation ? ` (operation location: ${createOperationLocation})` : ''),
+			);
+		}
 		logger.info(
-			`[Create ${packItem.type}] Successfully created item '${packItem?.displayName}' with id ${newItem?.id}`,
+			`[Create ${packItem.type}] Successfully created item '${packItem?.displayName}' with id ${newItem.id}`,
 		);
-		depContext.log(`Successfully created item ${packItem?.displayName} with id ${newItem?.id}`);
+		depContext.log(`Successfully created item ${packItem?.displayName} with id ${newItem.id}`);
 		return newItem;
 	}
 

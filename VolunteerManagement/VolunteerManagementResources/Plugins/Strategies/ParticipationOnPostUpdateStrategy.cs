@@ -42,6 +42,16 @@ namespace Plugins.Strategies
 
 					var oldStatus = preImage.GetAttributeValue<OptionSetValue>("msnfp_status");
 					var newStatus = postImage.GetAttributeValue<OptionSetValue>("msnfp_status");
+					var reapplied = context.SharedVariables.TryGetValue(ParticipationOnPreUpdateStrategy.ReappliedSharedVariable, out var reappliedValue) && reappliedValue is bool reappliedFlag && reappliedFlag;
+					if (reapplied)
+					{
+						// Same as ParticipationOnPostCreate for a new application.
+						if (eo.GetAttributeValue<bool?>("msnfp_shifts") == false && newStatus?.Value == (int)ParticipationStatus.Approved)
+						{
+							Utilities.CreateParticipationSchedule(service, participation, this.localizationHelper);
+						}
+						Utilities.EngagementOpportunityMessage(service, tracingService, participation.GetAttributeValue<EntityReference>("msnfp_contactid"), participation.GetAttributeValue<EntityReference>("msnfp_engagementopportunityid"), EngagementOpportunitySettingMessageEventType.SignUpCompleted);
+					}
 					if (newStatus.Value == (int)ParticipationStatus.Approved && (oldStatus.Value == (int)ParticipationStatus.NeedsReview || oldStatus.Value == (int)ParticipationStatus.InReview))
 					{
 						Utilities.EngagementOpportunityMessage(service, tracingService, participation.GetAttributeValue<EntityReference>("msnfp_contactid"), participation.GetAttributeValue<EntityReference>("msnfp_engagementopportunityid"), EngagementOpportunitySettingMessageEventType.SignUpApproved);
@@ -71,7 +81,7 @@ namespace Plugins.Strategies
 					if (oldHours != newHours)
 					{
 						Utilities.CalculateContactTotalHours(service, tracingService, postImage.GetAttributeValue<EntityReference>("msnfp_contactid"));
-						if ((oldHours == null || oldHours < 1) && newHours > 0)
+						if ((oldHours == null || oldHours <= 0) && newHours > 0)
 						{
 							Utilities.EngagementOpportunityMessage(service, tracingService, participation.GetAttributeValue<EntityReference>("msnfp_contactid"), participation.GetAttributeValue<EntityReference>("msnfp_engagementopportunityid"), EngagementOpportunitySettingMessageEventType.EngagementCompleted);
 						}

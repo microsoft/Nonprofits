@@ -177,4 +177,19 @@
   <data name="Participation.NotApprovedException" xml:space="preserve">
     <value>L’enregistrement de participation sélectionné doit être approuvé.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftFullException" xml:space="preserve">
+    <value>Cette équipe est complète. Veuillez choisir une autre équipe.</value>
+  </data>
+  <data name="ParticipationSchedule.ShiftNotInEngagementOpportunityException" xml:space="preserve">
+    <value>L’équipe sélectionnée appartient à une autre opportunité d’engagement. Veuillez choisir une équipe de l’opportunité d’engagement de cette participation.</value>
+  </data>
+  <data name="Participation.NoMoreVolunteersNeededException" xml:space="preserve">
+    <value>Plus aucun bénévole n’est nécessaire.</value>
+  </data>
+  <data name="Participation.Contact.RequiredException" xml:space="preserve">
+    <value>Un contact est obligatoire.</value>
+  </data>
+  <data name="GroupMembership.ContactAndGroup.RequiredException" xml:space="preserve">
+    <value>Le contact et le groupe sont obligatoires.</value>
+  </data>
 </root>

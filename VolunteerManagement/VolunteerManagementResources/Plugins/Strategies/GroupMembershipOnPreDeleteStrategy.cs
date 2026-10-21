@@ -28,7 +28,7 @@ namespace Plugins.Strategies
 				var preImage = context.PreEntityImages["PreImage"];
 				var groupMemberContactId = preImage.GetAttributeValue<EntityReference>("msnfp_contactid");
 				var groupMemberGroupId = preImage.GetAttributeValue<EntityReference>("msnfp_groupid");
-				if (groupMemberContactId.Id != null && groupMemberGroupId.Id != null)
+				if (groupMemberContactId != null && groupMemberGroupId != null)
 				{
 					var fetch = new FetchExpression(@"<fetch>
                             <entity name='msnfp_participation'>
@@ -40,8 +40,8 @@ namespace Plugins.Strategies
                             </fetch>
                             ");
 					var service = this.serviceProvider.CreateCurrentUserOrganizationService();
-					var participants = service.RetrieveMultiple(fetch);
-					foreach (var entity in participants.Entities)
+					var participants = Utilities.RetrieveAll(service, fetch);
+					foreach (var entity in participants)
 					{
 						var updateEntity = new Entity(entity.LogicalName, entity.Id);
 						updateEntity["msnfp_volunteergroupid"] = null;
