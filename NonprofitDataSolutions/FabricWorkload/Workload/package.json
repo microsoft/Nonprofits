@@ -30,7 +30,7 @@
 		"@fluentui/react-icons": "2.0.226",
 		"@microsoft/applicationinsights-web": "^3.4.2",
 		"@ms-fabric/workload-client": "^2.3.0",
-		"dompurify": "^3.4.7",
+		"dompurify": "^3.4.13",
 		"history": "^4.9.0",
 		"i18next": "^23.12.3",
 		"i18next-http-backend": "^4.0.0",
@@ -73,7 +73,7 @@
 		"minimatch": ">=10.2.4",
 		"picomatch": ">=4.0.2",
 		"serialize-javascript": ">=7.0.5",
-		"brace-expansion": ">=5.0.6",
+		"brace-expansion": ">=5.0.12",
 		"uuid": "^11.1.1"
 	}
 }
