@@ -7,7 +7,7 @@ Use these instructions when building or modifying site customizations in `Portal
 The SPA uses:
 
 - npm, not Bun.
-- Node.js `>=20.18.1`.
+- Node.js `>=24.14.1` (Node.js 24 LTS recommended).
 - PAC CLI `1.44.x` or later.
 - React 18.
 - TypeScript.
