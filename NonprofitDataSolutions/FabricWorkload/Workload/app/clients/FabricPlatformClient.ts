@@ -186,6 +186,9 @@ export abstract class FabricPlatformClient {
 		const maxNetworkRetries = 2;
 		let tokenRefreshAttempts = 0;
 		const maxTokenRefreshRetries = 1;
+		let rateLimitAttempts = 0;
+		const maxRateLimitRetries = 3;
+		const maxCooldownWaitMs = 120000; // cap wait to 2 minutes
 
 		// Retry loop to handle transient network errors and token refresh
 		while (true) {
@@ -194,7 +197,7 @@ export abstract class FabricPlatformClient {
 			const now = Date.now();
 			if (FabricPlatformClient.globalCooldownUntil && FabricPlatformClient.globalCooldownUntil > now) {
 				const remaining = FabricPlatformClient.globalCooldownUntil - now;
-				const cap = 120000; // cap wait to 2 minutes
+				const cap = maxCooldownWaitMs;
 				if (remaining > cap) {
 					logger.warn(
 						`Global Fabric API cooldown in effect for ${Math.round(remaining / 1000)}s — refusing to wait longer than ${Math.round(cap / 1000)}s`,
@@ -221,7 +224,11 @@ export abstract class FabricPlatformClient {
 
 				// Reset network retry counter on successful fetch
 				networkAttempts = 0;
-				tokenRefreshAttempts = 0;
+				// Only reset the token refresh counter when the response is not a 401, otherwise a
+				// persistent 401 would refresh and retry forever.
+				if (response.status !== 401) {
+					tokenRefreshAttempts = 0;
+				}
 
 				// Capture headers
 				const headersObj: Record<string, string | null> = {};
@@ -293,10 +300,20 @@ export abstract class FabricPlatformClient {
 							);
 						} else {
 							const defaultCooldownMs = 30000;
+							waitMs = defaultCooldownMs;
 							FabricPlatformClient.globalCooldownUntil = Date.now() + defaultCooldownMs;
 							logger.warn(
 								`Received 429 from Fabric API for ${fullUrl}; no 'Retry-After' parsed — applying default cooldown ${Math.round(defaultCooldownMs / 1000)}s. requestId=${requestId}`,
 							);
+						}
+
+						// Wait for the cooldown (handled at the top of the loop) and retry a bounded number of times
+						if (rateLimitAttempts < maxRateLimitRetries && waitMs <= maxCooldownWaitMs) {
+							rateLimitAttempts++;
+							logger.warn(
+								`Retrying ${fullUrl} after 429 cooldown (attempt ${rateLimitAttempts}/${maxRateLimitRetries}). requestId=${requestId}`,
+							);
+							continue;
 						}
 
 						throw new FabricPlatformError(response.status, response.statusText, errorResponse, requestId);
