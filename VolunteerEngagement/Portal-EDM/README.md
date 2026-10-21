@@ -11,7 +11,7 @@ Review the official Power Pages guidance for creating and deploying SPA code sit
 - [PAC CLI](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction) version 1.44.x or later installed and authenticated to the desired target environment.
 - [JavaScript file uploads](https://learn.microsoft.com/en-us/power-pages/configure/create-code-sites#allow-javascript-file-uploads) are allowed in the target Dataverse environment.
 - [Common Data Model for Nonprofits](../../CommonDataModelforNonprofits/README.md) and [Volunteer Management](../../VolunteerManagement/README.md) are installed and configured in the target environment.
-- Node.js 24 LTS recommended. The supported engine range is `>=20.18.1`.
+- Node.js `>=24.14.1` (Node.js 24 LTS recommended; `.nvmrc` pins `24.14.1`).
 - PowerShell 7+ for helper scripts.
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or Az PowerShell signed in to the target tenant: required for `npm run site:restart`, `scripts/site-admin/remove-power-pages-site.ps1`, and the `powerpages-site-agent:*` Dataverse helper scripts.
 
