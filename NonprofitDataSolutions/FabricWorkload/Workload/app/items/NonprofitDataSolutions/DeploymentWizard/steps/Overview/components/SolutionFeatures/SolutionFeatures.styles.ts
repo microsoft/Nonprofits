@@ -42,21 +42,3 @@ export const useSolutionFeaturesStyles = makeStyles({
 		padding: '0',
 	},
 });
-
-
-	// featureCard: {
-	// 	display: 'flex',
-	// 	alignItems: 'flex-start',
-	// 	gap: '16px',
-	// 	padding: '16px',
-	// 	borderRadius: tokens.borderRadiusMedium,
-	// 	border: `1px solid ${tokens.colorNeutralStroke2}`,
-	// 	backgroundColor: tokens.colorNeutralBackground1,
-	// },
-
-	// featureIcon: {
-	// 	padding: '8px',
-	// 	borderRadius: tokens.borderRadiusSmall,
-	// 	flexShrink: 0,
-	// 	color: tokens.colorBrandForeground2,
-	// },
