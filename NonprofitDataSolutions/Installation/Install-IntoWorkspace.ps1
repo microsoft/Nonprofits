@@ -20,7 +20,14 @@
     Switch to skip importing sample data. By default, sample data is imported during installation.
 
 .PARAMETER SkipConfirmation
-    Skip confirmation prompts for automated installations.
+    Skip confirmation prompts for automated installations. Data sources that are not passed with
+    -DynamicsLakehouseName or -SalesforceConnectionId are then not configured (no prompt).
+
+.PARAMETER DynamicsLakehouseName
+    Name of the lakehouse in the workspace that holds the Dataverse (Dynamics 365) data. Skips the prompt.
+
+.PARAMETER SalesforceConnectionId
+    ID of the Salesforce connection to use. Skips the prompt.
 
 .PARAMETER LoadFromFile
     Load runtime variables from a previously saved JSON file instead of initializing with defaults.
@@ -75,6 +82,18 @@ param (
         HelpMessage = "Skip confirmation prompts for automated installations"
     )]
     [switch]$SkipConfirmation,
+    
+    [Parameter(
+        Mandatory = $false,
+        HelpMessage = "Name of the lakehouse with the Dataverse (Dynamics 365) data"
+    )]
+    [string]$DynamicsLakehouseName,
+    
+    [Parameter(
+        Mandatory = $false,
+        HelpMessage = "ID of the Salesforce connection to use"
+    )]
+    [string]$SalesforceConnectionId,
     
     [Parameter(
         Mandatory = $false,
@@ -1115,6 +1134,14 @@ function Upload-FilesToLakehouse ($localPath, $lakehouseName, $subPath) {
 }
 
 function Setup-SalesforceConnection {
+    # An explicit parameter wins over saved state (e.g. a placeholder loaded with -LoadFromFile)
+    if (-not [string]::IsNullOrWhiteSpace($SalesforceConnectionId)) {
+        $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] = $SalesforceConnectionId
+        $Script:RuntimeVariables["SALESFORCE_CONNECTION_NAME"] = $SalesforceConnectionId
+        Write-Log "Using Salesforce connection from -SalesforceConnectionId: $SalesforceConnectionId" -Level "SUCCESS"
+        return
+    }
+
     # Skip if already configured
     if ($null -ne $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] -and 
         $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] -ne "") {
@@ -1139,8 +1166,12 @@ function Setup-SalesforceConnection {
             }
         }
 
-        if ($salesforceConnections.Count -eq 0) {
-            Write-Log "No Salesforce connection found in the Fabric tenant." -Level "WARNING"
+        if ($salesforceConnections.Count -eq 0 -or $SkipConfirmation) {
+            if ($salesforceConnections.Count -eq 0) {
+                Write-Log "No Salesforce connection found in the Fabric tenant." -Level "WARNING"
+            } else {
+                Write-Log "-SkipConfirmation without -SalesforceConnectionId: Salesforce is not configured." -Level "WARNING"
+            }
             Write-Log "The Salesforce export pipeline will be created with a placeholder connection." -Level "WARNING"
             Write-Log "You can update the connection manually after installation or rerun the installation once you create a Salesforce connection." -Level "INFO"
             $Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] = "SalesforceConnectionIdPlaceholder"
@@ -1200,8 +1231,9 @@ function Setup-SalesforceConnection {
 }
 
 function Setup-D365Lakehouse {
-    # Skip if already configured
-    if ($null -ne $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -and 
+    # Skip if already configured, unless -DynamicsLakehouseName overrides saved state (e.g. a placeholder loaded with -LoadFromFile)
+    if ([string]::IsNullOrWhiteSpace($DynamicsLakehouseName) -and
+        $null -ne $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -and 
         $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -ne "") {
         Write-Log "D365 lakehouse already configured (Name: $($Script:RuntimeVariables['DYNAMICS_LAKEHOUSE_NAME'])), skipping setup" -Level "INFO"
         return
@@ -1269,14 +1301,30 @@ function Setup-D365Lakehouse {
         Write-Host "Use placeholder (configure manually later)" -ForegroundColor Yellow
         Write-Host ""
 
-        do {
-            $selection = Read-Host "Please select a D365 lakehouse (0-$($d365Lakehouses.Count))"
-            if ($selection -match '^\d+$' -and [int]$selection -ge 0 -and [int]$selection -le $d365Lakehouses.Count) {
-                break
+        if (-not [string]::IsNullOrWhiteSpace($DynamicsLakehouseName)) {
+            $match = @($d365Lakehouses | Where-Object { $_.Name -eq $DynamicsLakehouseName })
+            $selection = if ($match.Count -gt 0) { [array]::IndexOf($d365Lakehouses, $match[0]) + 1 } else { 0 }
+            if ($selection -eq 0) {
+                Write-Log "Lakehouse '$DynamicsLakehouseName' not found in the workspace: Dynamics 365 is not configured." -Level "WARNING"
             }
-            Write-Host "❌ Invalid selection. Please enter a number between 0 and $($d365Lakehouses.Count)." -ForegroundColor Red
-            Write-Host ""
-        } while ($true)
+        }
+        elseif ($d365Lakehouses.Count -eq 0 -or $SkipConfirmation) {
+            # Nothing to choose from, or an unattended run: do not prompt (Read-Host would loop forever without input).
+            if ($d365Lakehouses.Count -gt 0) {
+                Write-Log "-SkipConfirmation without -DynamicsLakehouseName: Dynamics 365 is not configured." -Level "WARNING"
+            }
+            $selection = 0
+        }
+        else {
+            do {
+                $selection = Read-Host "Please select a D365 lakehouse (0-$($d365Lakehouses.Count))"
+                if ($selection -match '^\d+$' -and [int]$selection -ge 0 -and [int]$selection -le $d365Lakehouses.Count) {
+                    break
+                }
+                Write-Host "❌ Invalid selection. Please enter a number between 0 and $($d365Lakehouses.Count)." -ForegroundColor Red
+                Write-Host ""
+            } while ($true)
+        }
 
         if ($selection -eq 0) {
             $Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] = "D365LakehouseNamePlaceholder"
@@ -2298,6 +2346,42 @@ function Import-SFNPSP_BronzeIngestionPipeline {
         -Description "Ingests Salesforce NPSP data into Bronze lakehouse"
 }
 
+function Remove-UnconfiguredIngestionActivities {
+    param([string]$PipelineFolder)
+
+    # Same rule as the deployment wizard: drop the bronze ingestion steps of data sources that are not
+    # configured, so the orchestration pipeline does not fail on placeholder lakehouses or connections.
+    $remove = @()
+    if (-not $script:enableImportSampleData) {
+        $remove += "Import sample data"
+    }
+    if ($Script:RuntimeVariables["DYNAMICS_LAKEHOUSE_NAME"] -in @($null, "", "D365LakehouseNamePlaceholder")) {
+        $remove += "Transform Dynamics 365 bronze data to silver"
+    }
+    if ($Script:RuntimeVariables["SALESFORCE_CONNECTION_ID"] -in @($null, "", "SalesforceConnectionIdPlaceholder")) {
+        $remove += "Import SalesforceNPSP data to Bronze", "Transform SalesforceNPSP bronze data to silver"
+    }
+    if ($remove.Count -eq 0) {
+        return
+    }
+
+    $path = Join-Path $PipelineFolder "pipeline-content.json"
+    $pipeline = Get-Content -Path $path -Raw | ConvertFrom-Json
+    $kept = @($pipeline.properties.activities | Where-Object { $_.name -notin $remove })
+    $previous = $null
+    foreach ($activity in $kept) {
+        if ($previous) {
+            $activity.dependsOn = @([pscustomobject]@{ activity = $previous; dependencyConditions = @("Succeeded") })
+        } else {
+            $activity.dependsOn = @()
+        }
+        $previous = $activity.name
+    }
+    $pipeline.properties.activities = $kept
+    $pipeline | ConvertTo-Json -Depth 32 | Set-Content -Path $path -Encoding utf8NoBOM
+    Write-Log "Bronze ingestion: removed steps for data sources that are not configured: $($remove -join ', ')" -Level "INFO"
+}
+
 function Import-BronzeIngestionOrchestrationPipeline {
     # Skip if already imported
     if ($null -ne $Script:RuntimeVariables["BRONZE_INGESTION_PIPELINE_ID"]) {
@@ -2312,6 +2396,8 @@ function Import-BronzeIngestionOrchestrationPipeline {
     } else {
         $fabricPath = "$WorkspaceName.Workspace/${pipelineName}.DataPipeline"
     }
+
+    Remove-UnconfiguredIngestionActivities -PipelineFolder $localPath
 
     $Script:RuntimeVariables["BRONZE_INGESTION_PIPELINE_ID"] = Import-FabricResource `
         -ResourceType "Data Pipeline" `
@@ -2502,7 +2588,7 @@ function Show-InstallationSummary {
         $goldLakehouseName = $Script:RuntimeVariables["GOLD_LAKEHOUSE_NAME"]
         $semanticModelName = $Script:RuntimeVariables["SEMANTIC_MODEL_NAME"]
         $reportName = $Script:RuntimeVariables["REPORT_NAME"]
-        $orchestrationPipelineName = $Script:RuntimeVariables["Fundraising_SalesforceNPSP_BR_Load"]
+        $orchestrationPipelineName = "${Prefix}Fundraising_Orchestration"
 
         Write-Host "🎉 " -NoNewline -ForegroundColor Green
         Write-Host "Nonprofit Data Solutions installation completed successfully!" -ForegroundColor Green
@@ -2540,6 +2626,7 @@ function Show-InstallationSummary {
         Write-Host "   3. Configure a connection from $semanticModelName semantic model to $goldLakehouseName lakehouse" -ForegroundColor Gray
         Write-Host "   4. Run $orchestrationPipelineName pipeline to ingest, transform and enrich data" -ForegroundColor Gray
         Write-Host "   5. Refresh $semanticModelName semantic model" -ForegroundColor Gray
+        Write-Host "      (if the refresh reports a missing table, refresh the SQL analytics endpoint of $goldLakehouseName first)" -ForegroundColor Gray
         Write-Host "   6. Customize reports and dashboards as needed" -ForegroundColor Gray
         Write-Host ""
         
