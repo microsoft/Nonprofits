@@ -24,6 +24,26 @@ namespace Plugins.Extensions
 		}
 
 		/// <summary>
+		/// Returns true when the target sets the lookup attribute to a different record than the one in the image.
+		/// </summary>
+		/// <param name="target">Target entity of the update</param>
+		/// <param name="image">Pre operation entity image</param>
+		/// <param name="attributeName">Lookup attribute name</param>
+		/// <returns>True if the lookup is changed by the update</returns>
+		public static bool IsLookupChanged(this Entity target, Entity image, string attributeName)
+		{
+			if (target == null || !target.Contains(attributeName))
+			{
+				return false;
+			}
+
+			var newId = target.GetAttributeValue<EntityReference>(attributeName)?.Id;
+			var oldId = image?.GetAttributeValue<EntityReference>(attributeName)?.Id;
+
+			return newId != oldId;
+		}
+
+		/// <summary>
 		/// Returns a value of the attribute of the entity cast to T
 		/// </summary>
 		/// <typeparam name="T">Type of the value</typeparam>

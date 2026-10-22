@@ -192,4 +192,19 @@
   <data name="GroupMembership.ContactAndGroup.RequiredException" xml:space="preserve">
     <value>Contact and Group are required.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftNotActiveException" xml:space="preserve">
+    <value>The selected shift is no longer available.</value>
+  </data>
+  <data name="Participation.StatusChangeNotAllowedException" xml:space="preserve">
+    <value>The participation status can't be changed to the selected value.</value>
+  </data>
+  <data name="ParticipationSchedule.StatusChangeNotAllowedException" xml:space="preserve">
+    <value>The participation schedule status can't be changed to the selected value.</value>
+  </data>
+  <data name="Participation.ReassignmentNotAllowedException" xml:space="preserve">
+    <value>The volunteer or engagement opportunity of a participation can't be changed.</value>
+  </data>
+  <data name="ParticipationSchedule.ReassignmentNotAllowedException" xml:space="preserve">
+    <value>The participation or shift of a participation schedule can't be changed.</value>
+  </data>
 </root>

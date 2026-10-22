@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk;
+using Plugins.Extensions;
 using Plugins.Resx;
 using Plugins.Localization;
 
@@ -63,6 +64,13 @@ namespace Plugins.Strategies
 					}
 
 					target["msnfp_participationtitle"] = $"{contactFullName} - {eo.GetAttributeValue<string>("msnfp_engagementopportunitytitle")}";
+
+					if (this.context.IsPortalOriginated() && target.Contains("msnfp_status"))
+					{
+						// Portal users can't choose the initial status; it's set below based on the engagement opportunity settings.
+						this.tracingService.Trace("Ignoring participation status supplied by a portal request.");
+						target.Attributes.Remove("msnfp_status");
+					}
 
 					bool approve = eo.GetAttributeValue<bool>("msnfp_automaticallyapproveallapplicants");
 					OptionSetValue status = target.GetAttributeValue<OptionSetValue>("msnfp_status");

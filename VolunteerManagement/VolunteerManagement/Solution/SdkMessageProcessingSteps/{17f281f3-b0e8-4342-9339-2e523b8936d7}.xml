@@ -5,7 +5,7 @@
   <PluginTypeId>94b3802c-2b42-4394-9e62-0f91a0c3be1d</PluginTypeId>
   <PrimaryEntity>msnfp_participation</PrimaryEntity>
   <AsyncAutoDelete>0</AsyncAutoDelete>
-  <FilteringAttributes>msnfp_status</FilteringAttributes>
+  <FilteringAttributes>msnfp_contactid,msnfp_engagementopportunityid,msnfp_status</FilteringAttributes>
   <InvocationSource>1</InvocationSource>
   <Mode>0</Mode>
   <Rank>1</Rank>

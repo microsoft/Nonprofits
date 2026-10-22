@@ -192,4 +192,19 @@
   <data name="GroupMembership.ContactAndGroup.RequiredException" xml:space="preserve">
     <value>Le contact et le groupe sont obligatoires.</value>
   </data>
+  <data name="ParticipationSchedule.ShiftNotActiveException" xml:space="preserve">
+    <value>L’équipe sélectionnée n’est plus disponible.</value>
+  </data>
+  <data name="Participation.StatusChangeNotAllowedException" xml:space="preserve">
+    <value>Le statut de la participation ne peut pas être remplacé par la valeur sélectionnée.</value>
+  </data>
+  <data name="ParticipationSchedule.StatusChangeNotAllowedException" xml:space="preserve">
+    <value>Le statut de la planification de participation ne peut pas être remplacé par la valeur sélectionnée.</value>
+  </data>
+  <data name="Participation.ReassignmentNotAllowedException" xml:space="preserve">
+    <value>Le bénévole ou l’opportunité d’engagement d’une participation ne peut pas être modifié.</value>
+  </data>
+  <data name="ParticipationSchedule.ReassignmentNotAllowedException" xml:space="preserve">
+    <value>La participation ou l’équipe d’une planification de participation ne peut pas être modifiée.</value>
+  </data>
 </root>

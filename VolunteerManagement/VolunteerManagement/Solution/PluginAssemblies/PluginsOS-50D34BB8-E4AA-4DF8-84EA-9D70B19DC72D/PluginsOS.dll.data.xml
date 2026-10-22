@@ -65,6 +65,9 @@
     <PluginType AssemblyQualifiedName="Plugins.ParticipationScheduleOnPreCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" PluginTypeId="f28d50d0-05b8-4020-b8b7-cba573320c7f" Name="Plugins.ParticipationScheduleOnPreCreate">
       <FriendlyName>c50de1c0-461f-4293-9702-5db9b3bcb13f</FriendlyName>
     </PluginType>
+    <PluginType AssemblyQualifiedName="Plugins.ParticipationScheduleOnPreUpdate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" PluginTypeId="68759758-9a6f-48e0-b311-441da1d840f4" Name="Plugins.ParticipationScheduleOnPreUpdate">
+      <FriendlyName>Plugins.ParticipationScheduleOnPreUpdate</FriendlyName>
+    </PluginType>
     <PluginType AssemblyQualifiedName="Plugins.QualificationOnPostCreate, PluginsOS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=703f25cc8a15a472" PluginTypeId="40838878-f4df-4d05-bc78-6da8f21a5f27" Name="Plugins.QualificationOnPostCreate">
       <FriendlyName>cd63de5a-e948-4d51-889f-206962fa349e</FriendlyName>
     </PluginType>

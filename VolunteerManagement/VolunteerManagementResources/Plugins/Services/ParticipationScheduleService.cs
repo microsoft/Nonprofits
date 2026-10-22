@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
+using Plugins.Extensions;
 using Plugins.Localization;
 using Plugins.Resx;
 using VolunteerManagement.Definitions;
@@ -96,6 +97,73 @@ namespace Plugins.Services
 				throw new InvalidPluginExecutionException(OperationStatus.Failed,
 					this.localizationHelper.GetLocalizedMessage(l => l.ParticipationSchedule_ShiftFullException));
 			}
+		}
+
+		public void ValidateShiftIsActive(EntityReference shiftRef)
+		{
+			if (shiftRef == null)
+			{
+				return;
+			}
+
+			var shift = orgService.Retrieve(EngagementOpportunityScheduleDef.EntityName, shiftRef.Id,
+				new ColumnSet(EngagementOpportunityScheduleDef.Status));
+			if (shift.GetAttributeValue<OptionSetValue>(EngagementOpportunityScheduleDef.Status)?.Value != (int)EngagementOpportunityScheduleStatus.Active)
+			{
+				throw new InvalidPluginExecutionException(OperationStatus.Failed,
+					this.localizationHelper.GetLocalizedMessage(l => l.ParticipationSchedule_ShiftNotActiveException));
+			}
+		}
+
+		public void ValidatePortalScheduleStatusOnCreate(Entity participationSchedule)
+		{
+			var status = participationSchedule.GetAttributeValue<OptionSetValue>(ParticipationScheduleDef.ScheduleStatus)?.Value;
+			if (status != null
+				&& status != (int)ParticipationScheduleStatus.Pending
+				&& status != (int)ParticipationScheduleStatus.Cancelled)
+			{
+				throw new InvalidPluginExecutionException(OperationStatus.Failed,
+					this.localizationHelper.GetLocalizedMessage(l => l.ParticipationSchedule_StatusChangeNotAllowedException));
+			}
+		}
+
+		public void ValidatePortalScheduleUpdate(Entity target, Entity preImage)
+		{
+			if (target.IsLookupChanged(preImage, ParticipationScheduleDef.Participation)
+				|| target.IsLookupChanged(preImage, ParticipationScheduleDef.EngagementOpportunitySchedule))
+			{
+				throw new InvalidPluginExecutionException(OperationStatus.Failed,
+					this.localizationHelper.GetLocalizedMessage(l => l.ParticipationSchedule_ReassignmentNotAllowedException));
+			}
+
+			if (!target.Contains(ParticipationScheduleDef.ScheduleStatus))
+			{
+				return;
+			}
+
+			var newStatus = target.GetAttributeValue<OptionSetValue>(ParticipationScheduleDef.ScheduleStatus)?.Value;
+			var oldStatus = preImage?.GetAttributeValue<OptionSetValue>(ParticipationScheduleDef.ScheduleStatus)?.Value;
+
+			if (newStatus == oldStatus)
+			{
+				return;
+			}
+
+			if (oldStatus == (int)ParticipationScheduleStatus.Pending && newStatus == (int)ParticipationScheduleStatus.Cancelled)
+			{
+				return;
+			}
+
+			if (oldStatus == (int)ParticipationScheduleStatus.Cancelled && newStatus == (int)ParticipationScheduleStatus.Pending)
+			{
+				// Booking the shift again: same rules as a new booking. Capacity is checked by the post-update step.
+				ValidateApprovalStatus(preImage);
+				ValidateShiftIsActive(preImage.GetAttributeValue<EntityReference>(ParticipationScheduleDef.EngagementOpportunitySchedule));
+				return;
+			}
+
+			throw new InvalidPluginExecutionException(OperationStatus.Failed,
+				this.localizationHelper.GetLocalizedMessage(l => l.ParticipationSchedule_StatusChangeNotAllowedException));
 		}
 	}
 }
