@@ -33,7 +33,7 @@
         "html-react-parser": "^6.0.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-router-dom": "^6.30.6"
+        "react-router-dom": "^7.18.4"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
@@ -50,7 +50,7 @@
         "jsdom": "^29.1.1",
         "prettier": "^3.2.0",
         "typescript": "^5.0.0",
-        "vite": "^8.0.16",
+        "vite": "^8.3.5",
         "vitest": "^5.0.4"
     }
 }
