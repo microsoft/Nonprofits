@@ -1,11 +1,14 @@
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
+using Plugins.Extensions;
 using Plugins.Localization;
 using Plugins.Resx;
 
 namespace Plugins.Strategies
 {
 	/// <summary>
+	/// Portal requests can only withdraw a participation or apply again after withdrawing, and can't move it to another
+	/// volunteer or engagement opportunity.
 	/// A cancelled participation set back to Needs Review is a new application by the same volunteer
 	/// (the alternate key allows only one participation per contact and engagement opportunity).
 	/// Applies the same rules as a new application: ParticipationOnPreCreate and the MaxParticipantsCheck workflow.
@@ -35,8 +38,20 @@ namespace Plugins.Strategies
 
 		public void Run()
 		{
-			if (!context.InputParameters.TryGetValue("Target", out var targetObject) || !(targetObject is Entity target)
-				|| !context.PreEntityImages.TryGetValue(PreImageName, out var preImage) || preImage == null)
+			if (!context.InputParameters.TryGetValue("Target", out var targetObject) || !(targetObject is Entity target))
+			{
+				return;
+			}
+
+			context.PreEntityImages.TryGetValue(PreImageName, out var preImage);
+
+			// Only requests sent directly from the portal are restricted; staff users and updates made by other plugins or workflows are not.
+			if (context.IsTopLevelRequest() && context.IsPortalOriginated())
+			{
+				ValidatePortalUpdate(target, preImage);
+			}
+
+			if (preImage == null)
 			{
 				return;
 			}
@@ -89,6 +104,46 @@ namespace Plugins.Strategies
 			}
 
 			context.SharedVariables[ReappliedSharedVariable] = true;
+		}
+
+		private void ValidatePortalUpdate(Entity target, Entity preImage)
+		{
+			if (target.IsLookupChanged(preImage, "msnfp_contactid") || target.IsLookupChanged(preImage, "msnfp_engagementopportunityid"))
+			{
+				throw new InvalidPluginExecutionException(OperationStatus.Failed, localizationHelper.GetLocalizedMessage(l => l.Participation_ReassignmentNotAllowedException));
+			}
+
+			if (!target.Contains("msnfp_status"))
+			{
+				return;
+			}
+
+			var requestedStatus = target.GetAttributeValue<OptionSetValue>("msnfp_status")?.Value;
+			var previousStatus = preImage?.GetAttributeValue<OptionSetValue>("msnfp_status")?.Value;
+			if (!IsPortalStatusChangeAllowed(previousStatus, requestedStatus))
+			{
+				throw new InvalidPluginExecutionException(OperationStatus.Failed, localizationHelper.GetLocalizedMessage(l => l.Participation_StatusChangeNotAllowedException));
+			}
+		}
+
+		/// <summary>
+		/// From the portal a volunteer can only withdraw, or apply again after withdrawing (which needs staff review again).
+		/// </summary>
+		private static bool IsPortalStatusChangeAllowed(int? previousStatus, int? requestedStatus)
+		{
+			if (requestedStatus == previousStatus)
+			{
+				return true;
+			}
+
+			if (requestedStatus == (int)ParticipationStatus.Cancelled)
+			{
+				return previousStatus == (int)ParticipationStatus.NeedsReview
+					|| previousStatus == (int)ParticipationStatus.InReview
+					|| previousStatus == (int)ParticipationStatus.Approved;
+			}
+
+			return requestedStatus == (int)ParticipationStatus.NeedsReview && previousStatus == (int)ParticipationStatus.Cancelled;
 		}
 	}
 }

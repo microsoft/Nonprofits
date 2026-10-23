@@ -95,6 +95,26 @@
 		/// </summary>
         public LocalizationInfoModel ParticipationSchedule_ShiftNotInEngagementOpportunityException { get; set; }
 		/// <summary>
+		/// The selected shift is no longer available.
+		/// </summary>
+        public LocalizationInfoModel ParticipationSchedule_ShiftNotActiveException { get; set; }
+		/// <summary>
+		/// The participation status can't be changed to the selected value.
+		/// </summary>
+        public LocalizationInfoModel Participation_StatusChangeNotAllowedException { get; set; }
+		/// <summary>
+		/// The participation schedule status can't be changed to the selected value.
+		/// </summary>
+        public LocalizationInfoModel ParticipationSchedule_StatusChangeNotAllowedException { get; set; }
+		/// <summary>
+		/// The volunteer or engagement opportunity of a participation can't be changed.
+		/// </summary>
+        public LocalizationInfoModel Participation_ReassignmentNotAllowedException { get; set; }
+		/// <summary>
+		/// The participation or shift of a participation schedule can't be changed.
+		/// </summary>
+        public LocalizationInfoModel ParticipationSchedule_ReassignmentNotAllowedException { get; set; }
+		/// <summary>
 		/// No more volunteers needed.
 		/// </summary>
         public LocalizationInfoModel Participation_NoMoreVolunteersNeededException { get; set; }

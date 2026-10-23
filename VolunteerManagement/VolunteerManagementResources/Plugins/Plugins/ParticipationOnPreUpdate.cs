@@ -6,7 +6,7 @@ namespace Plugins
 		"msnfp_participation",
 		StageEnum.PreOperation,
 		ExecutionModeEnum.Synchronous,
-		"msnfp_status",
+		"msnfp_status,msnfp_contactid,msnfp_engagementopportunityid",
 		"Pre-Update Participation",
 		1,
 		IsolationModeEnum.Sandbox,
